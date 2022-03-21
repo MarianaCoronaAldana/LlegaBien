@@ -29,6 +29,7 @@ public class InicioSesion0 extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_iniciar_sesion_0);
 
+
         if(Preferences.obtenerPreference(this,PREFERENCE_ESTADO_BUTTON_SESION)){
             iniciarActividadSiguiente();
         }

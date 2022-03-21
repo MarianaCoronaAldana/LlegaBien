@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
 }
 
+apply plugin: 'realm-android'
+
+
 android {
     compileSdk 32
 
@@ -28,6 +31,10 @@ android {
     buildFeatures {
         viewBinding true
     }
+}
+
+realm {
+    syncEnabled = true
 }
 
 dependencies {
