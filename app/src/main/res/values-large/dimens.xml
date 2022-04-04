@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size_titulo">35sp</dimen>
+    <dimen name="text_size_subtitulo">20sp</dimen>
+    <dimen name="text_size_parrafo">18sp</dimen>
+    <dimen name="text_size_parrafo_small">12sp</dimen>
+</resources>

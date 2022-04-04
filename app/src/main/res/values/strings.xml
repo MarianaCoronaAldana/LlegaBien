@@ -1,4 +1,55 @@
 <resources>
     <string name="app_name">LlegaBien</string>
     <string name="title_activity_maps">MapsActivity</string>
+
+    <!-- Página principal. -->
+    <string name="titulo_pagina_principal">LLEGA BIEN</string>
+    <string name="frase_pagina_principal1">Tu seguridad es </string>
+    <string name="frase_pagina_principal2">primero</string>
+    <string name="crear_cuenta_pagina_principal">Crea una cuenta</string>
+    <string name="inicia_sesion_pagina_principal">Inicia sesión</string>
+    <string name="derechos_pagina_principal">Todos los derechos reservados 2021</string>
+
+    <!-- Inicio de sesión. -->
+    <string name="titulo_inicia_sesion">Inicia sesión</string>
+    <string name="instrucciones_inicia_sesion1">Ingresa tus credenciales</string>
+    <string name="recordar_inicia_sesion1">Recordar credenciales.</string>
+    <string name="contraseñaOlvidada_inicia_sesion1">¿Olvidaste tu contraseña?</string>
+    <string name="registrarse_inicia_sesion1">¿No tienes una cuenta? Registrate.</string>
+    <string name="instrucciones1_inicia_sesion2">Reestablece tu contraseña</string>
+
+
+    <!-- Registro -->
+    <string name="titulo_registro">Registro</string>
+    <string name="instrucciones_registro">Ingresa tus datos personales</string>
+    <string name="instrucciones1_registro1">Primero, ingresa tu nombre completo y fecha de nacimiento.</string>
+    <string name="nombres_registro1">Nombres</string>
+    <string name="apellidos_registro1">Apellidos</string>
+    <string name="fechaNacimiento_registro1">Fecha de nacimiento</string>
+    <string name="iniciarSesion_registro1">¿Tienes una cuenta? Inicia sesión</string>
+    <string name="instrucciones1_registro2">Ahora, ingresa tu correo electrónico, número de teléfono y contraseña. </string>
+    <string name="celular_registro2">Número de teléfono</string>
+    <string name="confirmarContraseña_registro2">Confirme contraseña</string>
+    <string name="instrucciones1_registro3">Confirma tu número telefónico</string>
+    <string name="instrucciones2_registro3">Ingresa el código que envíamos a tu número telefónico para verificarlo.</string>
+    <string name="instrucciones1_registro4">Confirma tu correo electrónico</string>
+    <string name="instrucciones1_registro5">Ingresa tus contactos de emergencia</string>
+    <string name="instrucciones2.1_registro5">Para completar el registroo es necesario que completes la siguiente información </string>
+    <string name="instrucciones2.2_registro5">de por lo menos 2 contactos de emergencia. </string>
+    <string name="contactoEmergencia_registro5">Contacto num. </string>
+    <string name="contactoEmergencia_nombre_registro5">Nombre completo</string>
+    <string name="contactoEmergencia_celular_registro5">Número de teléfono</string>
+
+    <!-- Registro e Iniciar sesión -->
+    <string name="iniciaBtn">Inicia</string>
+    <string name="siguienteBtn">Siguiente</string>
+    <string name="verificarBtn">Verificar</string>
+    <string name="correoTxtView">Correo electrónico</string>
+    <string name="contraseñaTxtView">Contraseña</string>
+    <string name="reenviarCodigoBtn">No recibí ningún código. Reenviar</string>
+    <string name="instruccionesCodigoCorreoTxtView">Ingresa el código que enviamos a tu correo electrónico.</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

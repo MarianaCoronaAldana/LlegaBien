@@ -22,20 +22,12 @@
         android:theme="@style/Theme.LlegaBien" >
         <activity
             android:name=".pantallaPrincipalActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".InicioSesion0"
             android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-
-
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -50,10 +42,9 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".rutas.MapsActivity"
             android:exported="true"
             android:label="@string/title_activity_maps" >
-
         </activity>
     </application>
 

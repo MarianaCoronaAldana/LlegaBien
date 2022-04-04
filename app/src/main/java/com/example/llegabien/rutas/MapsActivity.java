@@ -1,15 +1,11 @@
-package com.example.llegabien;
+package com.example.llegabien.rutas;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import com.example.llegabien.R;
+import com.example.llegabien.permisos.PedirPermisos;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
