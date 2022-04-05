@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.llegabien.FragmentoAuxiliar;
 import com.example.llegabien.R;
+import com.example.llegabien.Transacciones;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,15 +86,17 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
     @Override
     public void onClick(View view) {
         FragmentoRegistrarUsuario3 fragmentoRegistrarUsuario3 = new FragmentoRegistrarUsuario3();
+        FragmentoAuxiliar fragmentoAuxiliar = new FragmentoAuxiliar();
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.addToBackStack("text");
         switch (view.getId()) {
             case R.id.button_siguiente_registro_2:
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
                 fragmentTransaction.replace(R.id.fragment_pantallaPrincipal, fragmentoRegistrarUsuario3).commit();
+                fragmentTransaction.addToBackStack(null);
                 break;
             case R.id.button_cerrar_registro_2:
-                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                Transacciones transacciones = new Transacciones();
+                transacciones.cerrarFragmento(fragmentTransaction,fragmentoAuxiliar);
                 break;
         }
     }

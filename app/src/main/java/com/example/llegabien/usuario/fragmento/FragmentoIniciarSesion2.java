@@ -15,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 
+import com.example.llegabien.FragmentoAuxiliar;
 import com.example.llegabien.R;
+import com.example.llegabien.Transacciones;
 import com.example.llegabien.permisos.Preferences;
 import com.example.llegabien.rutas.MapsActivity;
 
@@ -87,12 +89,12 @@ public class FragmentoIniciarSesion2 extends Fragment implements View.OnClickLis
     //listener function
     @Override
     public void onClick(View view) {
-        FragmentoIniciarSesion2 fragmentoIniciarSesion2 = new FragmentoIniciarSesion2();
+        FragmentoAuxiliar fragmentoAuxiliar = new FragmentoAuxiliar();
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.addToBackStack("text");
         switch (view.getId()) {
             case R.id.button_cerrar_inicia_sesion_2:
-                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                Transacciones transacciones = new Transacciones();
+                transacciones.cerrarFragmento(fragmentTransaction,fragmentoAuxiliar);
                 break;
 
         }

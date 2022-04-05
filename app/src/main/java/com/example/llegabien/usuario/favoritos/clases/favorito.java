@@ -1,5 +1,6 @@
-package com.example.llegabien;
+package com.example.llegabien.usuario.favoritos.clases;
 
+import com.example.llegabien.favorito_ubicacion;
 import com.example.llegabien.usuario.clases.usuario;
 
 import io.realm.RealmObject;

@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 
+import com.example.llegabien.FragmentoAuxiliar;
+import com.example.llegabien.Transacciones;
 import com.example.llegabien.permisos.Preferences;
 import com.example.llegabien.R;
 import com.example.llegabien.rutas.MapsActivity;
@@ -68,7 +70,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private RadioButton mBtnRecoradrSesion;
-    private Button mBtnIniciarSesion, mBtnContraseñaOlvidada, mBtnCerrar;
+    private Button mBtnIniciarSesion, mBtnContraseñaOlvidada, mBtnCerrar, mBtnRegistrarse;
     private boolean isActivateRadioButton;
 
     @Override
@@ -87,12 +89,14 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
         mBtnIniciarSesion = (Button) root.findViewById(R.id.button_inicia_inicia_sesion_1);
         mBtnContraseñaOlvidada = (Button) root.findViewById(R.id.button_contraseña_olvidada_inicia_sesion_1);
         mBtnCerrar = (Button) root.findViewById(R.id.button_cerrar_inicia_sesion_1);
+        mBtnRegistrarse = (Button) root.findViewById(R.id.button_registrarse_inicia_sesion_1);
 
         //listeners
         mBtnRecoradrSesion.setOnClickListener(this);
         mBtnIniciarSesion.setOnClickListener(this);
         mBtnContraseñaOlvidada.setOnClickListener(this);
         mBtnCerrar.setOnClickListener(this);
+        mBtnRegistrarse.setOnClickListener(this);
 
         isActivateRadioButton = mBtnRecoradrSesion.isChecked(); //DESACTIVADO
 
@@ -103,8 +107,9 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View view) {
         FragmentoIniciarSesion2 fragmentoIniciarSesion2 = new FragmentoIniciarSesion2();
+        FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
+        FragmentoAuxiliar fragmentoAuxiliar = new FragmentoAuxiliar();
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.addToBackStack("text");
         switch (view.getId()) {
             case R.id.radioBtn_recordar_inicia_sesion_1:
                 //ACTIVADO
@@ -117,12 +122,17 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
                 Preferences.savePreferenceBoolean(FragmentoIniciarSesion1.this,mBtnRecoradrSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
                 startActivity(new Intent(getActivity(), MapsActivity.class));
                 break;
+            case R.id.button_registrarse_inicia_sesion_1:
+                fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
+                fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoRegistrarUsuario1).commit();
+                break;
             case R.id.button_contraseña_olvidada_inicia_sesion_1:
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
+                fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
                 fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoIniciarSesion2).commit();
                 break;
             case R.id.button_cerrar_inicia_sesion_1:
-                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                Transacciones transacciones = new Transacciones();
+                transacciones.cerrarFragmento(fragmentTransaction,fragmentoAuxiliar);
                 break;
 
         }

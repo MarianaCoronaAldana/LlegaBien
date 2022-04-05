@@ -1,4 +1,4 @@
-package com.example.llegabien.contacto.clases;
+package com.example.llegabien.usuario.contactos.clases;
 
 import io.realm.RealmObject;
 import io.realm.annotations.RealmClass;

@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.llegabien.FragmentoAuxiliar;
 import com.example.llegabien.R;
+import com.example.llegabien.Transacciones;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -88,19 +90,21 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
     public void onClick(View view) {
         FragmentoIniciarSesion1 fragmentoIniciarSesion1 = new FragmentoIniciarSesion1();
         FragmentoRegistrarUsuario2 fragmentoRegistrarUsuario2 = new FragmentoRegistrarUsuario2();
+        FragmentoAuxiliar fragmentoAuxiliar = new FragmentoAuxiliar();
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.addToBackStack("text");
         switch (view.getId()) {
             case R.id.button_siguiente_registro_1:
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
                 fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoRegistrarUsuario2).commit();
+                fragmentTransaction.addToBackStack(null);
                 break;
             case R.id.button_iniciarSesion_registro_1:
-                fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down,R.anim.slide_up, R.anim.slide_down);
+                fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
                 fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoIniciarSesion1).commit();
                 break;
             case R.id.button_cerrar_registro_1:
-                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                Transacciones transacciones = new Transacciones();
+                transacciones.cerrarFragmento(fragmentTransaction,fragmentoAuxiliar);
                 break;
         }
 
