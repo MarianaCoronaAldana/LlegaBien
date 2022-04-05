@@ -1,82 +1,52 @@
 package com.example.llegabien;
 
-/*
-import static com.mongodb.client.model.Filters.eq;
 
-import org.bson.Document;
+import android.app.Activity;
+import android.util.Log;
 
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-*/
-
+import io.realm.Realm;
+import io.realm.mongodb.App;
+import io.realm.mongodb.AppConfiguration;
+import io.realm.mongodb.Credentials;
+import io.realm.mongodb.User;
+import io.realm.mongodb.sync.SyncConfiguration;
 
 public class QuickStart {
 
     public QuickStart() {
-      //  Realm.init(this); // context, usually an Activity or Application
+   //     Realm.init(this); // context, usually an Activity or Application
     }
 
-    /*
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }*/
-
-    public static void a() {
-        /*
-        String appID = "llegabien-fcvux"; // replace this with your App ID
+    public void ConectarAMongoDB(Activity Context){
+        String appID = "llegabien-fcvux";
+        Realm.init(Context); // context, usually an Activity or Application
 
         App app = new App(new AppConfiguration.Builder(appID)
                 .build());
 
-      //  App app = new App(new AppConfiguration.Builder(appID)
-      //          .build());
-        Credentials anonymousCredentials = Credentials.anonymous();
-        AtomicReference<User> user = new AtomicReference<User>();
-        app.loginAsync(anonymousCredentials, it -> {
-            if (it.isSuccess()) {
-                Log.v("AUTH", "Successfully authenticated anonymously.");
-                user.set(app.currentUser());
+        Credentials credentials = Credentials.anonymous();
+        app.loginAsync(credentials, result -> {
+            if (result.isSuccess()) {
+                Log.v("QUICKSTART", "Successfully authenticated anonymously.");
+                User user = app.currentUser();
+                String partitionValue = "My Project";
+                SyncConfiguration config = new SyncConfiguration.Builder(
+                        user,
+                        partitionValue)
+                        .build();
+             /*   uiThreadRealm = Realm.getInstance(config);
+                addChangeListenerToRealm(uiThreadRealm);
+                FutureTask<String> task = new FutureTask(new BackgroundQuickStart(app.currentUser()), "test");
+                ExecutorService executorService = Executors.newFixedThreadPool(2);
+                executorService.execute(task);*/
             } else {
-                Log.e("AUTH", it.getError().toString());
+                Log.e("QUICKSTART", "Failed to log in. Error: " + result.getError());
             }
         });
 
-/*
-        ConnectionString connectionString = new ConnectionString("mongodb+srv://aplicacion:aE1nMsdc4zNuuoNK@cluster0.urtdo.mongodb.net/LlegaBien?retryWrites=true&w=majority");
-        MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(connectionString)
-                .build();
-        MongoClient mongoClient = MongoClients.create(settings);
-        MongoDatabase database = mongoClient.getDatabase("LlegaBien");
-
-        MongoCollection<Document> collection = database.getCollection("favoritos");
-
-        Document doc = collection.find(eq("nombre", "ex")).first();
-        System.out.println(doc.toJson());
-*/
-
-
-        /*
-
-        // Replace the uri string with your MongoDB deployment's connection string
-        String uri = "mongodb+srv://marianaca:mFip@630@cluster0.urtdo.mongodb.net/LlegaBien?retryWrites=true&w=majority";
-
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("sample_mflix");
-            MongoCollection<Document> collection = database.getCollection("movies");
-
-            Document doc = collection.find(eq("title", "Back to the Future")).first();
-            System.out.println(doc.toJson());
-        }
-        catch (NumberFormatException e){
-            System.out.println("Bue, no se pudo");
-        }*/
     }
-}
+
+
+    }
+//}
 

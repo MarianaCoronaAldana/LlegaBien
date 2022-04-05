@@ -1,8 +1,5 @@
 package com.example.llegabien;
 
-import static com.example.llegabien.permisos.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,10 +8,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-
 import com.bumptech.glide.Glide;
-import com.example.llegabien.permisos.Preferences;
-import com.example.llegabien.rutas.MapsActivity;
 import com.example.llegabien.usuario.fragmento.FragmentoIniciarSesion1;
 import com.example.llegabien.usuario.fragmento.FragmentoRegistrarUsuario1;
 
