@@ -3,10 +3,13 @@ package com.example.llegabien.usuario.fragmento;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.llegabien.R;
 
@@ -15,7 +18,7 @@ import com.example.llegabien.R;
  * Use the {@link FragmentoRegistrarUsuario2#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentoRegistrarUsuario2 extends Fragment {
+public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClickListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,10 +60,40 @@ public class FragmentoRegistrarUsuario2 extends Fragment {
         }
     }
 
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    private Button mBtnSiguiente, mBtnCerrar;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragmento_registrar_usuario2, container, false);
+        View root = inflater.inflate(R.layout.fragmento_registrar_usuario2, container, false);
+
+        //wiring up
+        mBtnSiguiente= (Button) root.findViewById(R.id.button_siguiente_registro_2);
+        mBtnCerrar = (Button) root.findViewById(R.id.button_cerrar_registro_2);
+
+        //listeners
+        mBtnSiguiente.setOnClickListener(this);
+        mBtnCerrar.setOnClickListener(this);
+
+        return root;
+    }
+
+    //listener function
+    @Override
+    public void onClick(View view) {
+        FragmentoRegistrarUsuario3 fragmentoRegistrarUsuario3 = new FragmentoRegistrarUsuario3();
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.addToBackStack("text");
+        switch (view.getId()) {
+            case R.id.button_siguiente_registro_2:
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
+                fragmentTransaction.replace(R.id.fragment_pantallaPrincipal, fragmentoRegistrarUsuario3).commit();
+                break;
+            case R.id.button_cerrar_registro_2:
+                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                break;
+        }
     }
 }

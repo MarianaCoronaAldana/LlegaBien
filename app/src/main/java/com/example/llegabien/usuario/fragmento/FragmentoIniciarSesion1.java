@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -23,7 +24,7 @@ import com.example.llegabien.rutas.MapsActivity;
  * Use the {@link FragmentoIniciarSesion1#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentoIniciarSesion1 extends Fragment {
+public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -67,40 +68,8 @@ public class FragmentoIniciarSesion1 extends Fragment {
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private RadioButton mBtnRecoradrSesion;
-    private Button mBtnIniciarSesion, mBtnContraseñaOlvidada;
+    private Button mBtnIniciarSesion, mBtnContraseñaOlvidada, mBtnCerrar;
     private boolean isActivateRadioButton;
-
-    public void iniciarActividadSiguiente(){
-        FragmentoIniciarSesion2 fragmentoIniciarSesion2 = new FragmentoIniciarSesion2();
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoIniciarSesion2);
-    }
-
-    //listener function
-    private final View.OnClickListener mListener = new View.OnClickListener() {
-        public void onClick(View view) {
-            FragmentoIniciarSesion2 fragmentoIniciarSesion2 = new FragmentoIniciarSesion2();
-            switch (view.getId()) {
-                case R.id.radioBtn_recordar_inicia_sesion_1:
-                    //ACTIVADO
-                    if (isActivateRadioButton) {
-                        mBtnRecoradrSesion.setChecked(false);
-                    }
-                    isActivateRadioButton = mBtnRecoradrSesion.isChecked();
-                    break;
-                case R.id.button_inicia_inicia_sesion_1:
-                    Preferences.savePreferenceBoolean(FragmentoIniciarSesion1.this,mBtnRecoradrSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
-                    startActivity(new Intent(getActivity(), MapsActivity.class));
-                    break;
-                case R.id.button_contraseña_olvidada_inicia_sesion_1:
-                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoIniciarSesion2);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                    break;
-            }
-        }
-    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,23 +77,54 @@ public class FragmentoIniciarSesion1 extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragmento_iniciar_sesion1, container, false);
 
-        //para verificar si el boton de recodar contraseña fue presionado
+        //para verificar si el boton de recordar contraseña fue presionado
         if(Preferences.obtenerPreference(this,PREFERENCE_ESTADO_BUTTON_SESION)){
-            iniciarActividadSiguiente();
+            startActivity(new Intent(getActivity(), MapsActivity.class));
         }
 
         //wiring up
         mBtnRecoradrSesion = (RadioButton) root.findViewById(R.id.radioBtn_recordar_inicia_sesion_1);
         mBtnIniciarSesion = (Button) root.findViewById(R.id.button_inicia_inicia_sesion_1);
         mBtnContraseñaOlvidada = (Button) root.findViewById(R.id.button_contraseña_olvidada_inicia_sesion_1);
+        mBtnCerrar = (Button) root.findViewById(R.id.button_cerrar_inicia_sesion_1);
+
+        //listeners
+        mBtnRecoradrSesion.setOnClickListener(this);
+        mBtnIniciarSesion.setOnClickListener(this);
+        mBtnContraseñaOlvidada.setOnClickListener(this);
+        mBtnCerrar.setOnClickListener(this);
 
         isActivateRadioButton = mBtnRecoradrSesion.isChecked(); //DESACTIVADO
 
-        //listeners
-        mBtnRecoradrSesion.setOnClickListener(mListener);
-        mBtnIniciarSesion.setOnClickListener(mListener);
-        mBtnContraseñaOlvidada.setOnClickListener(mListener);
-
         return root;
+    }
+
+    //listener function
+    @Override
+    public void onClick(View view) {
+        FragmentoIniciarSesion2 fragmentoIniciarSesion2 = new FragmentoIniciarSesion2();
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.addToBackStack("text");
+        switch (view.getId()) {
+            case R.id.radioBtn_recordar_inicia_sesion_1:
+                //ACTIVADO
+                if (isActivateRadioButton) {
+                    mBtnRecoradrSesion.setChecked(false);
+                }
+                isActivateRadioButton = mBtnRecoradrSesion.isChecked();
+                break;
+            case R.id.button_inicia_inicia_sesion_1:
+                Preferences.savePreferenceBoolean(FragmentoIniciarSesion1.this,mBtnRecoradrSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
+                startActivity(new Intent(getActivity(), MapsActivity.class));
+                break;
+            case R.id.button_contraseña_olvidada_inicia_sesion_1:
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
+                fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoIniciarSesion2).commit();
+                break;
+            case R.id.button_cerrar_inicia_sesion_1:
+                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                break;
+
+        }
     }
 }
