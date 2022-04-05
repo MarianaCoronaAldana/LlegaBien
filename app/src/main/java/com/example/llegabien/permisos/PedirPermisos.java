@@ -12,10 +12,10 @@ import androidx.core.content.ContextCompat;
 
 public class PedirPermisos {
 
+    //Esta funcion por si sola se encarga de verificar si el dispositivo cuenta con unos permisos
+    //en especifico, si no los tiene, los pide.
     public void PedirTodosPermisos(Context context){
-
         ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CALL_PHONE, Manifest.permission.SEND_SMS }, 0);
-
     }
 
     public void getLocalizacion(Context context) {
