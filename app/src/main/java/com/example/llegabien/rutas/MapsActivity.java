@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.llegabien.QuickStart;
 import com.example.llegabien.R;
 import com.example.llegabien.databinding.ActivityMapsBinding;
 import com.example.llegabien.permisos.PedirPermisos;
@@ -37,8 +36,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         //MARIANA QUITA ESTO CUANDO PUEDAAAAAAAAAS
-        QuickStart quickStart = new QuickStart();
-        quickStart.ConectarAMongoDB(this);
+           // QuickStart quickStart = new QuickStart();
+           // quickStart.ConectarAMongoDB(this);
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.llegabien;
+package com.example.llegabien.usuario.clases;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;

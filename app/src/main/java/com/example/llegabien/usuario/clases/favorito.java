@@ -1,6 +1,4 @@
-package com.example.llegabien;
-
-import com.example.llegabien.usuario.clases.usuario;
+package com.example.llegabien.usuario.clases;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

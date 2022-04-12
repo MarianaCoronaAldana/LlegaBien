@@ -1,12 +1,11 @@
 package com.example.llegabien.usuario.clases;
 
-import com.example.llegabien.contacto.clases.usuario_contacto;
+import org.bson.types.ObjectId;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
-
-import org.bson.types.ObjectId;
 
 public class usuario extends RealmObject {
     @PrimaryKey
@@ -26,6 +25,19 @@ public class usuario extends RealmObject {
     private String nombre;
 
     private String telCelular;
+
+    public usuario() {
+    }
+
+    public usuario(ObjectId _id, String apellidos, RealmList<usuario_contacto> contacto, String contrasena, String correoElectronico, String nombre, String telCelular) {
+        this._id = _id;
+        this.apellidos = apellidos;
+        this.contacto = contacto;
+        this.contrasena = contrasena;
+        this.correoElectronico = correoElectronico;
+        this.nombre = nombre;
+        this.telCelular = telCelular;
+    }
 
     // Standard getters & setters
     public ObjectId get_id() { return _id; }
