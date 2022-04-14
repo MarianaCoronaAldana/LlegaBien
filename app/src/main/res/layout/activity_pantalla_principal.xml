@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/morado_oscuro"
-    tools:context=".pantallaPrincipalActivity">
+    tools:context=".frontend.pantallaPrincipalActivity">
 
   <androidx.constraintlayout.widget.Guideline
-      android:id="@+id/guideline_fragment"
+      android:id="@+id/guideline_fragment_pagina_principal"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
@@ -166,8 +166,7 @@
       android:elevation="5dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintDimensionRatio="1:0"
-      app:layout_constraintTop_toTopOf="@id/guideline_fragment"
-      app:layout_constraintVertical_bias="0.0"
+      app:layout_constraintTop_toTopOf="@id/guideline_fragment_pagina_principal"
       tools:layout_editor_absoluteX="0dp" />
 
 

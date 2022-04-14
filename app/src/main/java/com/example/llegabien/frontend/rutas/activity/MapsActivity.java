@@ -1,4 +1,4 @@
-package com.example.llegabien.rutas;
+package com.example.llegabien.frontend.rutas.activity;
 
 import android.os.Bundle;
 
@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.example.llegabien.QuickStart;
 import com.example.llegabien.R;
 import com.example.llegabien.databinding.ActivityMapsBinding;
-import com.example.llegabien.permisos.PedirPermisos;
+import com.example.llegabien.backend.permisos.PedirPermisos;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

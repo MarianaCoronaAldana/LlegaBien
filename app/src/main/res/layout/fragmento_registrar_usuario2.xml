@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usuario.fragmento.FragmentoIniciarSesion1">
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".frontend.usuario.fragmento.FragmentoRegistrarUsuario2">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/consLyt_parentPrincipal_registro_2"
@@ -41,17 +43,17 @@
             app:layout_constraintGuide_percent="0.80" />
 
         <Button
-            android:id="@+id/button_cerrar_registro_2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/bkgd_button_cerrar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_2"
-            app:layout_constraintStart_toStartOf="@id/guideline2_button_registro_2"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.06"
-            tools:ignore="SpeakableTextPresentCheck" />
+        android:id="@+id/button_regresar_registro_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bkgd_button_regresar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline1_button_registro_2"
+        app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.06"
+        tools:ignore="SpeakableTextPresentCheck" />
 
         <TextView
             android:id="@+id/textView_titulo_registro_2"
@@ -64,7 +66,7 @@
             app:layout_constraintDimensionRatio="5:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_2"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_2"
-            app:layout_constraintTop_toTopOf="@id/button_cerrar_registro_2"
+            app:layout_constraintTop_toTopOf="@id/button_regresar_registro_2"
             app:layout_constraintVertical_bias="0.15" />
 
         <TextView
@@ -123,7 +125,7 @@
             android:layout_height="0dp"
             android:ems="10"
             android:hint="@string/celular_registro2"
-            android:inputType="textPassword"
+            android:inputType="phone"
             android:textColorHint="#80213071"
             android:textSize="@dimen/text_size_parrafo"
             app:layout_constraintBottom_toBottomOf="parent"

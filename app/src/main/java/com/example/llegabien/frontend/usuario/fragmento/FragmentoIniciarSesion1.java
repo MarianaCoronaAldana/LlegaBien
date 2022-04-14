@@ -1,12 +1,11 @@
-package com.example.llegabien.usuario.fragmento;
+package com.example.llegabien.frontend.usuario.fragmento;
 
-import static com.example.llegabien.permisos.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
+import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -15,63 +14,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 
-import com.example.llegabien.FragmentoAuxiliar;
-import com.example.llegabien.Transacciones;
-import com.example.llegabien.permisos.Preferences;
+import com.example.llegabien.frontend.FragmentoAuxiliar;
+import com.example.llegabien.backend.permisos.Preferences;
 import com.example.llegabien.R;
-import com.example.llegabien.rutas.MapsActivity;
+import com.example.llegabien.frontend.rutas.activity.MapsActivity;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentoIniciarSesion1#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickListener{
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private RadioButton mBtnRecoradrSesion;
+    private Button mBtnIniciarSesion, mBtnContraseñaOlvidada, mBtnCerrar, mBtnRegistrarse;
+    private boolean isActivateRadioButton;
 
     public FragmentoIniciarSesion1() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Fragmento_IniciarSesion_1.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FragmentoIniciarSesion1 newInstance(String param1, String param2) {
-        FragmentoIniciarSesion1 fragment = new FragmentoIniciarSesion1();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    private RadioButton mBtnRecoradrSesion;
-    private Button mBtnIniciarSesion, mBtnContraseñaOlvidada, mBtnCerrar, mBtnRegistrarse;
-    private boolean isActivateRadioButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -106,8 +61,6 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
     //listener function
     @Override
     public void onClick(View view) {
-        FragmentoIniciarSesion2 fragmentoIniciarSesion2 = new FragmentoIniciarSesion2();
-        FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
         FragmentoAuxiliar fragmentoAuxiliar = new FragmentoAuxiliar();
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         switch (view.getId()) {
@@ -123,16 +76,20 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
                 startActivity(new Intent(getActivity(), MapsActivity.class));
                 break;
             case R.id.button_registrarse_inicia_sesion_1:
+                FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
                 fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoRegistrarUsuario1).commit();
                 break;
             case R.id.button_contraseña_olvidada_inicia_sesion_1:
-                fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
+                FragmentoIniciarSesion2 fragmentoIniciarSesion2 = new FragmentoIniciarSesion2();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);
                 fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoIniciarSesion2).commit();
+                fragmentTransaction.addToBackStack(null);
                 break;
             case R.id.button_cerrar_inicia_sesion_1:
-                Transacciones transacciones = new Transacciones();
-                transacciones.cerrarFragmento(fragmentTransaction,fragmentoAuxiliar);
+                fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
+                fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoAuxiliar).commit();
+                fragmentTransaction.remove(fragmentoAuxiliar);
                 break;
 
         }

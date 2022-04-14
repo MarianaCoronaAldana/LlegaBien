@@ -1,4 +1,4 @@
-package com.example.llegabien.usuario.fragmento;
+package com.example.llegabien.frontend;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import com.example.llegabien.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FragmentoRegistrarUsuario5#newInstance} factory method to
+ * Use the {@link FragmentoAuxiliar#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentoRegistrarUsuario5 extends Fragment {
+public class FragmentoAuxiliar extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class FragmentoRegistrarUsuario5 extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public FragmentoRegistrarUsuario5() {
+    public FragmentoAuxiliar() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class FragmentoRegistrarUsuario5 extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentoRegistroUsuario5.
+     * @return A new instance of fragment FragmentoAuxiliar.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentoRegistrarUsuario5 newInstance(String param1, String param2) {
-        FragmentoRegistrarUsuario5 fragment = new FragmentoRegistrarUsuario5();
+    public static FragmentoAuxiliar newInstance(String param1, String param2) {
+        FragmentoAuxiliar fragment = new FragmentoAuxiliar();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class FragmentoRegistrarUsuario5 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragmento_registrar_usuario5, container, false);
+        return inflater.inflate(R.layout.fragmento_auxiliar, container, false);
     }
 }

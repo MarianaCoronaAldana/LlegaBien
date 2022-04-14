@@ -1,4 +1,4 @@
-package com.example.llegabien.permisos;
+package com.example.llegabien.backend.permisos;
 
 import static io.realm.Realm.getApplicationContext;
 

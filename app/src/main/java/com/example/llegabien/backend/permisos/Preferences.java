@@ -1,11 +1,11 @@
-package com.example.llegabien.permisos;
+package com.example.llegabien.backend.permisos;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.llegabien.usuario.fragmento.FragmentoIniciarSesion1;
+import com.example.llegabien.frontend.usuario.fragmento.FragmentoIniciarSesion1;
 
 public class Preferences extends AppCompatActivity {
 

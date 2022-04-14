@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "471560702385",
+    "project_id": "llegabien-cab0e",
+    "storage_bucket": "llegabien-cab0e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:471560702385:android:aa8f188efcf311b7f09590",
+        "android_client_info": {
+          "package_name": "com.example.llegabien"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "471560702385-1gp06m596o5qr35ndk2hn0585nfi9md6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.llegabien",
+            "certificate_hash": "2226ca9c06ff4f114e757d386f7e86961acbdff2"
+          }
+        },
+        {
+          "client_id": "471560702385-ocogj5mln7ieahkif67dijger95fmk3s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXCpu-7pvQTNvbi1EUA_XWJ53HiL9Llvo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "471560702385-ocogj5mln7ieahkif67dijger95fmk3s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

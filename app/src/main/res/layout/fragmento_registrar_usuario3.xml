@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usuario.fragmento.FragmentoIniciarSesion2">
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".frontend.usuario.fragmento.FragmentoRegistrarUsuario3">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/consLyt_parentPrincipal_registro_3"
@@ -83,14 +85,14 @@
             app:layout_constraintGuide_percent="0.90" />
 
         <Button
-            android:id="@+id/button_cerrar_registro_3"
+            android:id="@+id/button_regresar_registro_3"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/bkgd_button_cerrar"
+            android:background="@drawable/bkgd_button_regresar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_3"
-            app:layout_constraintStart_toStartOf="@id/guideline2_button_registro_3"
+            app:layout_constraintEnd_toEndOf="@id/guideline1_button_registro_3"
+            app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_3"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.06"
             tools:ignore="SpeakableTextPresentCheck" />
@@ -106,7 +108,7 @@
             app:layout_constraintDimensionRatio="5:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_3"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_3"
-            app:layout_constraintTop_toTopOf="@id/button_cerrar_registro_3"
+            app:layout_constraintTop_toTopOf="@id/button_regresar_registro_3"
             app:layout_constraintVertical_bias="0.2" />
 
         <TextView
@@ -147,14 +149,18 @@
             android:layout_height="0dp"
             android:background="@drawable/bkgd_borde_fondo"
             android:ems="10"
+            android:gravity="center"
+            android:imeOptions="actionNext"
             android:inputType="number"
-            android:textSize="@dimen/text_size_parrafo_small"
+            android:maxLength="1"
+            android:textSize="@dimen/text_size_parrafo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline1_editView_codigo_registro_3"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_3"
             app:layout_constraintTop_toBottomOf="@id/textView_instrucciones2_registro_3"
-            app:layout_constraintVertical_bias="0.1" />
+            app:layout_constraintVertical_bias="0.1"
+            tools:ignore="LabelFor"/>
 
         <EditText
             android:id="@+id/editText2_codigo_registro_3"
@@ -162,14 +168,18 @@
             android:layout_height="0dp"
             android:background="@drawable/bkgd_borde_fondo"
             android:ems="10"
+            android:gravity="center"
+            android:imeOptions="actionNext"
             android:inputType="number"
-            android:textSize="@dimen/text_size_parrafo_small"
+            android:maxLength="1"
+            android:textSize="@dimen/text_size_parrafo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline3_editView_codigo_registro_3"
             app:layout_constraintStart_toStartOf="@id/guideline2_editView_codigo_registro_3"
             app:layout_constraintTop_toBottomOf="@id/textView_instrucciones2_registro_3"
-            app:layout_constraintVertical_bias="0.1" />
+            app:layout_constraintVertical_bias="0.1"
+            tools:ignore="LabelFor"/>
 
         <EditText
             android:id="@+id/editText3_codigo_registro_3"
@@ -177,14 +187,18 @@
             android:layout_height="0dp"
             android:background="@drawable/bkgd_borde_fondo"
             android:ems="10"
+            android:gravity="center"
+            android:imeOptions="actionNext"
             android:inputType="number"
-            android:textSize="@dimen/text_size_parrafo_small"
+            android:maxLength="1"
+            android:textSize="@dimen/text_size_parrafo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline5_editView_codigo_registro_3"
             app:layout_constraintStart_toStartOf="@id/guideline4_editView_codigo_registro_3"
             app:layout_constraintTop_toBottomOf="@id/textView_instrucciones2_registro_3"
-            app:layout_constraintVertical_bias="0.1" />
+            app:layout_constraintVertical_bias="0.1"
+            tools:ignore="LabelFor"/>
 
         <EditText
             android:id="@+id/editText4_codigo_registro_3"
@@ -192,14 +206,17 @@
             android:layout_height="0dp"
             android:background="@drawable/bkgd_borde_fondo"
             android:ems="10"
+            android:gravity="center"
             android:inputType="number"
-            android:textSize="@dimen/text_size_parrafo_small"
+            android:maxLength="1"
+            android:textSize="@dimen/text_size_parrafo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_3"
             app:layout_constraintStart_toStartOf="@id/guideline6_editView_codigo_registro_3"
             app:layout_constraintTop_toBottomOf="@id/textView_instrucciones2_registro_3"
-            app:layout_constraintVertical_bias="0.1" />
+            app:layout_constraintVertical_bias="0.1"
+            tools:ignore="LabelFor"/>
 
         <Button
             android:id="@+id/button_reenviar_codigo_registro_3"

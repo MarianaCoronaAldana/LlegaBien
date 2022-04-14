@@ -49,6 +49,15 @@
     <string name="reenviarCodigoBtn">No recibí ningún código. Reenviar</string>
     <string name="instruccionesCodigoCorreoTxtView">Ingresa el código que enviamos a tu correo electrónico.</string>
 
+    <!-- Errores -->
+    <string name="errorStringVacia">Este campo es obligatorio</string>
+    <string name="errorNombreApellidos">Ingresa un nombre o apellido válido.</string>
+    <string name="errorFechaNacimiento">Debes tener más de 15 años.</string>
+    <string name="errorCorreoElectronico">Ingresa un correo electrónico válido.</string>
+    <string name="errorNumeroTelefonico">Ingresa un número de teléfono movil válido.</string>
+    <string name="errorContraseña">Usa 8 o más caracteres con una combinación de letras, números y símbolos.</string>
+    <string name="errorConfirmarContraseña">Las contraseñas no coinciden</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

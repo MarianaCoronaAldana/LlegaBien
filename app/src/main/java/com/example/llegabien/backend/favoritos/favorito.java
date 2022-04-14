@@ -1,7 +1,7 @@
-package com.example.llegabien.usuario.favoritos.clases;
+package com.example.llegabien.backend.favoritos;
 
 import com.example.llegabien.favorito_ubicacion;
-import com.example.llegabien.usuario.clases.usuario;
+import com.example.llegabien.backend.usuario.usuario;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

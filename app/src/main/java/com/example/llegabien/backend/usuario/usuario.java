@@ -1,6 +1,6 @@
-package com.example.llegabien.usuario.clases;
+package com.example.llegabien.backend.usuario;
 
-import com.example.llegabien.usuario.contactos.clases.usuario_contacto;
+import com.example.llegabien.backend.contactos.usuario_contacto;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

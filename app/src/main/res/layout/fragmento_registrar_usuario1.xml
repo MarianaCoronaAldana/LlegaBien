@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usuario.fragmento.FragmentoIniciarSesion1">
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".frontend.usuario.fragmento.FragmentoRegistrarUsuario1">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/consLyt_parentPrincipal_registro_1"
@@ -106,7 +108,8 @@
             android:layout_height="0dp"
             android:ems="10"
             android:hint="@string/nombres_registro1"
-            android:inputType="textEmailAddress"
+            android:inputType="textAutoCorrect"
+            android:maxLines="1"
             android:textColorHint="#80213071"
             android:textSize="@dimen/text_size_parrafo"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -123,7 +126,8 @@
             android:layout_height="0dp"
             android:ems="10"
             android:hint="@string/apellidos_registro1"
-            android:inputType="textPassword"
+            android:inputType="textAutoCorrect"
+            android:maxLines="1"
             android:textColorHint="#80213071"
             android:textSize="@dimen/text_size_parrafo"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -139,8 +143,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:ems="10"
+            android:focusable="false"
             android:hint="@string/fechaNacimiento_registro1"
-            android:inputType="textPassword"
+            android:inputType="date"
+            android:maxLines="1"
             android:textColorHint="#80213071"
             android:textSize="@dimen/text_size_parrafo"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -148,7 +154,7 @@
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_1"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_1"
             app:layout_constraintTop_toBottomOf="@id/editText_apellidos_registro_1"
-            app:layout_constraintVertical_bias="0.05" />
+            app:layout_constraintVertical_bias="0.05"/>
 
         <Button
             android:id="@+id/button_siguiente_registro_1"
@@ -160,10 +166,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="4:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_button_registro_1"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/guideline1_button_registro_1"
             app:layout_constraintTop_toBottomOf="@id/editText_fechaNacimiento_registro_1"
-            app:layout_constraintVertical_bias="0.3" />
+            app:layout_constraintVertical_bias="0.3"/>
 
         <Button
             android:id="@+id/button_iniciarSesion_registro_1"
