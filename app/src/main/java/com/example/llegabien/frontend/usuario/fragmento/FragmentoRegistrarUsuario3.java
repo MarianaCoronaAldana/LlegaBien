@@ -16,8 +16,30 @@ public class FragmentoRegistrarUsuario3 extends Fragment implements View.OnClick
 
     private Button mBtnVerificar, mBtnRegresar;
 
+    //PARAMETROS DE INICALIZACIÓN DEL FRAGMENTO
+    private static final String mCodigoNumTelefonico_PARAM1 = "param1"; //etiqueta
+    private String mCodigoNumTelefonico_param1 = ""; //tipo y valor
+
     public FragmentoRegistrarUsuario3() {
         // Required empty public constructor
+    }
+
+    //para inicalizar el fragmento con parametros y guardarlos en un bundle
+    public static FragmentoRegistrarUsuario3 newInstance(String param1) {
+        FragmentoRegistrarUsuario3 fragment = new FragmentoRegistrarUsuario3();
+        Bundle args = new Bundle();
+        args.putString(mCodigoNumTelefonico_PARAM1, param1);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    //para obtener los parametros que se guardan en el bundle
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mCodigoNumTelefonico_param1 = getArguments().getString(mCodigoNumTelefonico_PARAM1);
+        }
     }
 
     @Override

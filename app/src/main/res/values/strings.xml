@@ -52,7 +52,7 @@
     <!-- Errores -->
     <string name="errorStringVacia">Este campo es obligatorio</string>
     <string name="errorNombreApellidos">Ingresa un nombre o apellido válido.</string>
-    <string name="errorFechaNacimiento">Debes tener más de 15 años.</string>
+    <string name="errorFechaNacimiento">Debes tener por lo menos 16 años.</string>
     <string name="errorCorreoElectronico">Ingresa un correo electrónico válido.</string>
     <string name="errorNumeroTelefonico">Ingresa un número de teléfono movil válido.</string>
     <string name="errorContraseña">Usa 8 o más caracteres con una combinación de letras, números y símbolos.</string>
