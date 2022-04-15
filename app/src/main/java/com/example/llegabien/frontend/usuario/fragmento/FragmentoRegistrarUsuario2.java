@@ -54,13 +54,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
                 if(validarAllInputs()) {
                     //para mandar codigo a teléfono y email
                     UsuarioRegistro usuarioRegistro = new UsuarioRegistro();
-                    usuarioRegistro.verificarNumTelefonico(mEditTxtNumTelefonico.getText().toString(), this);
-
-                    //para cambiar de fragmento
-                    /*FragmentoRegistrarUsuario3 fragmentoRegistrarUsuario3 = new FragmentoRegistrarUsuario3();
-                    fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-                    fragmentTransaction.replace(R.id.fragment_pantallaPrincipal, fragmentoRegistrarUsuario3).commit();
-                    fragmentTransaction.addToBackStack(null);*/
+                    usuarioRegistro.enviarCodigoNumTelefonico(mEditTxtNumTelefonico.getText().toString(), mEditTxtCorreo.getText().toString(), mEditTxtContraseña.getText().toString(),this);
                 }
                 break;
             case R.id.button_regresar_registro_2:
@@ -85,4 +79,5 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
 
         return esInputValido;
     }
+
 }

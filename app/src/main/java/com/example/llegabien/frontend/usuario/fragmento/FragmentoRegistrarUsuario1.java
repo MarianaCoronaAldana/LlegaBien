@@ -63,16 +63,12 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         switch (view.getId()) {
             case R.id.button_siguiente_registro_1:
-                /*if (validarAllInputs()) {
+                if (validarAllInputs()) {
                     FragmentoRegistrarUsuario2 fragmentoRegistrarUsuario2 = new FragmentoRegistrarUsuario2();
                     fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
                     fragmentTransaction.replace(R.id.fragment_pantallaPrincipal, fragmentoRegistrarUsuario2).commit();
                     fragmentTransaction.addToBackStack(null);
-                }*/
-                FragmentoRegistrarUsuario2 fragmentoRegistrarUsuario2 = new FragmentoRegistrarUsuario2();
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-                fragmentTransaction.replace(R.id.fragment_pantallaPrincipal, fragmentoRegistrarUsuario2).commit();
-                fragmentTransaction.addToBackStack(null);
+                }
                 break;
             case R.id.button_iniciarSesion_registro_1:
                 FragmentoIniciarSesion1 fragmentoIniciarSesion1 = new FragmentoIniciarSesion1();

@@ -12,8 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 
+import com.example.llegabien.backend.usuario.UsuarioInicioSesion;
+import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.frontend.FragmentoAuxiliar;
 import com.example.llegabien.backend.permisos.Preferences;
 import com.example.llegabien.R;
@@ -22,6 +25,7 @@ import com.example.llegabien.frontend.rutas.activity.MapsActivity;
 public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickListener{
     private RadioButton mBtnRecoradrSesion;
     private Button mBtnIniciarSesion, mBtnContraseñaOlvidada, mBtnCerrar, mBtnRegistrarse;
+    private EditText mEditTxtCorreo, mEditTxtContraseña;
     private boolean isActivateRadioButton;
 
     public FragmentoIniciarSesion1() {
@@ -45,6 +49,8 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
         mBtnContraseñaOlvidada = (Button) root.findViewById(R.id.button_contraseña_olvidada_inicia_sesion_1);
         mBtnCerrar = (Button) root.findViewById(R.id.button_cerrar_inicia_sesion_1);
         mBtnRegistrarse = (Button) root.findViewById(R.id.button_registrarse_inicia_sesion_1);
+        mEditTxtCorreo = (EditText) root.findViewById(R.id.editText_correo_inicia_sesion_1);
+        mEditTxtContraseña = (EditText) root.findViewById(R.id.editText_contraseña_inicia_sesion_1);
 
         //listeners
         mBtnRecoradrSesion.setOnClickListener(this);
@@ -73,7 +79,13 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
                 break;
             case R.id.button_inicia_inicia_sesion_1:
                 Preferences.savePreferenceBoolean(FragmentoIniciarSesion1.this,mBtnRecoradrSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
-                startActivity(new Intent(getActivity(), MapsActivity.class));
+                //para validar si los campos no están vacios
+                UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
+                if (validarAllInputs()){
+                    //para validar si el correo está confirmado
+                    UsuarioInicioSesion usuarioInicioSesion = new UsuarioInicioSesion();
+                    usuarioInicioSesion.validarCorreoVerificado(mEditTxtCorreo.getText().toString(), mEditTxtContraseña.getText().toString(), this);
+                }
                 break;
             case R.id.button_registrarse_inicia_sesion_1:
                 FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
@@ -93,5 +105,17 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
                 break;
 
         }
+    }
+
+    //otras funciones
+    private boolean validarAllInputs(){
+        UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
+        boolean esInputValido = true;
+        if (!usuarioInputValidaciones.validarStringVacia(this.getActivity(),mEditTxtCorreo))
+            esInputValido = false;
+        if ( !usuarioInputValidaciones.validarStringVacia(this.getActivity(),mEditTxtContraseña))
+            esInputValido = false;
+
+        return esInputValido;
     }
 }

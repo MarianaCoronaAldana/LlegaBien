@@ -70,7 +70,7 @@ public class UsuarioInputValidaciones {
     }
 
     public boolean validarCorreoElectronico(Context context, EditText editText){
-        mStringPattern = "(^|\\s)[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}($|\\s)";
+        mStringPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
         mStringParaValidar = editText.getText().toString();
 
         if (!validarStringVacia(context,editText))
