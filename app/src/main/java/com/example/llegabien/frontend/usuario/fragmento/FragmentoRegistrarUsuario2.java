@@ -79,9 +79,12 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
                     args.putSerializable(parametro_usuario, Usuario);
                     fragmentoRegistrarUsuario3.setArguments(args);
 
-    //TEMPORAL
+//TEMPORAL porque faltan los contactos
+
                     CRUD_usuario.AñadirUser(Usuario);
-    //TEMPORAL
+
+//TEMPORAL porque faltan los contactos
+
                     fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
                     fragmentTransaction.replace(R.id.fragment_pantallaPrincipal, fragmentoRegistrarUsuario3).commit();
                     fragmentTransaction.addToBackStack(null);

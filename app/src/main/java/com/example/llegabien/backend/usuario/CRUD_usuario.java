@@ -5,6 +5,8 @@ import com.example.llegabien.mongoDB.Conectar;
 
 import org.bson.types.ObjectId;
 
+import java.util.Date;
+
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.mongodb.sync.SyncConfiguration;
@@ -19,7 +21,7 @@ public class CRUD_usuario {
         Contacto.add(new usuario_contacto("Jasmine", "432432432"));
         Contacto.add(new usuario_contacto("Cenicienta", "432432432"));
 
-    //    usuario UsuariO = new usuario(new ObjectId(), "Princesa", Contacto,"abcd", "a@gmail.com", new Date(),"Ariel", "3321707532");
+        usuario UsuariO = new usuario(new ObjectId(), "Princesa", Contacto,"abcd", "a@gmail.com", new Date(),"Ariel", "3321707532");
 
         Usuario.set_id(new ObjectId());
         Usuario.setContacto(Contacto);
@@ -32,7 +34,11 @@ public class CRUD_usuario {
             transactionRealm.insert(Usuario);
         });
 
+
+
+
         realm.close();
     }
+
 
 }

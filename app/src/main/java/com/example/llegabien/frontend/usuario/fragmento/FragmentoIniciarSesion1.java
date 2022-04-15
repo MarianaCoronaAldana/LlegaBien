@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.permisos.Preferences;
+import com.example.llegabien.backend.usuario.UsuarioInicioSesion;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.frontend.FragmentoAuxiliar;
 import com.example.llegabien.frontend.rutas.activity.MapsActivity;
@@ -76,6 +77,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
                 isActivateRadioButton = mBtnRecordarSesion.isChecked();
                 break;
             case R.id.button_inicia_inicia_sesion_1:
+
                 Preferences.savePreferenceBoolean(FragmentoIniciarSesion1.this,mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
                 startActivity(new Intent(getActivity(), MapsActivity.class));
                 Preferences.savePreferenceBoolean(FragmentoIniciarSesion1.this,mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
