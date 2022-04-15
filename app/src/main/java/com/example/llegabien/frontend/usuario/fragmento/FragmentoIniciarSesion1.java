@@ -15,25 +15,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
-import com.example.llegabien.backend.contactos.usuario_contacto;
 import com.example.llegabien.backend.permisos.Preferences;
-import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.frontend.FragmentoAuxiliar;
 import com.example.llegabien.frontend.rutas.activity.MapsActivity;
-import com.example.llegabien.mongoDB.Conectar;
-
-import org.bson.types.ObjectId;
-
-import java.util.Date;
-
-import io.realm.Realm;
-import io.realm.RealmList;
-import io.realm.mongodb.sync.SyncConfiguration;
 
 public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickListener{
     private RadioButton mBtnRecordarSesion;
     private Button mBtnIniciarSesion, mBtnContraseñaOlvidada, mBtnCerrar, mBtnRegistrarse;
-    private EditText ET_contraseña, ET_correo;
+    private EditText mEditTxtCorreo, mEditTxtContraseña;
     private boolean isActivateRadioButton;
 
     public FragmentoIniciarSesion1() {
@@ -56,9 +46,9 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
         mBtnIniciarSesion = (Button) root.findViewById(R.id.button_inicia_inicia_sesion_1);
         mBtnContraseñaOlvidada = (Button) root.findViewById(R.id.button_contraseña_olvidada_inicia_sesion_1);
         mBtnCerrar = (Button) root.findViewById(R.id.button_cerrar_inicia_sesion_1);
-        ET_contraseña = (EditText) root.findViewById(R.id.editText_contraseña_inicia_sesion_1);
-        ET_correo = (EditText) root.findViewById(R.id.editText_correo_inicia_sesion_1);
         mBtnRegistrarse = (Button) root.findViewById(R.id.button_registrarse_inicia_sesion_1);
+        mEditTxtCorreo = (EditText) root.findViewById(R.id.editText_correo_inicia_sesion_1);
+        mEditTxtContraseña = (EditText) root.findViewById(R.id.editText_contraseña_inicia_sesion_1);
 
         //listeners
         mBtnRecordarSesion.setOnClickListener(this);
@@ -86,10 +76,16 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
                 isActivateRadioButton = mBtnRecordarSesion.isChecked();
                 break;
             case R.id.button_inicia_inicia_sesion_1:
-                AñadirUser();
-
                 Preferences.savePreferenceBoolean(FragmentoIniciarSesion1.this,mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
                 startActivity(new Intent(getActivity(), MapsActivity.class));
+                Preferences.savePreferenceBoolean(FragmentoIniciarSesion1.this,mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
+                //para validar si los campos no están vacios
+                UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
+                if (validarAllInputs()){
+                    //para validar si el correo está confirmado
+                    UsuarioInicioSesion usuarioInicioSesion = new UsuarioInicioSesion();
+                    usuarioInicioSesion.validarCorreoVerificado(mEditTxtCorreo.getText().toString(), mEditTxtContraseña.getText().toString(), this);
+                }
                 break;
             case R.id.button_registrarse_inicia_sesion_1:
                 FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
@@ -111,26 +107,15 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
         }
     }
 
+    //otras funciones
+    private boolean validarAllInputs(){
+        UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
+        boolean esInputValido = true;
+        if (!usuarioInputValidaciones.validarStringVacia(this.getActivity(),mEditTxtCorreo))
+            esInputValido = false;
+        if ( !usuarioInputValidaciones.validarStringVacia(this.getActivity(),mEditTxtContraseña))
+            esInputValido = false;
 
-
-    private void AñadirUser() {
-
-        RealmList<usuario_contacto> Contacto =  new  RealmList <usuario_contacto>();
-        Contacto.add(new usuario_contacto("Aurora", "432432432"));
-        Contacto.add(new usuario_contacto("Bella", "432432432"));
-        Contacto.add(new usuario_contacto("Jasmine", "432432432"));
-        Contacto.add(new usuario_contacto("Cenicienta", "432432432"));
-
-        usuario Usuario = new usuario(new ObjectId(), "Princesa", Contacto,"abcd", "a@gmail.com", new Date(),"Ariel", "3321707532");
-
-        Conectar conectar = new Conectar();
-        SyncConfiguration config = conectar.ConectarAMongoDB();
-        Realm realm = Realm.getInstance(config);
-
-        realm.executeTransactionAsync(transactionRealm -> {
-            transactionRealm.insert(Usuario);
-        });
-
-        realm.close();
+        return esInputValido;
     }
 }

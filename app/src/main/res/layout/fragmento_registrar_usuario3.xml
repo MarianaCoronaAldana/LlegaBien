@@ -33,49 +33,70 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.25" />
+            app:layout_constraintGuide_percent="0.203" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2_editView_codigo_registro_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.317" />
+            app:layout_constraintGuide_percent="0.233" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3_editView_codigo_registro_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.467" />
+            app:layout_constraintGuide_percent="0.3413" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline4_editView_codigo_registro_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.533" />
+            app:layout_constraintGuide_percent="0.3713" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline5_editView_codigo_registro_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.683" />
+            app:layout_constraintGuide_percent="0.4796" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline6_editView_codigo_registro_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.749" />
+            app:layout_constraintGuide_percent="0.5096" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline7_editView_codigo_registro_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.6179" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline8_editView_codigo_registro_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.6479" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline9_editView_codigo_registro_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.7562" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2_button_registro_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.80" />
+            app:layout_constraintGuide_percent="0.79" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2_textView_editView_registro_3"
@@ -109,7 +130,7 @@
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_3"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_3"
             app:layout_constraintTop_toTopOf="@id/button_regresar_registro_3"
-            app:layout_constraintVertical_bias="0.2" />
+            app:layout_constraintVertical_bias="0.15" />
 
         <TextView
             android:id="@+id/textView_instrucciones1_registro_3"
@@ -125,6 +146,7 @@
             app:layout_constraintTop_toBottomOf="@id/textView_titulo_registro_3"
             app:layout_constraintVertical_bias="0.05" />
 
+
         <TextView
             android:id="@+id/textView_instrucciones2_registro_3"
             android:layout_width="0dp"
@@ -137,10 +159,40 @@
             android:textColor="@color/negro"
             android:textSize="@dimen/text_size_parrafo"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="6:1"
+            app:layout_constraintDimensionRatio="4:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_3"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_3"
             app:layout_constraintTop_toBottomOf="@id/textView_instrucciones1_registro_3"
+            app:layout_constraintVertical_bias="0.05" />
+
+        <View
+            android:id="@+id/separador_registro_3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/azul_oscuro"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="70:1"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_3"
+            app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_3"
+            app:layout_constraintTop_toBottomOf="@id/textView_instrucciones2_registro_3"
+            app:layout_constraintVertical_bias="0.05"/>
+
+        <TextView
+            android:id="@+id/textView_instrucciones3_registro_3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/parrafo"
+            android:gravity="center"
+            android:text="@string/instrucciones3_registro3"
+            android:textAllCaps="false"
+            android:textColor="@color/negro"
+            android:textSize="@dimen/text_size_parrafo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="4:1"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_3"
+            app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_3"
+            app:layout_constraintTop_toBottomOf="@id/separador_registro_3"
             app:layout_constraintVertical_bias="0.05" />
 
         <EditText
@@ -158,7 +210,7 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline1_editView_codigo_registro_3"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_3"
-            app:layout_constraintTop_toBottomOf="@id/textView_instrucciones2_registro_3"
+            app:layout_constraintTop_toBottomOf="@id/textView_instrucciones3_registro_3"
             app:layout_constraintVertical_bias="0.1"
             tools:ignore="LabelFor"/>
 
@@ -177,7 +229,7 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline3_editView_codigo_registro_3"
             app:layout_constraintStart_toStartOf="@id/guideline2_editView_codigo_registro_3"
-            app:layout_constraintTop_toBottomOf="@id/textView_instrucciones2_registro_3"
+            app:layout_constraintTop_toBottomOf="@id/textView_instrucciones3_registro_3"
             app:layout_constraintVertical_bias="0.1"
             tools:ignore="LabelFor"/>
 
@@ -196,12 +248,50 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline5_editView_codigo_registro_3"
             app:layout_constraintStart_toStartOf="@id/guideline4_editView_codigo_registro_3"
-            app:layout_constraintTop_toBottomOf="@id/textView_instrucciones2_registro_3"
+            app:layout_constraintTop_toBottomOf="@id/textView_instrucciones3_registro_3"
             app:layout_constraintVertical_bias="0.1"
             tools:ignore="LabelFor"/>
 
         <EditText
             android:id="@+id/editText4_codigo_registro_3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bkgd_borde_fondo"
+            android:ems="10"
+            android:gravity="center"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="@dimen/text_size_parrafo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="@id/guideline7_editView_codigo_registro_3"
+            app:layout_constraintStart_toStartOf="@id/guideline6_editView_codigo_registro_3"
+            app:layout_constraintTop_toBottomOf="@id/textView_instrucciones3_registro_3"
+            app:layout_constraintVertical_bias="0.1"
+            tools:ignore="LabelFor"/>
+
+        <EditText
+            android:id="@+id/editText5_codigo_registro_3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bkgd_borde_fondo"
+            android:ems="10"
+            android:gravity="center"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="@dimen/text_size_parrafo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="@id/guideline9_editView_codigo_registro_3"
+            app:layout_constraintStart_toStartOf="@id/guideline8_editView_codigo_registro_3"
+            app:layout_constraintTop_toBottomOf="@id/textView_instrucciones3_registro_3"
+            app:layout_constraintVertical_bias="0.1"
+            tools:ignore="LabelFor"/>
+
+        <EditText
+            android:id="@+id/editText6_codigo_registro_3"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/bkgd_borde_fondo"
@@ -213,8 +303,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_3"
-            app:layout_constraintStart_toStartOf="@id/guideline6_editView_codigo_registro_3"
-            app:layout_constraintTop_toBottomOf="@id/textView_instrucciones2_registro_3"
+            app:layout_constraintStart_toStartOf="@+id/guideline2_button_registro_3"
+            app:layout_constraintTop_toBottomOf="@id/textView_instrucciones3_registro_3"
             app:layout_constraintVertical_bias="0.1"
             tools:ignore="LabelFor"/>
 

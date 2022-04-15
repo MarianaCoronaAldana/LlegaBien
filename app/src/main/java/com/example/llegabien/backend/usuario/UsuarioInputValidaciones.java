@@ -1,8 +1,11 @@
 package com.example.llegabien.backend.usuario;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -16,8 +19,7 @@ import java.util.regex.Pattern;
 
 public class UsuarioInputValidaciones {
 
-    private String mStringParaValidar;
-    private String mStringPattern;
+    private String mStringParaValidar, mStringPattern;
     private Pattern mPattern;
     private Matcher mMatcher;
 
@@ -31,56 +33,8 @@ public class UsuarioInputValidaciones {
         return true;
     }
 
-    /*public boolean validarInput (Context context, EditText editText, char tipoValidacion){
-        String mStringPattern = "";
-        String stringAValidar = editText.getText().toString();
-
-        if (!validarStringVacia(context,editText))
-            return false;
-
-        else {
-            switch (tipoValidacion) {
-                case 'e':
-                    mStringPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-                    break;
-                case 'c':
-                    mStringPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&+-])[A-Za-z\\d@$!%*?&+-]{8,}$";
-                    break;
-                case 't':
-                    mStringPattern = "\\d{10}";
-                    break;
-                case 'n':
-                    mStringPattern = "^([A-Za-zÑñÁáÉéÍíÓóÚú]+['\\-]?[A-Za-zÑñÁáÉéÍíÓóÚú]+)(\\s+([A-Za-zÑñÁáÉéÍíÓóÚú]+['\\-]?[A-Za-zÑñÁáÉéÍíÓóÚú]+))*$";
-                    break;
-                case 'f':
-                    return true;
-            }
-
-            Pattern mPattern = Pattern.compile(mStringPattern);
-            Matcher mMatcher = mPattern.mMatcher(stringAValidar);
-            if (!mMatcher.matches()) {
-                switch (tipoValidacion) {
-                    case 'e':
-                        editText.setError(context.getResources().getString(R.string.errorEmail));
-                        break;
-                    case 'c':
-                        editText.setError(context.getResources().getString(R.string.errorContraseña));
-                        break;
-                    case 't':
-                        editText.setError(context.getResources().getString(R.string.errorNumeroTelefonico));
-                        break;
-                    case 'n':
-                        editText.setError(context.getResources().getString(R.string.errorNombreApellidos));
-                        break;
-                }
-                return false;
-            }
-        }
-        return true;
-    }*/
-
     public boolean validarNombre(Context context, EditText editText){
-        mStringPattern = "^([A-Za-zÑñÁáÉéÍíÓóÚú]+['\\-]?[A-Za-zÑñÁáÉéÍíÓóÚú]+)(\\s+([A-Za-zÑñÁáÉéÍíÓóÚú]+['\\-]?[A-Za-zÑñÁáÉéÍíÓóÚú]+))*$";
+        mStringPattern = "(^|\\s)([A-Za-zÑñÁáÉéÍíÓóÚú]+['\\-]?[A-Za-zÑñÁáÉéÍíÓóÚú]+)(\\s+([A-Za-zÑñÁáÉéÍíÓóÚú]+['\\-]?[A-Za-zÑñÁáÉéÍíÓóÚú]+))*($|\\s)";
         mStringParaValidar = editText.getText().toString();
 
         if (!validarStringVacia(context,editText))
@@ -108,6 +62,7 @@ public class UsuarioInputValidaciones {
             Period periodo = Period.between(fechaNacimiento, fechaHoy);
             if (periodo.getYears() < 16) {
                 editText.setError(context.getResources().getString(R.string.errorFechaNacimiento));
+                Toast.makeText(context,context.getResources().getString(R.string.errorFechaNacimiento), Toast.LENGTH_SHORT).show();
                 return false;
             }
         }
@@ -149,7 +104,7 @@ public class UsuarioInputValidaciones {
     }
 
     public boolean validarContraseña(Context context, EditText editText){
-        mStringPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&+-])[A-Za-z\\d@$!%*?&+-]{8,}$";
+        mStringPattern = "(^|\\s)(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&+-])[A-Za-z\\d@$!%*?&+-]{8,}($|\\s)";
         mStringParaValidar = editText.getText().toString();
 
         if (!validarStringVacia(context,editText))

@@ -68,7 +68,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
 
                     //para mandar codigo a teléfono y email
                     UsuarioRegistro usuarioRegistro = new UsuarioRegistro();
-                    usuarioRegistro.verificarNumTelefonico(mEditTxtNumTelefonico.getText().toString(), this.getActivity());
+                    usuarioRegistro.enviarCodigoNumTelefonico(mEditTxtNumTelefonico.getText().toString(), mEditTxtCorreo.getText().toString(), mEditTxtContraseña.getText().toString(),this);
 
                     //para cambiar de fragmento
                     FragmentoRegistrarUsuario3 fragmentoRegistrarUsuario3 = new FragmentoRegistrarUsuario3();

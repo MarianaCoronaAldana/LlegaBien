@@ -30,15 +30,15 @@
     <string name="instrucciones1_registro2">Ahora, ingresa tu correo electrónico, número de teléfono y contraseña. </string>
     <string name="celular_registro2">Número de teléfono</string>
     <string name="confirmarContraseña_registro2">Confirme contraseña</string>
-    <string name="instrucciones1_registro3">Confirma tu número telefónico</string>
-    <string name="instrucciones2_registro3">Ingresa el código que envíamos a tu número telefónico para verificarlo.</string>
-    <string name="instrucciones1_registro4">Confirma tu correo electrónico</string>
-    <string name="instrucciones1_registro5">Ingresa tus contactos de emergencia</string>
-    <string name="instrucciones2.1_registro5">Para completar el registroo es necesario que completes la siguiente información </string>
-    <string name="instrucciones2.2_registro5">de por lo menos 2 contactos de emergencia. </string>
-    <string name="contactoEmergencia_registro5">Contacto num. </string>
-    <string name="contactoEmergencia_nombre_registro5">Nombre completo</string>
-    <string name="contactoEmergencia_celular_registro5">Número de teléfono</string>
+    <string name="instrucciones1_registro3">Verifica tu número de teléfono y correo electrónico</string>
+    <string name="instrucciones2_registro3">1. Para verificar tu correo electrónico, entra a tu email y haz clic en el enlace que se te ha envíado.</string>
+    <string name="instrucciones3_registro3">2. Para verificar tu número de teléfono, ingresa el código que le hemos enviado vía SMS.</string>
+    <string name="instrucciones1_registro4">Ingresa tus contactos de emergencia</string>
+    <string name="instrucciones2.1_registro4">Para completar el registro es necesario que completes la siguiente información </string>
+    <string name="instrucciones2.2_registro4">de por lo menos 2 contactos de emergencia. </string>
+    <string name="contactoEmergencia_registro4">Contacto num. </string>
+    <string name="contactoEmergencia_nombre_registro4">Nombre completo</string>
+    <string name="contactoEmergencia_celular_registro4">Número de teléfono</string>
 
     <!-- Registro e Iniciar sesión -->
     <string name="iniciaBtn">Inicia</string>
@@ -52,7 +52,7 @@
     <!-- Errores -->
     <string name="errorStringVacia">Este campo es obligatorio</string>
     <string name="errorNombreApellidos">Ingresa un nombre o apellido válido.</string>
-    <string name="errorFechaNacimiento">Debes tener más de 15 años.</string>
+    <string name="errorFechaNacimiento">Debes tener por lo menos 16 años.</string>
     <string name="errorCorreoElectronico">Ingresa un correo electrónico válido.</string>
     <string name="errorNumeroTelefonico">Ingresa un número de teléfono movil válido.</string>
     <string name="errorContraseña">Usa 8 o más caracteres con una combinación de letras, números y símbolos.</string>
