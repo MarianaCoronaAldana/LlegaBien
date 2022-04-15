@@ -1,6 +1,7 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
 import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
+import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -79,14 +80,12 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
             case R.id.button_inicia_inicia_sesion_1:
 
                 Preferences.savePreferenceBoolean(FragmentoIniciarSesion1.this,mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
-                startActivity(new Intent(getActivity(), MapsActivity.class));
-                Preferences.savePreferenceBoolean(FragmentoIniciarSesion1.this,mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
-                //para validar si los campos no están vacios
-                UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
+         //       startActivity(new Intent(getActivity(), MapsActivity.class));
+
+               //para validar si los campos no están vacios
                 if (validarAllInputs()){
                     //para validar si el correo está confirmado
-                    UsuarioInicioSesion usuarioInicioSesion = new UsuarioInicioSesion();
-                    usuarioInicioSesion.validarCorreoVerificado(mEditTxtCorreo.getText().toString(), mEditTxtContraseña.getText().toString(), this);
+                    enviarCodigos();
                 }
                 break;
             case R.id.button_registrarse_inicia_sesion_1:
@@ -119,5 +118,16 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
             esInputValido = false;
 
         return esInputValido;
+    }
+
+    private void enviarCodigos(){
+        UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(this);
+        usuarioFirebaseVerificaciones.validarCorreoVerificado(new UsuarioFirebaseVerificaciones.OnCorreoVerificado() {
+            @Override
+            public void isCorreoVerificado(boolean isCorreoVerificado) {
+                if (isCorreoVerificado)
+                    startActivity(new Intent(getActivity(), MapsActivity.class));
+            }
+        }, mEditTxtCorreo.getText().toString(), mEditTxtContraseña.getText().toString());
     }
 }

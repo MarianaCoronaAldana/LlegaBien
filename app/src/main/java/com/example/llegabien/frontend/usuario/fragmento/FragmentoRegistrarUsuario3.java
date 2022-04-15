@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
-import com.example.llegabien.backend.usuario.UsuarioRegistro;
+import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 
 public class FragmentoRegistrarUsuario3 extends Fragment implements View.OnClickListener{
 
@@ -75,17 +75,8 @@ public class FragmentoRegistrarUsuario3 extends Fragment implements View.OnClick
         //FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         switch (view.getId()) {
             case R.id.button_verificar_registro_3:
-                if (validarAllInputs()){
-                    String codigo =
-                            mEditTxtCodigo1.getText().toString() +
-                                    mEditTxtCodigo2.getText().toString() +
-                                    mEditTxtCodigo3.getText().toString() +
-                                    mEditTxtCodigo4.getText().toString() +
-                                    mEditTxtCodigo5.getText().toString() +
-                                    mEditTxtCodigo6.getText().toString();
-                    UsuarioRegistro usuarioRegistro = new UsuarioRegistro();
-                    usuarioRegistro.verificarCodigoNumTelefonico(mCodigoNumTelefonico_param1,codigo, this);
-                }
+                if (validarAllInputs())
+                    verificarCodigoNumTelefonico();
                 break;
             case R.id.button_regresar_registro_3:
                 getActivity().getSupportFragmentManager().popBackStack();
@@ -112,4 +103,27 @@ public class FragmentoRegistrarUsuario3 extends Fragment implements View.OnClick
 
         return esInputValido;
     }
+     private void verificarCodigoNumTelefonico(){
+         String codigo =
+                 mEditTxtCodigo1.getText().toString() +
+                         mEditTxtCodigo2.getText().toString() +
+                         mEditTxtCodigo3.getText().toString() +
+                         mEditTxtCodigo4.getText().toString() +
+                         mEditTxtCodigo5.getText().toString() +
+                         mEditTxtCodigo6.getText().toString();
+
+         UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(this);
+         usuarioFirebaseVerificaciones.validarCodigoNumTelefonico(new UsuarioFirebaseVerificaciones.OnCodigoNumTelefonicoVerificado() {
+             @Override
+             public void isNumTelefonicoVerificado(boolean isNumTelefonicoVerificado) {
+                 if (isNumTelefonicoVerificado){
+                     FragmentoRegistrarUsuario4 fragmentoRegistrarUsuario4 = new FragmentoRegistrarUsuario4();
+                     FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                     fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);
+                     fragmentTransaction.replace(R.id.fragment_pantallaPrincipal, fragmentoRegistrarUsuario4).commit();
+                     fragmentTransaction.addToBackStack(null);
+                 }
+             }
+         }, mCodigoNumTelefonico_param1, codigo);
+     }
 }
