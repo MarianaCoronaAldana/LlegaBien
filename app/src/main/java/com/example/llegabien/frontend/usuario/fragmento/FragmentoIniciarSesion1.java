@@ -15,8 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-import com.example.llegabien.backend.usuario.UsuarioInicioSesion;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
+import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.frontend.FragmentoAuxiliar;
 import com.example.llegabien.backend.permisos.Preferences;
 import com.example.llegabien.R;
@@ -80,11 +80,9 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
             case R.id.button_inicia_inicia_sesion_1:
                 Preferences.savePreferenceBoolean(FragmentoIniciarSesion1.this,mBtnRecoradrSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
                 //para validar si los campos no están vacios
-                UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
                 if (validarAllInputs()){
                     //para validar si el correo está confirmado
-                    UsuarioInicioSesion usuarioInicioSesion = new UsuarioInicioSesion();
-                    usuarioInicioSesion.validarCorreoVerificado(mEditTxtCorreo.getText().toString(), mEditTxtContraseña.getText().toString(), this);
+                    enviarCodigos();
                 }
                 break;
             case R.id.button_registrarse_inicia_sesion_1:
@@ -117,5 +115,16 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
             esInputValido = false;
 
         return esInputValido;
+    }
+
+    private void enviarCodigos(){
+        UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(this);
+        usuarioFirebaseVerificaciones.validarCorreoVerificado(new UsuarioFirebaseVerificaciones.OnCorreoVerificado() {
+            @Override
+            public void isCorreoVerificado(boolean isCorreoVerificado) {
+                if (isCorreoVerificado)
+                    startActivity(new Intent(getActivity(), MapsActivity.class));
+            }
+        }, mEditTxtCorreo.getText().toString(), mEditTxtContraseña.getText().toString());
     }
 }
