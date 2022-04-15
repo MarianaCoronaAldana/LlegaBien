@@ -3,7 +3,7 @@ plugins {
 }
 
 apply plugin: 'realm-android'
-
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdk 32
@@ -48,7 +48,7 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-
     implementation 'org.mongodb:mongodb-driver-sync:4.5.1'
+    implementation 'com.google.firebase:firebase-auth:19.3.2'
 
 }

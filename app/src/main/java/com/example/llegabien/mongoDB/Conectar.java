@@ -1,6 +1,5 @@
 package com.example.llegabien.mongoDB;
 
-import android.app.Activity;
 import android.util.Log;
 
 import com.example.llegabien.aplicacionLlegaBien;
@@ -16,20 +15,21 @@ public class Conectar {
 
     private Realm realm=null;
 
-    public SyncConfiguration ConectarAMongoDB(Activity Context){
-
-        SyncConfiguration config;
+    public SyncConfiguration ConectarAMongoDB(){
+        SyncConfiguration config = null;
 
         //PARA LOGING ANONIMO
         Credentials credentials = Credentials.anonymous();
 
         App app = aplicacionLlegaBien.getApp();
         String partitionValue = "LlegaBien";
-        Log.v("QUICKSTART", "Aver" + app.currentUser());
+        Log.v("QUICKSTART", "hola");
 
         app.loginAsync(credentials, result -> {
+            Log.v("QUICKSTART", "crayola");
+
             if (result.isSuccess()) {
-                Log.v("QUICKSTART", "Successfully authenticated anonymously." + app.currentUser());
+                Log.v("QUICKSTART", "Successfully authenticated anonymously.");
                 User user = app.currentUser();
 
             } else {
@@ -37,11 +37,13 @@ public class Conectar {
             }
         });
 
-        config = new SyncConfiguration.Builder(
-                app.currentUser(),
-                partitionValue)
-                .build();
+            config = new SyncConfiguration.Builder(
+                    app.currentUser(),
+                    partitionValue)
+                    .build();
 
+ 
+        
 /*
         app.currentUser().logOutAsync(result -> {
             if (result.isSuccess()) {
