@@ -120,7 +120,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
         return esInputValido;
     }
 
-    private void enviarCodigos(){
+    private void verificarCorreoVerificado(){
         UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(this);
         usuarioFirebaseVerificaciones.validarCorreoVerificado(new UsuarioFirebaseVerificaciones.OnCorreoVerificado() {
             @Override
@@ -145,7 +145,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
 
         //para verificar que el usuario haya validado su cuenta de correo
         if(estado)
-            enviarCodigos();
+            verificarCorreoVerificado();
     }
 
 }

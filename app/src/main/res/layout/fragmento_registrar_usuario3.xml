@@ -231,13 +231,14 @@
         <EditText
             android:id="@+id/editText6_codigo_registro_3"
             style="@style/EditTextCodigo"
+            android:imeOptions="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_3"
             app:layout_constraintStart_toStartOf="@+id/guideline2_button_registro_3"
             app:layout_constraintTop_toBottomOf="@id/textView_instrucciones3_registro_3"
             app:layout_constraintVertical_bias="0.1"
-            tools:ignore="LabelFor"/>
+            tools:ignore="LabelFor" />
 
         <Button
             android:id="@+id/button_reenviar_codigo_registro_3"

@@ -114,7 +114,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
     }
 
 
-    //otras funciones
+    //OTRAS FUNCIONES//
 
     //Obtiene los datos introducidos por el usuario y los une al objeto usuario con el que se está trabajando
     private void usuarioConDatos() {
