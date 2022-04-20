@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.llegabien.frontend.usuario.fragmento.FragmentoIniciarSesion1;
 
 public class Preferences extends AppCompatActivity {
 
-    public static final String STRING_PREFERENCES = "michattimereal.Mensajes.Mensajeria";
+    public static final String STRING_PREFERENCES = "Preferences";
     public static final String PREFERENCE_ESTADO_BUTTON_SESION = "estado.button.sesion";
+    public static final String STRING_ES_ADMIN = "usuario.admin";
     public static final String PREFERENCE_USUARIO_LOGIN = "usuario.login";
 
     public static void savePreferenceBoolean(FragmentoIniciarSesion1 c, boolean b, String key){
@@ -31,4 +33,5 @@ public class Preferences extends AppCompatActivity {
         SharedPreferences preferences = c.getActivity().getSharedPreferences(STRING_PREFERENCES,c.getActivity().MODE_PRIVATE);
         return preferences.getBoolean(key,false);//Si es que nunca se ha guardado nada en esta key pues retornara false
     }
+
 }

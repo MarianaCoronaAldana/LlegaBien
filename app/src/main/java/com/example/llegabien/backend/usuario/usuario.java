@@ -33,6 +33,8 @@ public class usuario extends RealmObject implements Serializable {
 
     private String telCelular;
 
+    private Boolean status;
+
     public usuario() {
     }
 
@@ -72,6 +74,10 @@ public class usuario extends RealmObject implements Serializable {
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
 
+    public Boolean getStatus() { return status; }
+    public void setStatus(Boolean status) { this.status = status; }
+
     public String getTelCelular() { return telCelular; }
     public void setTelCelular(String telCelular) { this.telCelular = telCelular; }
+
 }

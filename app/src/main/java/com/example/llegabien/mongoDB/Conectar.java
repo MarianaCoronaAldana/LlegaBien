@@ -7,7 +7,6 @@ import com.example.llegabien.aplicacionLlegaBien;
 import io.realm.Realm;
 import io.realm.mongodb.App;
 import io.realm.mongodb.Credentials;
-import io.realm.mongodb.User;
 import io.realm.mongodb.sync.SyncConfiguration;
 
 
@@ -30,20 +29,17 @@ public class Conectar {
 
             if (result.isSuccess()) {
                 Log.v("QUICKSTART", "Successfully authenticated anonymously.");
-                User user = app.currentUser();
 
             } else {
                 Log.e("QUICKSTART", "Failed to log in. Error: " + result.getError());
             }
         });
 
-            config = new SyncConfiguration.Builder(
-                    app.currentUser(),
-                    partitionValue)
-                    .build();
+        config = new SyncConfiguration.Builder(
+                app.currentUser(),
+                partitionValue)
+                .build();
 
- 
-        
 /*
         app.currentUser().logOutAsync(result -> {
             if (result.isSuccess()) {

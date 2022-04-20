@@ -31,7 +31,7 @@ public class pantallaPrincipalActivity extends AppCompatActivity implements View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_principal);
 
-        //para verificar si el boton de recordar contraseña fue presionado
+        //para verificar si el boton de recordar sesion fue presionado
         if(Preferences.obtenerPreferenceBool(this,PREFERENCE_ESTADO_BUTTON_SESION)){
             startActivity(new Intent(this, MapsActivity.class));
         }
@@ -55,9 +55,9 @@ public class pantallaPrincipalActivity extends AppCompatActivity implements View
     {
         FragmentoIniciarSesion1 fragmentoIniciarSesion1 = new FragmentoIniciarSesion1();
         FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down,R.anim.slide_up, R.anim.slide_down);
-        fragmentTransaction.addToBackStack("text");
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_up, R.anim.slide_down,R.anim.slide_up, R.anim.slide_down)
+                .addToBackStack("text");
 
         switch (view.getId()) {
             case R.id.button_inicia_sesion_pagina_principal:

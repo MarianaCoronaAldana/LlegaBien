@@ -2,12 +2,7 @@ package com.example.llegabien.frontend.contactos.fragmento;
 
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +10,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.llegabien.R;
+import com.example.llegabien.backend.contactos.usuario_contacto;
+import com.example.llegabien.mongoDB.usuario_BD;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
+import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.backend.usuario.usuario_SharedViewModel;
 import com.example.llegabien.frontend.usuario.fragmento.FragmentoIniciarSesion1;
+
+import io.realm.RealmList;
 
 public class FragmentoRegistrarContacto extends Fragment implements View.OnClickListener, FragmentManager.OnBackStackChangedListener{
 
@@ -28,14 +37,52 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
     private int mNumContacto = 1, mBackStackCount = 0, mSiguienteCount = 1;
     private Fragment parent;
 
+    //PARAMETROS DE INICALIZACIÓN DEL FRAGMENTO
+    private static final String parametro_usuario = "usuario"; //etiqueta
+
+    private usuario_SharedViewModel SharedViewModel;
+    usuario Usuario;
+    usuario_contacto Contacto =  new  usuario_contacto();
+
+    //para inicalizar el fragmento con parametros y guardarlos en un bundle
+    public static FragmentoRegistrarContacto newInstance(usuario Usuario) {
+        FragmentoRegistrarContacto fragment = new FragmentoRegistrarContacto();
+        Bundle args = new Bundle();
+        args.putSerializable(parametro_usuario, Usuario);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public FragmentoRegistrarContacto(){
-        // Required empty public constructor
     }
 
     public FragmentoRegistrarContacto(int numContacto, int siguienteCount) {
         mNumContacto = numContacto;
         mSiguienteCount = siguienteCount;
     }
+
+
+    //para obtener los parametros que se guardan en el bundle
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        SharedViewModel = new ViewModelProvider(requireActivity()).get(usuario_SharedViewModel.class);
+
+        final Observer<usuario> nameObserver = new Observer<usuario>() {
+            @Override
+            public void onChanged(@Nullable final usuario user) {
+                Usuario = user;
+
+                Log.v("QUICKSTART", "nombre: " + Usuario.getNombre()
+                        + "apellido: " + Usuario.getApellidos() + "ESTOY DENTRO DE CONTACTO");
+            }
+        };
+
+        //para usar el mismo ViewModel que los otros fragmentos y compartir informacion
+        SharedViewModel.getUsuario().observe(this, nameObserver);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,11 +116,23 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
         switch (view.getId()) {
             case R.id.button_siguiente_registro_4:
                 if (validarAllInputs()) {
+
+                    tomarDatosContacto();
+
                     if (mNumContacto == 5){
                         fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                         FragmentoIniciarSesion1 fragmentoIniciarSesion1 = new FragmentoIniciarSesion1();
                         fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
                         fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoIniciarSesion1).commit();
+
+
+                        Log.v("QUICKSTART", "nombre: " + Usuario.getNombre()
+                                + "contacto 1 nombre: " + Usuario.getContacto().first().getNombre()+
+                                "ultimo contacto numero: " + Usuario.getContacto().last().getTelCelular());
+
+                        //Se integra al usuario a la BD
+                        usuario_BD.AñadirUser(Usuario);
+
                     }
                     else {
                         mNumContacto++;
@@ -106,6 +165,25 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
             esInputValido = false;
 
         return esInputValido;
+    }
+
+
+    //Funcion para tomar datos del contacto y añadirlo al objeto Usuario
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void tomarDatosContacto(){
+        Contacto.setNombre(mEditTxtNombre.getText().toString());
+        Contacto.setTelCelular(mEditTxtNumTelefonico.getText().toString());
+
+        if(mNumContacto==1) {
+            RealmList<usuario_contacto> Contactos =  new  RealmList <usuario_contacto>();
+            Contactos.add(Contacto);
+            Usuario.setContacto(Contactos);
+        }
+
+        else
+            Usuario.getContacto().add(Usuario.getContacto().size(),Contacto);
+
+        SharedViewModel.setUsuario(Usuario);
     }
 
 }

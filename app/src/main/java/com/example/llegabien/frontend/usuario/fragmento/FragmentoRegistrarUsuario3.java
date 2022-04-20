@@ -1,31 +1,32 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.llegabien.R;
-import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
+import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
+import com.example.llegabien.backend.usuario.usuario;
 
 public class FragmentoRegistrarUsuario3 extends Fragment implements View.OnClickListener{
 
     private Button mBtnVerificar, mBtnRegresar;
     private EditText mEditTxtCodigo1, mEditTxtCodigo2, mEditTxtCodigo3, mEditTxtCodigo4, mEditTxtCodigo5, mEditTxtCodigo6;
 
+    usuario Usuario = new usuario();
+
     //PARAMETROS DE INICALIZACIÓN DEL FRAGMENTO
     private static final String mCodigoNumTelefonico_PARAM1 = "param1"; //etiqueta
     private String mCodigoNumTelefonico_param1 = ""; //tipo y valor
 
     public FragmentoRegistrarUsuario3() {
-        // Required empty public constructor
     }
 
     //para inicalizar el fragmento con parametros y guardarlos en un bundle
@@ -37,13 +38,15 @@ public class FragmentoRegistrarUsuario3 extends Fragment implements View.OnClick
         return fragment;
     }
 
-    //para obtener los parametros que se guardan en el bundle
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //para obtener los parametros que se guardan en el bundle
         if (getArguments() != null) {
             mCodigoNumTelefonico_param1 = getArguments().getString(mCodigoNumTelefonico_PARAM1);
         }
+
     }
 
     @Override
@@ -75,9 +78,18 @@ public class FragmentoRegistrarUsuario3 extends Fragment implements View.OnClick
         //FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         switch (view.getId()) {
             case R.id.button_verificar_registro_3:
-                if (validarAllInputs())
-                    verificarCodigoNumTelefonico();
+
+        //REPONER
+                /*if (validarAllInputs())
+                    verificarCodigoNumTelefonico();*/
+
+                FragmentoRegistrarUsuario4 fragmentoRegistrarUsuario4 = new FragmentoRegistrarUsuario4();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);
+                fragmentTransaction.replace(R.id.fragment_pantallaPrincipal, fragmentoRegistrarUsuario4).commit();
+                fragmentTransaction.addToBackStack(null);
                 break;
+
             case R.id.button_regresar_registro_3:
                 getActivity().getSupportFragmentManager().popBackStack();
                 break;
@@ -103,6 +115,7 @@ public class FragmentoRegistrarUsuario3 extends Fragment implements View.OnClick
 
         return esInputValido;
     }
+
      private void verificarCodigoNumTelefonico(){
          String codigo =
                  mEditTxtCodigo1.getText().toString() +

@@ -5,8 +5,8 @@ import android.os.Bundle;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.llegabien.R;
-import com.example.llegabien.databinding.ActivityMapsBinding;
 import com.example.llegabien.backend.permisos.PedirPermisos;
+import com.example.llegabien.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -19,10 +19,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         PedirPermisos permisos = new PedirPermisos();
         permisos.PedirTodosPermisos(this);
@@ -35,9 +35,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+
         //MARIANA QUITA ESTO CUANDO PUEDAAAAAAAAAS
            // QuickStart quickStart = new QuickStart();
            // quickStart.ConectarAMongoDB(this);
+
     }
 
 
@@ -50,6 +52,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -58,6 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
     }
 
 

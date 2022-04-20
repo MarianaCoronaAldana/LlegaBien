@@ -1,14 +1,17 @@
 package com.example.llegabien.backend.contactos;
-;
 
 import io.realm.RealmObject;
 import io.realm.annotations.RealmClass;
 
+;
+
 @RealmClass(embedded = true)
 
-public class usuario_contacto extends RealmObject {
+public class usuario_contacto extends RealmObject  {
+
     private String nombre;
     private String telCelular;
+
     // Standard getters & setters
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
@@ -22,4 +25,5 @@ public class usuario_contacto extends RealmObject {
 
     public usuario_contacto() {
     }
+
 }

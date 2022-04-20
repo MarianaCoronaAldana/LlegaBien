@@ -13,10 +13,12 @@ import android.widget.EditText;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.backend.usuario.usuario_SharedViewModel;
 import com.example.llegabien.frontend.FragmentoAuxiliar;
 import com.example.llegabien.frontend.usuario.dialog.DatePickerFragmento;
 
@@ -29,12 +31,13 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
 
     private static final String parametro_usuario = "usuario"; //etiqueta
 
+    private usuario_SharedViewModel SharedViewModel;
+
     private Button mBtnSiguiente, mBtnIniciarSesion, mBtnCerrar;
     private EditText mEditTxtNombres, mEditTxtApellidos, mEditTxtFechaNacimiento;
 
 
     public FragmentoRegistrarUsuario1() {
-        // Required empty public constructor
     }
 
     @Override
@@ -57,6 +60,9 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
         mBtnCerrar.setOnClickListener(this);
         mEditTxtFechaNacimiento.setOnClickListener(this);
 
+        //para usar el mismo ViewModel que los otros fragmentos y compartir informacion
+        SharedViewModel = new ViewModelProvider(requireActivity()).get(usuario_SharedViewModel.class);
+
         return root;
     }
 
@@ -71,12 +77,10 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
                 if (validarAllInputs()) {
                     FragmentoRegistrarUsuario2 fragmentoRegistrarUsuario2 = new FragmentoRegistrarUsuario2();
 
-        //DE AQUI ->
-                    Bundle args = new Bundle();
-                    args.putSerializable(parametro_usuario, usuarioConDatos());
-                    fragmentoRegistrarUsuario2.setArguments(args);
-        //A AQUI ->
+                    //Para obtener los datos del formulario y hacer una instancia de Usuario
+                    SharedViewModel.setUsuario(usuarioConDatos());
 
+                    // Para pasar al siguiente fragmento
                     fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
                     fragmentTransaction.replace(R.id.fragment_pantallaPrincipal, fragmentoRegistrarUsuario2).commit();
                     fragmentTransaction.addToBackStack(null);
@@ -129,7 +133,7 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
     }
 
 
-    //Funcion para crear objetoo usuario e inicializarlo con los datos obtenidos
+    //Funcion para crear objeto usuario e inicializarlo con los datos obtenidos
     @RequiresApi(api = Build.VERSION_CODES.O)
     private usuario usuarioConDatos(){
        usuario Usuario = new usuario();

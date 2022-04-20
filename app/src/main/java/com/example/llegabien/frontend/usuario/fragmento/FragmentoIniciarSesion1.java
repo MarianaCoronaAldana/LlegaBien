@@ -1,7 +1,7 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
 import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
-import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
+import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_USUARIO_LOGIN;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,16 +11,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.permisos.Preferences;
-import com.example.llegabien.backend.usuario.UsuarioInicioSesion;
+import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.frontend.FragmentoAuxiliar;
 import com.example.llegabien.frontend.rutas.activity.MapsActivity;
+import com.example.llegabien.mongoDB.usuario_validaciones;
+
+import java.util.Locale;
 
 public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickListener{
     private RadioButton mBtnRecordarSesion;
@@ -28,8 +32,9 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
     private EditText mEditTxtCorreo, mEditTxtContraseña;
     private boolean isActivateRadioButton;
 
+    usuario_validaciones validar = new usuario_validaciones();
+
     public FragmentoIniciarSesion1() {
-        // Required empty public constructor
     }
 
     @Override
@@ -78,15 +83,10 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
                 isActivateRadioButton = mBtnRecordarSesion.isChecked();
                 break;
             case R.id.button_inicia_inicia_sesion_1:
-
                 Preferences.savePreferenceBoolean(FragmentoIniciarSesion1.this,mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
-         //       startActivity(new Intent(getActivity(), MapsActivity.class));
-
-               //para validar si los campos no están vacios
-                if (validarAllInputs()){
-                    //para validar si el correo está confirmado
-                    enviarCodigos();
-                }
+                //para validar si los campos no están vacios
+                if (validarAllInputs())
+                    verificarCorreoContraseña();
                 break;
             case R.id.button_registrarse_inicia_sesion_1:
                 FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
@@ -104,9 +104,9 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
                 fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoAuxiliar).commit();
                 fragmentTransaction.remove(fragmentoAuxiliar);
                 break;
-
         }
     }
+
 
     //otras funciones
     private boolean validarAllInputs(){
@@ -130,4 +130,22 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
             }
         }, mEditTxtCorreo.getText().toString(), mEditTxtContraseña.getText().toString());
     }
+
+
+    private void verificarCorreoContraseña() {
+        boolean estado = true;
+
+        if(validar.validarAdmin(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString()))
+            Preferences.savePreferenceBoolean(this,true, PREFERENCE_USUARIO_LOGIN);
+
+        else if(!validar.validarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString())) {
+            estado = false;
+            Toast.makeText(getActivity(),"El correo electronico o el numero telefonico son incorrectos",Toast.LENGTH_LONG).show();
+        }
+
+        //para verificar que el usuario haya validado su cuenta de correo
+        if(estado)
+            enviarCodigos();
+    }
+
 }

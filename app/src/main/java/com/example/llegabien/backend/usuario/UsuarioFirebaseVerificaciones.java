@@ -1,13 +1,10 @@
 package com.example.llegabien.backend.usuario;
 
-import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.example.llegabien.R;
-import com.example.llegabien.frontend.rutas.activity.MapsActivity;
-import com.example.llegabien.frontend.usuario.fragmento.FragmentoRegistrarUsuario4;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -59,6 +56,7 @@ public class UsuarioFirebaseVerificaciones {
                     @Override
                     public void onVerificationFailed(@androidx.annotation.NonNull FirebaseException e) {
                         Toast.makeText(mFragmento.getActivity(),e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.v("QUICKSTART", "ERROR: " + e.getMessage());
                     }
 
                     @Override
@@ -75,7 +73,7 @@ public class UsuarioFirebaseVerificaciones {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.createUserWithEmailAndPassword(correo, contraseña)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
+                    @Override 
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -88,6 +86,7 @@ public class UsuarioFirebaseVerificaciones {
                                     else {
                                         onCodigoCorreoEnviado.isCorreoEnviado(false);
                                         Toast.makeText(mFragmento.getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        Log.v("QUICKSTART", task.getException().getMessage());
                                     }
                                 }
                             });
