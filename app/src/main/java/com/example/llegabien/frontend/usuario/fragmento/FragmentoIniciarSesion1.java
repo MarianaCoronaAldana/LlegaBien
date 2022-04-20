@@ -91,17 +91,17 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
             case R.id.button_registrarse_inicia_sesion_1:
                 FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
-                fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoRegistrarUsuario1).commit();
+                fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario1).commit();
                 break;
             case R.id.button_contraseña_olvidada_inicia_sesion_1:
                 FragmentoIniciarSesion2 fragmentoIniciarSesion2 = new FragmentoIniciarSesion2();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);
-                fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoIniciarSesion2).commit();
+                fragmentTransaction.replace(R.id.fragment_pagina_principal,fragmentoIniciarSesion2).commit();
                 fragmentTransaction.addToBackStack(null);
                 break;
             case R.id.button_cerrar_inicia_sesion_1:
                 fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
-                fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoAuxiliar).commit();
+                fragmentTransaction.replace(R.id.fragment_pagina_principal,fragmentoAuxiliar).commit();
                 fragmentTransaction.remove(fragmentoAuxiliar);
                 break;
         }

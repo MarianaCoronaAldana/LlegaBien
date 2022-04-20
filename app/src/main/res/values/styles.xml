@@ -5,19 +5,42 @@
         <item name="android:background">@drawable/bkgd_button_morado_oscuro</item>
         <item name="android:fontFamily">@font/parrafo_bold</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/text_size_parrafo</item>
         <item name="android:paddingBottom">5dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
     </style>
 
     <style name="BtnMoradoClaro" parent="Widget.AppCompat.Button">
-        <item name="android:background">@color/morado_claro</item>
+        <item name="android:background">@drawable/bkgd_button_morado_claro</item>
         <item name="android:fontFamily">@font/parrafo_bold</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/text_size_parrafo</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
     </style>
 
     <style name="BtnRojoClaro" parent="Widget.AppCompat.Button">
-        <item name="android:background">@color/rojo_claro</item>
+        <item name="android:background">@drawable/bkgd_button_rojo</item>
         <item name="android:fontFamily">@font/parrafo_bold</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/text_size_parrafo</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
+
+    <style name="BtnConfig" parent="Widget.AppCompat.Button">
+        <item name="android:fontFamily">@font/parrafo_bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/text_size_parrafo</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">55dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
     </style>
 
     <!-- TextView -->
@@ -27,9 +50,12 @@
         <item name="android:fontFamily">@font/titulo</item>
         <item name="android:textColor">@color/azul_oscuro</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/text_size_titulo</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">10dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
     </style>
 
     <style name="TxtViewAzulOscuro" parent="Widget.AppCompat.TextView">
@@ -37,8 +63,21 @@
         <item name="android:backgroundTint">@color/azul_oscuro</item>
         <item name="android:fontFamily">@font/subtitulo</item>
         <item name="android:textColor">@color/blanco</item>
+        <item name="android:textSize">@dimen/text_size_subtitulo</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">10dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
+
+    <style name="TxtViewTransparente" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:fontFamily">@font/parrafo</item>
+        <item name="android:textColor">@color/negro</item>
+        <item name="android:textSize">@dimen/text_size_parrafo</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
     </style>
 
     <!-- EditText -->
@@ -46,9 +85,35 @@
         <item name="android:background">@drawable/bkgd_borde_azul_oscuro</item>
         <item name="android:fontFamily">@font/parrafo</item>
         <item name="android:textColor">@color/azul_oscuro</item>
+        <item name="android:textSize">@dimen/text_size_parrafo</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">20dp</item>
+        <item name="android:ems">10</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColorHint">#80213071</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
+
+    <style name="EditTextCodigo" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/bkgd_codigos</item>
+        <item name="android:fontFamily">@font/parrafo</item>
+        <item name="android:textColor">@color/negro</item>
+        <item name="android:textSize">@dimen/text_size_parrafo</item>
+        <item name="android:gravity">center</item>
+        <item name="android:ems">10</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:imeOptions">actionNext</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
+
+    <style name="ViewSeparador" >
+        <item name="android:background">@color/azul_oscuro</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
     </style>
 
 </resources>

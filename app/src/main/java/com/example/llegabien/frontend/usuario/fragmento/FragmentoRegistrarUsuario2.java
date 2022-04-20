@@ -36,6 +36,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
     usuario_validaciones validar = new usuario_validaciones();
 
     public FragmentoRegistrarUsuario2() {
+
     }
 
     @Override
@@ -98,7 +99,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
                         FragmentoRegistrarUsuario3 fragmentoRegistrarUsuario3 = FragmentoRegistrarUsuario3.newInstance("verificationId");
                         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-                        fragmentTransaction.replace(R.id.fragment_pantallaPrincipal, fragmentoRegistrarUsuario3).commit();
+                        fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario3).commit();
                         fragmentTransaction.addToBackStack(null);
         // A AQUI  ->
                     }
@@ -153,7 +154,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
                                 FragmentoRegistrarUsuario3 fragmentoRegistrarUsuario3 = FragmentoRegistrarUsuario3.newInstance(verificationId);
                                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-                                fragmentTransaction.replace(R.id.fragment_pantallaPrincipal, fragmentoRegistrarUsuario3).commit();
+                                fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario3).commit();
                                 fragmentTransaction.addToBackStack(null);
                             }
                         }

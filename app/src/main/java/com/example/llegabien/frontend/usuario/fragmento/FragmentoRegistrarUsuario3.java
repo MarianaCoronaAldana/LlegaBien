@@ -78,16 +78,15 @@ public class FragmentoRegistrarUsuario3 extends Fragment implements View.OnClick
         //FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         switch (view.getId()) {
             case R.id.button_verificar_registro_3:
-
-        //REPONER
-                /*if (validarAllInputs())
-                    verificarCodigoNumTelefonico();*/
-
-                FragmentoRegistrarUsuario4 fragmentoRegistrarUsuario4 = new FragmentoRegistrarUsuario4();
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);
-                fragmentTransaction.replace(R.id.fragment_pantallaPrincipal, fragmentoRegistrarUsuario4).commit();
-                fragmentTransaction.addToBackStack(null);
+                if (validarAllInputs()){
+                    //REPONER
+                    /*verificarCodigoNumTelefonico();*/
+                    FragmentoRegistrarUsuario4 fragmentoRegistrarUsuario4 = new FragmentoRegistrarUsuario4();
+                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);
+                    fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario4).commit();
+                    fragmentTransaction.addToBackStack(null);
+                }
                 break;
 
             case R.id.button_regresar_registro_3:
@@ -133,7 +132,7 @@ public class FragmentoRegistrarUsuario3 extends Fragment implements View.OnClick
                      FragmentoRegistrarUsuario4 fragmentoRegistrarUsuario4 = new FragmentoRegistrarUsuario4();
                      FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                      fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);
-                     fragmentTransaction.replace(R.id.fragment_pantallaPrincipal, fragmentoRegistrarUsuario4).commit();
+                     fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario4).commit();
                      fragmentTransaction.addToBackStack(null);
                  }
              }

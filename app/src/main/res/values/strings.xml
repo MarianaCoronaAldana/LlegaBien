@@ -23,13 +23,8 @@
     <string name="titulo_registro">Registro</string>
     <string name="instrucciones_registro">Ingresa tus datos personales</string>
     <string name="instrucciones1_registro1">Primero, ingresa tu nombre completo y fecha de nacimiento.</string>
-    <string name="nombres_registro1">Nombres</string>
-    <string name="apellidos_registro1">Apellidos</string>
-    <string name="fechaNacimiento_registro1">Fecha de nacimiento</string>
     <string name="iniciarSesion_registro1">¿Tienes una cuenta? Inicia sesión</string>
     <string name="instrucciones1_registro2">Ahora, ingresa tu correo electrónico, número de teléfono y contraseña. </string>
-    <string name="celular_registro2">Número de teléfono</string>
-    <string name="confirmarContraseña_registro2">Confirme contraseña</string>
     <string name="instrucciones1_registro3">Verifica tu número de teléfono y correo electrónico</string>
     <string name="instrucciones2_registro3">1. Para verificar tu correo electrónico, entra a tu email y haz clic en el enlace que se te ha envíado.</string>
     <string name="instrucciones3_registro3">2. Para verificar tu número de teléfono, ingresa el código que le hemos enviado vía SMS.</string>
@@ -39,8 +34,9 @@
     <string name="contactoEmergencia_registro4">Contacto num. </string>
     <string name="contactoEmergencia_nombre_registro4">Nombre completo</string>
     <string name="contactoEmergencia_celular_registro4">Número de teléfono</string>
+    <string name="finalizarBtn_registro4">Finalizar</string>
 
-    <!-- Registro e Iniciar sesión -->
+    <!-- Registro, Iniciar sesión, Editar perfil, Cambiar contraseña -->
     <string name="iniciaBtn">Inicia</string>
     <string name="siguienteBtn">Siguiente</string>
     <string name="verificarBtn">Verificar</string>
@@ -48,6 +44,12 @@
     <string name="contraseñaTxtView">Contraseña</string>
     <string name="reenviarCodigoBtn">No recibí ningún código. Reenviar</string>
     <string name="instruccionesCodigoCorreoTxtView">Ingresa el código que enviamos a tu correo electrónico.</string>
+    <string name="nombresTxtView">Nombres</string>
+    <string name="apellidosTxtView">Apellidos</string>
+    <string name="fechaNacimientoTxtView">Fecha de nacimiento</string>
+    <string name="celularTxtView">Número de teléfono</string>
+    <string name="confirmarContraseñaTxtView">Confirme contraseña</string>
+
 
     <!-- Errores -->
     <string name="errorStringVacia">Este campo es obligatorio</string>
@@ -58,6 +60,41 @@
     <string name="errorContraseña">Usa 8 o más caracteres con una combinación de letras, números y símbolos.</string>
     <string name="errorConfirmarContraseña">Las contraseñas no coinciden</string>
 
+    <!-- Configuracion -->
+    <string name="titulo_config">Configuración</string>
+    <string name="contactos_config">Contactos de emergencia</string>
+    <string name="historialRutas_config">Historial de rutas</string>
+    <string name="historialReportes_config">Reportes generados</string>
+    <string name="editarPerfil_config">Editar perfil</string>
+    <string name="cerrarSesion_config">Cerrar sesión</string>
+
+    <!-- Editar perfil -->
+    <string name="titulo_editarPerfil">Perfil</string>
+    <string name="instrucciones_editarPerfil">Información personal</string>
+    <string name="cambiarContra_editarPerfil">Contraseña</string>
+    <string name="eliminarCuenta_editarPerfil">Eliminar cuenta</string>
+
+    <!-- Contraseña -->
+    <string name="titulo_cambiarContra">Contraseña</string>
+    <string name="instrucciones_cambiarContra">Aquí puedes cambiar tu contraseña</string>
+    <string name="actualContra_cambiarContra">Contraseña actual</string>
+    <string name="nuevaContra_cambiarContra">Contraseña nueva</string>
+    <string name="aceptarBtn_cambiarContra">Aceptar</string>
+
+    <!-- Configuracion avanzada -->
+    <string name="otrosPerfiles_configAvan">Editar otros perfiles</string>
+    <string name="subirReporte_configAvan">Subir reporte</string>
+    <string name="configPropia_configAvan">Configuración de mi cuenta</string>
+
+    <!-- Configuracion dialog -->
+    <string name="instrucciones_dialogConfig">Selecciona la configuración que quieres abrir:</string>
+    <string name="config_dialogConfig">Configuración de tu cuenta</string>
+    <string name="configAvan_dialogConfig">Configuración avanzada</string>
+
+    <!-- Subir reporte admin -->
+    <string name="titulo_subirReporte">Subir reporte</string>
+    <string name="instrucciones_subirReporte">Aquí puedes subir reportes de delitos en formato .xml.</string>
+    <string name="seleccionarArchivoBtn_subirReporte">Seleccionar archivos</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

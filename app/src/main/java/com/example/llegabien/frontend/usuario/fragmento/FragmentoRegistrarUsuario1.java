@@ -82,18 +82,18 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
 
                     // Para pasar al siguiente fragmento
                     fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-                    fragmentTransaction.replace(R.id.fragment_pantallaPrincipal, fragmentoRegistrarUsuario2).commit();
+                    fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario2).commit();
                     fragmentTransaction.addToBackStack(null);
                 }
                 break;
             case R.id.button_iniciarSesion_registro_1:
                 FragmentoIniciarSesion1 fragmentoIniciarSesion1 = new FragmentoIniciarSesion1();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
-                fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoIniciarSesion1).commit();
+                fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoIniciarSesion1).commit();
                 break;
             case R.id.button_cerrar_registro_1:
                 fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
-                fragmentTransaction.replace(R.id.fragment_pantallaPrincipal,fragmentoAuxiliar).commit();
+                fragmentTransaction.replace(R.id.fragment_pagina_principal,fragmentoAuxiliar).commit();
                 fragmentTransaction.remove(fragmentoAuxiliar);
                 break;
             case R.id.editText_fechaNacimiento_registro_1:

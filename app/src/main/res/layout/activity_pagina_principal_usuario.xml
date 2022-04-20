@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/morado_oscuro"
-    tools:context=".frontend.pantallaPrincipalActivity">
+    tools:context=".frontend.usuario.activity.ActivityPaginaPrincipalUsuario">
 
   <androidx.constraintlayout.widget.Guideline
       android:id="@+id/guideline_fragment_pagina_principal"
@@ -160,7 +160,7 @@
       app:layout_constraintVertical_bias="0.3" />
 
   <FrameLayout
-      android:id="@+id/fragment_pantallaPrincipal"
+      android:id="@+id/fragment_pagina_principal"
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:elevation="5dp"

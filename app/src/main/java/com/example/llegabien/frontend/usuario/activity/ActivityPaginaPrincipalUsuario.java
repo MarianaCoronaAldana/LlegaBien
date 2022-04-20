@@ -1,4 +1,4 @@
-package com.example.llegabien.frontend;
+package com.example.llegabien.frontend.usuario.activity;
 
 import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
 
@@ -18,7 +18,7 @@ import com.example.llegabien.frontend.rutas.activity.MapsActivity;
 import com.example.llegabien.frontend.usuario.fragmento.FragmentoIniciarSesion1;
 import com.example.llegabien.frontend.usuario.fragmento.FragmentoRegistrarUsuario1;
 
-public class pantallaPrincipalActivity extends AppCompatActivity implements View.OnClickListener {
+public class ActivityPaginaPrincipalUsuario extends AppCompatActivity implements View.OnClickListener {
 
     //Button
     private Button mBtnCrearCuenta, mBtnIniciarSesion;
@@ -29,7 +29,7 @@ public class pantallaPrincipalActivity extends AppCompatActivity implements View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pantalla_principal);
+        setContentView(R.layout.activity_pagina_principal_usuario);
 
         //para verificar si el boton de recordar sesion fue presionado
         if(Preferences.obtenerPreferenceBool(this,PREFERENCE_ESTADO_BUTTON_SESION)){
@@ -61,10 +61,10 @@ public class pantallaPrincipalActivity extends AppCompatActivity implements View
 
         switch (view.getId()) {
             case R.id.button_inicia_sesion_pagina_principal:
-                fragmentTransaction.add(R.id.fragment_pantallaPrincipal, fragmentoIniciarSesion1).commit();
+                fragmentTransaction.add(R.id.fragment_pagina_principal, fragmentoIniciarSesion1).commit();
                 break;
             case R.id.button_crea_cuenta_pagina_principal:
-                fragmentTransaction.add(R.id.fragment_pantallaPrincipal, fragmentoRegistrarUsuario1).commit();
+                fragmentTransaction.add(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario1).commit();
                 break;
         }
     }
