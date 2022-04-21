@@ -4,7 +4,6 @@ import com.example.llegabien.backend.contactos.usuario_contacto;
 
 import org.bson.types.ObjectId;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import io.realm.RealmList;
@@ -12,7 +11,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
-public class usuario extends RealmObject implements Serializable {
+public class usuario extends RealmObject {
     @PrimaryKey
     private ObjectId _id;
 
@@ -73,9 +72,6 @@ public class usuario extends RealmObject implements Serializable {
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
-
-    public Boolean getStatus() { return status; }
-    public void setStatus(Boolean status) { this.status = status; }
 
     public String getTelCelular() { return telCelular; }
     public void setTelCelular(String telCelular) { this.telCelular = telCelular; }

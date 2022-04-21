@@ -1,7 +1,7 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
 import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
-import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_USUARIO_LOGIN;
+import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_ES_ADMIN;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,11 +42,6 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragmento_iniciar_sesion1, container, false);
-
-        //para verificar si el boton de recordar contraseña fue presionado
-        if(Preferences.obtenerPreference(this,PREFERENCE_ESTADO_BUTTON_SESION)){
-            startActivity(new Intent(getActivity(), MapsActivity.class));
-        }
 
         //wiring up
         mBtnRecordarSesion = (RadioButton) root.findViewById(R.id.radioBtn_recordar_inicia_sesion_1);
@@ -135,17 +130,22 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
     private void verificarCorreoContraseña() {
         boolean estado = true;
 
-        if(validar.validarAdmin(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString()))
-            Preferences.savePreferenceBoolean(this,true, PREFERENCE_USUARIO_LOGIN);
+        if(validar.validarAdmin(getActivity(), mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString()))
+            Preferences.savePreferenceBoolean(this, true, PREFERENCE_ES_ADMIN);
 
-        else if(!validar.validarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString())) {
+
+        else if(!validar.verificarCorreoContrasena(getActivity(), mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString())) {
             estado = false;
             Toast.makeText(getActivity(),"El correo electronico o el numero telefonico son incorrectos",Toast.LENGTH_LONG).show();
         }
 
         //para verificar que el usuario haya validado su cuenta de correo
-        if(estado)
-            verificarCorreoVerificado();
+        if(estado) {
+
+    //REPONER
+            //verificarCorreoVerificado();
+            startActivity(new Intent(getActivity(), MapsActivity.class));
+        }
     }
 
 }

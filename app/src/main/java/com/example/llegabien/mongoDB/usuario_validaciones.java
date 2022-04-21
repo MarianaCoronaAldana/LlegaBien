@@ -1,19 +1,23 @@
 package com.example.llegabien.mongoDB;
 
+import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_USUARIO;
+
+import android.content.Context;
 import android.util.Log;
 
+import com.example.llegabien.backend.permisos.Preferences;
 import com.example.llegabien.backend.usuario.usuario;
 
 import io.realm.Realm;
 import io.realm.mongodb.sync.SyncConfiguration;
 
 public class usuario_validaciones {
+
     Conectar conectar = new Conectar();
     SyncConfiguration config = conectar.ConectarAMongoDB();
     Realm realm = Realm.getInstance(config);
 
     public boolean validarExistenciaCorreoTelefono(String correo, String telefono) {
-
         usuario task = realm.where(usuario.class).equalTo("correoElectronico",  correo)
                 .or()
                 .equalTo("telCelular",telefono)
@@ -25,8 +29,7 @@ public class usuario_validaciones {
         return false;
     }
 
-    public boolean validarAdmin(String correo, String contrasena){
-
+    public boolean validarAdmin(Context c, String correo, String contrasena){
         usuario task = realm.where(usuario.class).equalTo("correoElectronico", correo)
                 .and()
                 .equalTo("contrasena",  contrasena)
@@ -36,16 +39,14 @@ public class usuario_validaciones {
 
         if (task != null) {
             Log.v("QUICKSTART", "OMG SI SE PUDO ADMIN");
+            Preferences.savePreferenceObject(c, PREFERENCE_USUARIO, task);
             return true;
         }
 
-        Log.v("QUICKSTART", "Fetched object by primary key: " + task);
         return false;
-
     }
 
-    public boolean validarCorreoContrasena(String correo, String contrasena) {
-
+    public boolean verificarCorreoContrasena(Context c, String correo, String contrasena) {
         usuario task = realm.where(usuario.class).equalTo("correoElectronico", correo)
                 .and()
                 .equalTo("contrasena",  contrasena)
@@ -53,10 +54,10 @@ public class usuario_validaciones {
 
         if (task != null) {
             Log.v("QUICKSTART", "OMG SI SE PUDO");
+            Preferences.savePreferenceObject(c, PREFERENCE_USUARIO, task);
             return true;
         }
 
-        Log.v("QUICKSTART", "Fetched object by primary key: " + task);
         return false;
     }
 

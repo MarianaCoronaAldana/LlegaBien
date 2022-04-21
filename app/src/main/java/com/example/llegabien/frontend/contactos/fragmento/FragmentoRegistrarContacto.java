@@ -151,6 +151,9 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
                 break;
             case R.id.button2_finalizar_registro_4:
                 if (validarAllInputs()) {
+                    //Se integra al usuario a la BD
+                    usuario_BD.AñadirUser(Usuario);
+
                     abrirInicioSesion1();
                 }
                 break;
@@ -203,6 +206,5 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
         FragmentoIniciarSesion1 fragmentoIniciarSesion1 = new FragmentoIniciarSesion1();
         fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
         fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoIniciarSesion1).commit();
-
     }
 }

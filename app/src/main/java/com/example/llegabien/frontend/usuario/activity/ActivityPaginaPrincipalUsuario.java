@@ -1,6 +1,7 @@
 package com.example.llegabien.frontend.usuario.activity;
 
 import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
+import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_USUARIO;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.permisos.Preferences;
+import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.rutas.activity.MapsActivity;
 import com.example.llegabien.frontend.usuario.fragmento.FragmentoIniciarSesion1;
 import com.example.llegabien.frontend.usuario.fragmento.FragmentoRegistrarUsuario1;
@@ -31,8 +33,9 @@ public class ActivityPaginaPrincipalUsuario extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pagina_principal_usuario);
 
-        //para verificar si el boton de recordar sesion fue presionado
-        if(Preferences.obtenerPreferenceBool(this,PREFERENCE_ESTADO_BUTTON_SESION)){
+        //para verificar si el boton de recordar sesion fue presionado y saber si ya se inicio sesion
+        if(Preferences.obtenerPreferenceBool(this,PREFERENCE_ESTADO_BUTTON_SESION)
+            && Preferences.getSavedObjectFromPreference(this, PREFERENCE_USUARIO, usuario.class) != null) {
             startActivity(new Intent(this, MapsActivity.class));
         }
 
