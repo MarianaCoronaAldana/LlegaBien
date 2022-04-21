@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     android:background="@color/morado_oscuro">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_configuracion"
-        android:name="com.example.llegabien.frontend.usuario.fragmento.FragmentoConfigUsuario"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/morado_oscuro"/>
+  <androidx.fragment.app.FragmentContainerView
+      android:id="@+id/fragment_configuracion"
+      android:name="com.example.llegabien.frontend.usuario.fragmento.FragmentoConfigAvanAdmin"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@color/morado_oscuro"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

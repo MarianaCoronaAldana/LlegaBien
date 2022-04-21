@@ -1,13 +1,11 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
-import android.app.DatePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.annotation.RequiresApi;
@@ -20,7 +18,7 @@ import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.backend.usuario.usuario_SharedViewModel;
 import com.example.llegabien.frontend.FragmentoAuxiliar;
-import com.example.llegabien.frontend.usuario.dialog.DatePickerFragmento;
+import com.example.llegabien.frontend.usuario.dialog.DialogDatePicker;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -66,7 +64,7 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
         return root;
     }
 
-    //listener function
+    //FUNCIONES LISTENER//
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View view) {
@@ -75,12 +73,11 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
         switch (view.getId()) {
             case R.id.button_siguiente_registro_1:
                 if (validarAllInputs()) {
-                    FragmentoRegistrarUsuario2 fragmentoRegistrarUsuario2 = new FragmentoRegistrarUsuario2();
-
                     //Para obtener los datos del formulario y hacer una instancia de Usuario
                     SharedViewModel.setUsuario(usuarioConDatos());
 
                     // Para pasar al siguiente fragmento
+                    FragmentoRegistrarUsuario2 fragmentoRegistrarUsuario2 = new FragmentoRegistrarUsuario2();
                     fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
                     fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario2).commit();
                     fragmentTransaction.addToBackStack(null);
@@ -97,14 +94,15 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
                 fragmentTransaction.remove(fragmentoAuxiliar);
                 break;
             case R.id.editText_fechaNacimiento_registro_1:
-                mostrarDatePickerDialog();
+                DialogDatePicker dialogDatePicker = new DialogDatePicker();
+                dialogDatePicker.mostrarDatePickerDialog(mEditTxtFechaNacimiento, this);
                 mEditTxtFechaNacimiento.setError(null);
                 break;
         }
 
     }
 
-    //otras funciones
+    //OTRAS FUNCIONES//
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private boolean validarAllInputs(){
@@ -119,19 +117,6 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
 
         return esInputValido;
     }
-
-    private void mostrarDatePickerDialog() {
-        DatePickerFragmento datePickerFragmento = DatePickerFragmento.newInstance(new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                // +1 porque Enero es 0
-                final String fechaSeleccionada = day + " / " + (month+1) + " / " + year;
-                mEditTxtFechaNacimiento.setText(fechaSeleccionada);
-            }
-        });
-        datePickerFragmento.show(getActivity().getSupportFragmentManager(), "datePicker");
-    }
-
 
     //Funcion para crear objeto usuario e inicializarlo con los datos obtenidos
     @RequiresApi(api = Build.VERSION_CODES.O)
