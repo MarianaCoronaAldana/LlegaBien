@@ -44,11 +44,8 @@
 
         <Button
             android:id="@+id/button_cerrar_inicia_sesion_1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/bkgd_button_cerrar"
+            style="@style/BtnCerrar"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_inicia_sesion_1"
             app:layout_constraintStart_toStartOf="@id/guideline2_button_inicia_sesion_1"
             app:layout_constraintTop_toTopOf="parent"
@@ -133,7 +130,6 @@
             style="@style/BtnMoradoOscuro"
             android:text="@string/iniciaBtn"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="4:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_button_inicia_sesion_1"
             app:layout_constraintStart_toStartOf="@id/guideline1_button_inicia_sesion_1"
             app:layout_constraintTop_toBottomOf="@id/editText_contraseña_inicia_sesion_1"

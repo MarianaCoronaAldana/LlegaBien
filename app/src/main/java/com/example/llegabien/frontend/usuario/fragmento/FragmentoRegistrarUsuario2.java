@@ -29,7 +29,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
 
 
     private Button mBtnSiguiente, mBtnRegresar;
-    private EditText mEditTxtNumTelefonico, mEditTxtCorreo, mEditTxtContraseña, mEditTxtConfrimarContraseña;
+    private EditText mEditTxtNumTelefonico, mEditTxtCorreo, mEditTxtContraseña, mEditTxtConfirmarContraseña;
 
     private usuario_SharedViewModel SharedViewModel;
     usuario Usuario = new usuario();
@@ -71,7 +71,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
         mEditTxtCorreo = (EditText) root.findViewById(R.id.editText_correo_registro_2);
         mEditTxtNumTelefonico = (EditText) root.findViewById(R.id.editText_celular_registro_2);
         mEditTxtContraseña = (EditText) root.findViewById(R.id.editText_contraseña_registro_2);
-        mEditTxtConfrimarContraseña = (EditText) root.findViewById(R.id.editText_confirmarContraseña_registro_2);
+        mEditTxtConfirmarContraseña = (EditText) root.findViewById(R.id.editText_confirmarContraseña_registro_2);
 
         //listeners
         mBtnSiguiente.setOnClickListener(this);
@@ -133,9 +133,11 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
             esInputValido = false;
         if (!usuarioInputValidaciones.validarNumTelefonico(getActivity(), mEditTxtNumTelefonico))
             esInputValido = false;
-        if (!usuarioInputValidaciones.validarContraseña(getActivity(), mEditTxtContraseña))
-            esInputValido = false;
-        else if (!usuarioInputValidaciones.validarConfirmarContraseña(mEditTxtContraseña.getText().toString(), getActivity(), mEditTxtConfrimarContraseña))
+        if (usuarioInputValidaciones.validarContraseña(getActivity(), mEditTxtContraseña)){
+            if (!usuarioInputValidaciones.validarConfirmarContraseña(mEditTxtContraseña.getText().toString(), getActivity(), mEditTxtConfirmarContraseña))
+                esInputValido = false;
+        }
+        else
             esInputValido = false;
 
         return esInputValido;

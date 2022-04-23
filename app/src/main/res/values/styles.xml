@@ -1,34 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Botones -->
-    <style name="BtnMoradoOscuro" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/bkgd_button_morado_oscuro</item>
+    <style name="BtnMoradoOscuro">
+        <item name="android:background">@drawable/bkgd_esquinas_redondeadas</item>
+        <item name="android:backgroundTint">@color/morado_oscuro</item>
         <item name="android:fontFamily">@font/parrafo_bold</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/text_size_parrafo</item>
-        <item name="android:paddingBottom">5dp</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_width">0dp</item>
+        <item name="android:elevation">10dp</item>
+        <item name="layout_constraintDimensionRatio">9:2</item>
     </style>
 
-    <style name="BtnMoradoClaro" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/bkgd_button_morado_claro</item>
+    <style name="BtnMoradoClaro">
+        <item name="android:background">@drawable/bkgd_esquinas_redondeadas</item>
+        <item name="android:backgroundTint">@color/morado_claro</item>
         <item name="android:fontFamily">@font/parrafo_bold</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/text_size_parrafo</item>
-        <item name="android:paddingBottom">5dp</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_width">0dp</item>
+        <item name="android:elevation">10dp</item>
+        <item name="android:clickable">true</item>
+        <item name="layout_constraintDimensionRatio">6:1</item>
     </style>
 
     <style name="BtnRojoClaro" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/bkgd_button_rojo</item>
+        <item name="android:background">@drawable/bkgd_esquinas_redondeadas</item>
+        <item name="android:backgroundTint">@color/rojo_claro</item>
         <item name="android:fontFamily">@font/parrafo_bold</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/text_size_parrafo</item>
-        <item name="android:paddingBottom">5dp</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_width">0dp</item>
+        <item name="layout_constraintDimensionRatio">12:2</item>
+    </style>
+
+    <style name="BtnRegresar1" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bkgd_button_regresar_1</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="layout_constraintDimensionRatio">2:1</item>
+    </style>
+
+    <style name="BtnCerrar" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bkgd_button_cerrar</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="layout_constraintDimensionRatio">1:1</item>
     </style>
 
     <style name="BtnConfig" parent="Widget.AppCompat.Button">
@@ -37,7 +57,6 @@
         <item name="android:textSize">@dimen/text_size_parrafo</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingLeft">55dp</item>
-        <item name="android:paddingRight">20dp</item>
         <item name="android:paddingBottom">5dp</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_width">0dp</item>
@@ -80,6 +99,19 @@
         <item name="android:layout_width">0dp</item>
     </style>
 
+    <style name="TxtViewTransparenteConfig" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:fontFamily">@font/parrafo_bold</item>
+        <item name="android:textColor">@color/negro</item>
+        <item name="android:textSize">@dimen/text_size_parrafo</item>
+        <item name="android:gravity">center_vertical|left</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="layout_constraintDimensionRatio">5:1</item>
+    </style>
+
+
     <!-- EditText -->
     <style name="EditTextTransparente" parent="Widget.AppCompat.EditText">
         <item name="android:background">@drawable/bkgd_borde_azul_oscuro</item>
@@ -116,4 +148,28 @@
         <item name="android:layout_width">0dp</item>
     </style>
 
+    <style name="ConsLytTituloBlanco">
+        <item name="android:background">@drawable/bkgd_esquinas_redondeadas</item>
+        <item name="android:backgroundTint">@color/blanco</item>
+        <item name="android:elevation">10dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="layout_constraintDimensionRatio">14:3</item>
+    </style>
+
+    <style name="ConsLytBtnMorado">
+        <item name="android:background">@drawable/bkgd_esquinas_redondeadas</item>
+        <item name="android:backgroundTint">@color/blanco</item>
+        <item name="android:elevation">10dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="layout_constraintDimensionRatio">14:3</item>
+    </style>
+
+    <style name="BkgdIcon">
+        <item name="android:background">@drawable/bkgd_button_regresar_2</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="layout_constraintDimensionRatio">1:1</item>
+    </style>
 </resources>

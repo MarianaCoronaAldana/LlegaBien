@@ -66,30 +66,43 @@
             app:layout_constraintDimensionRatio="1:0"
             app:layout_constraintTop_toTopOf="@id/guideline_fondo_cambiarContra" />
 
-        <Button
-            android:id="@+id/button_regresar_cambiarContra"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/bkgd_button_regresar_rellenado"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/consLyt_titulo_cambiarContra"
+            style="@style/ConsLytTituloBlanco"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="19:4"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_cambiarContra"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_cambiarContra"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.05" />
+            app:layout_constraintVertical_bias="0.03" >
 
-        <TextView
-            android:id="@+id/textView_titulo_cambiarContra"
-            style="@style/TxtViewBlanco"
-            android:elevation="2dp"
-            android:text="@string/titulo_cambiarContra"
-            android:textSize="@dimen/text_size_titulo_small"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="4:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_cambiarContra"
-            app:layout_constraintStart_toStartOf="@id/guideline1_textViewTitulo_cambiarContra"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.05" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_textView_titulo_cambiarContra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.20" />
+
+            <Button
+                android:id="@+id/button_regresar_cambiarContra"
+                style="@style/BkgdIcon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline_textView_titulo_cambiarContra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView_titulo_cambiarContra"
+                style="@style/TxtViewBlanco"
+                android:background="@android:color/transparent"
+                android:text="@string/titulo_cambiarContra"
+                android:textSize="@dimen/text_size_titulo_small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="4:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline_textView_titulo_cambiarContra"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/textView_instrucciones_cambiarContra"
@@ -99,7 +112,7 @@
             app:layout_constraintDimensionRatio="5:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_cambiarContra"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_cambiarContra"
-            app:layout_constraintTop_toBottomOf="@id/textView_titulo_cambiarContra"
+            app:layout_constraintTop_toBottomOf="@id/consLyt_titulo_cambiarContra"
             app:layout_constraintVertical_bias="0.1" />
 
         <EditText
@@ -141,7 +154,7 @@
             app:layout_constraintVertical_bias="0.052" />
 
         <Button
-            android:id="@+id/button_aceptar_editarPerfil"
+            android:id="@+id/button_aceptar_cambiarContra"
             style="@style/BtnMoradoOscuro"
             android:text="@string/aceptarBtn_cambiarContra"
             app:layout_constraintBottom_toBottomOf="parent"

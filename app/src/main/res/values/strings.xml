@@ -96,6 +96,11 @@
     <string name="instrucciones_subirReporte">Aquí puedes subir reportes de delitos en formato .xml.</string>
     <string name="seleccionarArchivoBtn_subirReporte">Seleccionar archivos</string>
 
+    <!-- Dialog Tipo Configuración -->
+    <string name="instrucciones_tipoConfig">Selecciona la configuración que quieres abrir:</string>
+    <string name="configUsuario_tipoConfig">Configuración de tu cuenta</string>
+    <string name="configAdmin_tipoConfog">Configuración avanzada</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

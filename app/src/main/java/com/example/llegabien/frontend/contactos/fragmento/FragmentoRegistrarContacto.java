@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedDispatcherOwner;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -31,10 +32,9 @@ import com.example.llegabien.frontend.usuario.fragmento.FragmentoIniciarSesion1;
 
 import io.realm.RealmList;
 
-public class FragmentoRegistrarContacto extends Fragment implements View.OnClickListener, FragmentManager.OnBackStackChangedListener{
+public class FragmentoRegistrarContacto extends Fragment implements View.OnClickListener{
 
     private TextView mTxtTitulo;
-    private FragmentManager mFragmentManager;
     private EditText mEditTxtNombre, mEditTxtNumTelefonico;
     private Button mBtnSiguiente, mBtnFinalizar;;
     private Guideline mGuideline1_Btn1, mGuideline2_Btn1;
@@ -83,7 +83,6 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
 
         //wiring up
         mTxtTitulo = (TextView) root.findViewById(R.id.textView_titulo_registroContactos);
-        mFragmentManager = getActivity().getSupportFragmentManager();
         mEditTxtNombre = (EditText) root.findViewById(R.id.editText_nombre_registroContactos);
         mEditTxtNumTelefonico = (EditText) root.findViewById(R.id.editText_celular_registroContactos);
 
@@ -102,7 +101,6 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
         //listeners
         mBtnSiguiente.setOnClickListener(this);
         mBtnFinalizar.setOnClickListener(this);
-        mFragmentManager.addOnBackStackChangedListener(this);
 
         return root;
     }
@@ -122,7 +120,7 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
                         constraintSet.clone(mConstraintLayout);
                         constraintSet.connect(mBtnSiguiente.getId(),ConstraintSet.START,mGuideline1_Btn1.getId(),ConstraintSet.START,0);
                         constraintSet.connect(mBtnSiguiente.getId(),ConstraintSet.END,mGuideline2_Btn1.getId(),ConstraintSet.END,0);
-                        constraintSet.setDimensionRatio(mBtnSiguiente.getId(),"5:2");
+                        constraintSet.setDimensionRatio(mBtnSiguiente.getId(),"6:2");
                         constraintSet.applyTo(mConstraintLayout);
                         mBtnFinalizar.setVisibility(View.VISIBLE);
                         mBtnFinalizar.setClickable(true);
@@ -160,23 +158,15 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
         }
     }
 
-    @Override
-    public void onBackStackChanged() {
-        if (mBackStackCount == mSiguienteCount)
-            mNumContacto--;
-        mBackStackCount = mSiguienteCount;
-    }
-
 
     //OTRAS FUNCIONES//
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private boolean validarAllInputs(){
         UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
         boolean esInputValido = true;
         if (!usuarioInputValidaciones.validarNombre(getActivity(),mEditTxtNombre))
             esInputValido = false;
-        if ( !usuarioInputValidaciones.validarNumTelefonico(getActivity(),mEditTxtNumTelefonico))
+        if (!usuarioInputValidaciones.validarNumTelefonico(getActivity(),mEditTxtNumTelefonico))
             esInputValido = false;
 
         return esInputValido;

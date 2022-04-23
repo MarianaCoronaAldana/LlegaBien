@@ -20,6 +20,7 @@ import com.example.llegabien.R;
 import com.example.llegabien.backend.permisos.Preferences;
 import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
+import com.example.llegabien.frontend.ActivityPrueba;
 import com.example.llegabien.frontend.FragmentoAuxiliar;
 import com.example.llegabien.frontend.rutas.activity.MapsActivity;
 import com.example.llegabien.mongoDB.usuario_validaciones;
@@ -81,7 +82,10 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
                 Preferences.savePreferenceBoolean(FragmentoIniciarSesion1.this,mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
                 //para validar si los campos no están vacios
                 if (validarAllInputs())
-                    verificarCorreoContraseña();
+                    startActivity(new Intent(getActivity(), ActivityPrueba.class));
+
+                //QUITAR DESPUES DE HACER PRUEBAS//
+                    //verificarCorreoContraseña();
                 break;
             case R.id.button_registrarse_inicia_sesion_1:
                 FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();

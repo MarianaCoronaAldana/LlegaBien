@@ -44,11 +44,8 @@
 
         <Button
             android:id="@+id/button_regresar_registro_2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/bkgd_button_regresar"
+            style="@style/BtnRegresar1"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline1_button_registro_2"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_2"
             app:layout_constraintTop_toTopOf="parent"
@@ -141,7 +138,6 @@
             style="@style/BtnMoradoOscuro"
             android:text="@string/siguienteBtn"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="4:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_button_registro_2"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/guideline1_button_registro_2"

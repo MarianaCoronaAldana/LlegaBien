@@ -1,16 +1,11 @@
 package com.example.llegabien.frontend.rutas.activity;
 
-import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_USUARIO;
-
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.permisos.PedirPermisos;
-import com.example.llegabien.backend.permisos.Preferences;
-import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,8 +20,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ActivityMapsBinding binding;
 
 
-    usuario Usuario;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,18 +30,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-    //->
-
-        Usuario = Preferences.getSavedObjectFromPreference(this, PREFERENCE_USUARIO, usuario.class);
-        Log.v("QUICKSTART", "AAAAAAAAAAAAAA Nombre usuario: " + Usuario.getNombre());
-
-
-    //->
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
     }
 
 
@@ -61,6 +46,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

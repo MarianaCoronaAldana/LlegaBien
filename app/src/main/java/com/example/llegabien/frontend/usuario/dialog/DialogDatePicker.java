@@ -5,18 +5,20 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.widget.DatePicker;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import java.util.Calendar;
 
-public class DatePickerFragmento extends DialogFragment {
+public class DialogDatePicker extends DialogFragment {
 
     private DatePickerDialog.OnDateSetListener listener;
 
-    public static DatePickerFragmento newInstance(DatePickerDialog.OnDateSetListener listener) {
-        DatePickerFragmento fragment = new DatePickerFragmento();
+    public static DialogDatePicker newInstance(DatePickerDialog.OnDateSetListener listener) {
+        DialogDatePicker fragment = new DialogDatePicker();
         fragment.setListener(listener);
         return fragment;
     }
@@ -36,4 +38,15 @@ public class DatePickerFragmento extends DialogFragment {
         return new DatePickerDialog(getActivity(), AlertDialog.THEME_HOLO_LIGHT, listener, year, month, day);
     }
 
+    public void mostrarDatePickerDialog(EditText editTextFechaNacimiento, Fragment fragmento) {
+        DialogDatePicker dialogDatePicker = DialogDatePicker.newInstance(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                // +1 porque Enero es 0
+                final String fechaSeleccionada = day + " / " + (month+1) + " / " + year;
+                editTextFechaNacimiento.setText(fechaSeleccionada);
+            }
+        });
+        dialogDatePicker.show(fragmento.getActivity().getSupportFragmentManager(), "datePicker");
+    }
 }

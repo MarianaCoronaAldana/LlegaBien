@@ -23,14 +23,14 @@
             app:layout_constraintGuide_percent="0.16" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline1_textView_editView_subirReporte"
+            android:id="@+id/guideline1_textView_button_subirReporte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.10" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2_textView_editView_subirReporte"
+            android:id="@+id/guideline2_textView_button_subirReporte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -42,41 +42,56 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.25" />
-        
 
         <View
-            android:id="@+id/view_fondoAzulClaro_subirReporte"
+            android:id="@+id/view_fondoAzulClaro_configuracionAdmin"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@drawable/bkgd_esquinas_superiores_redondeadas"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:0"
-            app:layout_constraintTop_toTopOf="@id/guideline_fondo_subirReporte" />
+            app:layout_constraintTop_toTopOf="@id/guideline_fondo_subirReporte"
+            app:layout_constraintVertical_bias="1.0" />
 
-        <Button
-            android:id="@+id/button_regresar_subirReporte"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/bkgd_button_regresar_rellenado"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="19:4"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_subirReporte"
-            app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_subirReporte"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.05" />
 
-        <TextView
-            android:id="@+id/textView_titulo_subirReporte"
-            style="@style/TxtViewBlanco"
-            android:elevation="2dp"
-            android:text="@string/titulo_subirReporte"
-            android:textSize="@dimen/text_size_titulo_small"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/consLyt_titulo_subirReporte"
+            style="@style/ConsLytTituloBlanco"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="4:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_subirReporte"
-            app:layout_constraintStart_toStartOf="@id/guideline1_textViewTitulo_subirReporte"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_subirReporte"
+            app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_subirReporte"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.05" />
+            app:layout_constraintVertical_bias="0.03" >
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_textView_titulo_subirReporte"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.20" />
+
+            <Button
+                android:id="@+id/button_regresar_subirReporte"
+                style="@style/BkgdIcon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline_textView_titulo_subirReporte"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView_titulo_subirReporte"
+                style="@style/TxtViewBlanco"
+                android:background="@android:color/transparent"
+                android:text="@string/titulo_subirReporte"
+                android:textSize="@dimen/text_size_titulo_small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="4:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline_textView_titulo_subirReporte"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <TextView
             android:id="@+id/textView_instrucciones_subirReporte"
@@ -84,10 +99,10 @@
             android:text="@string/instrucciones_subirReporte"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="5:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_subirReporte"
-            app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_subirReporte"
-            app:layout_constraintTop_toBottomOf="@id/textView_titulo_subirReporte"
-            app:layout_constraintVertical_bias="0.1" />
+            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_subirReporte"
+            app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_subirReporte"
+            app:layout_constraintTop_toBottomOf="@id/guideline_fondo_subirReporte"
+            app:layout_constraintVertical_bias="0.05" />
 
         <Button
             android:id="@+id/button_seleccionarArchivos_editarPerfil"
@@ -95,8 +110,8 @@
             android:text="@string/seleccionarArchivoBtn_subirReporte"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="6:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_subirReporte"
-            app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_subirReporte"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_subirReporte"
+            app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_subirReporte"
             app:layout_constraintTop_toBottomOf="@id/textView_instrucciones_subirReporte"
             app:layout_constraintVertical_bias="0.05" />
 
