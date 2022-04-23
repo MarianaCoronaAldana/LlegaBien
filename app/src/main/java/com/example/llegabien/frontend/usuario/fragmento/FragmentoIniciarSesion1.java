@@ -145,10 +145,10 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
 
         //para verificar que el usuario haya validado su cuenta de correo
         if(estado) {
-
     //REPONER
             //verificarCorreoVerificado();
             startActivity(new Intent(getActivity(), MapsActivity.class));
+
         }
     }
 

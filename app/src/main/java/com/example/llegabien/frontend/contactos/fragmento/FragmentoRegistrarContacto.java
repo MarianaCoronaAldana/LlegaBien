@@ -10,25 +10,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.activity.OnBackPressedDispatcherOwner;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.contactos.usuario_contacto;
-import com.example.llegabien.mongoDB.usuario_BD;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.backend.usuario.usuario_SharedViewModel;
 import com.example.llegabien.frontend.usuario.fragmento.FragmentoIniciarSesion1;
+import com.example.llegabien.mongoDB.Conectar;
+import com.example.llegabien.mongoDB.usuario_BD;
 
 import io.realm.RealmList;
 
@@ -45,6 +44,7 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
     private usuario_SharedViewModel SharedViewModel;
     usuario Usuario;
     usuario_contacto Contacto =  new  usuario_contacto();
+    Conectar conectar = new Conectar();
 
     public FragmentoRegistrarContacto(){}
 
@@ -126,15 +126,14 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
                         mBtnFinalizar.setClickable(true);
                     }
                     if (mNumContacto == 5){
-                        abrirInicioSesion1();
-
                         Log.v("QUICKSTART", "nombre: " + Usuario.getNombre()
                                 + "contacto 1 nombre: " + Usuario.getContacto().first().getNombre()+
                                 "ultimo contacto numero: " + Usuario.getContacto().last().getTelCelular());
 
                         //Se integra al usuario a la BD
                         usuario_BD.AñadirUser(Usuario);
-
+                        conectar.registrarCuentaCorreo(Usuario.getCorreoElectronico(), Usuario.getContrasena());
+                        abrirInicioSesion1();
                     }
                     else {
                         mNumContacto++;
@@ -151,7 +150,7 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
                 if (validarAllInputs()) {
                     //Se integra al usuario a la BD
                     usuario_BD.AñadirUser(Usuario);
-
+                    conectar.registrarCuentaCorreo(Usuario.getCorreoElectronico(), Usuario.getContrasena());
                     abrirInicioSesion1();
                 }
                 break;

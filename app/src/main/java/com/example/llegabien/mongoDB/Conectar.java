@@ -14,14 +14,13 @@ public class Conectar {
 
     private Realm realm=null;
 
-    public SyncConfiguration ConectarAMongoDB(){
-        SyncConfiguration config = null;
-
-        //PARA LOGING ANONIMO
-        Credentials credentials = Credentials.anonymous();
+    //PARA LOGING ANONIMO
+    public SyncConfiguration ConectarAnonimoMongoDB(){
 
         App app = aplicacionLlegaBien.getApp();
         String partitionValue = "LlegaBien";
+        SyncConfiguration config = null;
+        Credentials credentials = Credentials.anonymous();
         Log.v("QUICKSTART", "hola");
 
         app.loginAsync(credentials, result -> {
@@ -35,22 +34,68 @@ public class Conectar {
             }
         });
 
+        try{
         config = new SyncConfiguration.Builder(
                 app.currentUser(),
                 partitionValue)
                 .build();
 
-/*
+        return config;
+        }
+        catch(NumberFormatException e){
+            return null;
+        }
+    }
+
+    public SyncConfiguration ConectarCorreoMongoDB(String email, String password){
+        App app = aplicacionLlegaBien.getApp();
+        String partitionValue = "LlegaBien";
+        SyncConfiguration config = null;
+        Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
+
+        app.loginAsync(emailPasswordCredentials, it -> {
+            if (it.isSuccess()) {
+                Log.v("QUICKSTART", "Successfully authenticated using an email and password.");
+            } else {
+                Log.e("QUICKSTART", it.getError().toString());
+            }
+        });
+
+        try{
+        config = new SyncConfiguration.Builder(
+                app.currentUser(),
+                partitionValue)
+                .build();
+
+        return config;
+        }
+        catch(NumberFormatException e){
+            return null;
+        }
+    }
+
+    public void registrarCuentaCorreo(String email, String password){
+        App app = aplicacionLlegaBien.getApp();
+
+        app.getEmailPassword().registerUserAsync(email, password, it -> {
+            if (it.isSuccess()) {
+                Log.i("EXAMPLE", "Successfully registered user.");
+            } else {
+                Log.e("EXAMPLE", "Failed to register user: " + it.getError().getErrorMessage());
+            }
+        });
+    }
+
+    public void cerrarMongoDB(){
+        App app = aplicacionLlegaBien.getApp();
         app.currentUser().logOutAsync(result -> {
             if (result.isSuccess()) {
-                Log.v("QUICKSTART", "Successfully logge
-                d out.");
+                Log.v("QUICKSTART", "Successfully logged out.");
             } else {
                 Log.e("QUICKSTART", "Failed to log out, error: " + result.getError());
             }
         });
-*/
-        return config;
     }
+
 }
 
