@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -17,7 +18,8 @@ import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUs
 
 public class FragmentoConfigUsuario extends Fragment implements View.OnClickListener{
 
-    private Button mBtnContactos, mBtnHistorialRutas, mBtnHistorialReportes, mBtnEditarPerfil, mBtnCerrarSesion, mBtnRegresar;
+    private ConstraintLayout mBtnContactos, mBtnHistorialRutas, mBtnHistorialReportes, mBtnEditarPerfil;
+    private Button mBtnCerrarSesion, mBtnRegresar;
 
     public FragmentoConfigUsuario() {
         // Required empty public constructor
@@ -30,7 +32,7 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
         View root = inflater.inflate(R.layout.fragmento_configuracion_usuario, container, false);
 
         //wiring up
-        mBtnEditarPerfil = (Button) root.findViewById(R.id.button_editarPerfil_configuracionUsuario);
+        mBtnEditarPerfil = (ConstraintLayout) root.findViewById(R.id.button_editarPerfil_configuracionUsuario);
         mBtnCerrarSesion = (Button) root.findViewById(R.id.button_cerrarSesion_configuracionUsuario);
         mBtnRegresar = (Button) root.findViewById(R.id.button_regresar_configuracionUsuario);
 

@@ -136,7 +136,6 @@
             style="@style/BtnMoradoOscuro"
             android:text="@string/siguienteBtn"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="4:1"
             app:layout_constraintEnd_toEndOf="@id/guideline3_button1_registro_4"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/guideline1_button1_registro_4"
@@ -151,12 +150,12 @@
             android:textSize="@dimen/text_size_parrafo"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="5:2"
+            app:layout_constraintDimensionRatio="6:2"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_4"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/guideline1_button2_registro_4"
             app:layout_constraintTop_toBottomOf="@id/fragmentContainerView_registrarContactos_registro_4"
-            app:layout_constraintVertical_bias="0.4" />
+            app:layout_constraintVertical_bias="0.3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

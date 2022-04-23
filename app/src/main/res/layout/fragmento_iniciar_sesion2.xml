@@ -86,11 +86,8 @@
 
         <Button
             android:id="@+id/button_regresar_inicia_sesion_2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/bkgd_button_regresar"
+            style="@style/BtnRegresar1"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline1_button_inicia_sesion_2"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_inicia_sesion_2"
             app:layout_constraintTop_toTopOf="parent"
@@ -192,7 +189,6 @@
             style="@style/BtnMoradoOscuro"
             android:text="@string/verificarBtn"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="4:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_button_inicia_sesion_2"
             app:layout_constraintStart_toStartOf="@id/guideline1_button_inicia_sesion_2"
             app:layout_constraintTop_toBottomOf="@+id/button_reenviar_codigo_inicia_sesion_2"

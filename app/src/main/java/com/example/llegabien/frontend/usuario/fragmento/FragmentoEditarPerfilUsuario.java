@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -19,7 +20,8 @@ import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUs
 import com.example.llegabien.frontend.usuario.dialog.DialogDatePicker;
 
 public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnClickListener{
-    private Button mBtnCambiarContra, mBtnAceptar, mBtnEliminarCuenta, mBtnRegresar;
+    private ConstraintLayout mBtnCambiarContra, mBtnAceptar;
+    private Button mBtnEliminarCuenta, mBtnRegresar;
     private EditText mEditTxtNombres, mEditTxtApellidos, mEditTxtFechaNacimiento, mEditTxtNumTelefonico, mEditTxtCorreo;
     public FragmentoEditarPerfilUsuario() {
         // Required empty public constructor
@@ -32,8 +34,8 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
         View root = inflater.inflate(R.layout.fragmento_editar_perfil_usuario, container, false);
 
         //wiring up
-        mBtnAceptar = (Button) root.findViewById(R.id.button2_aceptar_editarPerfil);
-        mBtnCambiarContra  = (Button) root.findViewById(R.id.button1_cambiarContra_editarPerfil);
+        mBtnAceptar = (ConstraintLayout) root.findViewById(R.id.button2_aceptar_editarPerfil);
+        mBtnCambiarContra  = (ConstraintLayout) root.findViewById(R.id.button1_cambiarContra_editarPerfil);
         mBtnEliminarCuenta  = (Button) root.findViewById(R.id.button_eliminarCuenta_editarPerfil);
         mBtnRegresar = (Button) root.findViewById(R.id.button_regresar_editarPerfil);
         mEditTxtNombres = (EditText) root.findViewById(R.id.editText_nombres_editarPerfil);

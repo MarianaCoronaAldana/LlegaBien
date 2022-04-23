@@ -2,6 +2,7 @@ package com.example.llegabien.frontend.usuario.fragmento;
 
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -13,7 +14,8 @@ import android.widget.Button;
 import com.example.llegabien.R;
 
 public class FragmentoConfigAvanAdmin extends Fragment implements View.OnClickListener{
-    private Button mBtnOtrosPerfiles, mBtnSubirReporte, mBtnConfigUsuario,mBtnRegresar;
+    private Button mBtnConfigUsuario,mBtnRegresar;
+    private ConstraintLayout mBtnSubirReporte, mBtnOtrosPerfiles;
 
     public FragmentoConfigAvanAdmin() {
         // Required empty public constructor
@@ -26,7 +28,7 @@ public class FragmentoConfigAvanAdmin extends Fragment implements View.OnClickLi
         View root = inflater.inflate(R.layout.fragmento_config_avan_admin, container, false);
 
         //wiring up
-        mBtnSubirReporte = (Button) root.findViewById(R.id.button_subirReporte_configuracionAdmin);
+        mBtnSubirReporte = (ConstraintLayout) root.findViewById(R.id.button_subirReporte_configuracionAdmin);
         mBtnConfigUsuario = (Button) root.findViewById(R.id.button_configUsuario_configuracionAdmin);
         mBtnRegresar = (Button) root.findViewById(R.id.button_regresar_configuracionAdmin);
 

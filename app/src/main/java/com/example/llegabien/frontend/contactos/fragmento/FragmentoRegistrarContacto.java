@@ -120,7 +120,7 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
                         constraintSet.clone(mConstraintLayout);
                         constraintSet.connect(mBtnSiguiente.getId(),ConstraintSet.START,mGuideline1_Btn1.getId(),ConstraintSet.START,0);
                         constraintSet.connect(mBtnSiguiente.getId(),ConstraintSet.END,mGuideline2_Btn1.getId(),ConstraintSet.END,0);
-                        constraintSet.setDimensionRatio(mBtnSiguiente.getId(),"5:2");
+                        constraintSet.setDimensionRatio(mBtnSiguiente.getId(),"6:2");
                         constraintSet.applyTo(mConstraintLayout);
                         mBtnFinalizar.setVisibility(View.VISIBLE);
                         mBtnFinalizar.setClickable(true);

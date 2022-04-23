@@ -51,30 +51,44 @@
             app:layout_constraintTop_toTopOf="@id/guideline_fondo_configuracionUsuario"
             app:layout_constraintVertical_bias="1.0" />
 
-        <Button
-            android:id="@+id/button_regresar_configuracionUsuario"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/bkgd_button_regresar_rellenado"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/consLyt_titulo_editarPerfil"
+            style="@style/ConsLytTituloBlanco"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="19:4"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_configuracionUsuario"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_configuracionUsuario"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.03" />
+            app:layout_constraintVertical_bias="0.03" >
 
-        <TextView
-            android:id="@+id/textView_titulo_configuracionUsuario"
-            style="@style/TxtViewBlanco"
-            android:elevation="2dp"
-            android:text="@string/titulo_config"
-            android:textSize="@dimen/text_size_titulo_small"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="4:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_configuracionUsuario"
-            app:layout_constraintStart_toStartOf="@id/guideline1_textViewTitulo_configuracionUsuario"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.03" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_textView_titulo_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.20" />
+
+            <Button
+                android:id="@+id/button_regresar_configuracionUsuario"
+                style="@style/BkgdIcon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline_textView_titulo_configuracionUsuario"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView_titulo_configuracionUsuario"
+                style="@style/TxtViewBlanco"
+                android:background="@android:color/transparent"
+                android:text="@string/titulo_config"
+                android:textSize="@dimen/text_size_titulo_small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="4:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline_textView_titulo_configuracionUsuario"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:id="@+id/view_fondoAzulOscuro_configuracionUsuario"
@@ -86,7 +100,7 @@
             app:layout_constraintDimensionRatio="5:2"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_configuracionUsuario"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_configuracionUsuario"
-            app:layout_constraintTop_toBottomOf="@id/textView_titulo_configuracionUsuario"
+            app:layout_constraintTop_toBottomOf="@id/consLyt_titulo_editarPerfil"
             app:layout_constraintVertical_bias="0.05" />
 
         <TextView
@@ -100,7 +114,7 @@
             app:layout_constraintDimensionRatio="8:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_configuracionUsuario"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_configuracionUsuario"
-            app:layout_constraintTop_toBottomOf="@id/textView_titulo_configuracionUsuario"
+            app:layout_constraintTop_toBottomOf="@id/consLyt_titulo_editarPerfil"
             app:layout_constraintVertical_bias="0.08" />
 
         <TextView
@@ -116,69 +130,287 @@
             app:layout_constraintTop_toBottomOf="@id/textView_nombreUsuario_configuracionUsuario"
             app:layout_constraintVertical_bias="0.0" />
 
-        <Button
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_contactos_configuracionUsuario"
-            style="@style/BtnConfig"
-            android:background="@drawable/bkgd_button_contactos_config"
-            android:text="@string/contactos_config"
+            style="@style/BtnMoradoClaro"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="5:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_configuracionUsuario"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_configuracionUsuario"
             app:layout_constraintTop_toBottomOf="@id/view_fondoAzulOscuro_configuracionUsuario"
-            app:layout_constraintVertical_bias="0.1" />
+            app:layout_constraintVertical_bias="0.1">
 
-        <Button
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1_icon_contactos_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.04" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_icon_contactos_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.14" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1_arrow_contactos_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.9"  />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_arrow_contactos_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.96" />
+
+            <View
+                android:id="@+id/icon_contactos"
+                style="@style/BkgdIcon"
+                android:background="@drawable/bkgd_icon_contactos"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_icon_contactos_configuracionUsuario"
+                app:layout_constraintStart_toStartOf="@id/guideline1_icon_contactos_configuracionUsuario"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/icon_siguiente_contactos"
+               style="@style/BkgdIcon"
+                android:background="@drawable/bkgd_icon_siguiente"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_arrow_contactos_configuracionUsuario"
+                app:layout_constraintStart_toStartOf="@id/guideline1_arrow_contactos_configuracionUsuario"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView_contactos_configuracionUsuario"
+                style="@style/TxtViewTransparenteConfig"
+                android:text="@string/contactos_config"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline1_arrow_contactos_configuracionUsuario"
+                app:layout_constraintStart_toStartOf="@id/guideline2_icon_contactos_configuracionUsuario"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_historialRutas_configuracionUsuario"
-            style="@style/BtnConfig"
-            android:background="@drawable/bkgd_button_historial_rutas_config"
-            android:text="@string/historialRutas_config"
+            style="@style/BtnMoradoClaro"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="5:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_configuracionUsuario"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_configuracionUsuario"
             app:layout_constraintTop_toBottomOf="@id/button_contactos_configuracionUsuario"
-            app:layout_constraintVertical_bias="0.05" />
+            app:layout_constraintVertical_bias="0.05">
 
-        <Button
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1_icon_historialRutas_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.04" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_icon_historialRutas_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.14" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1_arrow_historialRutas_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.9"  />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_arrow_historialRutas_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.96" />
+
+            <View
+                android:id="@+id/icon_historialRutas"
+                style="@style/BkgdIcon"
+                android:background="@drawable/bkgd_icon_historial_rutas"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_icon_historialRutas_configuracionUsuario"
+                app:layout_constraintStart_toStartOf="@id/guideline1_icon_historialRutas_configuracionUsuario"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/icon_siguiente_historialRutas"
+                style="@style/BkgdIcon"
+                android:background="@drawable/bkgd_icon_siguiente"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_arrow_historialRutas_configuracionUsuario"
+                app:layout_constraintStart_toStartOf="@id/guideline1_arrow_historialRutas_configuracionUsuario"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView_historialRutas_configuracionUsuario"
+                style="@style/TxtViewTransparenteConfig"
+                android:text="@string/historialRutas_config"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline1_arrow_historialRutas_configuracionUsuario"
+                app:layout_constraintStart_toStartOf="@id/guideline2_icon_historialRutas_configuracionUsuario"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_historialReportes_configuracionUsuario"
-            style="@style/BtnConfig"
-            android:background="@drawable/bkgd_button_historial_reportes_config"
-            android:text="@string/historialReportes_config"
+            style="@style/BtnMoradoClaro"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="5:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_configuracionUsuario"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_configuracionUsuario"
             app:layout_constraintTop_toBottomOf="@id/button_historialRutas_configuracionUsuario"
-            app:layout_constraintVertical_bias="0.05" />
+            app:layout_constraintVertical_bias="0.05">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1_icon_historialReportes_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.04" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_icon_historialReportes_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.14" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1_arrow_historialReportes_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.9"  />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_arrow_historialReportes_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.96" />
+
+            <View
+                android:id="@+id/icon_historialReportes"
+                style="@style/BkgdIcon"
+                android:background="@drawable/bkgd_icon_historial_reportes"
+                app:layout_constraintDimensionRatio="10:9"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_icon_historialReportes_configuracionUsuario"
+                app:layout_constraintStart_toStartOf="@id/guideline1_icon_historialReportes_configuracionUsuario"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/icon_siguiente_historialReportes"
+                style="@style/BkgdIcon"
+                android:background="@drawable/bkgd_icon_siguiente"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_arrow_historialReportes_configuracionUsuario"
+                app:layout_constraintStart_toStartOf="@id/guideline1_arrow_historialReportes_configuracionUsuario"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView_historialReportes_configuracionUsuario"
+                style="@style/TxtViewTransparenteConfig"
+                android:text="@string/historialReportes_config"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline1_arrow_historialReportes_configuracionUsuario"
+                app:layout_constraintStart_toStartOf="@id/guideline2_icon_historialReportes_configuracionUsuario"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:id="@+id/separador1_configuracionUsuario"
             style="@style/ViewSeparador"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="80:1"
+            app:layout_constraintDimensionRatio="200:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_configuracionUsuario"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_configuracionUsuario"
             app:layout_constraintTop_toBottomOf="@id/button_historialReportes_configuracionUsuario"
             app:layout_constraintVertical_bias="0.1"/>
 
-        <Button
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_editarPerfil_configuracionUsuario"
-            style="@style/BtnConfig"
-            android:background="@drawable/bkgd_button_editar_perfil_config"
-            android:text="@string/editarPerfil_config"
+            style="@style/BtnMoradoClaro"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="5:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_configuracionUsuario"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_configuracionUsuario"
             app:layout_constraintTop_toBottomOf="@id/separador1_configuracionUsuario"
-            app:layout_constraintVertical_bias="0.1" />
+            app:layout_constraintVertical_bias="0.1">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1_icon_editarPerfil_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.04" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_icon_editarPerfil_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.14" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1_arrow_editarPerfil_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.9"  />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_arrow_editarPerfil_configuracionUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.96" />
+
+            <View
+                android:id="@+id/icon_editarPerfil"
+                style="@style/BkgdIcon"
+                android:background="@drawable/bkgd_icon_editar_perfil"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_icon_editarPerfil_configuracionUsuario"
+                app:layout_constraintStart_toStartOf="@id/guideline1_icon_editarPerfil_configuracionUsuario"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/icon_siguiente_editarPerfil"
+                style="@style/BkgdIcon"
+                android:background="@drawable/bkgd_icon_siguiente"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_arrow_editarPerfil_configuracionUsuario"
+                app:layout_constraintStart_toStartOf="@id/guideline1_arrow_editarPerfil_configuracionUsuario"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView_editarPerfil_configuracionUsuario"
+                style="@style/TxtViewTransparenteConfig"
+                android:text="@string/editarPerfil_config"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline1_arrow_editarPerfil_configuracionUsuario"
+                app:layout_constraintStart_toStartOf="@id/guideline2_icon_editarPerfil_configuracionUsuario"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <View
             android:id="@+id/separador2_configuracionUsuario"
             style="@style/ViewSeparador"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="80:1"
+            app:layout_constraintDimensionRatio="200:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_configuracionUsuario"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_configuracionUsuario"
             app:layout_constraintTop_toBottomOf="@id/button_editarPerfil_configuracionUsuario"
@@ -189,7 +421,6 @@
             style="@style/BtnRojoClaro"
             android:text="@string/cerrarSesion_config"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="5:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_configuracionUsuario"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_configuracionUsuario"
             app:layout_constraintTop_toBottomOf="@id/separador2_configuracionUsuario"
