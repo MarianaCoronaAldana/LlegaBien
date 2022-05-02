@@ -3,7 +3,11 @@ package com.example.llegabien.mongoDB;
 import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_USUARIO;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.llegabien.backend.permisos.Preferences;
 import com.example.llegabien.backend.usuario.usuario;
@@ -11,14 +15,14 @@ import com.example.llegabien.backend.usuario.usuario;
 import io.realm.Realm;
 import io.realm.mongodb.sync.SyncConfiguration;
 
-public class usuario_validaciones {
+public class usuario_validaciones extends AppCompatActivity {
     Realm realm;
     Conectar conectar = new Conectar();
 
     // Se verifica que el correo y telefono del usuario no hayan sido registrados anteriormente
     public boolean validarExistenciaCorreoTelefono(String correo, String telefono) {
-
         SyncConfiguration config = conectar.ConectarAnonimoMongoDB();
+
         if (config !=null)
             realm = Realm.getInstance(config);
 
@@ -37,9 +41,11 @@ public class usuario_validaciones {
     public boolean validarAdmin(Context c, String correo, String contrasena){
         SyncConfiguration config = conectar.ConectarAnonimoMongoDB();
 
-        if (config !=null)
-            realm = Realm.getInstance(config);
+        if (config == null) {
+            ErrorConexion(c);
+        }
 
+        realm = Realm.getInstance(config);
         usuario task = realm.where(usuario.class).equalTo("correoElectronico", correo)
                 .and()
                 .equalTo("contrasena",  contrasena)
@@ -65,9 +71,11 @@ public class usuario_validaciones {
     public boolean verificarCorreoContrasena(Context c, String correo, String contrasena) {
         SyncConfiguration config = conectar.ConectarAnonimoMongoDB();
 
-        if (config !=null)
-            realm = Realm.getInstance(config);
+        if (config == null) {
+            ErrorConexion(c);
+        }
 
+        realm = Realm.getInstance(config);
         usuario task = realm.where(usuario.class).equalTo("correoElectronico", correo)
                 .and()
                 .equalTo("contrasena",  contrasena)
@@ -91,9 +99,11 @@ public class usuario_validaciones {
     public usuario conseguirUsuario_porCorreo(Context c, String correo, String contrasena) {
         SyncConfiguration config = conectar.ConectarCorreoMongoDB(correo, contrasena);
 
-        if (config !=null)
-            realm = Realm.getInstance(config);
+        if (config == null) {
+            ErrorConexion(c);
+        }
 
+        realm = Realm.getInstance(config);
         usuario task = realm.where(usuario.class).equalTo("correoElectronico", correo)
                 .findFirst();
 
@@ -106,5 +116,10 @@ public class usuario_validaciones {
         }
 
         return null;
+    }
+
+    private void ErrorConexion(Context c){
+        Toast.makeText(getApplicationContext(), "Hubo un problema en conectarse, intenta mas tarde", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, c.getClass()));
     }
 }

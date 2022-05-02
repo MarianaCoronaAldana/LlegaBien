@@ -1,5 +1,9 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
+import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_USUARIO;
+
+import static io.realm.Realm.getApplicationContext;
+
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -15,14 +20,28 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
+import com.example.llegabien.backend.permisos.Preferences;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
+import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUsuario;
 import com.example.llegabien.frontend.usuario.dialog.DialogDatePicker;
+import com.example.llegabien.mongoDB.usuario_BD;
+import com.example.llegabien.mongoDB.usuario_validaciones;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnClickListener{
     private ConstraintLayout mBtnCambiarContra, mBtnAceptar;
     private Button mBtnEliminarCuenta, mBtnRegresar;
     private EditText mEditTxtNombres, mEditTxtApellidos, mEditTxtFechaNacimiento, mEditTxtNumTelefonico, mEditTxtCorreo;
+
+    usuario Usuario;
+
     public FragmentoEditarPerfilUsuario() {
         // Required empty public constructor
     }
@@ -50,6 +69,7 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
         mBtnEliminarCuenta.setOnClickListener(this);
         mBtnRegresar.setOnClickListener(this);
 
+        setDatosUsuario();
         return root;
     }
 
@@ -66,9 +86,12 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
                 fragmentTransaction.addToBackStack(null);
                 break;
             case R.id.button2_aceptar_editarPerfil:
-                if (validarAllInputs()){}
+                if (validarAllInputs()){
+                    updateUser();
+                }
                 break;
             case R.id.button_eliminarCuenta_editarPerfil:
+                deleteUsuario();
                 startActivity(new Intent(getActivity(), ActivityPaginaPrincipalUsuario.class));
                 break;
             case R.id.editText_fechaNacimiento_editarPerfil:
@@ -100,4 +123,51 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
 
         return esInputValido;
     }
+
+    // Escribir dentro de las EditText los datos previos del usuario
+    private void setDatosUsuario() {
+        Usuario = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_USUARIO, usuario.class);
+        mEditTxtNombres.setText(Usuario.getNombre());
+        mEditTxtApellidos.setText(Usuario.getApellidos());
+        mEditTxtCorreo.setText(Usuario.getCorreoElectronico());
+        mEditTxtNumTelefonico.setText(Usuario.getTelCelular());
+
+        DateFormat dateFormat = new SimpleDateFormat("dd / M / yyyy");
+        mEditTxtFechaNacimiento.setText(dateFormat.format(Usuario.getFNacimiento()));
+    }
+
+    // Actualizar al objeto user dentro de Android Studio con lo nuevos datos
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void updateUser() {
+        Usuario.setNombre(mEditTxtNombres.getText().toString());
+        Usuario.setApellidos(mEditTxtApellidos.getText().toString());
+        Usuario.setCorreoElectronico(mEditTxtCorreo.getText().toString());
+        Usuario.setTelCelular(mEditTxtNumTelefonico.getText().toString());
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd / M / yyyy");
+        LocalDate localDate =  LocalDate.parse(mEditTxtFechaNacimiento.getText().toString(), dateTimeFormatter);
+        Usuario.setFNacimiento(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+        updateUsuario();
+    }
+
+    // Actualizar al usuario en MongoDB
+    public void updateUsuario(){
+        usuario_validaciones validacion =  new usuario_validaciones();
+
+        usuario_BD.UpdateUser(Usuario);
+        Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
+        mBtnAceptar.setEnabled(false);
+
+        Usuario = validacion.conseguirUsuario_porCorreo(getActivity(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
+        Preferences.savePreferenceObject(getActivity(), PREFERENCE_USUARIO, Usuario);
+    }
+
+    // Borrar al usuario en MongoDB
+    public void deleteUsuario(){
+        usuario_BD.DeleteUser(Usuario);
+        Toast.makeText(getApplicationContext(), "Cuenta eliminada con exito", Toast.LENGTH_SHORT).show();
+        Usuario = null;
+    }
+
 }

@@ -64,7 +64,9 @@
             android:background="@drawable/bkgd_esquinas_superiores_redondeadas"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:0"
-            app:layout_constraintTop_toTopOf="@id/guideline_fondo_cambiarContra" />
+            app:layout_constraintTop_toTopOf="@id/guideline_fondo_cambiarContra"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="0dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/consLyt_titulo_cambiarContra"
@@ -119,7 +121,7 @@
             android:id="@+id/editText_actualContra_cambiarContra"
             style="@style/EditTextTransparente"
             android:hint="@string/actualContra_cambiarContra"
-            android:inputType="textAutoCorrect"
+            android:inputType="textVisiblePassword|textPassword"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="6:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_cambiarContra"
@@ -131,7 +133,7 @@
             android:id="@+id/editText_nuevaContra_cambiarContra"
             style="@style/EditTextTransparente"
             android:hint="@string/nuevaContra_cambiarContra"
-            android:inputType="textAutoCorrect"
+            android:inputType="textPassword"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="6:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_cambiarContra"
@@ -142,9 +144,9 @@
         <EditText
             android:id="@+id/editText_confirmarContra_cambiarContra"
             style="@style/EditTextTransparente"
-            android:focusable="false"
+            android:focusable="auto"
             android:hint="@string/confirmarContraseñaTxtView"
-            android:inputType="date"
+            android:inputType="textPassword"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="6:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_cambiarContra"

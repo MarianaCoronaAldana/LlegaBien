@@ -1,25 +1,29 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
+import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_USUARIO;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
-import com.example.llegabien.frontend.FragmentoAuxiliar;
-import com.example.llegabien.frontend.rutas.activity.MapsActivity;
+import com.example.llegabien.backend.permisos.Preferences;
+import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUsuario;
 
 public class FragmentoConfigUsuario extends Fragment implements View.OnClickListener{
 
     private ConstraintLayout mBtnContactos, mBtnHistorialRutas, mBtnHistorialReportes, mBtnEditarPerfil;
     private Button mBtnCerrarSesion, mBtnRegresar;
+    private TextView mTxtViewCorreo, mTxtViewNombre;
 
     public FragmentoConfigUsuario() {
         // Required empty public constructor
@@ -35,13 +39,15 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
         mBtnEditarPerfil = (ConstraintLayout) root.findViewById(R.id.button_editarPerfil_configuracionUsuario);
         mBtnCerrarSesion = (Button) root.findViewById(R.id.button_cerrarSesion_configuracionUsuario);
         mBtnRegresar = (Button) root.findViewById(R.id.button_regresar_configuracionUsuario);
-
+        mTxtViewCorreo = (TextView) root.findViewById(R.id.textView_correoUsuario_configuracionUsuario);
+        mTxtViewNombre = (TextView) root.findViewById(R.id.textView_nombreUsuario_configuracionUsuario);
 
         //listeners
         mBtnEditarPerfil.setOnClickListener(this);
         mBtnCerrarSesion.setOnClickListener(this);
         mBtnRegresar.setOnClickListener(this);
 
+        setDatosUsuario();
 
         return root;
     }
@@ -67,4 +73,13 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
         }
 
     }
+
+    // Escribir dentro de las EditText los datos previos del usuario
+    private void setDatosUsuario() {
+        usuario Usuario = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_USUARIO, usuario.class);
+
+        mTxtViewCorreo.setText(Usuario.getCorreoElectronico());
+        mTxtViewNombre.setText(Usuario.getNombre());
+    }
+
 }

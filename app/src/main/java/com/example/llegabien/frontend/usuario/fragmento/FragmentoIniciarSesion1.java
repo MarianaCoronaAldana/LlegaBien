@@ -81,11 +81,12 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
             case R.id.button_inicia_inicia_sesion_1:
                 Preferences.savePreferenceBoolean(FragmentoIniciarSesion1.this,mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
                 //para validar si los campos no están vacios
-                if (validarAllInputs())
-                    startActivity(new Intent(getActivity(), ActivityPrueba.class));
+                if (validarAllInputs()) {
+                    //startActivity(new Intent(getActivity(), ActivityPrueba.class));
 
-                //QUITAR DESPUES DE HACER PRUEBAS//
-                    //verificarCorreoContraseña();
+                    //QUITAR DESPUES DE HACER PRUEBAS//
+                    verificarCorreoContraseña();
+                }
                 break;
             case R.id.button_registrarse_inicia_sesion_1:
                 FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
@@ -147,7 +148,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
         if(estado) {
     //REPONER
             //verificarCorreoVerificado();
-            startActivity(new Intent(getActivity(), MapsActivity.class));
+            startActivity(new Intent(getActivity(), ActivityPrueba.class));
 
         }
     }

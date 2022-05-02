@@ -1,12 +1,16 @@
 package com.example.llegabien.mongoDB;
 
+import static io.realm.Realm.getApplicationContext;
+
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.llegabien.aplicacionLlegaBien;
 
 import io.realm.Realm;
 import io.realm.mongodb.App;
 import io.realm.mongodb.Credentials;
+import io.realm.mongodb.User;
 import io.realm.mongodb.sync.SyncConfiguration;
 
 
@@ -16,7 +20,7 @@ public class Conectar {
 
     //PARA LOGING ANONIMO
     public SyncConfiguration ConectarAnonimoMongoDB(){
-
+        User user;
         App app = aplicacionLlegaBien.getApp();
         String partitionValue = "LlegaBien";
         SyncConfiguration config = null;
@@ -35,16 +39,20 @@ public class Conectar {
         });
 
         try{
+            user = app.currentUser();
+        }
+        catch(NumberFormatException e){
+            Toast.makeText(getApplicationContext(), "Hubo un problema en conectarse, intenta mas tarde", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
+        if(user!=null)
         config = new SyncConfiguration.Builder(
-                app.currentUser(),
+                user,
                 partitionValue)
                 .build();
 
         return config;
-        }
-        catch(NumberFormatException e){
-            return null;
-        }
     }
 
     public SyncConfiguration ConectarCorreoMongoDB(String email, String password){
