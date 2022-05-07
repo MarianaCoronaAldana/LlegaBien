@@ -33,6 +33,7 @@ public class ActivityPaginaPrincipalUsuario extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pagina_principal_usuario);
 
+
         //para verificar si el boton de recordar sesion fue presionado y saber si ya se inicio sesion
         if(Preferences.obtenerPreferenceBool(this,PREFERENCE_ESTADO_BUTTON_SESION)
             && Preferences.getSavedObjectFromPreference(this, PREFERENCE_USUARIO, usuario.class) != null) {

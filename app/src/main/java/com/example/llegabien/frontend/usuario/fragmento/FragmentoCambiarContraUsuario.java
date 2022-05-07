@@ -105,7 +105,7 @@ public class FragmentoCambiarContraUsuario extends Fragment implements View.OnCl
         mBtnAceptar.setEnabled(false);
 
         Usuario = validacion.conseguirUsuario_porCorreo(getActivity(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
-        Preferences.savePreferenceObject(getActivity(), PREFERENCE_USUARIO, Usuario);
+        //Preferences.savePreferenceRealmObject(getActivity(), PREFERENCE_USUARIO, Usuario);
     }
 
 }

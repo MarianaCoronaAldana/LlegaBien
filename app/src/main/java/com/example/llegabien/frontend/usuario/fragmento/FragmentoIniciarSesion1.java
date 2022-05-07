@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -134,14 +133,12 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
 
     private void verificarCorreoContraseña() {
         boolean estado = true;
-
         if(validar.validarAdmin(getActivity(), mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString()))
             Preferences.savePreferenceBoolean(this, true, PREFERENCE_ES_ADMIN);
 
-
         else if(!validar.verificarCorreoContrasena(getActivity(), mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString())) {
             estado = false;
-            Toast.makeText(getActivity(),"El correo electronico o el numero telefonico son incorrectos",Toast.LENGTH_LONG).show();
+            //Toast.makeText(getActivity(),"El correo electronico o el numero telefonico son incorrectos",Toast.LENGTH_LONG).show();
         }
 
         //para verificar que el usuario haya validado su cuenta de correo

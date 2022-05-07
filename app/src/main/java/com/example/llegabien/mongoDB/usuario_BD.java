@@ -11,18 +11,18 @@ import org.bson.types.ObjectId;
 
 import io.realm.ImportFlag;
 import io.realm.Realm;
-import io.realm.mongodb.sync.SyncConfiguration;
 
 public class usuario_BD {
 
-
     public static Realm conseguirRealm() {
-        Realm realm = null;
         Conectar conectar = new Conectar();
-        SyncConfiguration config = conectar.ConectarAnonimoMongoDB();
-        if (config != null)
-            realm = Realm.getInstance(config);
+        Realm realm = conectar.ConectarAnonimoMongoDB();
+        return realm;
+    }
 
+    public static Realm conseguirRealmCorreo(String email, String contrasena) {
+        Conectar conectar = new Conectar();
+        Realm realm = conectar.ConectarCorreoMongoDB(email, contrasena);
         return realm;
     }
 
@@ -71,9 +71,11 @@ public class usuario_BD {
 
 
     public static void UpdateUser(usuario Usuario) {
-        Realm realm = conseguirRealm();
-
+        Realm realm ;
+        realm = conseguirRealmCorreo(Usuario.getCorreoElectronico(), Usuario.getContrasena());
+        realm = conseguirRealm();
         Log.v("QUICKSTART", "pARTITION: " + Usuario.get_partition());
+        Log.v("QUICKSTART", "ESTOY EN UPDATE ");
 
         if(!realm.isEmpty()){
 
@@ -83,12 +85,14 @@ public class usuario_BD {
                 Log.v("QUICKSTART", "SE HIZO UPDATE CON EXITOOOO ");
             });
 
+            Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
             realm.close();
         }
-
         else
             Toast.makeText(getApplicationContext(), "Hubo un problema en conectarse, intenta mas tarde", Toast.LENGTH_SHORT).show();
 
     }
+
+
 
 }

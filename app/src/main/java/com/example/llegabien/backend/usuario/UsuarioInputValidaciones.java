@@ -1,8 +1,6 @@
 package com.example.llegabien.backend.usuario;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Build;
 import android.widget.EditText;
 import android.widget.Toast;

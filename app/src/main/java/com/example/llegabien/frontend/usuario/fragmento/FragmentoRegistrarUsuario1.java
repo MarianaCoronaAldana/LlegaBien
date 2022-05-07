@@ -24,7 +24,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-
 public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClickListener{
 
     private static final String parametro_usuario = "usuario"; //etiqueta
@@ -127,7 +126,6 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
 
        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd / M / yyyy");
        LocalDate localDate =  LocalDate.parse(mEditTxtFechaNacimiento.getText().toString(), dateTimeFormatter);
-
        Usuario.setFNacimiento(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
        return Usuario;

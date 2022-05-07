@@ -156,11 +156,10 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
         usuario_validaciones validacion =  new usuario_validaciones();
 
         usuario_BD.UpdateUser(Usuario);
-        Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
         mBtnAceptar.setEnabled(false);
 
         Usuario = validacion.conseguirUsuario_porCorreo(getActivity(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
-        Preferences.savePreferenceObject(getActivity(), PREFERENCE_USUARIO, Usuario);
+        //Preferences.savePreferenceRealmObject(getActivity(), PREFERENCE_USUARIO, Usuario);
     }
 
     // Borrar al usuario en MongoDB

@@ -17,69 +17,60 @@ import io.realm.mongodb.sync.SyncConfiguration;
 public class Conectar {
 
     private Realm realm=null;
+    User user;
+    String partitionValue = "LlegaBien";
+    SyncConfiguration config = null;
 
     //PARA LOGING ANONIMO
-    public SyncConfiguration ConectarAnonimoMongoDB(){
-        User user;
+    public Realm ConectarAnonimoMongoDB(){
         App app = aplicacionLlegaBien.getApp();
-        String partitionValue = "LlegaBien";
-        SyncConfiguration config = null;
         Credentials credentials = Credentials.anonymous();
         Log.v("QUICKSTART", "hola");
 
         app.loginAsync(credentials, result -> {
             Log.v("QUICKSTART", "crayola");
-
-            if (result.isSuccess()) {
+            if (result.isSuccess())
                 Log.v("QUICKSTART", "Successfully authenticated anonymously.");
 
-            } else {
-                Log.e("QUICKSTART", "Failed to log in. Error: " + result.getError());
-            }
+            else
+                //Log.e("QUICKSTART", "Failed to log in. Error: " + result.getError());
+                Toast.makeText(getApplicationContext(), "Error de conexion", Toast.LENGTH_LONG).show();
         });
 
-        try{
-            user = app.currentUser();
-        }
-        catch(NumberFormatException e){
-            Toast.makeText(getApplicationContext(), "Hubo un problema en conectarse, intenta mas tarde", Toast.LENGTH_SHORT).show();
-            return null;
+        user = app.currentUser();
+        if(user!=null) {
+            config = new SyncConfiguration.Builder(
+                    user,
+                    partitionValue)
+                    .build();
+            realm = Realm.getInstance(config);
         }
 
-        if(user!=null)
-        config = new SyncConfiguration.Builder(
-                user,
-                partitionValue)
-                .build();
-
-        return config;
+        return realm;
     }
 
-    public SyncConfiguration ConectarCorreoMongoDB(String email, String password){
+    public Realm ConectarCorreoMongoDB(String email, String password){
         App app = aplicacionLlegaBien.getApp();
-        String partitionValue = "LlegaBien";
-        SyncConfiguration config = null;
         Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
 
         app.loginAsync(emailPasswordCredentials, it -> {
             if (it.isSuccess()) {
                 Log.v("QUICKSTART", "Successfully authenticated using an email and password.");
             } else {
-                Log.e("QUICKSTART", it.getError().toString());
+                ConectarAnonimoMongoDB();
             }
         });
 
-        try{
-        config = new SyncConfiguration.Builder(
-                app.currentUser(),
-                partitionValue)
-                .build();
+        user = app.currentUser();
+        if(user!=null) {
+            config = new SyncConfiguration.Builder(
+                    user,
+                    partitionValue)
+                    .build();
+            realm = Realm.getInstance(config);
+        }
 
-        return config;
-        }
-        catch(NumberFormatException e){
-            return null;
-        }
+        return realm;
     }
 
     public void registrarCuentaCorreo(String email, String password){
@@ -92,6 +83,7 @@ public class Conectar {
                 Log.e("EXAMPLE", "Failed to register user: " + it.getError().getErrorMessage());
             }
         });
+
     }
 
     public void cerrarMongoDB(){
