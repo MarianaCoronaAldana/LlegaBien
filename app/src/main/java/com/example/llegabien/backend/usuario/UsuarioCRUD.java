@@ -1,34 +1,36 @@
-package com.example.llegabien.mongoDB;
+package com.example.llegabien.backend.usuario;
 
 import static io.realm.Realm.getApplicationContext;
 
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
+import com.example.llegabien.backend.mongoDB.ConectarBD;
 
 import org.bson.types.ObjectId;
 
 import io.realm.ImportFlag;
 import io.realm.Realm;
+import io.realm.mongodb.sync.SyncConfiguration;
 
-public class usuario_BD {
+public class UsuarioCRUD {
+
 
     public static Realm conseguirRealm() {
-        Conectar conectar = new Conectar();
-        Realm realm = conectar.ConectarAnonimoMongoDB();
-        return realm;
-    }
+        Realm realm = null;
+        ConectarBD conectarBD = new ConectarBD();
+        SyncConfiguration config = conectarBD.ConectarAnonimoMongoDB();
+        if (config != null)
+            realm = Realm.getInstance(config);
 
-    public static Realm conseguirRealmCorreo(String email, String contrasena) {
-        Conectar conectar = new Conectar();
-        Realm realm = conectar.ConectarCorreoMongoDB(email, contrasena);
         return realm;
     }
 
     public static void AñadirUser(usuario Usuario) {
         Usuario.set_id(new ObjectId());
         Usuario.set_partition("LlegaBien");
+
         Realm realm = conseguirRealm();
 
         if(!realm.isEmpty()){
@@ -52,8 +54,8 @@ public class usuario_BD {
         if(!realm.isEmpty()){
             realm.executeTransactionAsync(transactionRealm -> {
 
-                usuario_validaciones v = new usuario_validaciones();
-                usuario a = v.conseguirUsuario_porCorreo(getApplicationContext(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
+                UsuarioBDValidaciones v = new UsuarioBDValidaciones();
+                usuario a = v.conseguirUsuarioPorCorreo(getApplicationContext(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
                 a.deleteFromRealm();
                 //transactionRealm.insertOrUpdate(Usuario);
                 //transactionRealm.copyToRealmOrUpdate(Usuario, ImportFlag.CHECK_SAME_VALUES_BEFORE_SET);
@@ -71,11 +73,9 @@ public class usuario_BD {
 
 
     public static void UpdateUser(usuario Usuario) {
-        Realm realm ;
-        realm = conseguirRealmCorreo(Usuario.getCorreoElectronico(), Usuario.getContrasena());
-        realm = conseguirRealm();
+        Realm realm = conseguirRealm();
+
         Log.v("QUICKSTART", "pARTITION: " + Usuario.get_partition());
-        Log.v("QUICKSTART", "ESTOY EN UPDATE ");
 
         if(!realm.isEmpty()){
 
@@ -85,14 +85,12 @@ public class usuario_BD {
                 Log.v("QUICKSTART", "SE HIZO UPDATE CON EXITOOOO ");
             });
 
-            Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
             realm.close();
         }
+
         else
             Toast.makeText(getApplicationContext(), "Hubo un problema en conectarse, intenta mas tarde", Toast.LENGTH_SHORT).show();
 
     }
-
-
 
 }

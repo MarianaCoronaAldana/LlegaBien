@@ -7,6 +7,7 @@
     android:clickable="true"
     android:focusable="true"
     android:background="@color/morado_oscuro"
+    android:fitsSystemWindows="true"
     tools:context=".frontend.usuario.fragmento.FragmentoSubirReporteAdmin">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -105,7 +106,7 @@
             app:layout_constraintVertical_bias="0.05" />
 
         <Button
-            android:id="@+id/button_seleccionarArchivos_editarPerfil"
+            android:id="@+id/button_seleccionarArchivo_subirReporte"
             style="@style/BtnMoradoClaro"
             android:text="@string/seleccionarArchivoBtn_subirReporte"
             app:layout_constraintBottom_toBottomOf="parent"

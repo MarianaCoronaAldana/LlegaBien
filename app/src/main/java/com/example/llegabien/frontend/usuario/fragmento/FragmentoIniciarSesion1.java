@@ -1,7 +1,7 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
-import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
-import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_ES_ADMIN;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ES_ADMIN;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,13 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
-import com.example.llegabien.backend.permisos.Preferences;
+import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
-import com.example.llegabien.frontend.ActivityPrueba;
 import com.example.llegabien.frontend.FragmentoAuxiliar;
-import com.example.llegabien.frontend.rutas.activity.MapsActivity;
-import com.example.llegabien.mongoDB.usuario_validaciones;
+import com.example.llegabien.frontend.mapa.activity.ActivityMap;
+import com.example.llegabien.backend.usuario.UsuarioBDValidaciones;
 
 import java.util.Locale;
 
@@ -32,7 +31,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
     private EditText mEditTxtCorreo, mEditTxtContraseña;
     private boolean isActivateRadioButton;
 
-    usuario_validaciones validar = new usuario_validaciones();
+    UsuarioBDValidaciones validar = new UsuarioBDValidaciones();
 
     public FragmentoIniciarSesion1() {
     }
@@ -78,14 +77,13 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
                 isActivateRadioButton = mBtnRecordarSesion.isChecked();
                 break;
             case R.id.button_inicia_inicia_sesion_1:
-                Preferences.savePreferenceBoolean(FragmentoIniciarSesion1.this,mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
+                Preferences.savePreferenceBoolean(this.getActivity(),mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
                 //para validar si los campos no están vacios
-                if (validarAllInputs()) {
-                    //startActivity(new Intent(getActivity(), ActivityPrueba.class));
+                if (validarAllInputs())
+                    startActivity(new Intent(getActivity(), ActivityMap.class));
 
-                    //QUITAR DESPUES DE HACER PRUEBAS//
-                    verificarCorreoContraseña();
-                }
+                //QUITAR DESPUES DE HACER PRUEBAS//
+                    //verificarCorreoContraseña();
                 break;
             case R.id.button_registrarse_inicia_sesion_1:
                 FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
@@ -125,7 +123,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
             @Override
             public void isCorreoVerificado(boolean isCorreoVerificado) {
                 if (isCorreoVerificado)
-                    startActivity(new Intent(getActivity(), MapsActivity.class));
+                    startActivity(new Intent(getActivity(), ActivityMap.class));
             }
         }, mEditTxtCorreo.getText().toString(), mEditTxtContraseña.getText().toString());
     }
@@ -134,7 +132,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
     private void verificarCorreoContraseña() {
         boolean estado = true;
         if(validar.validarAdmin(getActivity(), mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString()))
-            Preferences.savePreferenceBoolean(this, true, PREFERENCE_ES_ADMIN);
+            Preferences.savePreferenceBoolean(this.getActivity(), true, PREFERENCE_ES_ADMIN);
 
         else if(!validar.verificarCorreoContrasena(getActivity(), mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString())) {
             estado = false;
@@ -145,7 +143,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
         if(estado) {
     //REPONER
             //verificarCorreoVerificado();
-            startActivity(new Intent(getActivity(), ActivityPrueba.class));
+            startActivity(new Intent(getActivity(), ActivityMap.class));
 
         }
     }

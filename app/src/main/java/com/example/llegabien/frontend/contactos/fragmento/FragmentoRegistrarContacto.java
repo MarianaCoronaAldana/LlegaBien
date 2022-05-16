@@ -24,10 +24,10 @@ import com.example.llegabien.R;
 import com.example.llegabien.backend.contactos.usuario_contacto;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
-import com.example.llegabien.backend.usuario.usuario_SharedViewModel;
+import com.example.llegabien.backend.usuario.UsuarioSharedViewModel;
 import com.example.llegabien.frontend.usuario.fragmento.FragmentoIniciarSesion1;
-import com.example.llegabien.mongoDB.Conectar;
-import com.example.llegabien.mongoDB.usuario_BD;
+import com.example.llegabien.backend.mongoDB.ConectarBD;
+import com.example.llegabien.backend.usuario.UsuarioCRUD;
 
 import io.realm.RealmList;
 
@@ -41,10 +41,10 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
     private int mNumContacto = 1, mBackStackCount = 0, mSiguienteCount = 1;
     private Fragment parent;
 
-    private usuario_SharedViewModel SharedViewModel;
+    private UsuarioSharedViewModel SharedViewModel;
     usuario Usuario;
     usuario_contacto Contacto =  new  usuario_contacto();
-    Conectar conectar = new Conectar();
+    ConectarBD conectarBD = new ConectarBD();
 
     public FragmentoRegistrarContacto(){}
 
@@ -59,7 +59,7 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedViewModel = new ViewModelProvider(requireActivity()).get(usuario_SharedViewModel.class);
+        SharedViewModel = new ViewModelProvider(requireActivity()).get(UsuarioSharedViewModel.class);
 
         final Observer<usuario> nameObserver = new Observer<usuario>() {
             @Override
@@ -131,8 +131,8 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
                                 "ultimo contacto numero: " + Usuario.getContacto().last().getTelCelular());
 
                         //Se integra al usuario a la BD
-                        usuario_BD.AñadirUser(Usuario);
-                        conectar.registrarCuentaCorreo(Usuario.getCorreoElectronico(), Usuario.getContrasena());
+                        UsuarioCRUD.AñadirUser(Usuario);
+                        conectarBD.registrarCuentaCorreo(Usuario.getCorreoElectronico(), Usuario.getContrasena());
                         abrirInicioSesion1();
                     }
                     else {
@@ -149,8 +149,8 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
             case R.id.button2_finalizar_registro_4:
                 if (validarAllInputs()) {
                     //Se integra al usuario a la BD
-                    usuario_BD.AñadirUser(Usuario);
-                    conectar.registrarCuentaCorreo(Usuario.getCorreoElectronico(), Usuario.getContrasena());
+                    UsuarioCRUD.AñadirUser(Usuario);
+                    conectarBD.registrarCuentaCorreo(Usuario.getCorreoElectronico(), Usuario.getContrasena());
                     abrirInicioSesion1();
                 }
                 break;

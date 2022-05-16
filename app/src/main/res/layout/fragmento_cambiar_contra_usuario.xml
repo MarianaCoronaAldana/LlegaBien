@@ -7,6 +7,7 @@
     android:clickable="true"
     android:focusable="true"
     android:background="@color/morado_oscuro"
+    android:fitsSystemWindows="true"
     tools:context=".frontend.usuario.fragmento.FragmentoCambiarContraUsuario">
 
     <androidx.constraintlayout.widget.ConstraintLayout

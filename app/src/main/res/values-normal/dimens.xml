@@ -4,5 +4,6 @@
     <dimen name="text_size_titulo_small">25sp</dimen>
     <dimen name="text_size_subtitulo">20sp</dimen>
     <dimen name="text_size_parrafo">18sp</dimen>
+    <dimen name="text_size_parrafo_medium">16sp</dimen>
     <dimen name="text_size_parrafo_small">12sp</dimen>
 </resources>

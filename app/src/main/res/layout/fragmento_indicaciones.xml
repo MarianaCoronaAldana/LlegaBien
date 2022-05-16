@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".frontend.mapa.fragmento.FragmentoIndicaciones">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1_textView_editText_indicaciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2_btnTiempoBici_indicaciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.48" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1_btnTiempoCaminando_indicaciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.52" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1_btnComenzar_indicaciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.285" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2_btnComenzar_indicaciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.715" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1_button_centrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.83" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2_textView_editText_indicaciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/consLyt_partidaDestino_indicaciones"
+        style="@style/ConsLytTituloBlanco"
+        app:layout_constraintDimensionRatio="4:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editText_indicaciones"
+        app:layout_constraintStart_toStartOf="@id/guideline1_textView_editText_indicaciones"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.05">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1_iconRegresar_partidaDestino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2_iconRegresar_partidaDestino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.2" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1_iconIntercambiarDireccion_partidaDestino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.88" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2_iconIntercambiarDireccion_partidaDestino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <View
+            android:id="@+id/button_regresar_partidaDestino"
+            style="@style/BkgdIcon"
+            android:background="@drawable/bkgd_button_regresar_3"
+            app:layout_constraintDimensionRatio="9:12"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline1_iconRegresar_partidaDestino"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_iconRegresar_partidaDestino"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/button_intercambiarDireccion_partidaDestino"
+            style="@style/BkgdIcon"
+            android:background="@drawable/bkgd_icon_intercambiardireccion"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline1_iconIntercambiarDireccion_partidaDestino"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_iconIntercambiarDireccion_partidaDestino"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/textview_puntoPartida_indicaciones"
+            style="@style/EditTextTransparente"
+            android:background="@android:color/transparent"
+            android:hint="@string/puntoPartida_indicaciones"
+            android:textSize="@dimen/text_size_parrafo_medium"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            app:layout_constraintBottom_toBottomOf="@id/separador_indicaciones"
+            app:layout_constraintEnd_toEndOf="@id/guideline1_iconIntercambiarDireccion_partidaDestino"
+            app:layout_constraintStart_toStartOf="@id/guideline2_iconRegresar_partidaDestino"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/separador_indicaciones"
+            style="@style/ViewSeparador"
+            android:layout_margin="10dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="200:1"
+            app:layout_constraintEnd_toEndOf="@id/guideline1_iconIntercambiarDireccion_partidaDestino"
+            app:layout_constraintStart_toStartOf="@id/guideline2_iconRegresar_partidaDestino"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"/>
+
+        <EditText
+            android:id="@+id/textview_puntoDestino_indicaciones"
+            style="@style/EditTextTransparente"
+            android:background="@android:color/transparent"
+            android:hint="@string/puntoDestino_indicaciones"
+            android:textSize="@dimen/text_size_parrafo_medium"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline1_iconIntercambiarDireccion_partidaDestino"
+            app:layout_constraintStart_toStartOf="@id/guideline2_iconRegresar_partidaDestino"
+            app:layout_constraintTop_toTopOf="@id/separador_indicaciones" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/button_tiempoBici_indicaciones"
+        style="@style/BtnMoradoOscuro"
+        android:elevation="10dp"
+        app:layout_constraintDimensionRatio="7:2"
+        app:layout_constraintEnd_toEndOf="@id/guideline2_btnTiempoBici_indicaciones"
+        app:layout_constraintStart_toStartOf="@id/guideline1_textView_editText_indicaciones"
+        app:layout_constraintTop_toBottomOf="@id/consLyt_partidaDestino_indicaciones"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.03">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1_iconBici_btnTiempoBici"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.2" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2_iconBici_btnTiempoBici"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.35" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_textView_btnTiempoBici"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.9" />
+
+        <View
+            android:id="@+id/iconBici_btnTimepoBici"
+            style="@style/BkgdIcon"
+            android:background="@drawable/bkgd_icon_bicicleta"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline1_iconBici_btnTiempoBici"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_iconBici_btnTiempoBici"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            style="@style/TxtViewTransparente"
+            android:text="@string/tiempoBiciBtn_indicaciones"
+            android:gravity="center_vertical|left"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline2_iconBici_btnTiempoBici"
+            app:layout_constraintEnd_toEndOf="@id/guideline_textView_btnTiempoBici"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/button_tiempoCaminando_indicaciones"
+        style="@style/ConsLytTituloBlanco"
+        app:layout_constraintDimensionRatio="7:2"
+        app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editText_indicaciones"
+        app:layout_constraintStart_toStartOf="@id/guideline1_btnTiempoCaminando_indicaciones"
+        app:layout_constraintTop_toBottomOf="@id/consLyt_partidaDestino_indicaciones"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.03">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/button_centrarMapa"
+        style="@style/BtnCentrarMapa"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editText_indicaciones"
+        app:layout_constraintStart_toStartOf="@id/guideline1_button_centrar"
+        app:layout_constraintTop_toBottomOf="@id/button_tiempoCaminando_indicaciones"
+        app:layout_constraintVertical_bias="0.65" >
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1_icon_centrarMapa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.1" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2_icon_centrarMapa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.9" />
+
+        <View
+            android:id="@+id/icon_centrarMapa"
+            style="@style/BkgdIcon"
+            android:background="@drawable/bkgd_icon_centrarmapa"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_icon_centrarMapa"
+            app:layout_constraintStart_toStartOf="@id/guideline1_icon_centrarMapa"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/consLyt_detallesRuta_indicaciones"
+        style="@style/ConsLytTituloBlanco"
+        app:layout_constraintDimensionRatio="4:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editText_indicaciones"
+        app:layout_constraintStart_toStartOf="@id/guideline1_textView_editText_indicaciones"
+        app:layout_constraintTop_toBottomOf="@id/button_tiempoBici_indicaciones"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.85">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/button_comenzar_indicaciones"
+        style="@style/BtnMoradoOscuro"
+        android:elevation="10dp"
+        app:layout_constraintDimensionRatio="7:2"
+        app:layout_constraintEnd_toEndOf="@id/guideline2_btnComenzar_indicaciones"
+        app:layout_constraintStart_toStartOf="@id/guideline1_btnComenzar_indicaciones"
+        app:layout_constraintTop_toTopOf="@id/consLyt_detallesRuta_indicaciones"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.5">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

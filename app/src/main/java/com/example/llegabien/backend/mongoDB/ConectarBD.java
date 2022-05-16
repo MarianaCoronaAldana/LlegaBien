@@ -1,4 +1,4 @@
-package com.example.llegabien.mongoDB;
+package com.example.llegabien.backend.mongoDB;
 
 import static io.realm.Realm.getApplicationContext;
 
@@ -14,7 +14,7 @@ import io.realm.mongodb.User;
 import io.realm.mongodb.sync.SyncConfiguration;
 
 
-public class Conectar {
+public class ConectarBD {
 
     private Realm realm=null;
     User user;

@@ -86,21 +86,50 @@
     <string name="subirReporte_configAvan">Subir reporte</string>
     <string name="configPropia_configAvan">Configuración de mi cuenta</string>
 
-    <!-- Configuracion dialog -->
-    <string name="instrucciones_dialogConfig">Selecciona la configuración que quieres abrir:</string>
-    <string name="config_dialogConfig">Configuración de tu cuenta</string>
-    <string name="configAvan_dialogConfig">Configuración avanzada</string>
+    <!-- Dialog Tipo Configuración -->
+    <string name="instrucciones_tipoConfig">Selecciona la configuración que quieres abrir:</string>
+    <string name="configUsuario_tipoConfig">Configuración de tu cuenta</string>
+    <string name="configAdmin_tipoConfog">Configuración avanzada</string>
 
     <!-- Subir reporte admin -->
     <string name="titulo_subirReporte">Subir reporte</string>
     <string name="instrucciones_subirReporte">Aquí puedes subir reportes de delitos en formato .xml.</string>
     <string name="seleccionarArchivoBtn_subirReporte">Seleccionar archivos</string>
 
-    <!-- Dialog Tipo Configuración -->
-    <string name="instrucciones_tipoConfig">Selecciona la configuración que quieres abrir:</string>
-    <string name="configUsuario_tipoConfig">Configuración de tu cuenta</string>
-    <string name="configAdmin_tipoConfog">Configuración avanzada</string>
+    <!-- Barra búsqueda mapa -->
+    <string name="titulo_barraBusqueda">Prueba buscar un lugar...</string>
+
+    <!-- Detalles de lugar -->
+    <string name="nombreLugar1_detallesNombre">Calle Oasis 1476</string>
+    <string name="nombreLugar2_detallesNombre">Las Palmas, 45132 Zapopan, Jal.</string>
+    <string name="seguridad_detallesNombre">Seguridad media</string>
+    <string name="mediaHistorica_detallesNombre">Media Historica Semanal = 4</string>
+    <string name="numDelitos_detallesNombre">Num. de delitos 13 Dic - 19 Dic = 5</string>
+    <string name="añadirFavoritosBtn_detallesNombre">Guardar</string>
+    <string name="indicacionesBtn_detallesNombre">Indicaciones</string>
+
+    <!-- Indicaciones -->
+    <string name="puntoPartida_indicaciones">Tu ubicación</string>
+    <string name="puntoDestino_indicaciones">Calle Paseo de los Abetos 3...</string>
+    <string name="tiempoBiciBtn_indicaciones">38 min</string>
+    <string name="tiempoCaminandoBtn_indicaciones">1hr 30 min</string>
+    <string name="tiempo_indicaciones">18 min</string>
+    <string name="km_indicaciones">(2.1km)</string>
+    <string name="descripcionRuta_indicaciones">Rutas más segura debido a la inicidencia delictiva.</string>
+    <string name="comenzarBtn_indicaciones">Comenzar</string>
+
+    <!-- Navegacion -->
+    <string name="nombreCalleActual_navegacion">Calle Oasis 1476</string>
+    <string name="nombreCalleSiguiente_navegacion">Av.Federalistas</string>
+    <string name="enDireccionA_navegacion">en dirección a</string>
+    <string name="centrar_navegacion">Centrar</string>
+    <string name="seguridad_navegacion">Seguridad media</string>
+    <string name="kmRestantes_horaDeLlegada_navegacion">0.3 km ・ 10.44 a.m</string>
+
+    <string name="api_key">AIzaSyA_1vA9ikwZ0Ju7s5s2-C1QLQ51BQmwSlM</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

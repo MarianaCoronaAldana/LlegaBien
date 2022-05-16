@@ -1,7 +1,9 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
-import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_USUARIO;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 import static io.realm.Realm.getApplicationContext;
+
+import static android.app.PendingIntent.getActivity;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,11 +17,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
-import com.example.llegabien.backend.permisos.Preferences;
+import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
-import com.example.llegabien.mongoDB.usuario_BD;
-import com.example.llegabien.mongoDB.usuario_validaciones;
+import com.example.llegabien.backend.usuario.UsuarioCRUD;
+import com.example.llegabien.backend.usuario.UsuarioBDValidaciones;
 
 public class FragmentoCambiarContraUsuario extends Fragment implements View.OnClickListener{
 
@@ -99,13 +101,13 @@ public class FragmentoCambiarContraUsuario extends Fragment implements View.OnCl
 
     // Actualizar contraseña del usuario en MongoDB
     private void actualizarUsuario() {
-        usuario_validaciones validacion =  new usuario_validaciones();
-        usuario_BD.UpdateUser(Usuario);
+        UsuarioBDValidaciones validacion =  new UsuarioBDValidaciones();
+        UsuarioCRUD.UpdateUser(Usuario);
         Toast.makeText(getApplicationContext(), "Contraseña cambiada con éxito", Toast.LENGTH_SHORT).show();
         mBtnAceptar.setEnabled(false);
 
-        Usuario = validacion.conseguirUsuario_porCorreo(getActivity(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
-        //Preferences.savePreferenceRealmObject(getActivity(), PREFERENCE_USUARIO, Usuario);
+        Usuario = validacion.conseguirUsuarioPorCorreo(getActivity(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
+        Preferences.savePreferenceObject(getActivity(), PREFERENCE_USUARIO, Usuario);
     }
 
 }

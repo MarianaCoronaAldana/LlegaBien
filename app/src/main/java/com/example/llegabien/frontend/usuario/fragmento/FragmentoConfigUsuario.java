@@ -1,6 +1,6 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
-import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_USUARIO;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,12 +10,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
-import com.example.llegabien.backend.permisos.Preferences;
+import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUsuario;
 
@@ -67,7 +71,7 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
                 startActivity(new Intent(getActivity(), ActivityPaginaPrincipalUsuario.class));
                 break;
             case R.id.button_regresar_configuracionUsuario:
-                getActivity().getSupportFragmentManager().popBackStack();
+                //startActivity(new Intent(getActivity(), MapsActivity.class));
                 break;
 
         }

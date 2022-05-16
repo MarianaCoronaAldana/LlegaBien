@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
-import com.example.llegabien.backend.usuario.usuario_SharedViewModel;
+import com.example.llegabien.backend.usuario.UsuarioSharedViewModel;
 import com.example.llegabien.frontend.FragmentoAuxiliar;
 import com.example.llegabien.frontend.usuario.dialog.DialogDatePicker;
 
@@ -28,7 +28,7 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
 
     private static final String parametro_usuario = "usuario"; //etiqueta
 
-    private usuario_SharedViewModel SharedViewModel;
+    private UsuarioSharedViewModel SharedViewModel;
 
     private Button mBtnSiguiente, mBtnIniciarSesion, mBtnCerrar;
     private EditText mEditTxtNombres, mEditTxtApellidos, mEditTxtFechaNacimiento;
@@ -58,7 +58,7 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
         mEditTxtFechaNacimiento.setOnClickListener(this);
 
         //para usar el mismo ViewModel que los otros fragmentos y compartir informacion
-        SharedViewModel = new ViewModelProvider(requireActivity()).get(usuario_SharedViewModel.class);
+        SharedViewModel = new ViewModelProvider(requireActivity()).get(UsuarioSharedViewModel.class);
 
         return root;
     }

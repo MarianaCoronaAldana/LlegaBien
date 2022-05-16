@@ -5,4 +5,5 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:backgroundTint="@android:color/transparent"
+    android:fitsSystemWindows="true"
     tools:context=".frontend.FragmentoAuxiliar" />

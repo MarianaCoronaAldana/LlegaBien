@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/morado_oscuro"
+    android:fitsSystemWindows="true"
     tools:context=".frontend.usuario.activity.ActivityPaginaPrincipalUsuario">
 
   <androidx.constraintlayout.widget.Guideline
@@ -43,7 +44,7 @@
       app:layout_constraintEnd_toEndOf="@id/guideline2_button_pagina_principal"
       app:layout_constraintStart_toStartOf="@id/guideline1_button_pagina_principal"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.05" />
+      app:layout_constraintVertical_bias="0.1" />
 
   <TextView
       android:id="@+id/textView_frase_pagina_principal1"

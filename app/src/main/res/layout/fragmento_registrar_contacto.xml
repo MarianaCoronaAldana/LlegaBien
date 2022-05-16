@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
+    android:fitsSystemWindows="true"
     tools:context=".frontend.contactos.fragmento.FragmentoRegistrarContacto">
 
     <androidx.constraintlayout.widget.ConstraintLayout

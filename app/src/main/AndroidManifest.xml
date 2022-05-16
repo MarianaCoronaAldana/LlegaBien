@@ -21,9 +21,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LlegaBien">
         <activity
-            android:name=".frontend.ActivityPrueba"
-            android:exported="false" />
-        <activity
             android:name=".frontend.usuario.activity.ActivityConfiguracionAdmin"
             android:exported="false" />
         <activity
@@ -43,10 +40,10 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="@string/api_key" />
 
         <activity
-            android:name=".frontend.rutas.activity.MapsActivity"
+            android:name=".frontend.mapa.activity.ActivityMap"
             android:exported="true"
             android:label="@string/title_activity_maps"></activity>
     </application>

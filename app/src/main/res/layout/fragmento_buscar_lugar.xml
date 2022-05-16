@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".frontend.mapa.fragmento.FragmentoBuscarLugar">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_fragment2_barraNavegacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.88" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1_barraBusqueda_buscarLugar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1_miniButton_buscarLugar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.83" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2_barraBusqueda_buscarLugar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/consLyt_barraBusqueda_buscarLugar"
+        style="@style/ConsLytTituloBlanco"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="7:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline2_barraBusqueda_buscarLugar"
+        app:layout_constraintStart_toStartOf="@id/guideline1_barraBusqueda_buscarLugar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.02">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1_icon_barraBusqueda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.04" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2_icon_barraBusqueda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.09" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1_btnConfiguracion_barraBusqueda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.89" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2_btnConfiguracion_barraBusqueda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.96" />
+
+        <View
+            android:id="@+id/icon_ubicacion_barraBusqueda"
+            style="@style/BkgdIcon"
+            android:background="@drawable/bkgd_icon_ubicacion"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="17:22"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_icon_barraBusqueda"
+            app:layout_constraintStart_toStartOf="@id/guideline1_icon_barraBusqueda"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button_configuracion_barraBusqueda"
+            style="@style/BkgdIcon"
+            android:background="@drawable/bkgd_button_configuracion"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_btnConfiguracion_barraBusqueda"
+            app:layout_constraintStart_toStartOf="@id/guideline1_btnConfiguracion_barraBusqueda"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button_titulo_barraBusqueda"
+            style="@style/EditTextTransparente"
+            android:focusable="false"
+            android:background="@android:color/transparent"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textSize="@dimen/text_size_parrafo_medium"
+            android:hint="@string/titulo_barraBusqueda"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline1_btnConfiguracion_barraBusqueda"
+            app:layout_constraintStart_toStartOf="@id/guideline2_icon_barraBusqueda"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/button_centrarMapa_buscarLugar"
+        style="@style/BtnCentrarMapa"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline2_barraBusqueda_buscarLugar"
+        app:layout_constraintStart_toStartOf="@id/guideline1_miniButton_buscarLugar"
+        app:layout_constraintTop_toBottomOf="@id/consLyt_barraBusqueda_buscarLugar"
+        app:layout_constraintVertical_bias="0.7" >
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1_icon_centrarMapa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.1" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2_icon_centrarMapa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.9" />
+
+        <View
+            android:id="@+id/icon_centrarMapa"
+            style="@style/BkgdIcon"
+            android:background="@drawable/bkgd_icon_centrarmapa"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_icon_centrarMapa"
+            app:layout_constraintStart_toStartOf="@id/guideline1_icon_centrarMapa"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/button_direcciones_buscarLugar"
+        style="@style/BtnDirecciones"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline2_barraBusqueda_buscarLugar"
+        app:layout_constraintStart_toStartOf="@id/guideline1_miniButton_buscarLugar"
+        app:layout_constraintTop_toBottomOf="@id/button_centrarMapa_buscarLugar"
+        app:layout_constraintVertical_bias="0.1" >
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1_icon_direcciones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.1" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2_icon_direcciones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.9" />
+
+        <View
+            android:id="@+id/icon_direcciones"
+            style="@style/BkgdIcon"
+            android:background="@drawable/bkgd_icon_direcciones"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_icon_direcciones"
+            app:layout_constraintStart_toStartOf="@id/guideline1_icon_direcciones"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView2_buscarLugar"
+        android:name="com.example.llegabien.frontend.FragmentoBarraNavegacion"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline_fragment2_barraNavegacion" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,8 +19,8 @@ import com.example.llegabien.R;
 import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
-import com.example.llegabien.backend.usuario.usuario_SharedViewModel;
-import com.example.llegabien.mongoDB.usuario_validaciones;
+import com.example.llegabien.backend.usuario.UsuarioSharedViewModel;
+import com.example.llegabien.backend.usuario.UsuarioBDValidaciones;
 
 import java.util.Locale;
 
@@ -31,9 +31,9 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
     private Button mBtnSiguiente, mBtnRegresar;
     private EditText mEditTxtNumTelefonico, mEditTxtCorreo, mEditTxtContraseña, mEditTxtConfirmarContraseña;
 
-    private usuario_SharedViewModel SharedViewModel;
+    private UsuarioSharedViewModel SharedViewModel;
     usuario Usuario = new usuario();
-    usuario_validaciones validar = new usuario_validaciones();
+    UsuarioBDValidaciones validar = new UsuarioBDValidaciones();
 
     public FragmentoRegistrarUsuario2() {
 
@@ -43,7 +43,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedViewModel = new ViewModelProvider(requireActivity()).get(usuario_SharedViewModel.class);
+        SharedViewModel = new ViewModelProvider(requireActivity()).get(UsuarioSharedViewModel.class);
 
         final Observer<usuario> nameObserver = new Observer<usuario>() {
             @Override
@@ -91,17 +91,15 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
                         //para obtener los datos del fragmento y añadirlos a la clase usuario
                         usuarioConDatos();
 
+                        //REPONER//
                         //para mandar codigo a teléfono y email
-        // REPONER:     enviarCodigos();
+                        //enviarCodigos();
 
-        // QUITAR CUANDO SE REPONGA:
-        // DE AQUI ->
                         FragmentoRegistrarUsuario3 fragmentoRegistrarUsuario3 = FragmentoRegistrarUsuario3.newInstance("verificationId");
                         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
                         fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario3).commit();
                         fragmentTransaction.addToBackStack(null);
-        // A AQUI  ->
                     }
                     else
                             Toast.makeText(getActivity(),"El correo electronico o el numero telefonico ya está registrado",Toast.LENGTH_LONG).show();

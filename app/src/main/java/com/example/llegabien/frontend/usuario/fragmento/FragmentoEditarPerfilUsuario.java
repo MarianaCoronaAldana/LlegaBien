@@ -1,6 +1,6 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
-import static com.example.llegabien.backend.permisos.Preferences.PREFERENCE_USUARIO;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import static io.realm.Realm.getApplicationContext;
 
@@ -20,13 +20,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
-import com.example.llegabien.backend.permisos.Preferences;
+import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUsuario;
 import com.example.llegabien.frontend.usuario.dialog.DialogDatePicker;
-import com.example.llegabien.mongoDB.usuario_BD;
-import com.example.llegabien.mongoDB.usuario_validaciones;
+import com.example.llegabien.backend.usuario.UsuarioCRUD;
+import com.example.llegabien.backend.usuario.UsuarioBDValidaciones;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -153,18 +153,19 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
 
     // Actualizar al usuario en MongoDB
     public void updateUsuario(){
-        usuario_validaciones validacion =  new usuario_validaciones();
+        UsuarioBDValidaciones validacion =  new UsuarioBDValidaciones();
 
-        usuario_BD.UpdateUser(Usuario);
+        UsuarioCRUD.UpdateUser(Usuario);
+        Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
         mBtnAceptar.setEnabled(false);
 
-        Usuario = validacion.conseguirUsuario_porCorreo(getActivity(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
-        //Preferences.savePreferenceRealmObject(getActivity(), PREFERENCE_USUARIO, Usuario);
+        Usuario = validacion.conseguirUsuarioPorCorreo(getActivity(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
+        Preferences.savePreferenceObject(getActivity(), PREFERENCE_USUARIO, Usuario);
     }
 
     // Borrar al usuario en MongoDB
     public void deleteUsuario(){
-        usuario_BD.DeleteUser(Usuario);
+        UsuarioCRUD.DeleteUser(Usuario);
         Toast.makeText(getApplicationContext(), "Cuenta eliminada con exito", Toast.LENGTH_SHORT).show();
         Usuario = null;
     }

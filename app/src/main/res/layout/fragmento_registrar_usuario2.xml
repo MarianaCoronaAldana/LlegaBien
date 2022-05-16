@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusable="true"
+    android:fitsSystemWindows="true"
     tools:context=".frontend.usuario.fragmento.FragmentoRegistrarUsuario2">
 
     <androidx.constraintlayout.widget.ConstraintLayout

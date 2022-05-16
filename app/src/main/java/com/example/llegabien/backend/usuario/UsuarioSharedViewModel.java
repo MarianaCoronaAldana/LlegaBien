@@ -3,7 +3,7 @@ package com.example.llegabien.backend.usuario;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class usuario_SharedViewModel extends ViewModel {
+public class UsuarioSharedViewModel extends ViewModel {
 
     private MutableLiveData<usuario> Usuario = new MutableLiveData<>();
     private usuario UsuariO = new usuario();

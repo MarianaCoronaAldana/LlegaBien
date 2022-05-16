@@ -62,6 +62,26 @@
         <item name="android:layout_width">0dp</item>
     </style>
 
+    <style name="BtnCentrarMapa">
+        <item name="android:background">@drawable/bkgd_circulo</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:elevation">10dp</item>
+        <item name="android:clickable">true</item>
+        <item name="layout_constraintDimensionRatio">1:1</item>
+    </style>
+
+    <style name="BtnDirecciones">
+        <item name="android:background">@drawable/bkgd_esquinas_redondeadas</item>
+        <item name="android:backgroundTint">@color/azul_oscuro</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:elevation">10dp</item>
+        <item name="android:clickable">true</item>
+        <item name="layout_constraintDimensionRatio">1:1</item>
+    </style>
+
+
     <!-- TextView -->
     <style name="TxtViewBlanco" parent="Widget.AppCompat.TextView">
         <item name="android:background">@drawable/bkgd_esquinas_redondeadas</item>
@@ -117,13 +137,12 @@
         <item name="android:background">@drawable/bkgd_borde_azul_oscuro</item>
         <item name="android:fontFamily">@font/parrafo</item>
         <item name="android:textColor">@color/azul_oscuro</item>
+        <item name="android:textColorHint">#80213071</item>
         <item name="android:textSize">@dimen/text_size_parrafo</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">20dp</item>
-        <item name="android:ems">10</item>
         <item name="android:maxLines">1</item>
-        <item name="android:textColorHint">#80213071</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_width">0dp</item>
     </style>
@@ -142,12 +161,15 @@
         <item name="android:layout_width">0dp</item>
     </style>
 
+
+    <!-- Separador -->
     <style name="ViewSeparador" >
         <item name="android:background">@color/azul_oscuro</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_width">0dp</item>
     </style>
 
+    <!-- ConstraintLayout -->
     <style name="ConsLytTituloBlanco">
         <item name="android:background">@drawable/bkgd_esquinas_redondeadas</item>
         <item name="android:backgroundTint">@color/blanco</item>
@@ -166,6 +188,7 @@
         <item name="layout_constraintDimensionRatio">14:3</item>
     </style>
 
+    <!-- Icon -->
     <style name="BkgdIcon">
         <item name="android:background">@drawable/bkgd_button_regresar_2</item>
         <item name="android:layout_height">0dp</item>
