@@ -25,8 +25,7 @@ import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUsuario;
 import com.example.llegabien.frontend.usuario.dialog.DialogDatePicker;
-import com.example.llegabien.backend.usuario.UsuarioCRUD;
-import com.example.llegabien.backend.usuario.UsuarioBDValidaciones;
+import com.example.llegabien.backend.usuario.UsuarioBD_CRUD;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -153,19 +152,19 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
 
     // Actualizar al usuario en MongoDB
     public void updateUsuario(){
-        UsuarioBDValidaciones validacion =  new UsuarioBDValidaciones();
-
-        UsuarioCRUD.UpdateUser(Usuario);
+        UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD();
+        usuarioBD_CRUD.updateUser(Usuario);
         Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
         mBtnAceptar.setEnabled(false);
 
-        Usuario = validacion.conseguirUsuarioPorCorreo(getActivity(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
+        Usuario = usuarioBD_CRUD.readUsuarioPorCorreo(getActivity(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
         Preferences.savePreferenceObject(getActivity(), PREFERENCE_USUARIO, Usuario);
     }
 
     // Borrar al usuario en MongoDB
     public void deleteUsuario(){
-        UsuarioCRUD.DeleteUser(Usuario);
+        UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD();
+        usuarioBD_CRUD.deleteUser(Usuario);
         Toast.makeText(getApplicationContext(), "Cuenta eliminada con exito", Toast.LENGTH_SHORT).show();
         Usuario = null;
     }

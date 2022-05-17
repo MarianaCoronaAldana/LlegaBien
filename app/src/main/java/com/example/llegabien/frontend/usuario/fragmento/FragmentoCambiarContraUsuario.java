@@ -20,8 +20,7 @@ import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
-import com.example.llegabien.backend.usuario.UsuarioCRUD;
-import com.example.llegabien.backend.usuario.UsuarioBDValidaciones;
+import com.example.llegabien.backend.usuario.UsuarioBD_CRUD;
 
 public class FragmentoCambiarContraUsuario extends Fragment implements View.OnClickListener{
 
@@ -101,12 +100,12 @@ public class FragmentoCambiarContraUsuario extends Fragment implements View.OnCl
 
     // Actualizar contraseña del usuario en MongoDB
     private void actualizarUsuario() {
-        UsuarioBDValidaciones validacion =  new UsuarioBDValidaciones();
-        UsuarioCRUD.UpdateUser(Usuario);
+        UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD();
+        usuarioBD_CRUD.updateUser(Usuario);
         Toast.makeText(getApplicationContext(), "Contraseña cambiada con éxito", Toast.LENGTH_SHORT).show();
         mBtnAceptar.setEnabled(false);
 
-        Usuario = validacion.conseguirUsuarioPorCorreo(getActivity(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
+        Usuario = usuarioBD_CRUD.readUsuarioPorCorreo(getActivity(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
         Preferences.savePreferenceObject(getActivity(), PREFERENCE_USUARIO, Usuario);
     }
 

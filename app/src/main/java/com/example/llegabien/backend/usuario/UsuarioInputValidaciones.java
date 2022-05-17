@@ -22,7 +22,7 @@ public class UsuarioInputValidaciones {
     private Matcher mMatcher;
 
     public boolean validarStringVacia(Context context, EditText editText){
-        mStringParaValidar = editText.getText().toString();
+        mStringParaValidar = editText.getText().toString().trim();
 
         if (mStringParaValidar.isEmpty()) {
             editText.setError(context.getResources().getString(R.string.errorStringVacia));
@@ -33,7 +33,7 @@ public class UsuarioInputValidaciones {
 
     public boolean validarNombre(Context context, EditText editText){
         mStringPattern = "(^|\\s)([A-Za-zÑñÁáÉéÍíÓóÚú]+['\\-]?[A-Za-zÑñÁáÉéÍíÓóÚú]+)(\\s+([A-Za-zÑñÁáÉéÍíÓóÚú]+['\\-]?[A-Za-zÑñÁáÉéÍíÓóÚú]+))*($|\\s)";
-        mStringParaValidar = editText.getText().toString();
+        mStringParaValidar = editText.getText().toString().trim();
 
         if (!validarStringVacia(context,editText))
             return false;
@@ -50,7 +50,7 @@ public class UsuarioInputValidaciones {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public boolean validarFechaNacimiento(Context context, EditText editText){
-        mStringParaValidar = editText.getText().toString();
+        mStringParaValidar = editText.getText().toString().trim();
         if (!validarStringVacia(context,editText))
             return false;
         else {
@@ -69,7 +69,7 @@ public class UsuarioInputValidaciones {
 
     public boolean validarCorreoElectronico(Context context, EditText editText){
         mStringPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-        mStringParaValidar = editText.getText().toString();
+        mStringParaValidar = editText.getText().toString().trim();
 
         if (!validarStringVacia(context,editText))
             return false;
@@ -86,7 +86,7 @@ public class UsuarioInputValidaciones {
 
     public boolean validarNumTelefonico(Context context, EditText editText){
         mStringPattern = "\\d{10}";
-        mStringParaValidar = editText.getText().toString();
+        mStringParaValidar = editText.getText().toString().trim();
 
         if (!validarStringVacia(context,editText))
             return false;
@@ -103,7 +103,7 @@ public class UsuarioInputValidaciones {
 
     public boolean validarContraseña(Context context, EditText editText){
         mStringPattern = "(^|\\s)(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&+-])[A-Za-z\\d@$!%*?&+-]{8,}($|\\s)";
-        mStringParaValidar = editText.getText().toString();
+        mStringParaValidar = editText.getText().toString().trim();
 
         if (!validarStringVacia(context,editText))
             return false;

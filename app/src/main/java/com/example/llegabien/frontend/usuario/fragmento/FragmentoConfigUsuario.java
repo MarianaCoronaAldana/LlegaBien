@@ -81,7 +81,6 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
     // Escribir dentro de las EditText los datos previos del usuario
     private void setDatosUsuario() {
         usuario Usuario = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_USUARIO, usuario.class);
-
         mTxtViewCorreo.setText(Usuario.getCorreoElectronico());
         mTxtViewNombre.setText(Usuario.getNombre());
     }

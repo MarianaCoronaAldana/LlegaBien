@@ -20,7 +20,7 @@ import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.backend.usuario.UsuarioSharedViewModel;
-import com.example.llegabien.backend.usuario.UsuarioBDValidaciones;
+import com.example.llegabien.backend.usuario.UsuarioBD_Validaciones;
 
 import java.util.Locale;
 
@@ -33,7 +33,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
 
     private UsuarioSharedViewModel SharedViewModel;
     usuario Usuario = new usuario();
-    UsuarioBDValidaciones validar = new UsuarioBDValidaciones();
+    UsuarioBD_Validaciones validar = new UsuarioBD_Validaciones();
 
     public FragmentoRegistrarUsuario2() {
 

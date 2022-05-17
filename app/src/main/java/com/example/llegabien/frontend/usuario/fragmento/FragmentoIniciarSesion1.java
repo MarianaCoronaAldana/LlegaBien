@@ -21,7 +21,7 @@ import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.frontend.FragmentoAuxiliar;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
-import com.example.llegabien.backend.usuario.UsuarioBDValidaciones;
+import com.example.llegabien.backend.usuario.UsuarioBD_Validaciones;
 
 import java.util.Locale;
 
@@ -31,7 +31,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
     private EditText mEditTxtCorreo, mEditTxtContraseña;
     private boolean isActivateRadioButton;
 
-    UsuarioBDValidaciones validar = new UsuarioBDValidaciones();
+    UsuarioBD_Validaciones validar = new UsuarioBD_Validaciones();
 
     public FragmentoIniciarSesion1() {
     }
@@ -79,11 +79,10 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
             case R.id.button_inicia_inicia_sesion_1:
                 Preferences.savePreferenceBoolean(this.getActivity(),mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
                 //para validar si los campos no están vacios
-                if (validarAllInputs())
-                    startActivity(new Intent(getActivity(), ActivityMap.class));
-
-                //QUITAR DESPUES DE HACER PRUEBAS//
-                    //verificarCorreoContraseña();
+                if (validarAllInputs()) {
+                    //QUITAR DESPUES DE HACER PRUEBAS//
+                    verificarCorreoContraseña();
+                }
                 break;
             case R.id.button_registrarse_inicia_sesion_1:
                 FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
@@ -141,7 +140,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
 
         //para verificar que el usuario haya validado su cuenta de correo
         if(estado) {
-    //REPONER
+            //REPONER//
             //verificarCorreoVerificado();
             startActivity(new Intent(getActivity(), ActivityMap.class));
 

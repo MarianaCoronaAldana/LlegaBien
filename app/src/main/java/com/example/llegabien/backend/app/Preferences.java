@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmObject;
 
 public class Preferences extends AppCompatActivity {
@@ -35,7 +36,10 @@ public class Preferences extends AppCompatActivity {
     public static void savePreferenceObject(Context c, String key, RealmObject object) {
         final Gson gson = new Gson();
         mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES, c.MODE_PRIVATE);
-        String a = gson.toJson(Realm.getDefaultInstance().copyFromRealm(object));
+        String a = gson.toJson(Realm.getInstance(new RealmConfiguration.Builder()
+                .schemaVersion(2)
+                .deleteRealmIfMigrationNeeded()
+                .build()).copyFromRealm(object));
         mSharedPreferences.edit().putString(key, a).apply();
 
     }

@@ -1,5 +1,8 @@
 package com.example.llegabien.backend.mapa.poligonos;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_UBICACION;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -7,8 +10,10 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionBD;
+import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionBD_CRUD;
 import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
+import com.example.llegabien.backend.usuario.usuario;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polygon;
@@ -22,13 +27,13 @@ import io.realm.RealmResults;
 public class Poligono {
 
     private RealmResults<ubicacion> ubicacionResults;
-    UbicacionBD ubicacionBD = new UbicacionBD();
+    UbicacionBD_CRUD ubicacionBD_CRUD = new UbicacionBD_CRUD();
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void getPoligonos(GoogleMap googleMap, Activity activity){
         String coordenadasPoligono = "", seguridad = "";
 
-        ubicacionResults = ubicacionBD.obetenerUbicaciones();
+        ubicacionResults = ubicacionBD_CRUD.obetenerUbicaciones();
 
         for (int i = 0; i < ubicacionResults.size(); i++)
         {
@@ -75,7 +80,7 @@ public class Poligono {
 
     public void getInfoPoligono(Polygon polygon, Context c){
         String coordenadasPoligono = getCoordenadasFromList(polygon.getPoints());
-        ubicacionBD.obetenerUbicacionConPoligono(coordenadasPoligono, c);
+        ubicacionBD_CRUD.obetenerUbicacionConPoligono(coordenadasPoligono, c);
     }
 
     private List<LatLng> getCoordenadasFromString(String linea){
