@@ -100,13 +100,13 @@ public class FragmentoCambiarContraUsuario extends Fragment implements View.OnCl
 
     // Actualizar contraseña del usuario en MongoDB
     private void actualizarUsuario() {
-        UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD();
+        UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD(this.getContext());
         usuarioBD_CRUD.updateUser(Usuario);
         Toast.makeText(getApplicationContext(), "Contraseña cambiada con éxito", Toast.LENGTH_SHORT).show();
         mBtnAceptar.setEnabled(false);
 
         Usuario = usuarioBD_CRUD.readUsuarioPorCorreo(getActivity(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
-        Preferences.savePreferenceObject(getActivity(), PREFERENCE_USUARIO, Usuario);
+        Preferences.savePreferenceObjectRealm(getActivity(), PREFERENCE_USUARIO, Usuario);
     }
 
 }

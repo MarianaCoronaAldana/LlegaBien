@@ -7,6 +7,15 @@
     <color name="rojo_claro">#EF5858</color>
     <color name="negro">#000000</color>
     <color name="blanco">#F4F4F4</color>
+    <color name="rojo_poligono">#7FFF0000</color>
+    <color name="amarillo_poligono">#7FF5EC0D</color>
+    <color name="verde_poligono">#9F85BB78</color>
+    <color name="rojo_oscuro_poligono">#7FFF0000</color>
+    <color name="amarillo_oscuro_poligono">#7FF5EC0D</color>
+    <color name="verde_oscuro_poligono">#CF85BB78</color>
+    <color name="rojo_icon">#CFFF0000</color>
+    <color name="amarillo_icon">#FFEB3B</color>
+    <color name="verde_icon">#379422</color>
 
 
 </resources>

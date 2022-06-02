@@ -152,18 +152,18 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
 
     // Actualizar al usuario en MongoDB
     public void updateUsuario(){
-        UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD();
+        UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD(this.getContext());
         usuarioBD_CRUD.updateUser(Usuario);
         Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
         mBtnAceptar.setEnabled(false);
 
         Usuario = usuarioBD_CRUD.readUsuarioPorCorreo(getActivity(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
-        Preferences.savePreferenceObject(getActivity(), PREFERENCE_USUARIO, Usuario);
+        Preferences.savePreferenceObjectRealm(getActivity(), PREFERENCE_USUARIO, Usuario);
     }
 
     // Borrar al usuario en MongoDB
     public void deleteUsuario(){
-        UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD();
+        UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD(this.getContext());
         usuarioBD_CRUD.deleteUser(Usuario);
         Toast.makeText(getApplicationContext(), "Cuenta eliminada con exito", Toast.LENGTH_SHORT).show();
         Usuario = null;

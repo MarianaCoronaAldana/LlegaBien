@@ -1,13 +1,12 @@
 package com.example.llegabien.frontend.mapa.activity;
 
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_UBICACION_BUSQUEDA_AUTOCOMPLETADA;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_UBICACION;
 
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -19,9 +18,8 @@ import com.example.llegabien.backend.app.Permisos;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.poligonos.Poligono;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
+import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
 import com.example.llegabien.databinding.ActivityMapsBinding;
-import com.example.llegabien.frontend.mapa.fragmento.FragmentoBuscarLugar;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoLugarSeleccionado;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -30,27 +28,37 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.libraries.places.api.Places;
 
-import java.util.List;
-
 
 public class ActivityMap extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnPolygonClickListener {
 
-    private GoogleMap mGoogleMap;
-    private String mStringAddress;
+    private static final int DEFAULT_ZOOM = 18;
+
+    private GoogleMap mGoogleMap = null;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Permisos mPermisos;
     private Location mLastKnownLocation;
-    private Button mBtnCentrarEnMapa, mBtnDirecciones;
-    private static final int DEFAULT_ZOOM = 18;
-    SupportMapFragment mMapFragment;
+    private SupportMapFragment mMapFragment;
+    private Poligono mPoligono;
+    private Polygon mPolygonAnterior;
+    private Marker mMarkerAnterior;
+    private int mColorAnterior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //wiring up
+        com.example.llegabien.databinding.ActivityMapsBinding binding = ActivityMapsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView_map);
+
+        //listeners
+        mMapFragment.getMapAsync(this);
 
         //Para inicializar a PlacesClient
         Places.initialize(getApplicationContext(), getString(R.string.api_key));
@@ -63,18 +71,16 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         mPermisos = new Permisos();
         mPermisos.getPermisoUbicacion(this);
 
-        //wiring up
-        com.example.llegabien.databinding.ActivityMapsBinding binding = ActivityMapsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView_map);
     }
-
 
     @Override
     public void onResume(){
         super.onResume();
-        //listener
-        mMapFragment.getMapAsync(this);
+        if (mGoogleMap!=null){
+            //Para activar My Location layer
+            actualizarUbicacionUI();
+        }
+
     }
 
     //FUNCIONES LISTENERS//
@@ -83,39 +89,14 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        mStringAddress = Preferences.getSavedStringFromPreference(this, PREFERENCE_UBICACION_BUSQUEDA_AUTOCOMPLETADA);
-        LatLng defaultLocation = new LatLng(20.703027011977582, -103.3884804);
-        //LatLng prueba = new LatLng(20.766993955497846, -103.5243485882069);
+        //Para mostrar colonias con código de colores
+        mostrarColonias();
 
-        //para obetener poligonos
-        Poligono poligono= new Poligono();
-        poligono.getPoligonos(mGoogleMap,this);
-
-        //OnPolygonClickListener
-        mGoogleMap.setOnPolygonClickListener(this);
-
-        // Para activar My Location layer  y el control relacionado en el mapa.
+        //Para activar My Location layer
         actualizarUbicacionUI();
 
-        // Para obetener la ubicación actual del dispositivo y establezca la posición del mapa.
-        UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
-        mUbicacionDispositivo.getUbicacionDelDispositivo(new UbicacionDispositivo.OnUbicacionObtenida() {
-            @Override
-            public void isUbicacionObtenida(boolean isUbicacionObtenida, Location ubicacionObtenida) {
-                if (!mStringAddress.equals("no hay string"))
-                    mostrarLugarBuscado();
-                else {
-                    if (isUbicacionObtenida) {
-                        mLastKnownLocation = ubicacionObtenida;
-                        centrarEnUbicacionDispositivo();
-                    }
-                    else {
-                            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
-                            mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                    }
-                }
-            }
-        }, mPermisos.getmLocationPermissionGranted(),fusedLocationProviderClient, this);
+        //Para obtener la ubicación actual del dispositivo y ubicacion buscada (si existe)
+        mostrarUbicacionDispositivo();
     }
 
     @Override
@@ -132,15 +113,23 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         actualizarUbicacionUI();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onPolygonClick(Polygon polygon) {
-        Poligono poligono = new Poligono();
-        poligono.getInfoPoligono(polygon, this);
-        FragmentoLugarSeleccionado fragmentoLugarSeleccionado = new FragmentoLugarSeleccionado();
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContainerView_map_1, fragmentoLugarSeleccionado).commit();
-        fragmentTransaction.addToBackStack(null);
+        removerPolygonAnterior();
+        removerMarkerAnterior();
+
+        mPolygonAnterior = polygon;
+        mColorAnterior = mPolygonAnterior.getFillColor();
+
+        Poligono poligono = new Poligono(this);
+        poligono.getInfoPoligono(polygon);
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(poligono.getCentroPoligono(polygon), 16));
+
+        abrirFragmentoLugarBuscado(false, null);
+
     }
+
 
     //OTRAS FUNCIONES//
 
@@ -149,12 +138,12 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
             return;
         }
         try {
+            mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false); //boton de centrar en mapa default de GM
             if (mPermisos.getmLocationPermissionGranted()) {
                 mGoogleMap.setMyLocationEnabled(true);
-                mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+
             } else {
                 mGoogleMap.setMyLocationEnabled(false);
-                mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
                 mLastKnownLocation = null;
                 mPermisos.getPermisoUbicacion(this);
             }
@@ -163,18 +152,78 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         }
     }
 
-    private void mostrarLugarBuscado(){
-        UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
-        ubicacionGeodicacion.geocodificarUbiciacion(this, mStringAddress);
-        LatLng mLatLng = new LatLng(ubicacionGeodicacion.getmAddress().getLatitude(), ubicacionGeodicacion.getmAddress().getLongitude());
-        mGoogleMap.addMarker((new MarkerOptions().position(mLatLng)));
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, DEFAULT_ZOOM));
-        Preferences.savePreferenceString(this,"no hay string",PREFERENCE_UBICACION_BUSQUEDA_AUTOCOMPLETADA);
+    public void mostrarUbicacionBuscada(boolean isUbicacionBuscadaEnBD, LatLng ubicacionBuscada, String ubicacionBuscadaString){
+
+        removerPolygonAnterior();
+        removerMarkerAnterior();
+
+        // Para mostrar la ubicacion buscada en el mapa con un marcador.
+        Marker marker = mGoogleMap.addMarker((new MarkerOptions().position(ubicacionBuscada)));
+        mMarkerAnterior  = marker;
+
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionBuscada, DEFAULT_ZOOM));
+
+        // Para verificar que si se encontró la ubicación buscada en la BD.
+        if(isUbicacionBuscadaEnBD == true) {
+            // Para abrir el fragmento "LugarSeleccionado" cuando se obtenga un resultado.
+            abrirFragmentoLugarBuscado(true, ubicacionBuscadaString);
+        }
     }
 
-    private void centrarEnUbicacionDispositivo(){
+    public void centrarMapa(){
         if (mLastKnownLocation != null)
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void mostrarColonias(){
+        // Para obetener poligonos.
+        mPoligono = new Poligono(this);
+        mPoligono.getColonias(mGoogleMap);
+
+        // OnPolygonClickListener
+        mGoogleMap.setOnPolygonClickListener(this);
+    }
+
+    private void mostrarUbicacionDispositivo(){
+        LatLng defaultLocation = new LatLng(20.703027011977582, -103.3884804);
+
+        UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
+        mUbicacionDispositivo.getUbicacionDelDispositivo(new UbicacionDispositivo.OnUbicacionObtenida() {
+            @Override
+            public void isUbicacionObtenida(boolean isUbicacionObtenida, Location ubicacionObtenida) {
+                if (isUbicacionObtenida) {
+                    mLastKnownLocation = ubicacionObtenida;
+                    centrarMapa();
+                }
+                else {
+                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
+                    mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
+                }
+            }
+        }, mPermisos.getmLocationPermissionGranted(),fusedLocationProviderClient, this);
+    }
+
+    private void abrirFragmentoLugarBuscado(boolean hasUbicacionBuscada, String address){
+        FragmentoLugarSeleccionado fragmentoLugarSeleccionado = new FragmentoLugarSeleccionado();
+        if (hasUbicacionBuscada){
+            fragmentoLugarSeleccionado.setUbicacionBuscada(address);
+        }
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentContainerView_map_1, fragmentoLugarSeleccionado).commit();
+    }
+
+    // Para cambiar el color del poligono anterior que se seleccionó.
+    public void removerPolygonAnterior(){
+        if (mPolygonAnterior != null)
+            mPolygonAnterior.setFillColor(mColorAnterior);
+    }
+
+    // Para remover el marcador anterior que se seleccionó.
+    public void removerMarkerAnterior(){
+        if (mMarkerAnterior != null)
+            mMarkerAnterior.remove();
+    }
+
 
 }

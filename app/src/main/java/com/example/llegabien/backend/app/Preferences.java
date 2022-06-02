@@ -19,7 +19,7 @@ public class Preferences extends AppCompatActivity {
     public static final String PREFERENCE_ES_ADMIN = "usuario.admin";
     public static final String PREFERENCE_USUARIO = "usuario";
     public static final String PREFERENCE_UBICACION_BUSQUEDA_AUTOCOMPLETADA = "ubicacionBusquedaAutocompletada";
-    public static final String PREFERENCE_UBICACION = "Ubicacion";
+    public static final String PREFERENCE_UBICACION = "ubicacion";
 
     // Guaradar preferencia sobre un tipo boolean
     public static void savePreferenceBoolean(Context c, boolean b, String key){
@@ -33,15 +33,22 @@ public class Preferences extends AppCompatActivity {
     }
 
     // Para guardar preferencias de un objeto realm
-    public static void savePreferenceObject(Context c, String key, RealmObject object) {
+    public static void savePreferenceObjectRealm(Context c, String key, RealmObject object) {
         final Gson gson = new Gson();
         mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES, c.MODE_PRIVATE);
-        String a = gson.toJson(Realm.getInstance(new RealmConfiguration.Builder()
-                .schemaVersion(2)
+        String jsonObjectRealm = gson.toJson(Realm.getInstance(new RealmConfiguration.Builder()
+                .schemaVersion(5)
                 .deleteRealmIfMigrationNeeded()
                 .build()).copyFromRealm(object));
-        mSharedPreferences.edit().putString(key, a).apply();
+        mSharedPreferences.edit().putString(key, jsonObjectRealm).apply();
 
+    }
+
+    public static void savePreferenceObject(Context c, String key, Object object) {
+        final Gson gson = new Gson();
+        mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES, c.MODE_PRIVATE);
+        String jsonObject = gson.toJson(object);
+        mSharedPreferences.edit().putString(key, jsonObject ).apply();
     }
 
     public static String getSavedStringFromPreference(Context c,String key){
@@ -56,11 +63,11 @@ public class Preferences extends AppCompatActivity {
     }
 
     // Para obtener preferencias de un objeto
-    public static <GenericClass> GenericClass getSavedObjectFromPreference(Context c, String preferenceKey, Class<GenericClass> classType) {
+    public static <GenericClass> GenericClass getSavedObjectFromPreference(Context c, String key, Class<GenericClass> classType) {
         mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES,c.MODE_PRIVATE);
-        if (mSharedPreferences.contains(preferenceKey)) {
+        if (mSharedPreferences.contains(key)) {
             final Gson gson = new Gson();
-            return gson.fromJson(mSharedPreferences.getString(preferenceKey, null), classType);
+            return gson.fromJson(mSharedPreferences.getString(key, null), classType);
         }
         return null;
     }

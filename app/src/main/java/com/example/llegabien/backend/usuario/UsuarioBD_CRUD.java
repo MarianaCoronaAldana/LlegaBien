@@ -19,27 +19,18 @@ public class UsuarioBD_CRUD {
 
     private ConectarBD conectarBD = new ConectarBD();
     private Realm realm;
+    private Context mContext;
 
-
-    public static Realm conseguirRealm() {
-        ConectarBD conectarBD = new ConectarBD();
-        Realm realm = conectarBD.ConectarAnonimoMongoDB();
-        return realm;
-    }
-
-    public static Realm conseguirRealmCorreo(String email, String contrasena) {
-        ConectarBD conectarBD = new ConectarBD();
-        Realm realm = conectarBD.ConectarCorreoMongoDB(email, contrasena);
-        return realm;
+    public UsuarioBD_CRUD(Context context){
+        mContext = context;
     }
 
     public void añadirUser(usuario Usuario) {
         Usuario.set_id(new ObjectId());
         Usuario.set_partition("LlegaBien");
-        //Realm realm = conseguirRealm();
         realm = conectarBD.ConectarAnonimoMongoDB();
 
-        if(!realm.isEmpty()){
+        if(realm!=null){
             realm.executeTransactionAsync(transactionRealm -> {
                 transactionRealm.insert(Usuario);
             });
@@ -53,12 +44,11 @@ public class UsuarioBD_CRUD {
     }
 
     public void deleteUser(usuario Usuario) {
-        //Realm realm = conseguirRealm();
         realm = conectarBD.ConectarAnonimoMongoDB();
 
         Log.v("QUICKSTART", "pARTITION: " + Usuario.get_partition());
 
-        if(!realm.isEmpty()){
+        if(realm!=null){
             realm.executeTransactionAsync(transactionRealm -> {
 
                 usuario a = readUsuarioPorCorreo(getApplicationContext(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
@@ -79,22 +69,18 @@ public class UsuarioBD_CRUD {
 
 
     public void updateUser(usuario Usuario) {
-        //Realm realm ;
-        //realm = conseguirRealmCorreo(Usuario.getCorreoElectronico(), Usuario.getContrasena());
         realm = conectarBD.ConectarCorreoMongoDB(Usuario.getCorreoElectronico(), Usuario.getContrasena());
-        //realm = conseguirRealm();
         Log.v("QUICKSTART", "pARTITION: " + Usuario.get_partition());
         Log.v("QUICKSTART", "ESTOY EN UPDATE ");
 
-        if(!realm.isEmpty()){
+        if(realm!=null){
 
             realm.executeTransactionAsync(transactionRealm -> {
-                //transactionRealm.insertOrUpdate(Usuario);
                 transactionRealm.copyToRealmOrUpdate(Usuario, ImportFlag.CHECK_SAME_VALUES_BEFORE_SET);
                 Log.v("QUICKSTART", "SE HIZO UPDATE CON EXITOOOO ");
             });
 
-            Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
             realm.close();
         }
         else
@@ -105,14 +91,14 @@ public class UsuarioBD_CRUD {
     public usuario readUsuarioPorCorreo(Context c, String correo, String contrasena) {
         realm = conectarBD.ConectarCorreoMongoDB(correo, contrasena);
 
-        if(!realm.isEmpty()) {
+        if(realm!=null){
             usuario task = realm.where(usuario.class).equalTo("correoElectronico", correo)
                     .findFirst();
 
             if (task != null) {
                 Log.v("QUICKSTART", "estoy en conseguir usuario por coreoooooooooooooo");
                 // Se guarda al usuario en una clase accesible para muchas clases
-                Preferences.savePreferenceObject(c, PREFERENCE_USUARIO, task);
+                Preferences.savePreferenceObjectRealm(c, PREFERENCE_USUARIO, task);
                 // Se cierra la cuenta con la que se estan haciendo transacciones en MongoDB y se crea una con el correo y contraseña del usuario
                 return task;
             }
@@ -125,6 +111,6 @@ public class UsuarioBD_CRUD {
     }
 
     private void errorConexion(){
-        Toast.makeText(getApplicationContext(), "Hubo un problema en conectarse, intenta mas tarde", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "Hubo un problema en conectarse, intenta mas tarde", Toast.LENGTH_SHORT).show();
     }
 }

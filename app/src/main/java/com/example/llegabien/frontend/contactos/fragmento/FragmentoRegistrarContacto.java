@@ -45,7 +45,6 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
     private usuario Usuario;
     private usuario_contacto Contacto =  new  usuario_contacto();
     private ConectarBD conectarBD = new ConectarBD();
-    private UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD();
 
     public FragmentoRegistrarContacto(){}
 
@@ -185,6 +184,7 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
     }
 
     private void terminarRegistro(){
+        UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD(this.getContext());
         usuarioBD_CRUD.añadirUser(Usuario);
         conectarBD.registrarCuentaCorreo(Usuario.getCorreoElectronico(), Usuario.getContrasena());
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();

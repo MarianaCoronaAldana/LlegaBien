@@ -33,7 +33,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
 
     private UsuarioSharedViewModel SharedViewModel;
     usuario Usuario = new usuario();
-    UsuarioBD_Validaciones validar = new UsuarioBD_Validaciones();
+    UsuarioBD_Validaciones validar = new UsuarioBD_Validaciones(getActivity());
 
     public FragmentoRegistrarUsuario2() {
 

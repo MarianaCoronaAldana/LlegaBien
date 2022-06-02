@@ -9,7 +9,7 @@
     android:backgroundTint="@color/blanco"
     android:elevation="10dp"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="110dp"
+    app:behavior_peekHeight="100dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     tools:context=".frontend.mapa.fragmento.FragmentoLugarSeleccionado">
 
@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.35" />
+        app:layout_constraintGuide_percent="0.32" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1_textView_button_detallesLugar"
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="216dp" />
+        app:layout_constraintGuide_percent="0.55" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1_iconDragBottomSheet_detallesLugar"
@@ -88,9 +88,11 @@
         android:id="@+id/textView1_nombreLugar_detallesLugar"
         style="@style/TxtViewAzulOscuro"
         android:background="@android:color/transparent"
+        android:padding="0dp"
         android:text="@string/nombreLugar1_detallesNombre"
         android:textColor="@color/negro"
-        app:layout_constraintDimensionRatio="14:2"
+        android:textAllCaps="true"
+        app:layout_constraintDimensionRatio="18:2"
         app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_detallesLugar"
         app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_detallesLugar"
         app:layout_constraintTop_toBottomOf="@id/icon_dragBottomSheet_detallesLugar"
@@ -101,7 +103,7 @@
         android:id="@+id/textView2_nombreLugar_detallesLugar"
         style="@style/TxtViewTransparente"
         android:text="@string/nombreLugar2_detallesNombre"
-        app:layout_constraintDimensionRatio="10:1"
+        app:layout_constraintDimensionRatio="11:1"
         app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_detallesLugar"
         app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_detallesLugar"
         app:layout_constraintTop_toBottomOf="@id/textView1_nombreLugar_detallesLugar" />
@@ -111,8 +113,8 @@
         style="@style/TxtViewTransparente"
         android:text="@string/seguridad_detallesNombre"
         android:textStyle="bold"
-        android:gravity="center_vertical|left"
-        android:paddingLeft="10dp"
+        android:gravity="center_vertical|start"
+        android:paddingStart="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="9:1"
         app:layout_constraintEnd_toEndOf="@+id/guideline2_textView_button_detallesLugar"
@@ -125,7 +127,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/bkgd_esquinas_redondeadas"
-        android:backgroundTint="#E00000"
+        android:backgroundTint="#FFEB3B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="3:1"
         app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_detallesLugar"
@@ -137,7 +139,7 @@
         android:id="@+id/textView_mediHistorica_detallesLugar"
         style="@style/TxtViewTransparente"
         android:text="@string/mediaHistorica_detallesNombre"
-        android:gravity="center_vertical|left"
+        android:gravity="center_vertical|start"
         app:layout_constraintDimensionRatio="9:1"
         app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_detallesLugar"
         app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_detallesLugar"
@@ -158,7 +160,7 @@
         style="@style/BtnMoradoOscuro"
         android:elevation="10dp"
         android:clickable="true"
-        app:layout_constraintDimensionRatio="9:2"
+        app:layout_constraintDimensionRatio="13:3"
         app:layout_constraintEnd_toEndOf="@id/guideline2_button_detallesLugar"
         app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_detallesLugar"
         app:layout_constraintTop_toBottomOf="@id/textView_numDelitos_detallesLugar"
@@ -191,7 +193,7 @@
         <TextView
             android:id="@+id/textView_indicaciones"
             style="@style/TxtViewTransparente"
-            android:text="Indicaciones"
+            android:text="@string/indicacionesBtn_detallesNombre"
             android:gravity="center_vertical|left"
             android:paddingLeft="10dp"
             android:textColor="@color/blanco"
@@ -240,7 +242,7 @@
         <TextView
             android:id="@+id/textView_guardar_añadirFavoritos"
             style="@style/TxtViewTransparente"
-            android:text="Guardar"
+            android:text="@string/guardarBtn_detallesNombre"
             android:gravity="center_vertical|left"
             android:paddingLeft="10dp"
             android:textStyle="bold"

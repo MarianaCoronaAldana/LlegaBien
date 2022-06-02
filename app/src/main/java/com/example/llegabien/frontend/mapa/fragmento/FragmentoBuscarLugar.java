@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -19,15 +20,17 @@ import android.widget.Button;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.frontend.usuario.activity.ActivityConfiguracionAdmin;
+import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.usuario.activity.ActivityConfiguracionUsuario;
 import com.example.llegabien.frontend.usuario.dialog.DialogTipoConfiguracion;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 
 public class FragmentoBuscarLugar extends Fragment implements View.OnClickListener{
 
-    private UbicacionBusquedaAutocompletada ubicacionBusquedaAutocompletada;
     private Button mBtnBusqueda, mBtnConfiguracion;
+    private ConstraintLayout mBtnCentrarMapa;
+    private UbicacionBusquedaAutocompletada ubicacionBusquedaAutocompletada;
     private ActivityResultLauncher<Intent> activityResultLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
@@ -36,7 +39,13 @@ public class FragmentoBuscarLugar extends Fragment implements View.OnClickListen
                         public void onActivityResult(ActivityResult activityResult) {
                             int result = activityResult.getResultCode();
                             Intent data = activityResult.getData();
-                            ubicacionBusquedaAutocompletada.verificarResultadoBusqueda(result, data);
+                            ubicacionBusquedaAutocompletada.verificarResultadoBusqueda(new UbicacionBusquedaAutocompletada.OnUbicacionBuscadaObtenida() {
+                                @Override
+                                public void isUbicacionBuscadaObtenida(boolean isUbicacionBuscadaObtenida, boolean isUbicacionBuscadaenBD, LatLng ubicacionBuscada, String ubicacionBuscadaString) {
+                                    if (isUbicacionBuscadaObtenida)
+                                        ((ActivityMap)getActivity()).mostrarUbicacionBuscada(isUbicacionBuscadaenBD, ubicacionBuscada, ubicacionBuscadaString);
+                                }
+                            }, result, data, getActivity());
                         }
                     }
             );
@@ -57,12 +66,14 @@ public class FragmentoBuscarLugar extends Fragment implements View.OnClickListen
         }
 
         //wiring up
-        mBtnBusqueda = (Button) root.findViewById(R.id.button_titulo_barraBusqueda);
+        mBtnBusqueda = (Button) root.findViewById(R.id.button_titulo_barraBusqueda_buscarLugar);
         mBtnConfiguracion = (Button) root.findViewById(R.id.button_configuracion_barraBusqueda);
+        mBtnCentrarMapa = (ConstraintLayout) root.findViewById(R.id.button_centrarMapa_buscarLugar);
 
         //listeners
         mBtnBusqueda.setOnClickListener(this);
         mBtnConfiguracion.setOnClickListener(this);
+        mBtnCentrarMapa.setOnClickListener(this);
 
         return root;
     }
@@ -71,10 +82,10 @@ public class FragmentoBuscarLugar extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.button_titulo_barraBusqueda:
-                ubicacionBusquedaAutocompletada = new UbicacionBusquedaAutocompletada(this);
-                ubicacionBusquedaAutocompletada.inicializarIntent();
-                activityResultLauncher.launch(ubicacionBusquedaAutocompletada.getmIntent());
+            case R.id.button_titulo_barraBusqueda_buscarLugar:
+                ubicacionBusquedaAutocompletada = new UbicacionBusquedaAutocompletada();
+                ubicacionBusquedaAutocompletada.inicializarIntent(getActivity());
+                activityResultLauncher.launch(ubicacionBusquedaAutocompletada.getIntent());
                 break;
             case R.id.button_configuracion_barraBusqueda:
                 // Si el usuario es del tipo Administrador, se manda a un lugar distinto que a un usuario normal
@@ -84,7 +95,9 @@ public class FragmentoBuscarLugar extends Fragment implements View.OnClickListen
                 }
                 else
                     startActivity(new Intent(this.getActivity(), ActivityConfiguracionUsuario.class));
-
+                break;
+            case R.id.button_centrarMapa_buscarLugar:
+                ((ActivityMap)getActivity()).centrarMapa();
                 break;
         }
     }

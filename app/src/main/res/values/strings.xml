@@ -100,12 +100,12 @@
     <string name="titulo_barraBusqueda">Prueba buscar un lugar...</string>
 
     <!-- Detalles de lugar -->
-    <string name="nombreLugar1_detallesNombre">Calle Oasis 1476</string>
-    <string name="nombreLugar2_detallesNombre">Las Palmas, 45132 Zapopan, Jal.</string>
+    <string name="nombreLugar1_detallesNombre">Jardines del Valle</string>
+    <string name="nombreLugar2_detallesNombre">Zapopan, Jalisco, México</string>
     <string name="seguridad_detallesNombre">Seguridad media</string>
-    <string name="mediaHistorica_detallesNombre">Media Historica Semanal = 4</string>
-    <string name="numDelitos_detallesNombre">Num. de delitos 13 Dic - 19 Dic = 5</string>
-    <string name="añadirFavoritosBtn_detallesNombre">Guardar</string>
+    <string name="mediaHistorica_detallesNombre">Media Histórica Semanal = </string>
+    <string name="numDelitos_detallesNombre">Delitos última semana = </string>
+    <string name="guardarBtn_detallesNombre">Guardar</string>
     <string name="indicacionesBtn_detallesNombre">Indicaciones</string>
 
     <!-- Indicaciones -->

@@ -62,7 +62,7 @@
                 app:layout_constraintGuide_percent="0.09" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline1_btnConfiguracion_barraBusqueda_lugarSeleccionado"
+                android:id="@+id/guideline_titulo_barraBusqueda_lugarSeleccionado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -80,23 +80,23 @@
 
 
             <Button
-                android:id="@+id/button_titulo_barraBusqueda"
+                android:id="@+id/button_titulo_barraBusqueda_lugarSeleccionado"
                 style="@style/EditTextTransparente"
-                android:background="@android:color/transparent"
                 android:focusable="false"
+                android:background="@android:color/transparent"
                 android:hint="@string/titulo_barraBusqueda"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:textSize="@dimen/text_size_parrafo_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/guideline1_btnConfiguracion_barraBusqueda_lugarSeleccionado"
+                app:layout_constraintEnd_toEndOf="@id/guideline_titulo_barraBusqueda_lugarSeleccionado"
                 app:layout_constraintStart_toStartOf="@id/guideline2_icon_barraBusqueda_lugarSeleccionado"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/button_centrarMapa_buscarLugar"
+            android:id="@+id/button_centrarMapa_lugarSeleccionado"
             style="@style/BtnCentrarMapa"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/guideline2_barraBusqueda_lugarSeleccionado"

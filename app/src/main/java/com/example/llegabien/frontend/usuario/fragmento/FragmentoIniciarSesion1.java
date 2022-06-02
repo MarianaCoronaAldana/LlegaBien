@@ -31,8 +31,6 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
     private EditText mEditTxtCorreo, mEditTxtContraseña;
     private boolean isActivateRadioButton;
 
-    UsuarioBD_Validaciones validar = new UsuarioBD_Validaciones();
-
     public FragmentoIniciarSesion1() {
     }
 
@@ -130,10 +128,11 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
 
     private void verificarCorreoContraseña() {
         boolean estado = true;
-        if(validar.validarAdmin(getActivity(), mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString()))
+        UsuarioBD_Validaciones validar = new UsuarioBD_Validaciones(this.getActivity());
+        if(validar.validarAdmin(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString()))
             Preferences.savePreferenceBoolean(this.getActivity(), true, PREFERENCE_ES_ADMIN);
 
-        else if(!validar.verificarCorreoContrasena(getActivity(), mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString())) {
+        else if(!validar.verificarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString())) {
             estado = false;
             //Toast.makeText(getActivity(),"El correo electronico o el numero telefonico son incorrectos",Toast.LENGTH_LONG).show();
         }

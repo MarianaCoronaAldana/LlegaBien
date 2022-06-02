@@ -1,7 +1,6 @@
 package com.example.llegabien.frontend.mapa.fragmento;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_UBICACION;
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.os.Bundle;
 
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
-import com.example.llegabien.backend.usuario.usuario;
 
 public class FragmentoDetallesLugar extends Fragment {
 

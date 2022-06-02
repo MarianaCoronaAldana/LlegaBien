@@ -1,23 +1,26 @@
 package com.example.llegabien.backend.mapa.poligonos;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_UBICACION;
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionBD_CRUD;
 import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
-import com.example.llegabien.backend.usuario.usuario;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.maps.android.PolyUtil;
+
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,24 +29,28 @@ import io.realm.RealmResults;
 
 public class Poligono {
 
-    private RealmResults<ubicacion> ubicacionResults;
-    UbicacionBD_CRUD ubicacionBD_CRUD = new UbicacionBD_CRUD();
+    private RealmResults<ubicacion> mResultadosColonias;
+    private Context mContext;
+    private UbicacionBD_CRUD mUbicacionBD_CRUD = new UbicacionBD_CRUD(mContext);
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void getPoligonos(GoogleMap googleMap, Activity activity){
+    public Poligono(Context context){
+        mContext = context;
+    }
+
+    public Poligono() {}
+
+    public void getColonias(GoogleMap googleMap){
         String coordenadasPoligono = "", seguridad = "";
-
-        ubicacionResults = ubicacionBD_CRUD.obetenerUbicaciones();
-
-        for (int i = 0; i < ubicacionResults.size(); i++)
-        {
-            coordenadasPoligono = ubicacionResults.get(i).getPoligono();
-            seguridad = ubicacionResults.get(i).getSeguridad();
-            if (!(coordenadasPoligono == null) || !(seguridad == null)){
-                mostrarPoligono(getCoordenadasFromString(coordenadasPoligono),googleMap,seguridad);
+        mResultadosColonias = mUbicacionBD_CRUD.obetenerColonias();
+        if (mResultadosColonias != null) {
+            for (int i = 0; i < mResultadosColonias.size(); i++) {
+                coordenadasPoligono = mResultadosColonias.get(i).getCoordenadas_string();
+                seguridad = mResultadosColonias.get(i).getSeguridad();
+                if (coordenadasPoligono != null) {
+                    mostrarPoligono(getCoordenadasFromString(coordenadasPoligono), googleMap, seguridad);
+                }
             }
         }
-
     }
 
     private void mostrarPoligono(List<LatLng> listLatLong, GoogleMap googleMap, String seguridad){
@@ -52,13 +59,13 @@ public class Poligono {
 
         switch (seguridad){
             case "Seguridad baja":
-                crearPoligono(googleMap, points, 0x7FFF0000);
+                crearPoligono(googleMap, points, mContext.getResources().getColor(R.color.rojo_poligono));
                 break;
             case "Seguridad media":
-                crearPoligono(googleMap, points, 0x7FF5EC0D);
+                crearPoligono(googleMap, points, mContext.getResources().getColor(R.color.amarillo_poligono));
                 break;
             case "Seguridad alta":
-                crearPoligono(googleMap, points, 0x9F85BB78);
+                crearPoligono(googleMap, points, mContext.getResources().getColor(R.color.verde_poligono));
                 break;
             default:
                 crearPoligono(googleMap, points, Color.BLUE);
@@ -78,12 +85,30 @@ public class Poligono {
         );
     }
 
-    public void getInfoPoligono(Polygon polygon, Context c){
+    public void getInfoPoligono(Polygon polygon){
         String coordenadasPoligono = getCoordenadasFromList(polygon.getPoints());
-        ubicacionBD_CRUD.obetenerUbicacionConPoligono(coordenadasPoligono, c);
+        mUbicacionBD_CRUD.obetenerUbicacionConPoligono(coordenadasPoligono, mContext);
+        ubicacion ubicacion = Preferences.getSavedObjectFromPreference(mContext, PREFERENCE_UBICACION, ubicacion.class);
+        if (ubicacion != null) {
+            String seguridad = ubicacion.getSeguridad();
+            if (seguridad.equals("Seguridad baja"))
+                polygon.setFillColor(mContext.getResources().getColor(R.color.rojo_oscuro_poligono));
+            if (seguridad.equals("Seguridad media"))
+                polygon.setFillColor(mContext.getResources().getColor(R.color.amarillo_oscuro_poligono));
+            if (seguridad.equals("Seguridad alta"))
+                polygon.setFillColor(mContext.getResources().getColor(R.color.verde_oscuro_poligono));
+        }
     }
 
-    private List<LatLng> getCoordenadasFromString(String linea){
+    public LatLng getCentroPoligono(Polygon polygon){
+        LatLngBounds.Builder latLngBounds = LatLngBounds.builder();
+        for (LatLng latLng : polygon.getPoints()) {
+            latLngBounds.include(latLng);
+        }
+        return latLngBounds.build().getCenter();
+    }
+
+    public List<LatLng> getCoordenadasFromString(String linea){
         int cuenta = 0;
         StringBuilder latLongString = new StringBuilder();
         String [] latLongArray;
@@ -125,4 +150,17 @@ public class Poligono {
 
         return coordenadasPoligono;
     }
+
+    public ubicacion isUbicacionEnPoligono (RealmResults<ubicacion> resultadosUbicaciones, double latitude, double longitude){
+        String coordenadas = "";
+
+        for (int i = 0; i < resultadosUbicaciones.size(); i++) {
+            coordenadas = resultadosUbicaciones.get(i).getCoordenadas_string();
+            if(PolyUtil.containsLocation(new LatLng(latitude, longitude), getCoordenadasFromString(coordenadas), true))
+                return resultadosUbicaciones.get(i);
+        }
+
+        return null;
+    }
+
 }
