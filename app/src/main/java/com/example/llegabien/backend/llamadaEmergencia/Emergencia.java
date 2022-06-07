@@ -43,8 +43,8 @@ public class Emergencia extends AppCompatActivity {
 
         try {
             //TODO Cambiar link de ngrok aqui
-            post("https://8071-2806-103e-29-b2a4-48bb-c03-8252-8e1f.ngrok.io/emergencia", new  Callback(){
-            //post("https://6d3a-2806-103e-29-a92b-c89d-16d6-3cf0-69a1.ngrok/", new  Callback(){
+            //post("https://1899-2806-103e-29-a8e5-a4ec-7b6d-8cae-76c3.ngrok.io/emergencia", new  Callback(){
+            post("https://6d3a-2806-103e-29-a92b-c89d-16d6-3cf0-69a1.ngrok/", new  Callback(){
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -95,8 +95,8 @@ public class Emergencia extends AppCompatActivity {
 
     private void InicializarDatos(){
         Usuario = Preferences.getSavedObjectFromPreference(mContext, PREFERENCE_USUARIO, usuario.class);
-        /*for(int i = 0; i<Usuario.getContacto().size(); i++)
-            mContactos.add("+52" + Usuario.getContacto().get(i).getTelCelular());*/
+        for(int i = 0; i<Usuario.getContacto().size(); i++)
+            mContactos.add("+52" + Usuario.getContacto().get(i).getTelCelular());
         for(int i = mContactos.size(); i<5; i++)
             mContactos.add("-1");
         mNombre = Usuario.getNombre() + " " + Usuario.getApellidos();

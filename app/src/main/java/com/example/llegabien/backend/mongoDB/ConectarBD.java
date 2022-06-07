@@ -74,10 +74,9 @@ public class ConectarBD {
     }
 
 
-    //
+    // Para conseguir el usuario actual de la app
     public Realm conseguirUsuarioMongoDB(){
         App app = aplicacionLlegaBien.getApp();
-        Credentials credentials = Credentials.anonymous();
 
         user = app.currentUser();
         if(user!=null) {
@@ -86,6 +85,11 @@ public class ConectarBD {
                     partitionValue)
                     .build();
             realm = Realm.getInstance(config);
+        }
+
+        else {
+            ConectarAnonimoMongoDB();
+            conseguirUsuarioMongoDB();
         }
         return realm;
     }

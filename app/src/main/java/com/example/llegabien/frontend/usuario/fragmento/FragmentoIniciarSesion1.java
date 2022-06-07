@@ -19,6 +19,7 @@ import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Encriptar;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.llamadaEmergencia.Emergencia;
+import com.example.llegabien.backend.mongoDB.ConectarBD;
 import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.frontend.FragmentoAuxiliar;
@@ -32,6 +33,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
     private Button mBtnIniciarSesion, mBtnContraseñaOlvidada, mBtnCerrar, mBtnRegistrarse;
     private EditText mEditTxtCorreo, mEditTxtContraseña;
     private boolean isActivateRadioButton;
+    ConectarBD conectarBD = new ConectarBD();
 
     public FragmentoIniciarSesion1() {
     }
@@ -59,6 +61,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
         mBtnRegistrarse.setOnClickListener(this);
 
         isActivateRadioButton = mBtnRecordarSesion.isChecked(); //DESACTIVADO
+        conectarBD.ConectarAnonimoMongoDB();
 
         return root;
     }

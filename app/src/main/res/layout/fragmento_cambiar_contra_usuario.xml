@@ -122,7 +122,7 @@
             android:id="@+id/editText_actualContra_cambiarContra"
             style="@style/EditTextTransparente"
             android:hint="@string/actualContra_cambiarContra"
-            android:inputType="textVisiblePassword|textPassword"
+            android:inputType="textPassword"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="6:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_cambiarContra"

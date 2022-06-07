@@ -22,7 +22,7 @@ public class UbicacionBD_CRUD {
     }
 
     public RealmResults<ubicacion> obetenerColonias() {
-        realm = conectarBD.ConectarAnonimoMongoDB();
+        realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
 
@@ -45,7 +45,7 @@ public class UbicacionBD_CRUD {
     }
 
     public RealmResults<ubicacion> obetenerMunicipios() {
-        realm = conectarBD.ConectarAnonimoMongoDB();
+        realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
 
@@ -67,7 +67,7 @@ public class UbicacionBD_CRUD {
     }
 
     public RealmResults<ubicacion> obetenerCalles() {
-        realm = conectarBD.ConectarAnonimoMongoDB();
+        realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
 
@@ -90,7 +90,7 @@ public class UbicacionBD_CRUD {
 
 
     public void obetenerUbicacionConPoligono(String coordenadasPoligono, Context c) {
-        realm = conectarBD.ConectarAnonimoMongoDB();
+        realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
 
