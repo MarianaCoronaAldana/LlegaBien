@@ -1,5 +1,7 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ES_ADMIN;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.content.Intent;
@@ -68,6 +70,10 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
                     fragmentTransaction.addToBackStack(null);
                 break;
             case R.id.button_cerrarSesion_configuracionUsuario:
+                // Se reinician los datos importantes guardados en Preferences
+                Preferences.savePreferenceBoolean(this.getActivity(),false, PREFERENCE_ESTADO_BUTTON_SESION);
+                Preferences.savePreferenceBoolean(this.getActivity(), false, PREFERENCE_ES_ADMIN);
+
                 startActivity(new Intent(getActivity(), ActivityPaginaPrincipalUsuario.class));
                 break;
             case R.id.button_regresar_configuracionUsuario:

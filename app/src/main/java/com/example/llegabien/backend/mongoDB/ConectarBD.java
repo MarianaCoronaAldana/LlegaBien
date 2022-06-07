@@ -73,7 +73,25 @@ public class ConectarBD {
         return realm;
     }
 
-    public void registrarCuentaCorreo(String email, String password){
+
+    //
+    public Realm conseguirUsuarioMongoDB(){
+        App app = aplicacionLlegaBien.getApp();
+        Credentials credentials = Credentials.anonymous();
+
+        user = app.currentUser();
+        if(user!=null) {
+            config = new SyncConfiguration.Builder(
+                    user,
+                    partitionValue)
+                    .build();
+            realm = Realm.getInstance(config);
+        }
+        return realm;
+    }
+
+
+    public static void registrarCuentaCorreo(String email, String password){
         App app = aplicacionLlegaBien.getApp();
 
         app.getEmailPassword().registerUserAsync(email, password, it -> {
@@ -84,7 +102,14 @@ public class ConectarBD {
             }
         });
 
+        app.removeUser(app.currentUser());
     }
+
+    public static void borrarCuentaCorreo(){
+        App app = aplicacionLlegaBien.getApp();
+        app.removeUser(app.currentUser());
+    }
+
 
     public void cerrarMongoDB(){
         App app = aplicacionLlegaBien.getApp();

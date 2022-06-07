@@ -72,7 +72,7 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
 
 
     // Se verifica que los datos para iniciar sesion coincidan con un usuario real
-    public boolean verificarCorreoContrasena(String correo, String contrasena) {
+    public boolean verificarCorreoContrasena(String correo, String contrasena, String error) {
         realm = conectarBD.ConectarAnonimoMongoDB();
 
         if(realm!=null){
@@ -82,7 +82,7 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
                     .findFirst();
 
             if (task != null) {
-                Log.v("AVERW", "NOMBRE D ETASK: " + task.getNombre());
+                Log.v("AVERW", "NOMBRE DE TASK: " + task.getNombre());
                 // Se guarda al usuario en una clase accesible para muchas clases
                 Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_USUARIO, task);
                 // Se abre una cuenta con el correo y contraseña del usuario
@@ -90,7 +90,7 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
                 return true;
             }
             else
-                Toast.makeText(mContext,"El correo electronico o el numero telefonico son incorrectos",Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext,error,Toast.LENGTH_LONG).show();
         }
 
         else
@@ -100,6 +100,6 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
     }
 
     private void errorConexion(){
-        Toast.makeText(mContext, "Hubo un problema en conectarse, intenta mas tarde", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "Hubo un problema en conectarse, intenta mas tarde", Toast.LENGTH_LONG).show();
     }
 }

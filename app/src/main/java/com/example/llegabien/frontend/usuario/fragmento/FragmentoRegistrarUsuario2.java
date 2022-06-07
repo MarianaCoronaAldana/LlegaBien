@@ -16,12 +16,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.llegabien.R;
+import com.example.llegabien.backend.app.Encriptar;
 import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.backend.usuario.UsuarioSharedViewModel;
 import com.example.llegabien.backend.usuario.UsuarioBD_Validaciones;
 
+import java.util.Base64;
 import java.util.Locale;
 
 
@@ -116,10 +118,9 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
 
     //Obtiene los datos introducidos por el usuario y los une al objeto usuario con el que se está trabajando
     private void usuarioConDatos() {
-
         Usuario.setCorreoElectronico(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT));
         Usuario.setTelCelular(mEditTxtNumTelefonico.getText().toString());
-        Usuario.setContrasena(mEditTxtContraseña.getText().toString());
+        Usuario.setContrasena(encriptarContraseña(mEditTxtContraseña.getText().toString()));
 
         SharedViewModel.setUsuario(Usuario);
     }
@@ -166,5 +167,10 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
 
     private boolean validarExistencia() {
         return validar.validarExistenciaCorreoTelefono(mEditTxtCorreo.getText().toString(), mEditTxtNumTelefonico.getText().toString());
+    }
+
+    // Recibe la contraseña en texto plano y la regresa encriptada
+    private static String encriptarContraseña(String textoPlano) {
+        return Encriptar.Encriptar(textoPlano);
     }
 }

@@ -1,5 +1,7 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ES_ADMIN;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import static io.realm.Realm.getApplicationContext;
@@ -91,6 +93,9 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
                 break;
             case R.id.button_eliminarCuenta_editarPerfil:
                 deleteUsuario();
+                Preferences.savePreferenceBoolean(this.getActivity(),false, PREFERENCE_ESTADO_BUTTON_SESION);
+                Preferences.savePreferenceBoolean(this.getActivity(), false, PREFERENCE_ES_ADMIN);
+
                 startActivity(new Intent(getActivity(), ActivityPaginaPrincipalUsuario.class));
                 break;
             case R.id.editText_fechaNacimiento_editarPerfil:
@@ -165,7 +170,6 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
     public void deleteUsuario(){
         UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD(this.getContext());
         usuarioBD_CRUD.deleteUser(Usuario);
-        Toast.makeText(getApplicationContext(), "Cuenta eliminada con exito", Toast.LENGTH_SHORT).show();
         Usuario = null;
     }
 

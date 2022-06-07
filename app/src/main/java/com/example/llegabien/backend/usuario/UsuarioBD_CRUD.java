@@ -37,32 +37,21 @@ public class UsuarioBD_CRUD {
 
             realm.close();
         }
-
         else
             errorConexion();
 
     }
 
     public void deleteUser(usuario Usuario) {
-        realm = conectarBD.ConectarAnonimoMongoDB();
-
-        Log.v("QUICKSTART", "pARTITION: " + Usuario.get_partition());
-
+        realm = conectarBD.ConectarCorreoMongoDB(Usuario.getCorreoElectronico(), Usuario.getContrasena());
         if(realm!=null){
             realm.executeTransactionAsync(transactionRealm -> {
-
-                usuario a = readUsuarioPorCorreo(getApplicationContext(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
-                a.deleteFromRealm();
-                //transactionRealm.insertOrUpdate(Usuario);
-                //transactionRealm.copyToRealmOrUpdate(Usuario, ImportFlag.CHECK_SAME_VALUES_BEFORE_SET);
-                //usuario u = realm.where(usuario.class).equalTo("_id", Usuario.get_id()).findFirst();
-                // Usuario.deleteFromRealm();
-                Log.v("QUICKSTART", "SE HIZO DELETE CON EXITOOOO ");
+                usuario task = transactionRealm.where(usuario.class).equalTo("_id",Usuario.get_id()).findFirst();
+                task.deleteFromRealm();
             });
-
+            Toast.makeText(getApplicationContext(), "Cuenta eliminada con exito", Toast.LENGTH_SHORT).show();
             realm.close();
         }
-
         else
             errorConexion();
     }
@@ -70,16 +59,12 @@ public class UsuarioBD_CRUD {
 
     public void updateUser(usuario Usuario) {
         realm = conectarBD.ConectarCorreoMongoDB(Usuario.getCorreoElectronico(), Usuario.getContrasena());
-        Log.v("QUICKSTART", "pARTITION: " + Usuario.get_partition());
         Log.v("QUICKSTART", "ESTOY EN UPDATE ");
-
         if(realm!=null){
-
             realm.executeTransactionAsync(transactionRealm -> {
                 transactionRealm.copyToRealmOrUpdate(Usuario, ImportFlag.CHECK_SAME_VALUES_BEFORE_SET);
                 Log.v("QUICKSTART", "SE HIZO UPDATE CON EXITOOOO ");
             });
-
             Toast.makeText(mContext, "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
             realm.close();
         }

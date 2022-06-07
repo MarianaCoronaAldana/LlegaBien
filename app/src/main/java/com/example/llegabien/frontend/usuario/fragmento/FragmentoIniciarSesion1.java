@@ -16,7 +16,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
+import com.example.llegabien.backend.app.Encriptar;
 import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.llamadaEmergencia.Emergencia;
 import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.frontend.FragmentoAuxiliar;
@@ -129,21 +131,33 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
     private void verificarCorreoContraseña() {
         boolean estado = true;
         UsuarioBD_Validaciones validar = new UsuarioBD_Validaciones(this.getActivity());
-        if(validar.validarAdmin(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString()))
+        if(validar.validarAdmin(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContraseña(mEditTxtContraseña.getText().toString())))
             Preferences.savePreferenceBoolean(this.getActivity(), true, PREFERENCE_ES_ADMIN);
 
-        else if(!validar.verificarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString())) {
+        else if(!validar.verificarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContraseña(mEditTxtContraseña.getText().toString()), "El correo electronico o la contraseña son incorrectos")) {
+//        else if(!validar.verificarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString(), "El correo electronico o la contraseña son incorrectos")) {
             estado = false;
             //Toast.makeText(getActivity(),"El correo electronico o el numero telefonico son incorrectos",Toast.LENGTH_LONG).show();
         }
 
         //para verificar que el usuario haya validado su cuenta de correo
         if(estado) {
+            //MARIANA QUITA ESTO POR FAVOR
+            // ->
+            Emergencia emergencia = new Emergencia(this.getContext());
+            emergencia.EmpezarProtocolo();
+            // ->
+
             //REPONER//
             //verificarCorreoVerificado();
             startActivity(new Intent(getActivity(), ActivityMap.class));
 
+
         }
     }
 
+    // Recibe la contraseña en texto plano y la regresa encriptada
+    private static String encriptarContraseña(String textoPlano) {
+        return Encriptar.Encriptar(textoPlano);
+    }
 }
