@@ -77,7 +77,6 @@ public class ConectarBD {
     //
     public Realm conseguirUsuarioMongoDB(){
         App app = aplicacionLlegaBien.getApp();
-        Credentials credentials = Credentials.anonymous();
 
         user = app.currentUser();
         if(user!=null) {

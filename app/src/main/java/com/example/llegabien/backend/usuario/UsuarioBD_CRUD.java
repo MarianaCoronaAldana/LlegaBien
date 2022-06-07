@@ -28,7 +28,7 @@ public class UsuarioBD_CRUD {
     public void añadirUser(usuario Usuario) {
         Usuario.set_id(new ObjectId());
         Usuario.set_partition("LlegaBien");
-        realm = conectarBD.ConectarAnonimoMongoDB();
+        realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
             realm.executeTransactionAsync(transactionRealm -> {
@@ -43,7 +43,8 @@ public class UsuarioBD_CRUD {
     }
 
     public void deleteUser(usuario Usuario) {
-        realm = conectarBD.ConectarCorreoMongoDB(Usuario.getCorreoElectronico(), Usuario.getContrasena());
+        //realm = conectarBD.ConectarCorreoMongoDB(Usuario.getCorreoElectronico(), Usuario.getContrasena());
+        realm = conectarBD.conseguirUsuarioMongoDB();
         if(realm!=null){
             realm.executeTransactionAsync(transactionRealm -> {
                 usuario task = transactionRealm.where(usuario.class).equalTo("_id",Usuario.get_id()).findFirst();
@@ -58,7 +59,8 @@ public class UsuarioBD_CRUD {
 
 
     public void updateUser(usuario Usuario) {
-        realm = conectarBD.ConectarCorreoMongoDB(Usuario.getCorreoElectronico(), Usuario.getContrasena());
+        //realm = conectarBD.ConectarCorreoMongoDB(Usuario.getCorreoElectronico(), Usuario.getContrasena());
+        realm = conectarBD.conseguirUsuarioMongoDB();
         Log.v("QUICKSTART", "ESTOY EN UPDATE ");
         if(realm!=null){
             realm.executeTransactionAsync(transactionRealm -> {
@@ -74,7 +76,8 @@ public class UsuarioBD_CRUD {
 
     // Devuelve un objeto usuario basado en el correo electronico
     public usuario readUsuarioPorCorreo(Context c, String correo, String contrasena) {
-        realm = conectarBD.ConectarCorreoMongoDB(correo, contrasena);
+        realm = conectarBD.conseguirUsuarioMongoDB();
+        //realm = conectarBD.ConectarCorreoMongoDB(correo, contrasena);
 
         if(realm!=null){
             usuario task = realm.where(usuario.class).equalTo("correoElectronico", correo)

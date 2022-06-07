@@ -24,7 +24,8 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
 
     // Se verifica que el correo y telefono del usuario no hayan sido registrados anteriormente
     public boolean validarExistenciaCorreoTelefono(String correo, String telefono) {
-        realm = conectarBD.ConectarAnonimoMongoDB();
+         //realm = conectarBD.ConectarAnonimoMongoDB();
+        realm = conectarBD.conseguirUsuarioMongoDB();
         if(realm!=null){
             usuario task = realm.where(usuario.class).equalTo("correoElectronico", correo)
                     .or()
@@ -43,7 +44,8 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
 
     // Se verifica que los datos para iniciar sesion coincidan con un usuario ADMINISTRADOR
     public boolean validarAdmin( String correo, String contrasena){
-        realm = conectarBD.ConectarAnonimoMongoDB();
+       // realm = conectarBD.ConectarAnonimoMongoDB();
+        realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
             usuario task = realm.where(usuario.class).equalTo("correoElectronico", correo)
@@ -73,7 +75,7 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
 
     // Se verifica que los datos para iniciar sesion coincidan con un usuario real
     public boolean verificarCorreoContrasena(String correo, String contrasena, String error) {
-        realm = conectarBD.ConectarAnonimoMongoDB();
+        realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
             usuario task = realm.where(usuario.class).equalTo("correoElectronico", correo)
@@ -86,7 +88,8 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
                 // Se guarda al usuario en una clase accesible para muchas clases
                 Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_USUARIO, task);
                 // Se abre una cuenta con el correo y contraseña del usuario
-                conectarBD.ConectarCorreoMongoDB(correo, contrasena);
+                //conectarBD.ConectarCorreoMongoDB(correo, contrasena);
+                conectarBD.conseguirUsuarioMongoDB();
                 return true;
             }
             else

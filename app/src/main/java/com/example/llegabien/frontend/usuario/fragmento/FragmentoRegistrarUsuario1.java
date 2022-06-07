@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.llegabien.R;
+import com.example.llegabien.backend.mongoDB.ConectarBD;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.backend.usuario.UsuarioSharedViewModel;
@@ -32,6 +33,7 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
 
     private Button mBtnSiguiente, mBtnIniciarSesion, mBtnCerrar;
     private EditText mEditTxtNombres, mEditTxtApellidos, mEditTxtFechaNacimiento;
+    ConectarBD conectarBD = new ConectarBD();
 
 
     public FragmentoRegistrarUsuario1() {
@@ -60,6 +62,7 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
         //para usar el mismo ViewModel que los otros fragmentos y compartir informacion
         SharedViewModel = new ViewModelProvider(requireActivity()).get(UsuarioSharedViewModel.class);
 
+       conectarBD.ConectarAnonimoMongoDB();
         return root;
     }
 
