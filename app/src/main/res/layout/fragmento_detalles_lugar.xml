@@ -92,6 +92,7 @@
         android:text="@string/nombreLugar1_detallesNombre"
         android:textColor="@color/negro"
         android:textAllCaps="true"
+        android:maxLines="1"
         app:layout_constraintDimensionRatio="18:2"
         app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_detallesLugar"
         app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_detallesLugar"
@@ -103,6 +104,7 @@
         android:id="@+id/textView2_nombreLugar_detallesLugar"
         style="@style/TxtViewTransparente"
         android:text="@string/nombreLugar2_detallesNombre"
+        android:maxLines="1"
         app:layout_constraintDimensionRatio="11:1"
         app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_detallesLugar"
         app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_detallesLugar"
@@ -158,7 +160,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/button_indicaciones_detallesLugar"
         style="@style/BtnMoradoOscuro"
-        android:elevation="10dp"
+        android:elevation="5dp"
         android:clickable="true"
         app:layout_constraintDimensionRatio="13:3"
         app:layout_constraintEnd_toEndOf="@id/guideline2_button_detallesLugar"
@@ -208,6 +210,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/button_añadirFavorito_detallesLugar"
         style="@style/ConsLytTituloBlanco"
+        android:elevation="5dp"
         android:clickable="true"
         app:layout_constraintDimensionRatio="7:2"
         app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_detallesLugar"

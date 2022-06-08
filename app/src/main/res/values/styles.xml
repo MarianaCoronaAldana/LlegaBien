@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/bkgd_splash</item>
+        <item name="android:navigationBarColor">@color/azul_claro</item>
+        <item name="android:statusBarColor">@color/azul_claro</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+    </style>
+
     <!-- Botones -->
     <style name="BtnMoradoOscuro">
         <item name="android:background">@drawable/bkgd_esquinas_redondeadas</item>
@@ -79,6 +86,13 @@
         <item name="android:elevation">10dp</item>
         <item name="android:clickable">true</item>
         <item name="layout_constraintDimensionRatio">1:1</item>
+    </style>
+
+    <style name="BtnEmergencia">
+        <item name="android:background">@drawable/bkgd_button_emergencia</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:clickable">true</item>
     </style>
 
 
@@ -191,6 +205,15 @@
     <!-- Icon -->
     <style name="BkgdIcon">
         <item name="android:background">@drawable/bkgd_button_regresar_2</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="layout_constraintDimensionRatio">1:1</item>
+    </style>
+
+    <style name="ViewCirculoExpandible">
+        <item name="android:visibility">invisible</item>
+        <item name="android:background">@drawable/bkgd_circulo</item>
+        <item name="android:backgroundTint">@color/rojo_claro</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_width">0dp</item>
         <item name="layout_constraintDimensionRatio">1:1</item>

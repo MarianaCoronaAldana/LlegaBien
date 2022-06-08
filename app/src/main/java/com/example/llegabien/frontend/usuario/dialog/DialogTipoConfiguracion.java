@@ -28,8 +28,8 @@ public class DialogTipoConfiguracion extends Dialog implements View.OnClickListe
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_tipo_configuracion);
-        mBtnConfigUsuario = (Button) findViewById(R.id.button_configUsuario_tipoConfig);
-        mBtnConfigAdmin = (Button) findViewById(R.id.button_configAdmin_tipoConfig);
+        mBtnConfigUsuario = findViewById(R.id.button_configUsuario_tipoConfig);
+        mBtnConfigAdmin = findViewById(R.id.button_configAdmin_tipoConfig);
         mBtnConfigUsuario.setOnClickListener(this);
         mBtnConfigAdmin.setOnClickListener(this);
 

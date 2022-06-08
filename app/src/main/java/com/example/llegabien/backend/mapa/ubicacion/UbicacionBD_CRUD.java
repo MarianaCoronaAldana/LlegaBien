@@ -25,17 +25,10 @@ public class UbicacionBD_CRUD {
         realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
-
             RealmResults<ubicacion> realmResults = realm.where(ubicacion.class).equalTo("tipo","colonia").findAll();
 
-            if (realmResults != null) {
-                Log.v("QUICKSTART", "OMG SI SE PUDO");
-                // Se guarda al usuario en una clase accesible para muchas clases
-
+            if (realmResults != null)
                 return realmResults;
-            } else {
-                Log.v("QUICKSTART", "NO SE PUDO");
-            }
         }
 
         else
@@ -48,16 +41,11 @@ public class UbicacionBD_CRUD {
         realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
-
             RealmResults<ubicacion> realmResults = realm.where(ubicacion.class).equalTo("tipo","municipio").findAll();
 
-            if (realmResults != null) {
-                Log.v("QUICKSTART", "OMG SI SE PUDO");
-                // Se guarda al usuario en una clase accesible para muchas clases
+            if (realmResults != null)
                 return realmResults;
-            } else {
-                Log.v("QUICKSTART", "NO SE PUDO");
-            }
+
         }
 
         else
@@ -70,16 +58,10 @@ public class UbicacionBD_CRUD {
         realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
-
             RealmResults<ubicacion> realmResults = realm.where(ubicacion.class).equalTo("tipo","calle").findAll();
 
-            if (realmResults != null) {
-                Log.v("QUICKSTART", "OMG SI SE PUDO");
-                // Se guarda al usuario en una clase accesible para muchas clases
+            if (realmResults != null)
                 return realmResults;
-            } else {
-                Log.v("QUICKSTART", "NO SE PUDO");
-            }
         }
 
         else
@@ -97,14 +79,9 @@ public class UbicacionBD_CRUD {
             ubicacion task = realm.where(ubicacion.class).equalTo("coordenadas_string", coordenadasPoligono).findFirst();
 
             if (task != null) {
-                Log.v("QUICKSTART", "OMG SI SE PUDO");
-
                 // Se guarda la ubicacion en Shared Preferences
                 Preferences.savePreferenceObjectRealm(c, PREFERENCE_UBICACION, task);
-
-            } else {
-                Log.v("QUICKSTART", "NO SE PUDO");
-            }
+            } 
         }
 
         else

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".frontend.FragmentoBarraNavegacion">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -86,8 +86,8 @@
             android:id="@+id/button_favoritos_barraNavegacion"
             style="@style/BtnMoradoClaro"
             android:elevation="5dp"
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline2_button_barraNavegacion"
             app:layout_constraintStart_toStartOf="@id/guideline1_button_barraNavegacion"
             app:layout_constraintTop_toTopOf="parent">
@@ -109,57 +109,31 @@
             <View
                 style="@style/BkgdIcon"
                 android:background="@drawable/bkgd_icon_favoritos"
-                app:layout_constraintDimensionRatio="22:20"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="22:20"
                 app:layout_constraintEnd_toEndOf="@id/guideline2_icon_favoritos"
                 app:layout_constraintStart_toStartOf="@id/guideline1_icon_favoritos"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/button_btnEmergencia_barraNavegacion"
-            style="@style/BtnMoradoClaro"
-            android:elevation="5dp"
-            app:layout_constraintDimensionRatio="1:1"
+        <Button
+            android:id="@+id/button_emergencia_barraNavegacion"
+            style="@style/BtnEmergencia"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/guideline4_button_barraNavegacion"
-            app:layout_constraintStart_toStartOf="@id/guideline3_button_barraNavegacion"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline1_icon_emergencia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.2" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2_icon_emergencia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.8" />
-
-            <View
-                style="@style/BkgdIcon"
-                android:background="@drawable/bkgd_icon_emergencia"
-                app:layout_constraintDimensionRatio="22:20"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/guideline2_icon_emergencia"
-                app:layout_constraintStart_toStartOf="@id/guideline1_icon_emergencia"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="@id/guideline6_button_barraNavegacion"
+            app:layout_constraintStart_toStartOf="@id/guideline5_button_barraNavegacion"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_subirReporte_barraNavegacion"
             style="@style/BtnMoradoClaro"
-            app:layout_constraintDimensionRatio="1:1"
+            android:elevation="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/guideline6_button_barraNavegacion"
-            app:layout_constraintStart_toStartOf="@id/guideline5_button_barraNavegacion"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_button_barraNavegacion"
+            app:layout_constraintStart_toStartOf="@id/guideline3_button_barraNavegacion"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.Guideline
@@ -182,7 +156,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/guideline2_icon_subirReportes"
                 app:layout_constraintStart_toStartOf="@id/guideline1_icon_subirReportes"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -190,8 +164,8 @@
             android:id="@+id/button_historialRutas_barraNavegacion"
             style="@style/BtnMoradoClaro"
             android:elevation="5dp"
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline8_button_barraNavegacion"
             app:layout_constraintStart_toStartOf="@id/guideline7_button_barraNavegacion"
             app:layout_constraintTop_toTopOf="parent">
@@ -216,7 +190,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/guideline2_icon_historialRutas"
                 app:layout_constraintStart_toStartOf="@id/guideline1_icon_historialRutas"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -224,8 +198,8 @@
             android:id="@+id/button_contactos_barraNavegacion"
             style="@style/BtnMoradoClaro"
             android:elevation="5dp"
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline10_button_barraNavegacion"
             app:layout_constraintStart_toStartOf="@id/guideline9_button_barraNavegacion"
             app:layout_constraintTop_toTopOf="parent">
@@ -250,7 +224,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/guideline2_icon_contactos"
                 app:layout_constraintStart_toStartOf="@id/guideline1_icon_contactos"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

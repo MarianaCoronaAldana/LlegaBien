@@ -1,4 +1,4 @@
-package com.example.llegabien;
+package com.example.llegabien.backend.app;
 
 import android.app.Application;
 
