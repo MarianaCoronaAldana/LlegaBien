@@ -126,10 +126,12 @@
     <string name="seguridad_navegacion">Seguridad media</string>
     <string name="kmRestantes_horaDeLlegada_navegacion">0.3 km ・ 10.44 a.m</string>
 
+    <!-- Bóton de emergencia. -->
+    <string name="titulo_dialogConfirmarEmergencia">Contactaremos al 911 y a  tus contactos de emergencia. ¿Confirmas la operación?</string>
+    <string name="confirmar_dialogConfirmarEmergencia">SÍ, CONFIRMO</string>
+    <string name="segundos_progressCircle">SEGUNDOS</string>
+
+    <!-- Google Maps API Key. -->
     <string name="api_key">AIzaSyA_1vA9ikwZ0Ju7s5s2-C1QLQ51BQmwSlM</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
 
 </resources>

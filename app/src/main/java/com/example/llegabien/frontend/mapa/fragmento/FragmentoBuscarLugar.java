@@ -43,7 +43,7 @@ public class FragmentoBuscarLugar extends Fragment implements View.OnClickListen
                                 @Override
                                 public void isUbicacionBuscadaObtenida(boolean isUbicacionBuscadaObtenida, boolean isUbicacionBuscadaenBD, LatLng ubicacionBuscada, String ubicacionBuscadaString) {
                                     if (isUbicacionBuscadaObtenida)
-                                        ((ActivityMap)getActivity()).mostrarUbicacionBuscada(isUbicacionBuscadaenBD, ubicacionBuscada, ubicacionBuscadaString);
+                                        ((ActivityMap)getActivity()).mostrarUbicacionBuscada(isUbicacionBuscadaenBD, true, ubicacionBuscada, ubicacionBuscadaString);
                                 }
                             }, result, data, getActivity());
                         }

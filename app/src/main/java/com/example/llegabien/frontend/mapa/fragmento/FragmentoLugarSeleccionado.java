@@ -5,6 +5,12 @@ import static com.example.llegabien.backend.app.Preferences.PREFERENCE_UBICACION
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -15,14 +21,6 @@ import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
@@ -51,7 +49,7 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
                                 @Override
                                 public void isUbicacionBuscadaObtenida(boolean isUbicacionBuscadaObtenida, boolean isUbicacionBuscadaenBD, LatLng ubicacionBuscada, String ubicacionBuscadaString) {
                                     if (isUbicacionBuscadaObtenida)
-                                        ((ActivityMap)getActivity()).mostrarUbicacionBuscada(isUbicacionBuscadaenBD, ubicacionBuscada,ubicacionBuscadaString);
+                                        ((ActivityMap)getActivity()).mostrarUbicacionBuscada(isUbicacionBuscadaenBD, false, ubicacionBuscada,ubicacionBuscadaString);
                                 }
                             },result, data, getActivity());
                         }
@@ -78,12 +76,12 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
         Button mBtnRegresar = root.findViewById(R.id.button_regresar_barraBusqueda_lugarSeleccionado);
         Button mBtnBarraBusqueda = root.findViewById(R.id.button_titulo_barraBusqueda_lugarSeleccionado);
         mBtnCentrarMapa = root.findViewById(R.id.button_centrarMapa_lugarSeleccionado);
-        mTxtNombre1Lugar = (TextView) root.findViewById(R.id.textView1_nombreLugar_detallesLugar);
-        mTxtNombre2Lugar = (TextView) root.findViewById(R.id.textView2_nombreLugar_detallesLugar);
-        mTxtSeguridad = (TextView) root.findViewById(R.id.textView_seguridad_detallesLugar);
-        mTxtMediaHistorica = (TextView) root.findViewById(R.id.textView_mediHistorica_detallesLugar);
-        mTxtDelitosSemana = (TextView) root.findViewById(R.id.textView_numDelitos_detallesLugar);
-        mIconSeguridad = (View) root.findViewById(R.id.icon_seguridad_detallesLugar);
+        mTxtNombre1Lugar = root.findViewById(R.id.textView1_nombreLugar_detallesLugar);
+        mTxtNombre2Lugar = root.findViewById(R.id.textView2_nombreLugar_detallesLugar);
+        mTxtSeguridad = root.findViewById(R.id.textView_seguridad_detallesLugar);
+        mTxtMediaHistorica = root.findViewById(R.id.textView_mediHistorica_detallesLugar);
+        mTxtDelitosSemana = root.findViewById(R.id.textView_numDelitos_detallesLugar);
+        mIconSeguridad = root.findViewById(R.id.icon_seguridad_detallesLugar);
 
         //para que la bottomSheet se abra en STATE.EXPANDED
         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -125,17 +123,14 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
                 activityResultLauncher.launch(ubicacionBusquedaAutocompletada.getIntent());
                 break;
             case R.id.button_regresar_barraBusqueda_lugarSeleccionado:
-                FragmentoBuscarLugar fragmentoBuscarLugar = new FragmentoBuscarLugar();
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragmentContainerView_map_1, fragmentoBuscarLugar).commit();
-                ((ActivityMap)getActivity()).removerPolygonAnterior();
-                ((ActivityMap)getActivity()).removerMarkerAnterior();
+                ((ActivityMap)getActivity()).abrirFragmentoBuscarLugar();
                 break;
             case R.id.button_centrarMapa_lugarSeleccionado:
                 ((ActivityMap)getActivity()).centrarMapa();
                 break;
         }
     }
+
 
     //OTRAS FUNCIONES//
 

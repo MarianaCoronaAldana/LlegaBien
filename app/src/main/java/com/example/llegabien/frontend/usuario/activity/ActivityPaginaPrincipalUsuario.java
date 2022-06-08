@@ -3,9 +3,12 @@ package com.example.llegabien.frontend.usuario.activity;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -71,5 +74,10 @@ public class ActivityPaginaPrincipalUsuario extends AppCompatActivity implements
                 fragmentTransaction.add(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario1).commit();
                 break;
         }
+    }
+
+    public void hideKeyboard(View view){
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),0);
     }
 }

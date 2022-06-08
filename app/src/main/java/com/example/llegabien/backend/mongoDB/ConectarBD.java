@@ -5,7 +5,7 @@ import static io.realm.Realm.getApplicationContext;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.llegabien.aplicacionLlegaBien;
+import com.example.llegabien.backend.app.aplicacionLlegaBien;
 
 import io.realm.Realm;
 import io.realm.mongodb.App;

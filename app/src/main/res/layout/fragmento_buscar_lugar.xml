@@ -111,11 +111,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/button_centrarMapa_buscarLugar"
         style="@style/BtnCentrarMapa"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_fragment2_barraNavegacion"
         app:layout_constraintEnd_toEndOf="@id/guideline2_barraBusqueda_buscarLugar"
         app:layout_constraintStart_toStartOf="@id/guideline1_miniButton_buscarLugar"
         app:layout_constraintTop_toBottomOf="@id/consLyt_barraBusqueda_buscarLugar"
-        app:layout_constraintVertical_bias="0.7" >
+        app:layout_constraintVertical_bias="0.85" >
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline1_icon_centrarMapa"
@@ -147,11 +147,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/button_direcciones_buscarLugar"
         style="@style/BtnDirecciones"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline_fragment2_barraNavegacion"
         app:layout_constraintEnd_toEndOf="@id/guideline2_barraBusqueda_buscarLugar"
         app:layout_constraintStart_toStartOf="@id/guideline1_miniButton_buscarLugar"
         app:layout_constraintTop_toBottomOf="@id/button_centrarMapa_buscarLugar"
-        app:layout_constraintVertical_bias="0.1" >
+        app:layout_constraintVertical_bias="0.5" >
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline1_icon_direcciones"

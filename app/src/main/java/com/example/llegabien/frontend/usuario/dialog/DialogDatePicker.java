@@ -35,7 +35,10 @@ public class DialogDatePicker extends DialogFragment {
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(getActivity(), AlertDialog.THEME_HOLO_LIGHT, listener, year, month, day);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), AlertDialog.THEME_HOLO_LIGHT, listener, year, month, day);
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());;
+
+        return datePickerDialog;
     }
 
     public void mostrarDatePickerDialog(EditText editTextFechaNacimiento, Fragment fragmento) {
@@ -43,10 +46,11 @@ public class DialogDatePicker extends DialogFragment {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 // +1 porque Enero es 0
-                final String fechaSeleccionada = day + " / " + (month+1) + " / " + year;
+                final String fechaSeleccionada = day + "/" + (month+1) + "/" + year;
                 editTextFechaNacimiento.setText(fechaSeleccionada);
             }
         });
+
         dialogDatePicker.show(fragmento.getActivity().getSupportFragmentManager(), "datePicker");
     }
 }

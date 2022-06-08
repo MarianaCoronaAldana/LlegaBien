@@ -39,11 +39,11 @@ public class FragmentoCambiarContraUsuario extends Fragment implements View.OnCl
         View root = inflater.inflate(R.layout.fragmento_cambiar_contra_usuario, container, false);
 
         //wiring up
-        mBtnAceptar = (Button) root.findViewById(R.id.button_aceptar_cambiarContra);
-        mBtnRegresar = (Button) root.findViewById(R.id.button_regresar_cambiarContra);
-        mEditTxtActualContraseña = (EditText) root.findViewById(R.id.editText_actualContra_cambiarContra);
-        mEditTxtNuevaContraseña = (EditText) root.findViewById(R.id.editText_nuevaContra_cambiarContra);
-        mEditTxtConfirmarContraseña = (EditText) root.findViewById(R.id.editText_confirmarContra_cambiarContra);
+        mBtnAceptar = root.findViewById(R.id.button_aceptar_cambiarContra);
+        mBtnRegresar = root.findViewById(R.id.button_regresar_cambiarContra);
+        mEditTxtActualContraseña = root.findViewById(R.id.editText_actualContra_cambiarContra);
+        mEditTxtNuevaContraseña = root.findViewById(R.id.editText_nuevaContra_cambiarContra);
+        mEditTxtConfirmarContraseña = root.findViewById(R.id.editText_confirmarContra_cambiarContra);
 
         //listeners
         mBtnAceptar.setOnClickListener(this);
