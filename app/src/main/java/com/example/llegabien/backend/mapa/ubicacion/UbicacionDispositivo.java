@@ -21,9 +21,9 @@ public class UbicacionDispositivo{
         void isUbicacionObtenida(boolean isUbicacionObtenida, Location ubicacionObtenida);
     }
 
-    public void getUbicacionDelDispositivo(OnUbicacionObtenida onUbicacionObtenida, boolean locationPermissionGranted, FusedLocationProviderClient fusedLocationProviderClient, Activity activity){
+    public void getUbicacionDelDispositivo(OnUbicacionObtenida onUbicacionObtenida, boolean isLocationPermissionGranted, FusedLocationProviderClient fusedLocationProviderClient, Activity activity){
         try {
-            if (locationPermissionGranted) {
+            if (isLocationPermissionGranted) {
                 Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
                 locationResult.addOnCompleteListener(activity, new OnCompleteListener<Location>() {
                     @Override

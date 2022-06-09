@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -33,7 +34,6 @@ public class Permisos {
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         }
     }
-
 
     public void HacerLlamada(Context context) {
         int permiso = ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE);

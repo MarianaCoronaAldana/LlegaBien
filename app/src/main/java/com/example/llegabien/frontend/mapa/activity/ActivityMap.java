@@ -1,22 +1,13 @@
 package com.example.llegabien.frontend.mapa.activity;
 
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -27,8 +18,6 @@ import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.databinding.ActivityMapsBinding;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoBuscarLugar;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoLugarSeleccionado;
-import com.example.llegabien.frontend.usuario.dialog.DialogConfirmarEmergencia;
-import com.example.llegabien.frontend.usuario.dialog.DialogTipoConfiguracion;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -40,8 +29,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.libraries.places.api.Places;
-
-import java.util.concurrent.TimeUnit;
 
 
 public class ActivityMap extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnPolygonClickListener{
@@ -56,10 +43,6 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     private Polygon mPolygonAnterior;
     private Marker mMarkerAnterior;
     private int mColorAnterior;
-    private CountDownTimer mCountDownTimer = null;
-    private ProgressBar mProgressCircle;
-    private View mViewFondoBlanco;
-    private TextView mTxtSegundosFaltantes, mTxtSegundos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +51,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         //wiring up
         com.example.llegabien.databinding.ActivityMapsBinding binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView_map);
-        mProgressCircle= findViewById(R.id.progressCircle_btnEmergencia_activityMaps);
-        mProgressCircle= findViewById(R.id.progressCircle_btnEmergencia_activityMaps);
-        mViewFondoBlanco = findViewById(R.id.fondoBlanco_activityMaps);
-        mTxtSegundosFaltantes = findViewById(R.id.textView_segundosFaltantes_activityMaps);
-        mTxtSegundos= findViewById(R.id.textView_segundos_activityMaps);
+        mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView_mapa_actvityMaps);
 
         //listeners
         mMapFragment.getMapAsync(this);
@@ -105,7 +83,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         mGoogleMap = googleMap;
         //Para mostrar colonias con código de colores
         mostrarColonias();
@@ -133,7 +111,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void onPolygonClick(Polygon polygon) {
+    public void onPolygonClick(@NonNull Polygon polygon) {
         removerPolygonAnterior();
         removerMarkerAnterior();
 
@@ -156,6 +134,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         }
     }
 
+
     //OTRAS FUNCIONES//
 
     private void actualizarUbicacionUI() {
@@ -177,46 +156,6 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         }
     }
 
-    public void mostrarUbicacionBuscada(boolean isUbicacionBuscadaEnBD, boolean isFragmentoBuscarLugar, LatLng ubicacionBuscada, String ubicacionBuscadaString){
-        removerPolygonAnterior();
-        removerMarkerAnterior();
-
-        // Para mostrar la ubicacion buscada en el mapa con un marcador.
-        Marker marker = mGoogleMap.addMarker((new MarkerOptions().position(ubicacionBuscada)));
-        mMarkerAnterior  = marker;
-
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionBuscada, DEFAULT_ZOOM));
-
-        // Para verificar que si se encontró la ubicación buscada en la BD.
-        if(isUbicacionBuscadaEnBD == true) {
-            // Para abrir el fragmento "LugarSeleccionado" cuando se obtenga un resultado.
-            abrirFragmentoLugarBuscado(true, ubicacionBuscadaString);
-        }
-        else{
-            if(!isFragmentoBuscarLugar){
-                FragmentoBuscarLugar fragmentoBuscarLugar = new FragmentoBuscarLugar();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragmentContainerView_map_1, fragmentoBuscarLugar).commit();
-            }
-
-        }
-    }
-
-    public void centrarMapa(){
-        if (mLastKnownLocation != null)
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void mostrarColonias(){
-        // Para obetener poligonos.
-        mPoligono = new Poligono(this);
-        mPoligono.getColonias(mGoogleMap);
-
-        // OnPolygonClickListener
-        mGoogleMap.setOnPolygonClickListener(this);
-    }
-
     private void mostrarUbicacionDispositivo(){
         LatLng defaultLocation = new LatLng(20.703027011977582, -103.3884804);
 
@@ -236,19 +175,59 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         }, mPermisos.getmLocationPermissionGranted(),fusedLocationProviderClient, this);
     }
 
+    public void mostrarUbicacionBuscada(boolean isUbicacionBuscadaEnBD, boolean isFragmentoBuscarLugar, LatLng ubicacionBuscada, String ubicacionBuscadaString){
+        removerPolygonAnterior();
+        removerMarkerAnterior();
+
+        // Para mostrar la ubicacion buscada en el mapa con un marcador.
+        mMarkerAnterior  = mGoogleMap.addMarker((new MarkerOptions().position(ubicacionBuscada)));
+
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionBuscada, DEFAULT_ZOOM));
+
+        // Para verificar que si se encontró la ubicación buscada en la BD.
+        if(isUbicacionBuscadaEnBD) {
+            // Para abrir el fragmento "LugarSeleccionado" cuando se obtenga un resultado.
+            abrirFragmentoLugarBuscado(true, ubicacionBuscadaString);
+        }
+        else{
+            if(!isFragmentoBuscarLugar){
+                FragmentoBuscarLugar fragmentoBuscarLugar = new FragmentoBuscarLugar();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragmentContainerView1_fragemntoBuscarLugar_activityMaps, fragmentoBuscarLugar).commit();
+            }
+
+        }
+    }
+
+    public void centrarMapa(){
+        if (mLastKnownLocation != null)
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void mostrarColonias(){
+        // Para obetener poligonos.
+        mPoligono = new Poligono(this);
+        mPoligono.getColonias(mGoogleMap);
+
+        // OnPolygonClickListener
+        mGoogleMap.setOnPolygonClickListener(this);
+    }
+
     private void abrirFragmentoLugarBuscado(boolean hasUbicacionBuscada, String address){
         FragmentoLugarSeleccionado fragmentoLugarSeleccionado = new FragmentoLugarSeleccionado();
         if (hasUbicacionBuscada){
             fragmentoLugarSeleccionado.setUbicacionBuscada(address);
         }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContainerView_map_1, fragmentoLugarSeleccionado, "FragmentoLugarSeleccionado").commit();
+        fragmentTransaction.replace(R.id.fragmentContainerView1_fragemntoBuscarLugar_activityMaps, fragmentoLugarSeleccionado, "FragmentoLugarSeleccionado").commit();
     }
 
     public void abrirFragmentoBuscarLugar(){
         FragmentoBuscarLugar fragmentoBuscarLugar = new FragmentoBuscarLugar();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContainerView_map_1, fragmentoBuscarLugar).commit();
+        fragmentTransaction.replace(R.id.fragmentContainerView1_fragemntoBuscarLugar_activityMaps, fragmentoBuscarLugar).commit();
         removerPolygonAnterior();
         removerMarkerAnterior();
     }
@@ -263,56 +242,6 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     public void removerMarkerAnterior(){
         if (mMarkerAnterior != null)
             mMarkerAnterior.remove();
-    }
-
-    public void startTimer(ConstraintLayout fondoBlanco) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(R.color.blanco));
-            window.setNavigationBarColor(getResources().getColor(R.color.blanco));
-        }
-        mTxtSegundos.setVisibility(View.VISIBLE);
-        mTxtSegundosFaltantes.setVisibility(View.VISIBLE);
-        mViewFondoBlanco.setVisibility(View.VISIBLE);
-        mProgressCircle.setVisibility(View.VISIBLE);
-        mCountDownTimer = new CountDownTimer(5000, 500) {
-            public void onTick(long millisUntilFinished) {
-                String segundosFaltantes = "0" + String.valueOf(TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished + 1000));
-                mTxtSegundosFaltantes.setText(segundosFaltantes);
-                mProgressCircle.setProgress(mProgressCircle.getProgress() + 10);
-            }
-
-            public void onFinish() {
-                mProgressCircle.setProgress(0);
-                fondoBlanco.setBackgroundColor(Color.TRANSPARENT);
-                mViewFondoBlanco.setVisibility(View.INVISIBLE);
-                mTxtSegundos.setVisibility(View.INVISIBLE);
-                mTxtSegundosFaltantes.setVisibility(View.INVISIBLE);
-                mProgressCircle.setVisibility(View.INVISIBLE);
-                Toast.makeText(getApplicationContext(), "LISTO", Toast.LENGTH_SHORT).show();
-                DialogConfirmarEmergencia dialogConfirmarEmergencia = new DialogConfirmarEmergencia(ActivityMap.this);
-                dialogConfirmarEmergencia.show();
-            }
-        };
-        mCountDownTimer.start();
-    }
-
-    //cancel timer
-    public void cancelTimer() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(R.color.morado_oscuro));
-            window.setNavigationBarColor(getResources().getColor(R.color.morado_oscuro));
-        }
-        mProgressCircle.setProgress(0);
-        mTxtSegundos.setVisibility(View.INVISIBLE);
-        mTxtSegundosFaltantes.setVisibility(View.INVISIBLE);
-        mViewFondoBlanco.setVisibility(View.INVISIBLE);
-        mProgressCircle.setVisibility(View.INVISIBLE);
-        if (mCountDownTimer != null)
-            mCountDownTimer.cancel();
     }
 
 }

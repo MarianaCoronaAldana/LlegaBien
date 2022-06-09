@@ -23,6 +23,7 @@
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_borde_fondo.xml" value="0.24385964912280703" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_button_aceptar_editar_perfil.xml" value="0.23717948717948717" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_button_cerrar.xml" value="0.23717948717948717" />
+        <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_button_configuracion.xml" value="0.18076923076923077" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_button_drop_shadow.xml" value="0.2203125" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_button_emergencia.xml" value="0.23717948717948717" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_button_regresar.xml" value="0.23717948717948717" />
@@ -58,7 +59,7 @@
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/activity_configuracion_admin.xml" value="0.16794871794871793" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/activity_configuracion_usuario.xml" value="0.1" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/activity_iniciar_sesion_0.xml" value="0.25" />
-        <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/activity_maps.xml" value="0.22" />
+        <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/activity_maps.xml" value="0.2" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/activity_pagina_principal_no_registrados.xml" value="0.18568840579710144" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/activity_pagina_principal_usuario.xml" value="0.25" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/activity_pantalla_principal.xml" value="0.22" />
@@ -68,9 +69,10 @@
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/dialog_tipo_configuracion.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragment_fragmento__iniciar_sesion_1.xml" value="0.2046875" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragment_fragmento__iniciar_sesion_2.xml" value="0.190625" />
+        <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragment_fragmento_boton_emergencia.xml" value="0.22393162393162394" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_auxiliar.xml" value="0.16983695652173914" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_barra_busqueda.xml" value="0.3333333333333333" />
-        <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_barra_navegacion.xml" value="0.23809523809523808" />
+        <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_barra_navegacion.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_buscar_lugar.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_cambiar_contra_usuario.xml" value="0.15212649945474374" />
         <entry key="..\:/Users/ViguerasV/Desktop/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_config_avan_admin.xml" value="0.4162348877374784" />
