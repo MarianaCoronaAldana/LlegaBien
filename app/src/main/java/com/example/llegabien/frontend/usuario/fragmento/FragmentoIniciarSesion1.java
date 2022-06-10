@@ -18,7 +18,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Encriptar;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.llamadaEmergencia.Emergencia;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
 import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
@@ -145,17 +144,9 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
 
         //para verificar que el usuario haya validado su cuenta de correo
         if(estado) {
-            //MARIANA QUITA ESTO POR FAVOR
-            // ->
-            Emergencia emergencia = new Emergencia(this.getContext());
-            emergencia.EmpezarProtocolo();
-            // ->
-
             //REPONER//
             //verificarCorreoVerificado();
             startActivity(new Intent(getActivity(), ActivityMap.class));
-
-
         }
     }
 

@@ -9,12 +9,13 @@ import android.view.Window;
 import android.widget.Button;
 
 import com.example.llegabien.R;
+import com.example.llegabien.backend.botonEmergencia.Emergencia;
 import com.example.llegabien.frontend.usuario.activity.ActivityConfiguracionAdmin;
 import com.example.llegabien.frontend.usuario.activity.ActivityConfiguracionUsuario;
 
 public class DialogConfirmarEmergencia extends Dialog implements View.OnClickListener{
     public Activity mActivity;
-    public Button mBtnConfigUsuario, mBtnConfigAdmin, mBtnConfimarEmergencia;
+    public Button mBtnConfimarEmergencia;
 
     public DialogConfirmarEmergencia (Activity activity) {
         super(activity);
@@ -35,6 +36,8 @@ public class DialogConfirmarEmergencia extends Dialog implements View.OnClickLis
     @Override
     public void onClick(View v) {
 
+        Emergencia e = new Emergencia(this.getContext());
+        e.EmpezarProtocolo();
         dismiss();
     }
 }
