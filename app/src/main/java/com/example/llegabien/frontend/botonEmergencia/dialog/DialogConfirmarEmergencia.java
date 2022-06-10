@@ -1,4 +1,4 @@
-package com.example.llegabien.frontend.usuario.dialog;
+package com.example.llegabien.frontend.botonEmergencia.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;

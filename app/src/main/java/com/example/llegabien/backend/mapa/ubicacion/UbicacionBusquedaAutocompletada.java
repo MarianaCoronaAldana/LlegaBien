@@ -9,6 +9,7 @@ import static com.example.llegabien.backend.app.Preferences.PREFERENCE_UBICACION
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
 import android.util.Log;
 
 import androidx.fragment.app.Fragment;
@@ -60,8 +61,8 @@ public class UbicacionBusquedaAutocompletada {
             String address = place.getAddress();
 
             UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
-            ubicacionGeodicacion.geocodificarUbiciacion(c, address);
-            LatLng ubicacionBuscada = new LatLng(ubicacionGeodicacion.getmAddress().getLatitude(), ubicacionGeodicacion.getmAddress().getLongitude());
+            Address ubicacionGeocodificada = ubicacionGeodicacion.geocodificarUbiciacion(c, address);
+            LatLng ubicacionBuscada = new LatLng(ubicacionGeocodificada.getLatitude(), ubicacionGeocodificada.getLongitude());
 
             boolean isUbicacionBuscadaEnBD = getUbicacionBuscada(c,ubicacionBuscada.latitude,ubicacionBuscada.longitude);
             onUbicacionBuscadaObtenida.isUbicacionBuscadaObtenida(true, isUbicacionBuscadaEnBD,ubicacionBuscada, address);

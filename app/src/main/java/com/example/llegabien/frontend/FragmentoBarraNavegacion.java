@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
@@ -19,7 +20,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.llegabien.R;
+import com.example.llegabien.frontend.botonEmergencia.fragmento.FragmentoBotonEmergencia;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
+import com.example.llegabien.frontend.usuario.fragmento.FragmentoRegistrarUsuario2;
 
 public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchListener {
 
@@ -52,16 +55,20 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        FragmentoBotonEmergencia fragmentoBotonEmergencia = new FragmentoBotonEmergencia(mFondoBlanco);
         //when button is pressed
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            mFondoBlanco.setBackgroundColor(getActivity().getResources().getColor(R.color.blanco));
             mBtnFavoritos.setVisibility(View.INVISIBLE);
             mBtnSubirReporte.setVisibility(View.INVISIBLE);
             mBtnHistorialRutas.setVisibility(View.INVISIBLE);
             mBtnContactos.setVisibility(View.INVISIBLE);
             mScaleDown.end();
-            //show the progressBar
-            ((ActivityMap)getActivity()).startTimer(mFondoBlanco);
+
+            //show the progressCircle
+            fragmentTransaction.add(R.id.fragmentContainerView_botonEmergencia, fragmentoBotonEmergencia, "FragmentoBotonEmergencia").commit();
+            mFondoBlanco.setBackgroundColor(getActivity().getResources().getColor(R.color.blanco));
+
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             mFondoBlanco.setBackgroundColor(Color.TRANSPARENT);
             mBtnFavoritos.setVisibility(View.VISIBLE);
@@ -69,8 +76,11 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
             mBtnHistorialRutas.setVisibility(View.VISIBLE);
             mBtnContactos.setVisibility(View.VISIBLE);
             mScaleDown.start();
-            //hide the progressBar
-            ((ActivityMap)getActivity()).cancelTimer();
+
+            //hide the progressCircle
+            Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("FragmentoBotonEmergencia");
+            if (fragment != null)
+                fragmentTransaction.remove(fragment).commit();
         }
         return true;
     }
