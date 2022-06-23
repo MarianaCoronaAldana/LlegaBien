@@ -1,5 +1,6 @@
 package com.example.llegabien.backend.usuario;
 
+import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -8,9 +9,13 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.mongodb.lang.NonNull;
 
@@ -18,7 +23,8 @@ import java.util.concurrent.TimeUnit;
 
 public class UsuarioFirebaseVerificaciones {
 
-    private Fragment mFragmento;
+    private Activity mActivity;
+    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
     public interface OnCodigoCorreoEnviado {
         void isCorreoEnviado(boolean isCorreoEnviado);
@@ -36,38 +42,39 @@ public class UsuarioFirebaseVerificaciones {
         void isCorreoVerificado(boolean isCorreoVerificado);
     }
 
-    public UsuarioFirebaseVerificaciones(Fragment fragmento){
-        mFragmento = fragmento;
-    }
+    public UsuarioFirebaseVerificaciones(Activity activity){ mActivity = activity; }
 
     public void enviarCodigoNumTelefonico(OnCodigoNumTelefonicoEnviado onCodigoNumTelefonicoEnviado, String numTelefonico){
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                "+52" + numTelefonico,
-                60,
-                TimeUnit.SECONDS,
-                mFragmento.getActivity(),
-                new PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
-                    @Override
-                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential){
-                        Toast.makeText(mFragmento.getActivity(),"SI SE PUDO ENVIAR SMS",Toast.LENGTH_SHORT).show();
-                        onCodigoNumTelefonicoEnviado.isSMSEnviado(true, null);
-                    }
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                Toast.makeText(mActivity, "SI SE PUDO ENVIAR SMS", Toast.LENGTH_SHORT).show();
+                onCodigoNumTelefonicoEnviado.isSMSEnviado(true, null);
+            }
 
-                    @Override
-                    public void onVerificationFailed(@androidx.annotation.NonNull FirebaseException e) {
-                        Toast.makeText(mFragmento.getActivity(),e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.v("QUICKSTART", "ERROR: " + e.getMessage());
-                    }
+            @Override
+            public void onVerificationFailed(@androidx.annotation.NonNull FirebaseException e) {
+                Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.v("QUICKSTART", "ERROR: " + e.getMessage());
+            }
 
-                    @Override
-                    public void onCodeSent (@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken){
-                        Toast.makeText(mFragmento.getActivity(),"SI SE PUDO",Toast.LENGTH_SHORT).show();
-                        onCodigoNumTelefonicoEnviado.isSMSEnviado(true, verificationId);
-                    }
+            @Override
+            public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                Toast.makeText(mActivity, "SI SE PUDO", Toast.LENGTH_SHORT).show();
+                onCodigoNumTelefonicoEnviado.isSMSEnviado(true, verificationId);
+            }
+        };
 
-                }
-        );
+        PhoneAuthProvider.verifyPhoneNumber(
+                PhoneAuthOptions
+                        .newBuilder(FirebaseAuth.getInstance())
+                        .setActivity(mActivity)
+                        .setPhoneNumber(numTelefonico)
+                        .setTimeout(60L, TimeUnit.SECONDS)
+                        .setCallbacks(mCallbacks)
+                        .build());
     }
+
 
     public void enviarCorreoDeVerificacion(OnCodigoCorreoEnviado onCodigoCorreoEnviado, String correo, String contraseña){
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -81,18 +88,18 @@ public class UsuarioFirebaseVerificaciones {
                                 public void onComplete(@androidx.annotation.NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         onCodigoCorreoEnviado.isCorreoEnviado(true);
-                                        Toast.makeText(mFragmento.getActivity(), "SI SE PUDO REGISTRAR Y SE ENVIO EL CODIGO AL CORREO", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mActivity, "SI SE PUDO REGISTRAR Y SE ENVIO EL CODIGO AL CORREO", Toast.LENGTH_SHORT).show();
                                     }
                                     else {
                                         onCodigoCorreoEnviado.isCorreoEnviado(false);
-                                        Toast.makeText(mFragmento.getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mActivity, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                         Log.v("QUICKSTART", task.getException().getMessage());
                                     }
                                 }
                             });
                         }
                         else
-                            Toast.makeText(mFragmento.getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mActivity, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -108,7 +115,7 @@ public class UsuarioFirebaseVerificaciones {
                 }
                 else {
                     onCodigoNumTelefonicoVerificado.isNumTelefonicoVerificado(false);
-                    Toast.makeText(mFragmento.getActivity(), "El código ingresaste es incorrecto.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "El código ingresaste es incorrecto.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -124,11 +131,11 @@ public class UsuarioFirebaseVerificaciones {
                         onCorreoVerificado.isCorreoVerificado(true);
                     else{
                         onCorreoVerificado.isCorreoVerificado(false);
-                        Toast.makeText(mFragmento.getActivity(), "Por favor, verifica tu correo electrónico para completar tu registro", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity, "Por favor, verifica tu correo electrónico para completar tu registro", Toast.LENGTH_SHORT).show();
                     }
                 }
                 else
-                    Toast.makeText(mFragmento.getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

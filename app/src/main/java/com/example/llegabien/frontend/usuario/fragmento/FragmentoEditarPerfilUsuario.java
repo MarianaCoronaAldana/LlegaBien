@@ -39,7 +39,7 @@ import java.util.Date;
 public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnClickListener{
     private ConstraintLayout mBtnCambiarContra, mBtnAceptar;
     private Button mBtnEliminarCuenta, mBtnRegresar;
-    private EditText mEditTxtNombres, mEditTxtApellidos, mEditTxtFechaNacimiento, mEditTxtNumTelefonico, mEditTxtCorreo;
+    private EditText mEditTxtNombres, mEditTxtApellidos, mEditTxtFechaNacimiento, mEditTxtNumTelefonico, mEditTxtCorreo,mEditTxtCountryCode;
 
     usuario Usuario;
 
@@ -54,15 +54,16 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
         View root = inflater.inflate(R.layout.fragmento_editar_perfil_usuario, container, false);
 
         //wiring up
-        mBtnAceptar = (ConstraintLayout) root.findViewById(R.id.button2_aceptar_editarPerfil);
-        mBtnCambiarContra  = (ConstraintLayout) root.findViewById(R.id.button1_cambiarContra_editarPerfil);
-        mBtnEliminarCuenta  = (Button) root.findViewById(R.id.button_eliminarCuenta_editarPerfil);
-        mBtnRegresar = (Button) root.findViewById(R.id.button_regresar_editarPerfil);
-        mEditTxtNombres = (EditText) root.findViewById(R.id.editText_nombres_editarPerfil);
-        mEditTxtApellidos = (EditText) root.findViewById(R.id.editText_apellidos_editarPerfil);
-        mEditTxtFechaNacimiento = (EditText) root.findViewById(R.id.editText_fechaNacimiento_editarPerfil);
-        mEditTxtCorreo = (EditText) root.findViewById(R.id.editText_correo_editarPerfil);
-        mEditTxtNumTelefonico = (EditText) root.findViewById(R.id.editText_celular_editarPerfil);
+        mBtnAceptar = root.findViewById(R.id.button2_aceptar_editarPerfil);
+        mBtnCambiarContra  = root.findViewById(R.id.button1_cambiarContra_editarPerfil);
+        mBtnEliminarCuenta  = root.findViewById(R.id.button_eliminarCuenta_editarPerfil);
+        mBtnRegresar = root.findViewById(R.id.button_regresar_editarPerfil);
+        mEditTxtNombres = root.findViewById(R.id.editText_nombres_editarPerfil);
+        mEditTxtApellidos = root.findViewById(R.id.editText_apellidos_editarPerfil);
+        mEditTxtFechaNacimiento = root.findViewById(R.id.editText_fechaNacimiento_editarPerfil);
+        mEditTxtCorreo = root.findViewById(R.id.editText_correo_editarPerfil);
+        mEditTxtNumTelefonico = root.findViewById(R.id.editText_celular_editarPerfil);
+        mEditTxtCountryCode = root.findViewById(R.id.editText_celularCountryCode_editarPerfil);
 
         //listeners
         mBtnAceptar.setOnClickListener(this);
@@ -75,6 +76,7 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
     }
 
     //FUNCIONES LISTENERS//
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View view) {
@@ -93,8 +95,8 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
                 break;
             case R.id.button_eliminarCuenta_editarPerfil:
                 deleteUsuario();
-                Preferences.savePreferenceBoolean(this.getActivity(),false, PREFERENCE_ESTADO_BUTTON_SESION);
-                Preferences.savePreferenceBoolean(this.getActivity(), false, PREFERENCE_ES_ADMIN);
+                Preferences.savePreferenceBoolean(getActivity(),false, PREFERENCE_ESTADO_BUTTON_SESION);
+                Preferences.savePreferenceBoolean(getActivity(), false, PREFERENCE_ES_ADMIN);
 
                 startActivity(new Intent(getActivity(), ActivityPaginaPrincipalUsuario.class));
                 break;
@@ -110,10 +112,15 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
     }
 
     //OTRAS FUNCIONES//
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private boolean validarAllInputs() {
         UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
-        boolean esInputValido = true;
+        boolean esInputValido = true, esNumTelefonicoValido, esCountryCodeValido;
+
+        esNumTelefonicoValido =  usuarioInputValidaciones.validarNumTelefonico(getActivity(),mEditTxtNumTelefonico);
+        esCountryCodeValido = usuarioInputValidaciones.validarNumTelefonico(getActivity(), mEditTxtCountryCode);
+
         if (!usuarioInputValidaciones.validarNombre(getActivity(),mEditTxtNombres))
             esInputValido = false;
         if ( !usuarioInputValidaciones.validarNombre(getActivity(),mEditTxtApellidos))
@@ -122,7 +129,11 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
             esInputValido = false;
         if (!usuarioInputValidaciones.validarCorreoElectronico(getActivity(), mEditTxtCorreo))
             esInputValido = false;
-        if (!usuarioInputValidaciones.validarNumTelefonico(getActivity(), mEditTxtNumTelefonico))
+        if (esCountryCodeValido && esNumTelefonicoValido) {
+            if(!usuarioInputValidaciones.validarNumTelefonico_libphonenumber(getActivity(),mEditTxtNumTelefonico,mEditTxtCountryCode))
+                esInputValido = false;
+        }
+        else
             esInputValido = false;
 
         return esInputValido;
@@ -158,12 +169,14 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
     // Actualizar al usuario en MongoDB
     public void updateUsuario(){
         UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD(this.getContext());
-        usuarioBD_CRUD.updateUser(Usuario);
-        Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
-        mBtnAceptar.setEnabled(false);
+        if (usuarioBD_CRUD.updateUser(Usuario)) {
+            Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
 
-        Usuario = usuarioBD_CRUD.readUsuarioPorCorreo(getActivity(), Usuario.getCorreoElectronico(), Usuario.getContrasena());
-        Preferences.savePreferenceObjectRealm(getActivity(), PREFERENCE_USUARIO, Usuario);
+            mBtnAceptar.setEnabled(false);
+
+            Usuario = usuarioBD_CRUD.readUsuarioPorCorreo(Usuario.getCorreoElectronico());
+            Preferences.savePreferenceObjectRealm(getActivity(), PREFERENCE_USUARIO, Usuario);
+        }
     }
 
     // Borrar al usuario en MongoDB

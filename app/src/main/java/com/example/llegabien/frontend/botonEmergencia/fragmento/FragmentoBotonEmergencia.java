@@ -1,14 +1,11 @@
 package com.example.llegabien.frontend.botonEmergencia.fragmento;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentContainer;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.CountDownTimer;
@@ -46,7 +43,7 @@ public class FragmentoBotonEmergencia extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_fragmento_boton_emergencia, container, false);
+        View root = inflater.inflate(R.layout.fragmento_boton_emergencia, container, false);
 
         //wiring up
         mTxtSegundosFaltantes = root.findViewById(R.id.textView_segundosFaltantes_activityMaps);
@@ -74,7 +71,7 @@ public class FragmentoBotonEmergencia extends Fragment {
             mWindow.setNavigationBarColor(getResources().getColor(R.color.blanco));
         }
 
-        mCountDownTimer = new CountDownTimer(5000, 500) {
+        mCountDownTimer = new CountDownTimer(3000, 300) {
             public void onTick(long millisUntilFinished) {
                 String segundosFaltantes = "0" + String.valueOf(TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished + 1000));
 

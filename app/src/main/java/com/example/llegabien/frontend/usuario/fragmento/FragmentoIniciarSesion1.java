@@ -19,9 +19,12 @@ import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Encriptar;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
+import com.example.llegabien.backend.usuario.UsuarioBD_CRUD;
 import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
+import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.FragmentoAuxiliar;
+import com.example.llegabien.frontend.Utilidades;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.backend.usuario.UsuarioBD_Validaciones;
 
@@ -29,10 +32,11 @@ import java.util.Locale;
 
 public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickListener{
     private RadioButton mBtnRecordarSesion;
-    private Button mBtnIniciarSesion, mBtnContraseñaOlvidada, mBtnCerrar, mBtnRegistrarse;
+    private Button mBtnIniciarSesion, mBtnContraseñaOlvidada, mBtnCerrar, mBtnRegistrarse, mBtnMostrarContra;
     private EditText mEditTxtCorreo, mEditTxtContraseña;
     private boolean isActivateRadioButton;
-    ConectarBD conectarBD = new ConectarBD();
+    private ConectarBD mConectarBD = new ConectarBD();
+    private UsuarioBD_Validaciones mValidar;
 
     public FragmentoIniciarSesion1() {
     }
@@ -44,13 +48,14 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
         View root = inflater.inflate(R.layout.fragmento_iniciar_sesion1, container, false);
 
         //wiring up
-        mBtnRecordarSesion = (RadioButton) root.findViewById(R.id.radioBtn_recordar_inicia_sesion_1);
-        mBtnIniciarSesion = (Button) root.findViewById(R.id.button_inicia_inicia_sesion_1);
-        mBtnContraseñaOlvidada = (Button) root.findViewById(R.id.button_contraseña_olvidada_inicia_sesion_1);
-        mBtnCerrar = (Button) root.findViewById(R.id.button_cerrar_inicia_sesion_1);
-        mBtnRegistrarse = (Button) root.findViewById(R.id.button_registrarse_inicia_sesion_1);
-        mEditTxtCorreo = (EditText) root.findViewById(R.id.editText_correo_inicia_sesion_1);
-        mEditTxtContraseña = (EditText) root.findViewById(R.id.editText_contraseña_inicia_sesion_1);
+        mBtnRecordarSesion = root.findViewById(R.id.radioBtn_recordar_inicia_sesion_1);
+        mBtnIniciarSesion = root.findViewById(R.id.button_inicia_inicia_sesion_1);
+        mBtnContraseñaOlvidada = root.findViewById(R.id.button_contraseña_olvidada_inicia_sesion_1);
+        mBtnMostrarContra = root.findViewById(R.id.button_mostrarContra_contraseña_inicia_sesion_1);
+        mBtnCerrar = root.findViewById(R.id.button_cerrar_inicia_sesion_1);
+        mBtnRegistrarse = root.findViewById(R.id.button_registrarse_inicia_sesion_1);
+        mEditTxtCorreo = root.findViewById(R.id.editText_correo_inicia_sesion_1);
+        mEditTxtContraseña = root.findViewById(R.id.editText_contraseña_inicia_sesion_1);
 
         //listeners
         mBtnRecordarSesion.setOnClickListener(this);
@@ -58,9 +63,14 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
         mBtnContraseñaOlvidada.setOnClickListener(this);
         mBtnCerrar.setOnClickListener(this);
         mBtnRegistrarse.setOnClickListener(this);
+        mBtnMostrarContra.setOnClickListener(this);
+
+        //Para inicializar la clase UsuarioBD_Validaciones
+        mValidar = new UsuarioBD_Validaciones(this.getActivity());
 
         isActivateRadioButton = mBtnRecordarSesion.isChecked(); //DESACTIVADO
-        conectarBD.ConectarAnonimoMongoDB();
+
+        mConectarBD.ConectarAnonimoMongoDB();
 
         return root;
     }
@@ -80,7 +90,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
                 break;
             case R.id.button_inicia_inicia_sesion_1:
                 Preferences.savePreferenceBoolean(this.getActivity(),mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
-                //para validar si los campos no están vacios
+
                 if (validarAllInputs()) {
                     //QUITAR DESPUES DE HACER PRUEBAS//
                     verificarCorreoContraseña();
@@ -92,9 +102,9 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
                 fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario1).commit();
                 break;
             case R.id.button_contraseña_olvidada_inicia_sesion_1:
-                FragmentoIniciarSesion2 fragmentoIniciarSesion2 = new FragmentoIniciarSesion2();
+                FragmentoRestablecerContrasena1 fragmentoRestablecerContrasena1 = new FragmentoRestablecerContrasena1();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);
-                fragmentTransaction.replace(R.id.fragment_pagina_principal,fragmentoIniciarSesion2).commit();
+                fragmentTransaction.replace(R.id.fragment_pagina_principal,fragmentoRestablecerContrasena1).commit();
                 fragmentTransaction.addToBackStack(null);
                 break;
             case R.id.button_cerrar_inicia_sesion_1:
@@ -102,11 +112,16 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
                 fragmentTransaction.replace(R.id.fragment_pagina_principal,fragmentoAuxiliar).commit();
                 fragmentTransaction.remove(fragmentoAuxiliar);
                 break;
+
+            case R.id.button_mostrarContra_contraseña_inicia_sesion_1:
+                Utilidades.mostrarContraseña(mEditTxtContraseña, mBtnMostrarContra, this.getActivity());
+                break;
         }
     }
 
 
-    //otras funciones
+    //OTRAS FUNCIONES//
+
     private boolean validarAllInputs(){
         UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
         boolean esInputValido = true;
@@ -119,7 +134,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
     }
 
     private void verificarCorreoVerificado(){
-        UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(this);
+        UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(getActivity());
         usuarioFirebaseVerificaciones.validarCorreoVerificado(new UsuarioFirebaseVerificaciones.OnCorreoVerificado() {
             @Override
             public void isCorreoVerificado(boolean isCorreoVerificado) {
@@ -131,20 +146,12 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
 
 
     private void verificarCorreoContraseña() {
-        boolean estado = true;
-        UsuarioBD_Validaciones validar = new UsuarioBD_Validaciones(this.getActivity());
-        if(validar.validarAdmin(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContraseña(mEditTxtContraseña.getText().toString())))
+        if(mValidar.validarAdmin(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContraseña(mEditTxtContraseña.getText().toString())))
             Preferences.savePreferenceBoolean(this.getActivity(), true, PREFERENCE_ES_ADMIN);
 
-        else if(!validar.verificarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContraseña(mEditTxtContraseña.getText().toString()), "El correo electronico o la contraseña son incorrectos")) {
-//        else if(!validar.verificarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), mEditTxtContraseña.getText().toString(), "El correo electronico o la contraseña son incorrectos")) {
-            estado = false;
-            //Toast.makeText(getActivity(),"El correo electronico o el numero telefonico son incorrectos",Toast.LENGTH_LONG).show();
-        }
-
-        //para verificar que el usuario haya validado su cuenta de correo
-        if(estado) {
+        else if(mValidar.verificarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContraseña(mEditTxtContraseña.getText().toString()), "El correo electronico o la contraseña son incorrectos")) {
             //REPONER//
+            //para verificar que el usuario haya validado su cuenta de correo
             //verificarCorreoVerificado();
             startActivity(new Intent(getActivity(), ActivityMap.class));
         }

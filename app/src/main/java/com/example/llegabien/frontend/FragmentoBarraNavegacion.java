@@ -20,15 +20,18 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.llegabien.R;
+import com.example.llegabien.backend.app.Permisos;
+import com.example.llegabien.frontend.app.FragmentoPermisos;
 import com.example.llegabien.frontend.botonEmergencia.fragmento.FragmentoBotonEmergencia;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.usuario.fragmento.FragmentoRegistrarUsuario2;
 
 public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchListener {
 
-    Button mBtnEmergencia;
-    ConstraintLayout mBtnFavoritos, mBtnSubirReporte, mBtnHistorialRutas,mBtnContactos, mFondoBlanco;;
-    ObjectAnimator mScaleDown;
+    private Button mBtnEmergencia;
+    private ConstraintLayout mBtnFavoritos, mBtnSubirReporte, mBtnHistorialRutas,mBtnContactos, mFondoBlanco;;
+    private ObjectAnimator mScaleDown;
+    private Permisos mPermisos;
 
     public FragmentoBarraNavegacion() {
         // Required empty public constructor
@@ -57,17 +60,26 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
     public boolean onTouch(View v, MotionEvent event) {
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         FragmentoBotonEmergencia fragmentoBotonEmergencia = new FragmentoBotonEmergencia(mFondoBlanco);
+        FragmentoPermisos fragmentoPermisos = new FragmentoPermisos();
         //when button is pressed
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            mBtnFavoritos.setVisibility(View.INVISIBLE);
-            mBtnSubirReporte.setVisibility(View.INVISIBLE);
-            mBtnHistorialRutas.setVisibility(View.INVISIBLE);
-            mBtnContactos.setVisibility(View.INVISIBLE);
-            mScaleDown.end();
+            mPermisos = new Permisos();
+            mPermisos.getPermisoUbicacion(getActivity(), false);
+            if(mPermisos.getLocationPermissionGranted()){
+                mBtnFavoritos.setVisibility(View.INVISIBLE);
+                mBtnSubirReporte.setVisibility(View.INVISIBLE);
+                mBtnHistorialRutas.setVisibility(View.INVISIBLE);
+                mBtnContactos.setVisibility(View.INVISIBLE);
+                mScaleDown.end();
+                mFondoBlanco.setBackgroundColor(getActivity().getResources().getColor(R.color.blanco));
 
-            //show the progressCircle
-            fragmentTransaction.add(R.id.fragmentContainerView_botonEmergencia, fragmentoBotonEmergencia, "FragmentoBotonEmergencia").commit();
-            mFondoBlanco.setBackgroundColor(getActivity().getResources().getColor(R.color.blanco));
+                if(this.getActivity() instanceof ActivityMap){
+                    //show the progressCircle
+                    fragmentTransaction.add(R.id.fragmentContainerView_botonEmergencia, fragmentoBotonEmergencia, "FragmentoBotonEmergencia").commit();
+                }
+            }
+            else
+                fragmentTransaction.add(R.id.fragmentContainerView1_fragemntoBuscarLugar_activityMaps, fragmentoPermisos).commit();
 
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             mFondoBlanco.setBackgroundColor(Color.TRANSPARENT);
@@ -85,6 +97,8 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
         return true;
     }
 
+
+    // OTRAS FUNCIONES//
 
     private void startAnimacionBtnEmergencia() {
         mScaleDown = ObjectAnimator.ofPropertyValuesHolder(

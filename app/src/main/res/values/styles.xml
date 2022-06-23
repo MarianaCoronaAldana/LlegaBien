@@ -133,6 +133,16 @@
         <item name="android:layout_width">0dp</item>
     </style>
 
+    <style name="TxtViewNumTelefonico" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:fontFamily">@font/parrafo</item>
+        <item name="android:textColor">@color/azul_oscuro</item>
+        <item name="android:textSize">@dimen/text_size_parrafo</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
+
     <style name="TxtViewTransparenteConfig" parent="Widget.AppCompat.TextView">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:fontFamily">@font/parrafo_bold</item>
@@ -205,6 +215,16 @@
     <!-- Icon -->
     <style name="BkgdIcon">
         <item name="android:background">@drawable/bkgd_button_regresar_2</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="layout_constraintDimensionRatio">1:1</item>
+    </style>
+
+    <!-- Icon de contraseña-->
+    <style name="BkgdIconContraseña">
+        <item name="android:background">@drawable/bkgd_icon_ojo_abierto</item>
+        <item name="android:text">show</item>
+        <item name="android:textColor">@android:color/transparent</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_width">0dp</item>
         <item name="layout_constraintDimensionRatio">1:1</item>

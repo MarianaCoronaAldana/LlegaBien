@@ -60,17 +60,17 @@ public class ActivityPaginaPrincipalUsuario extends AppCompatActivity implements
     @Override
     public void onClick(View view)
     {
-        FragmentoIniciarSesion1 fragmentoIniciarSesion1 = new FragmentoIniciarSesion1();
-        FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_up, R.anim.slide_down,R.anim.slide_up, R.anim.slide_down)
                 .addToBackStack(null);
 
         switch (view.getId()) {
             case R.id.button_inicia_sesion_pagina_principal:
+                FragmentoIniciarSesion1 fragmentoIniciarSesion1 = new FragmentoIniciarSesion1();
                 fragmentTransaction.add(R.id.fragment_pagina_principal, fragmentoIniciarSesion1).commit();
                 break;
             case R.id.button_crea_cuenta_pagina_principal:
+                FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
                 fragmentTransaction.add(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario1).commit();
                 break;
         }

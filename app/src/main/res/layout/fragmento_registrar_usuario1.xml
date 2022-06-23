@@ -90,7 +90,7 @@
         <EditText
             android:id="@+id/editText_nombres_registro_1"
             style="@style/EditTextTransparente"
-            android:hint="@string/nombresTxtView"
+            android:hint="@string/nombresEditTxt"
             android:inputType="textAutoCorrect"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="6:1"
@@ -102,7 +102,7 @@
         <EditText
             android:id="@+id/editText_apellidos_registro_1"
             style="@style/EditTextTransparente"
-            android:hint="@string/apellidosTxtView"
+            android:hint="@string/apellidosEditTxt"
             android:inputType="textAutoCorrect"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="6:1"
@@ -115,7 +115,7 @@
             android:id="@+id/editText_fechaNacimiento_registro_1"
             style="@style/EditTextTransparente"
             android:focusable="false"
-            android:hint="@string/fechaNacimientoTxtView"
+            android:hint="@string/fechaNacimientoEditTxt"
             android:inputType="date"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="6:1"

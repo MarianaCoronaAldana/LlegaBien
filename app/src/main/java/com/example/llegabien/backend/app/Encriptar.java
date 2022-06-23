@@ -11,14 +11,14 @@ public class Encriptar {
     public static String Encriptar(String textoPlano){
         String textoEncriptado;
         try{
-            textoEncriptado = encriptar(textoPlano, passwordEncriptacion);
+            textoEncriptado = mEncriptar(textoPlano, passwordEncriptacion);
             return textoEncriptado;
         } catch (Exception e){
             return textoPlano;
         }
     }
 
-    private static String encriptar(String datos, String password) throws Exception{
+    private static String mEncriptar(String datos, String password) throws Exception{
         SecretKeySpec secretKey = generateKey(password);
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);

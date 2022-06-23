@@ -7,47 +7,46 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import java.security.acl.Permission;
-
 public class Permisos {
 
-    private boolean mLocationPermissionGranted;
+    private boolean mLocationPermissionGranted = false;
 
-    public void setmLocationPermissionGranted (boolean locationPermissionGranted){
+    public void setLocationPermissionGranted(boolean locationPermissionGranted) {
         mLocationPermissionGranted = locationPermissionGranted;
     }
 
-    public boolean getmLocationPermissionGranted () {return mLocationPermissionGranted;}
+    public boolean getLocationPermissionGranted() {
+        return mLocationPermissionGranted;
+    }
 
 
-    public void getPermisoUbicacion(Activity activity) {
+    public void getPermisoUbicacion(Activity activity, boolean isInActivity) {
         if (ContextCompat.checkSelfPermission(activity.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
         } else {
-            ActivityCompat.requestPermissions(activity,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+            if (isInActivity)
+                ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         }
     }
 
     public void HacerLlamada(Context context) {
         int permiso = ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE);
-        if(permiso == PackageManager.PERMISSION_DENIED){
+        if (permiso == PackageManager.PERMISSION_DENIED) {
 
-                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 1);
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 1);
         }
     }
 
     public void EnviarMensaje(Context context) {
         int permiso = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.SEND_SMS);
-        if(permiso == PackageManager.PERMISSION_DENIED){
+        if (permiso == PackageManager.PERMISSION_DENIED) {
 
-                ActivityCompat.requestPermissions((Activity) getApplicationContext(), new String[]{Manifest.permission.SEND_SMS}, 2);
+            ActivityCompat.requestPermissions((Activity) getApplicationContext(), new String[]{Manifest.permission.SEND_SMS}, 2);
 
         }
     }

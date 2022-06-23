@@ -28,6 +28,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.33" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3_textView_editView_registro_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.35" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4_textView_editView_registro_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             app:layout_constraintGuide_percent="0.90" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -60,10 +74,10 @@
             android:text="@string/titulo_registro"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="5:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_2"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_registro_2"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_2"
             app:layout_constraintTop_toTopOf="@id/button_regresar_registro_2"
-            app:layout_constraintVertical_bias="0.15" />
+            app:layout_constraintVertical_bias="0.1" />
 
         <TextView
             android:id="@+id/textView_instrucciones1_registro_2"
@@ -71,7 +85,7 @@
             android:text="@string/instrucciones_registro"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="7:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_2"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_registro_2"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_2"
             app:layout_constraintTop_toBottomOf="@id/textView_titulo_registro_2"
             app:layout_constraintVertical_bias="0.05" />
@@ -82,7 +96,7 @@
             android:text="@string/instrucciones1_registro2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="6:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_2"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_registro_2"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_2"
             app:layout_constraintTop_toBottomOf="@id/textView_instrucciones1_registro_2"
             app:layout_constraintVertical_bias="0.05" />
@@ -90,50 +104,171 @@
         <EditText
             android:id="@+id/editText_correo_registro_2"
             style="@style/EditTextTransparente"
-            android:hint="@string/correoTxtView"
+            android:hint="@string/correoEditTxt"
             android:inputType="textEmailAddress"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/editText_celular_registro_2"
             app:layout_constraintDimensionRatio="6:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_2"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_registro_2"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_2"
             app:layout_constraintTop_toBottomOf="@id/textView_instrucciones2_registro_2"
             app:layout_constraintVertical_bias="0.1" />
 
-        <EditText
-            android:id="@+id/editText_celular_registro_2"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/consLyt_celularCountryCode_registro_2"
             style="@style/EditTextTransparente"
-            android:hint="@string/celularTxtView"
-            android:inputType="phone"
+            android:paddingRight="0dp"
+            android:paddingLeft="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="6:1"
+            app:layout_constraintDimensionRatio="35:20"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_2"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_2"
             app:layout_constraintTop_toBottomOf="@id/editText_correo_registro_2"
-            app:layout_constraintVertical_bias="0.05" />
+            app:layout_constraintVertical_bias="0.05" >
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1_celularCountryCode_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.2" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_celularCountryCode_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.25" />
+
+            <TextView
+                android:id="@+id/textView_celularCountryCode"
+                style="@style/TxtViewNumTelefonico"
+                android:textStyle="bold"
+                android:text="@string/celularCountryCodeEditTxt"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline1_celularCountryCode_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/editText_celularCountryCode_registro_2"
+                style="@style/TxtViewNumTelefonico"
+                android:gravity="center_vertical|left"
+                android:inputType="phone"
+                android:text="@string/celularCountryCodeTxtView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline2_celularCountryCode_1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <EditText
-            android:id="@+id/editText_contraseña_registro_2"
+            android:id="@+id/editText_celular_registro_2"
             style="@style/EditTextTransparente"
-            android:hint="@string/contraseñaTxtView"
+            android:hint="@string/celularEditTxt"
+            android:inputType="phone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="42:10"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_registro_2"
+            app:layout_constraintStart_toStartOf="@id/guideline3_textView_editView_registro_2"
+            app:layout_constraintTop_toBottomOf="@id/editText_correo_registro_2"
+            app:layout_constraintVertical_bias="0.05" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/consLyt_contraseña_registro_2"
+            style="@style/EditTextTransparente"
+            android:padding="0dp"
+            android:hint="@string/contraseñaEditTxt"
             android:inputType="textPassword"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="6:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_2"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_registro_2"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_2"
-            app:layout_constraintTop_toBottomOf="@id/editText_celular_registro_2"
-            app:layout_constraintVertical_bias="0.05" />
+            app:layout_constraintTop_toBottomOf="@+id/editText_celular_registro_2"
+            app:layout_constraintVertical_bias="0.07">
 
-        <EditText
-            android:id="@+id/editText_confirmarContraseña_registro_2"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1_icon_contraseña_registro_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.88" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_icon_contraseña_registro_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95" />
+
+            <Button
+                android:id="@+id/button_mostrarContra_contraseña_registro_2"
+                style="@style/BkgdIconContraseña"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_icon_contraseña_registro_2"
+                app:layout_constraintStart_toStartOf="@id/guideline1_icon_contraseña_registro_2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/editText_contraseña_registro_2"
+                style="@style/EditTextTransparente"
+                android:background="@android:color/transparent"
+                android:hint="@string/contraseñaEditTxt"
+                android:inputType="textPassword"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline1_icon_contraseña_registro_2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/consLyt_confirmarContraseña_registro_2"
             style="@style/EditTextTransparente"
-            android:hint="@string/confirmarContraseñaTxtView"
+            android:padding="0dp"
+            android:hint="@string/contraseñaEditTxt"
             android:inputType="textPassword"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="6:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registro_2"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_registro_2"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registro_2"
-            app:layout_constraintTop_toBottomOf="@id/editText_contraseña_registro_2"
-            app:layout_constraintVertical_bias="0.05" />
+            app:layout_constraintTop_toBottomOf="@+id/consLyt_contraseña_registro_2"
+            app:layout_constraintVertical_bias="0.1">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1_icon_confirmarContraseña_registro_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.88" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_icon_confirmarContraseña_registro_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95" />
+
+            <Button
+                android:id="@+id/button_mostrarContra_confirmarContra_registro_2"
+                style="@style/BkgdIconContraseña"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_icon_confirmarContraseña_registro_2"
+                app:layout_constraintStart_toStartOf="@id/guideline1_icon_confirmarContraseña_registro_2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/editText_confirmarContraseña_registro_2"
+                style="@style/EditTextTransparente"
+                android:background="@android:color/transparent"
+                android:hint="@string/confirmarContraseñaEditTxt"
+                android:inputType="textPassword"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline1_icon_confirmarContraseña_registro_2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/button_siguiente_registro_2"
@@ -141,9 +276,8 @@
             android:text="@string/siguienteBtn"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/guideline2_button_registro_2"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/guideline1_button_registro_2"
-            app:layout_constraintTop_toBottomOf="@id/editText_confirmarContraseña_registro_2"
+            app:layout_constraintTop_toBottomOf="@id/consLyt_confirmarContraseña_registro_2"
             app:layout_constraintVertical_bias="0.3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

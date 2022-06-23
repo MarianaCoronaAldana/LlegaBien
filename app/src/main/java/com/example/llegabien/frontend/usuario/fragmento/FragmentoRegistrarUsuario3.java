@@ -22,34 +22,14 @@ public class FragmentoRegistrarUsuario3 extends Fragment implements View.OnClick
 
     private Button mBtnVerificar, mBtnRegresar;
     private EditText mEditTxtCodigo1, mEditTxtCodigo2, mEditTxtCodigo3, mEditTxtCodigo4, mEditTxtCodigo5, mEditTxtCodigo6;
+    private String mVerificacionIdFireBase;
 
-    usuario Usuario = new usuario();
-
-    //PARAMETROS DE INICALIZACIÓN DEL FRAGMENTO
-    private static final String mCodigoNumTelefonico_PARAM1 = "param1"; //etiqueta
-    private String mCodigoNumTelefonico_param1 = ""; //tipo y valor
 
     public FragmentoRegistrarUsuario3() {
     }
 
-    //para inicalizar el fragmento con parametros y guardarlos en un bundle
-    public static FragmentoRegistrarUsuario3 newInstance(String param1) {
-        FragmentoRegistrarUsuario3 fragment = new FragmentoRegistrarUsuario3();
-        Bundle args = new Bundle();
-        args.putString(mCodigoNumTelefonico_PARAM1, param1);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        //para obtener los parametros que se guardan en el bundle
-        if (getArguments() != null) {
-            mCodigoNumTelefonico_param1 = getArguments().getString(mCodigoNumTelefonico_PARAM1);
-        }
-
+    public FragmentoRegistrarUsuario3(String verificacionIdFireBase) {
+        mVerificacionIdFireBase = verificacionIdFireBase;
     }
 
     @Override
@@ -155,7 +135,7 @@ public class FragmentoRegistrarUsuario3 extends Fragment implements View.OnClick
                          mEditTxtCodigo5.getText().toString() +
                          mEditTxtCodigo6.getText().toString();
 
-         UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(this);
+         UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(getActivity());
          usuarioFirebaseVerificaciones.validarCodigoNumTelefonico(new UsuarioFirebaseVerificaciones.OnCodigoNumTelefonicoVerificado() {
              @Override
              public void isNumTelefonicoVerificado(boolean isNumTelefonicoVerificado) {
@@ -167,6 +147,6 @@ public class FragmentoRegistrarUsuario3 extends Fragment implements View.OnClick
                      fragmentTransaction.addToBackStack(null);
                  }
              }
-         }, mCodigoNumTelefonico_param1, codigo);
+         }, mVerificacionIdFireBase, codigo);
      }
 }

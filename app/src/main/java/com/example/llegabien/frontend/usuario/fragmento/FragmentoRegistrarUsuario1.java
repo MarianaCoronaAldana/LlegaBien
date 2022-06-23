@@ -124,10 +124,10 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
     @RequiresApi(api = Build.VERSION_CODES.O)
     private usuario usuarioConDatos(){
        usuario Usuario = new usuario();
-       Usuario.setNombre(mEditTxtNombres.getText().toString());
-       Usuario.setApellidos(mEditTxtApellidos.getText().toString());
+       Usuario.setNombre(mEditTxtNombres.getText().toString().trim());
+       Usuario.setApellidos(mEditTxtApellidos.getText().toString().trim());
 
-       DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd / M / yyyy");
+       DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d/M/yyyy");
        LocalDate localDate =  LocalDate.parse(mEditTxtFechaNacimiento.getText().toString(), dateTimeFormatter);
        Usuario.setFNacimiento(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
