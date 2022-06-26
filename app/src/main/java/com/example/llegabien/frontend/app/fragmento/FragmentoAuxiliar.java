@@ -1,4 +1,4 @@
-package com.example.llegabien.frontend;
+package com.example.llegabien.frontend.app.fragmento;
 
 import android.os.Bundle;
 

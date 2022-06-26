@@ -18,7 +18,7 @@ import com.example.llegabien.backend.mongoDB.ConectarBD;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.backend.usuario.UsuarioSharedViewModel;
-import com.example.llegabien.frontend.FragmentoAuxiliar;
+import com.example.llegabien.frontend.app.fragmento.FragmentoAuxiliar;
 import com.example.llegabien.frontend.usuario.dialog.DialogDatePicker;
 
 import java.time.LocalDate;

@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.16" />
+            app:layout_constraintGuide_percent="0.15" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline1_textView_editView_cambiarContra"
@@ -64,10 +64,8 @@
             android:layout_height="0dp"
             android:background="@drawable/bkgd_esquinas_superiores_redondeadas"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:0"
             app:layout_constraintTop_toTopOf="@id/guideline_fondo_cambiarContra"
-            app:layout_constraintVertical_bias="0.0"
-            tools:layout_editor_absoluteX="0dp" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/consLyt_titulo_cambiarContra"

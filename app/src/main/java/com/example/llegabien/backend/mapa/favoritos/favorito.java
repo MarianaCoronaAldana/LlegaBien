@@ -1,4 +1,4 @@
-package com.example.llegabien.backend.favoritos;
+package com.example.llegabien.backend.mapa.favoritos;
 
 import com.example.llegabien.backend.usuario.usuario;
 

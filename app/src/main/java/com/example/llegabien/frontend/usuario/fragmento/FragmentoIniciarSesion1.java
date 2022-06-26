@@ -19,12 +19,10 @@ import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Encriptar;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
-import com.example.llegabien.backend.usuario.UsuarioBD_CRUD;
 import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
-import com.example.llegabien.backend.usuario.usuario;
-import com.example.llegabien.frontend.FragmentoAuxiliar;
-import com.example.llegabien.frontend.Utilidades;
+import com.example.llegabien.frontend.app.fragmento.FragmentoAuxiliar;
+import com.example.llegabien.frontend.app.Utilidades;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.backend.usuario.UsuarioBD_Validaciones;
 

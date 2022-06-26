@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/azul_claro"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".frontend.reportes.activity.ActivityReportes">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_barraNavegacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.88" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView_reportes"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:name="com.example.llegabien.frontend.reportes.fragmento.FragmentoSubirReporteUsuario"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_barraNavegacion"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <View
+        android:id="@+id/view_elevation"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:background="@color/azul_claro"
+        android:elevation="20dp"
+        android:name="com.example.llegabien.frontend.app.fragmento.FragmentoBarraNavegacion"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_barraNavegacion" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView_barraNavegacion"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:elevation="30dp"
+        android:name="com.example.llegabien.frontend.app.fragmento.FragmentoBarraNavegacion"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_barraNavegacion"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

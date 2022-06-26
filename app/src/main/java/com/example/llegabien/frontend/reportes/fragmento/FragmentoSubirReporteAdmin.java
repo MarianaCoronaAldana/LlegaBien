@@ -1,4 +1,4 @@
-package com.example.llegabien.frontend.usuario.fragmento;
+package com.example.llegabien.frontend.reportes.fragmento;
 
 import android.content.Intent;
 import android.os.Bundle;

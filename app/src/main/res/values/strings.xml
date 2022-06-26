@@ -143,6 +143,24 @@
     <string name="descripcion_permisos">Necesitamos la ubicación de tus dispositivo móvil para esta esta función.</string>
     <string name="btnAceptarPermisos_permisos">Aceptar ubicación</string>
 
+    <!-- Subir reporte usuario. -->
+    <string name="titulo_subirReporteUsuario">Subir Reporte</string>
+    <string name="instrucciones1_subirReporteUsuario">Responde todas las preguntas.</string>
+    <string name="instrucciones2_subirReporteUsuario">Para generar un reporte es necesario llenar el siguiente formulario.</string>
+    <string name="enviarReporteBtn_subirReporteUsuario">Enviar reporte</string>
+    <string name="nombreUsuario_subirReporteUsuario">Nombre del usuario:</string>
+    <string name="ubicacionDelito_subirReporteUsuario">Ubicación donde se cometió el delito:</string>
+    <string name="fechaDelito_subirReporteUsuario">¿Qué dia se cometió el delito?</string>
+    <string name="horaDelito_subirReporteUsuario">¿A qué hora se cometió el delito?</string>
+    <string name="cualDelito_subirReporteUsuario">¿Cuál es el delito que se cometió?</string>
+    <string name="comentariosAdicionales_subirReporteUsuario">Comentarios adicionales:</string>
+    <string name="ubicacionDelitoHint_subirReporteUsuario">Tu ubicacion</string>
+    <string name="fechaDelitoHint_subirReporteUsuario">Selecciona la fecha</string>
+    <string name="horaDelitoHint_subirReporteUsuario">Selecciona el delito</string>
+    <string name="cualDelitoHint_subirReporteUsuario">Selecciona el delito que se cometió</string>
+    <string name="comentariosAdicionalesHint_subirReporteUsuario">Escribe comentarios adicionales del suceso</string>
+
+
     <!-- Google Maps API Key. -->
     <string name="api_key">AIzaSyA_1vA9ikwZ0Ju7s5s2-C1QLQ51BQmwSlM</string>
     <!-- TODO: Remove or change this placeholder text -->

@@ -24,7 +24,7 @@ import com.example.llegabien.backend.usuario.UsuarioBD_Validaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.backend.usuario.UsuarioBD_CRUD;
-import com.example.llegabien.frontend.Utilidades;
+import com.example.llegabien.frontend.app.Utilidades;
 import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUsuario;
 
 public class FragmentoCambiarContraUsuario extends Fragment implements View.OnClickListener{

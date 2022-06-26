@@ -22,7 +22,7 @@ import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.backend.usuario.UsuarioSharedViewModel;
 import com.example.llegabien.backend.usuario.UsuarioBD_Validaciones;
-import com.example.llegabien.frontend.Utilidades;
+import com.example.llegabien.frontend.app.Utilidades;
 
 import java.util.Locale;
 

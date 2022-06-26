@@ -8,7 +8,7 @@
     android:focusable="true"
     android:background="@color/morado_oscuro"
     android:fitsSystemWindows="true"
-    tools:context=".frontend.usuario.fragmento.FragmentoSubirReporteAdmin">
+    tools:context=".frontend.reportes.fragmento.FragmentoSubirReporteAdmin">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/consLyt_parentPrincipal_subirReporte"

@@ -133,6 +133,17 @@
         <item name="android:layout_width">0dp</item>
     </style>
 
+    <style name="TxtViewTransparente_LetraAzulOscuro" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:fontFamily">@font/parrafo</item>
+        <item name="android:textColor">@color/azul_oscuro</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_parrafo</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
+
     <style name="TxtViewNumTelefonico" parent="Widget.AppCompat.TextView">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:fontFamily">@font/parrafo</item>
@@ -230,6 +241,7 @@
         <item name="layout_constraintDimensionRatio">1:1</item>
     </style>
 
+    <!-- View.-->
     <style name="ViewCirculoExpandible">
         <item name="android:visibility">invisible</item>
         <item name="android:background">@drawable/bkgd_circulo</item>
@@ -238,4 +250,21 @@
         <item name="android:layout_width">0dp</item>
         <item name="layout_constraintDimensionRatio">1:1</item>
     </style>
+
+    <style name="ViewSeparadorAuxiliar" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="layout_constraintVertical_bias">0.0</item>
+    </style>
+
+    <!-- Spinner -->
+    <style name="Spinner" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:spinnerMode">dropdown</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
+
 </resources>

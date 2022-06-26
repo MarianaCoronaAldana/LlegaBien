@@ -6,4 +6,4 @@
     android:background="@android:color/transparent"
     android:backgroundTint="@android:color/transparent"
     android:fitsSystemWindows="true"
-    tools:context=".frontend.FragmentoAuxiliar" />
+    tools:context=".frontend.app.fragmento.FragmentoAuxiliar" />

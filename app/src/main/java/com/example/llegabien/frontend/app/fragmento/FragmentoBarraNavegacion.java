@@ -1,8 +1,9 @@
-package com.example.llegabien.frontend;
+package com.example.llegabien.frontend.app.fragmento;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -10,23 +11,21 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Permisos;
-import com.example.llegabien.frontend.app.FragmentoPermisos;
 import com.example.llegabien.frontend.botonEmergencia.fragmento.FragmentoBotonEmergencia;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
-import com.example.llegabien.frontend.usuario.fragmento.FragmentoRegistrarUsuario2;
+import com.example.llegabien.frontend.reportes.activity.ActivityReportes;
+import com.example.llegabien.frontend.usuario.fragmento.FragmentoIniciarSesion1;
+import com.example.llegabien.frontend.usuario.fragmento.FragmentoRegistrarUsuario1;
 
-public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchListener {
+public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchListener, View.OnClickListener {
 
     private Button mBtnEmergencia;
     private ConstraintLayout mBtnFavoritos, mBtnSubirReporte, mBtnHistorialRutas,mBtnContactos, mFondoBlanco;;
@@ -42,7 +41,7 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragmento_barra_navegacion, container, false);
-        mBtnEmergencia = (Button) root.findViewById(R.id.button_emergencia_barraNavegacion);
+        mBtnEmergencia = root.findViewById(R.id.button_emergencia_barraNavegacion);
         mBtnFavoritos = root.findViewById(R.id.button_favoritos_barraNavegacion);
         mBtnSubirReporte = root.findViewById(R.id.button_subirReporte_barraNavegacion);
         mBtnHistorialRutas = root.findViewById(R.id.button_historialRutas_barraNavegacion);
@@ -51,9 +50,26 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
 
         startAnimacionBtnEmergencia();
 
+        //listeners
         mBtnEmergencia.setOnTouchListener(this);
+        mBtnSubirReporte.setOnClickListener(this);
 
         return root;
+    }
+
+    //FUNCIONES LISTENER//
+    @Override
+    public void onClick(View view)
+    {
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_up, R.anim.slide_down,R.anim.slide_up, R.anim.slide_down)
+                .addToBackStack(null);
+
+        switch (view.getId()) {
+            case R.id.button_subirReporte_barraNavegacion:
+                startActivity(new Intent(getActivity(), ActivityReportes.class));
+                break;
+        }
     }
 
     @Override

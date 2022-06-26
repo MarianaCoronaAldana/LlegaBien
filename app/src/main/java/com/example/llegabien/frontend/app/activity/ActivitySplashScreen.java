@@ -1,4 +1,4 @@
-package com.example.llegabien.frontend;
+package com.example.llegabien.frontend.app.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
