@@ -35,6 +35,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.33" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3_textView_editView_editarPerfil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.35" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4_textView_editView_editarPerfil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             app:layout_constraintGuide_percent="0.90" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -73,7 +87,7 @@
             android:id="@+id/consLyt_titulo_editarPerfil"
             style="@style/ConsLytTituloBlanco"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_editarPerfil"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_editarPerfil"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_editarPerfil"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.03" >
@@ -113,7 +127,7 @@
             android:text="@string/instrucciones_editarPerfil"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="7:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_editarPerfil"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_editarPerfil"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_editarPerfil"
             app:layout_constraintTop_toBottomOf="@id/guideline_fondo_editarPerfil"
             app:layout_constraintVertical_bias="0.05" />
@@ -121,11 +135,11 @@
         <EditText
             android:id="@+id/editText_nombres_editarPerfil"
             style="@style/EditTextTransparente"
-            android:hint="@string/nombresTxtView"
+            android:hint="@string/nombresEditTxt"
             android:inputType="textAutoCorrect"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="6:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_editarPerfil"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_editarPerfil"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_editarPerfil"
             app:layout_constraintTop_toBottomOf="@id/textView_instrucciones_editarPerfil"
             app:layout_constraintVertical_bias="0.05" />
@@ -133,52 +147,101 @@
         <EditText
             android:id="@+id/editText_apellidos_editarPerfil"
             style="@style/EditTextTransparente"
-            android:hint="@string/apellidosTxtView"
+            android:hint="@string/apellidosEditTxt"
             android:inputType="textAutoCorrect"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="6:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_editarPerfil"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_editarPerfil"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_editarPerfil"
             app:layout_constraintTop_toBottomOf="@id/editText_nombres_editarPerfil"
-            app:layout_constraintVertical_bias="0.05" />
+            app:layout_constraintVertical_bias="0.04" />
 
         <EditText
             android:id="@+id/editText_fechaNacimiento_editarPerfil"
             style="@style/EditTextTransparente"
             android:focusable="false"
-            android:hint="@string/fechaNacimientoTxtView"
+            android:hint="@string/fechaNacimientoEditTxt"
             android:inputType="date"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="6:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_editarPerfil"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_editarPerfil"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_editarPerfil"
             app:layout_constraintTop_toBottomOf="@id/editText_apellidos_editarPerfil"
-            app:layout_constraintVertical_bias="0.052" />
+            app:layout_constraintVertical_bias="0.042" />
 
         <EditText
             android:id="@+id/editText_correo_editarPerfil"
             style="@style/EditTextTransparente"
-            android:hint="@string/correoTxtView"
+            android:hint="@string/correoEditTxt"
             android:inputType="textEmailAddress"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="6:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_editarPerfil"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_editarPerfil"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_editarPerfil"
             app:layout_constraintTop_toBottomOf="@id/editText_fechaNacimiento_editarPerfil"
-            app:layout_constraintVertical_bias="0.058" />
+            app:layout_constraintVertical_bias="0.048" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/consLyt_celularCountryCode_editarPerfil"
+            style="@style/EditTextTransparente"
+            android:paddingRight="0dp"
+            android:paddingLeft="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="35:20"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_editarPerfil"
+            app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_editarPerfil"
+            app:layout_constraintTop_toBottomOf="@id/editText_correo_editarPerfil"
+            app:layout_constraintVertical_bias="0.07" >
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1_celularCountryCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.2" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_celularCountryCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.25" />
+
+            <TextView
+                android:id="@+id/textView_celularCountryCode"
+                style="@style/TxtViewNumTelefonico"
+                android:textStyle="bold"
+                android:text="@string/celularCountryCodeEditTxt"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline1_celularCountryCode"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/editText_celularCountryCode_editarPerfil"
+                style="@style/TxtViewNumTelefonico"
+                android:text="@string/celularCountryCodeTxtView"
+                android:inputType="phone"
+                android:gravity="center_vertical|left"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline2_celularCountryCode"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <EditText
             android:id="@+id/editText_celular_editarPerfil"
             style="@style/EditTextTransparente"
-            android:hint="@string/celularTxtView"
+            android:hint="@string/celularEditTxt"
             android:inputType="phone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="6:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_editarPerfil"
-            app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_editarPerfil"
+            app:layout_constraintDimensionRatio="42:10"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_editarPerfil"
+            app:layout_constraintStart_toStartOf="@id/guideline3_textView_editView_editarPerfil"
             app:layout_constraintTop_toBottomOf="@id/editText_correo_editarPerfil"
-            app:layout_constraintVertical_bias="0.08" />
+            app:layout_constraintVertical_bias="0.07" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button1_cambiarContra_editarPerfil"
@@ -256,8 +319,7 @@
             android:elevation="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_editarPerfil"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_editarPerfil"
             app:layout_constraintStart_toStartOf="@id/guideline1_button2_editarPerfil"
             app:layout_constraintTop_toBottomOf="@id/editText_celular_editarPerfil"
             app:layout_constraintVertical_bias="0.15">
@@ -279,7 +341,7 @@
             style="@style/ViewSeparador"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="200:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_editarPerfil"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_editarPerfil"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_editarPerfil"
             app:layout_constraintTop_toBottomOf="@id/button1_cambiarContra_editarPerfil"
             app:layout_constraintVertical_bias="0.2"/>
@@ -289,7 +351,7 @@
             style="@style/BtnRojoClaro"
             android:text="@string/eliminarCuenta_editarPerfil"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_editarPerfil"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_editarPerfil"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_editarPerfil"
             app:layout_constraintTop_toBottomOf="@id/separador_editarPerfil"
             app:layout_constraintVertical_bias="0.25" />

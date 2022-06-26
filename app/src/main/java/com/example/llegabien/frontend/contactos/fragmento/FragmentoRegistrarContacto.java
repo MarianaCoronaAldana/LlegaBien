@@ -34,8 +34,8 @@ import io.realm.RealmList;
 public class FragmentoRegistrarContacto extends Fragment implements View.OnClickListener{
 
     private TextView mTxtTitulo;
-    private EditText mEditTxtNombre, mEditTxtNumTelefonico;
-    private Button mBtnSiguiente, mBtnFinalizar;;
+    private EditText mEditTxtNombre, mEditTxtNumTelefonico, mEditTxtCountryCode;
+    private Button mBtnSiguiente, mBtnFinalizar;
     private Guideline mGuideline1_Btn1, mGuideline2_Btn1;
     private  ConstraintLayout mConstraintLayout;
     private int mNumContacto = 1, mBackStackCount = 0, mSiguienteCount = 1;
@@ -43,8 +43,8 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
 
     private UsuarioSharedViewModel SharedViewModel;
     private usuario Usuario;
-    private usuario_contacto Contacto =  new  usuario_contacto();
-    private ConectarBD conectarBD = new ConectarBD();
+    private final usuario_contacto Contacto =  new  usuario_contacto();
+    private final ConectarBD conectarBD = new ConectarBD();
 
     public FragmentoRegistrarContacto(){}
 
@@ -82,9 +82,10 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
         View root = inflater.inflate(R.layout.fragmento_registrar_contacto, container, false);
 
         //wiring up
-        mTxtTitulo = (TextView) root.findViewById(R.id.textView_titulo_registroContactos);
-        mEditTxtNombre = (EditText) root.findViewById(R.id.editText_nombre_registroContactos);
-        mEditTxtNumTelefonico = (EditText) root.findViewById(R.id.editText_celular_registroContactos);
+        mTxtTitulo = root.findViewById(R.id.textView_titulo_registroContactos);
+        mEditTxtNombre = root.findViewById(R.id.editText_nombre_registroContactos);
+        mEditTxtNumTelefonico = root.findViewById(R.id.editText_celular_registroContactos);
+        mEditTxtCountryCode = root.findViewById(R.id.editText_celularCountryCode_registroContactos);
 
         //views de fragmento padre "FragmentoRegistrarUsuario4"
         parent = (Fragment) this.getParentFragment();
@@ -155,10 +156,19 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
 
     private boolean validarAllInputs(){
         UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
-        boolean esInputValido = true;
+        boolean esInputValido = true, esNumTelefonicoValido, esCountryCodeValido;
+
+        esNumTelefonicoValido =  usuarioInputValidaciones.validarNumTelefonico(getActivity(),mEditTxtNumTelefonico);
+        esCountryCodeValido = usuarioInputValidaciones.validarNumTelefonico(getActivity(), mEditTxtCountryCode);
+
         if (!usuarioInputValidaciones.validarNombre(getActivity(),mEditTxtNombre))
             esInputValido = false;
-        if (!usuarioInputValidaciones.validarNumTelefonico(getActivity(),mEditTxtNumTelefonico))
+
+        if (esCountryCodeValido && esNumTelefonicoValido) {
+            if(!usuarioInputValidaciones.validarNumTelefonico_libphonenumber(getActivity(),mEditTxtNumTelefonico,mEditTxtCountryCode))
+                esInputValido = false;
+        }
+        else
             esInputValido = false;
 
         return esInputValido;

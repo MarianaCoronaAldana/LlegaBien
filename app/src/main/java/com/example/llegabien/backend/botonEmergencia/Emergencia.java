@@ -3,7 +3,6 @@ package com.example.llegabien.backend.botonEmergencia;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.app.Activity;
-import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 import android.widget.Toast;
@@ -15,8 +14,7 @@ import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
 import com.example.llegabien.backend.usuario.usuario;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.location.LocationServices;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,36 +26,59 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class Emergencia extends AppCompatActivity {
+public class Emergencia extends AppCompatActivity  {
 
     private ArrayList<String> mContactos = new ArrayList<String>();
     private OkHttpClient mClient = new OkHttpClient();
     private String mNombre, mUbicacion;
-    private Context mContext;
     private usuario Usuario;
 
     private Activity mActivity;
-    private boolean mIsLocationPermissionGranted;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
 
-    public Emergencia(Context context){
-        mContext = context;
-    }
-
-    public Emergencia(Context context, Activity mActivity, boolean mIsLocationPermissionGranted, FusedLocationProviderClient mFusedLocationProviderClient) {
-        this.mActivity = mActivity;
-        this.mIsLocationPermissionGranted = mIsLocationPermissionGranted;
-        this.mFusedLocationProviderClient = mFusedLocationProviderClient;
-        mContext = context;
+    public Emergencia(Activity activity){
+        mActivity = activity;
     }
 
     public void EmpezarProtocolo(){
-        InicializarDatos();
+        //Para inicializar a FusedLocationProviderClient.
+        FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mActivity);
 
+        UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
+        mUbicacionDispositivo.getUbicacionDelDispositivo(new UbicacionDispositivo.OnUbicacionObtenida() {
+            @Override
+            public void isUbicacionObtenida(boolean isUbicacionObtenida, Location ubicacionObtenida) {
+                if (isUbicacionObtenida) {
+                    UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
+                    inicializarDatos(ubicacionGeodicacion.degeocodificarUbiciacion(mActivity, ubicacionObtenida.getLatitude(),ubicacionObtenida.getLongitude()));
+                    //hacerLlamada();
+                    //Toast.makeText(mActivity, mUbicacion,Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(mActivity, "ERROR, CONTACTE A EMERGENCIAS DIRECTAMENTE!",Toast.LENGTH_LONG).show();
+                }
+            }
+        }, true,fusedLocationProviderClient, mActivity);
+    }
+
+    private void inicializarDatos(String ubicacion){
+        Usuario = Preferences.getSavedObjectFromPreference(mActivity, PREFERENCE_USUARIO, usuario.class);
+
+        for(int i = 0; i<Usuario.getContacto().size(); i++)
+            mContactos.add("+" + Usuario.getContacto().get(i).getTelCelular());
+
+        for(int i = mContactos.size(); i<5; i++)
+            mContactos.add("-1");
+
+        mNombre = Usuario.getNombre() + " " + Usuario.getApellidos();
+
+        mUbicacion = ubicacion;
+
+    }
+
+    private void hacerLlamada(){
         try {
             //TODO Cambiar link de ngrok aqui
-            post("https://5142-2806-310-120-8860-81ad-d207-7635-8403.ngrok.io/emergencia", new  Callback(){
-            //post("https://6d3a-2806-103e-29-a92b-c89d-16d6-3cf0-69a1.ngrok/", new  Callback(){
+            post("https://128d-187-201-47-211.ngrok.io/emergencia", new  Callback(){
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -67,11 +88,11 @@ public class Emergencia extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(mContext,"PROTOCOLO ACTIVADO",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mActivity,response.message(),Toast.LENGTH_SHORT).show();
                             Log.v("QUICKSTART", response.message());
 
                             if(!response.isSuccessful())
-                                Toast.makeText(mContext, "ERROR, CONTACTE A EMERGENCIAS DIRECTAMENTE!",Toast.LENGTH_LONG).show();
+                                Toast.makeText(mActivity, "ERROR, CONTACTE A EMERGENCIAS DIRECTAMENTE!",Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -103,33 +124,5 @@ public class Emergencia extends AppCompatActivity {
         response.enqueue(callback);
 
         return response;
-    }
-
-
-    private void InicializarDatos(){
-        Usuario = Preferences.getSavedObjectFromPreference(mContext, PREFERENCE_USUARIO, usuario.class);
-        for(int i = 0; i<Usuario.getContacto().size(); i++)
-            mContactos.add("+" + Usuario.getContacto().get(i).getTelCelular());
-        for(int i = mContactos.size(); i<5; i++)
-            mContactos.add("-1");
-        mNombre = Usuario.getNombre() + " " + Usuario.getApellidos();
-        //ubicacionDispositivoString();
-        mUbicacion = "Guadalajara";
-    }
-
-    public void ubicacionDispositivoString() {
-        UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
-        mUbicacionDispositivo.getUbicacionDelDispositivo(new UbicacionDispositivo.OnUbicacionObtenida() {
-            @Override
-            public void isUbicacionObtenida(boolean isUbicacionObtenida, Location ubicacionObtenida) {
-                if (isUbicacionObtenida) {
-                    UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
-                    mUbicacion = ubicacionGeodicacion.degeocodificarUbiciacion(mActivity, ubicacionObtenida.getLatitude(),ubicacionObtenida.getLongitude());
-                }
-                else {
-                    Toast.makeText(mContext, "ERROR, CONTACTE A EMERGENCIAS DIRECTAMENTE!",Toast.LENGTH_LONG).show();
-                }
-            }
-        }, mIsLocationPermissionGranted,mFusedLocationProviderClient, mActivity);
     }
 }

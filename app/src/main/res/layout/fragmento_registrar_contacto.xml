@@ -29,6 +29,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.33" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3_textView_editView_registroContactos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.35" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4_textView_editView_registroContactos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             app:layout_constraintGuide_percent="0.90" />
 
         <TextView
@@ -40,7 +54,7 @@
             android:textSize="@dimen/text_size_titulo_small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="6:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registroContactos"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_registroContactos"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registroContactos"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.05" />
@@ -51,11 +65,60 @@
             android:hint="@string/contactoEmergencia_nombre_registro4"
             android:inputType="textAutoCorrect"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="5:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registroContactos"
+            app:layout_constraintDimensionRatio="6:1"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_registroContactos"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registroContactos"
             app:layout_constraintTop_toBottomOf="@id/textView_titulo_registroContactos"
             app:layout_constraintVertical_bias="0.15" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/consLyt_celularCountryCode_registroContactos"
+            style="@style/EditTextTransparente"
+            android:paddingRight="0dp"
+            android:paddingLeft="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="35:20"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registroContactos"
+            app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registroContactos"
+            app:layout_constraintTop_toBottomOf="@id/editText_nombre_registroContactos"
+            app:layout_constraintVertical_bias="0.4">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1_celularCountryCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.2" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_celularCountryCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.25" />
+
+            <TextView
+                android:id="@+id/textView_celularCountryCode"
+                style="@style/TxtViewNumTelefonico"
+                android:text="@string/celularCountryCodeEditTxt"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline1_celularCountryCode"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/editText_celularCountryCode_registroContactos"
+                style="@style/TxtViewNumTelefonico"
+                android:gravity="center_vertical|left"
+                android:inputType="phone"
+                android:text="@string/celularCountryCodeTxtView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline2_celularCountryCode"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <EditText
             android:id="@+id/editText_celular_registroContactos"
@@ -63,9 +126,9 @@
             android:hint="@string/contactoEmergencia_celular_registro4"
             android:inputType="phone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="5:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registroContactos"
-            app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registroContactos"
+            app:layout_constraintDimensionRatio="42:10"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_registroContactos"
+            app:layout_constraintStart_toStartOf="@id/guideline3_textView_editView_registroContactos"
             app:layout_constraintTop_toBottomOf="@id/editText_nombre_registroContactos"
             app:layout_constraintVertical_bias="0.4" />
 
@@ -77,7 +140,7 @@
             android:backgroundTint="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="11:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_registroContactos"
+            app:layout_constraintEnd_toEndOf="@id/guideline4_textView_editView_registroContactos"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_registroContactos"
             app:layout_constraintTop_toBottomOf="@id/editText_celular_registroContactos" />
 

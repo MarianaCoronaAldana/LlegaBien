@@ -6,6 +6,7 @@ import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +40,9 @@ public class UbicacionDispositivo{
                     }
                 });
             }
+            else
+                onUbicacionObtenida.isUbicacionObtenida(false, mUbicacion);
+
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage(), e);
         }

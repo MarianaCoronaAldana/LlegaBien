@@ -7,7 +7,7 @@
     tools:context=".frontend.mapa.activity.ActivityMap">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_fondoBlanco"
+        android:id="@+id/guideline_fragmentoBotonEmergencia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -30,7 +30,7 @@
         android:id="@+id/fragmentContainerView_botonEmergencia"
         android:layout_height="0dp"
         android:layout_width="match_parent"
-        app:layout_constraintBottom_toBottomOf="@id/guideline_fondoBlanco"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_fragmentoBotonEmergencia"
         app:layout_constraintTop_toTopOf="parent"/>
 
 

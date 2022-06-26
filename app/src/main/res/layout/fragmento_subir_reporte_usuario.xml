@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/morado_oscuro"
+    android:clickable="true"
+    android:fitsSystemWindows="true"
+    android:focusable="true"
+    tools:context=".frontend.reportes.fragmento.FragmentoSubirReporteUsuario">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/consLyt_parentPrincipal_subirReporteUsuario"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_fondo_subirReporteUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.16" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1_textView_editView_subirReporteUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.10" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2_textView_editView_subirReporteUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.90" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1_button_subirReporteUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.2" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1_textViewTitulo_subirReporteUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2_button_subirReporteUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.8" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/consLyt_titulo_subirReporteUsuario"
+            style="@style/ConsLytTituloBlanco"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_subirReporteUsuario"
+            app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_subirReporteUsuario"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.03">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_textView_titulo_subirReporteUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.20" />
+
+            <Button
+                android:id="@+id/button_regresar_subirReporteUsuario"
+                style="@style/BkgdIcon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline_textView_titulo_subirReporteUsuario"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView_titulo_subirReporteUsuario"
+                style="@style/TxtViewBlanco"
+                android:background="@android:color/transparent"
+                android:text="@string/titulo_subirReporteUsuario"
+                android:textSize="@dimen/text_size_titulo_small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="4:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline_textView_titulo_subirReporteUsuario"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:id="@+id/scrollView_subirReporteUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/bkgd_esquinas_superiores_redondeadas"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guideline_fondo_subirReporteUsuario">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/consLyt_scrollView_subirReporteUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.10" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.90" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline1_button_scrollView_subirReporteUsuario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.2" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2_button_scrollView_subirReporteUsuario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.8" />
+
+                <View
+                    android:id="@+id/view1_subirReporteUsuario"
+                    style="@style/ViewSeparadorAuxiliar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="10:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView_instrucciones1_subirReporteUsuario"
+                    style="@style/TxtViewAzulOscuro"
+                    android:text="@string/instrucciones1_subirReporteUsuario"
+                    android:textSize="@dimen/text_size_parrafo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="7:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/view1_subirReporteUsuario"
+                    app:layout_constraintVertical_bias="0.0"/>
+
+                <View
+                    android:id="@+id/view2_subirReporteUsuario"
+                    style="@style/ViewSeparadorAuxiliar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="15:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/textView_instrucciones1_subirReporteUsuario" />
+
+                <TextView
+                    android:id="@+id/textView_instrucciones2_subirReporteUsuario"
+                    style="@style/TxtViewTransparente"
+                    android:text="@string/instrucciones2_subirReporteUsuario"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="6:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/view2_subirReporteUsuario"
+                    app:layout_constraintVertical_bias="0.0"/>
+
+                <View
+                    android:id="@+id/view3_subirReporteUsuario"
+                    style="@style/ViewSeparadorAuxiliar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="15:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/textView_instrucciones2_subirReporteUsuario" />
+
+                <TextView
+                    android:id="@+id/textView_nombreUsuario_subirReporteUsuario"
+                    style="@style/TxtViewTransparente_LetraAzulOscuro"
+                    android:text="@string/nombreUsuario_subirReporteUsuario"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="10:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/view3_subirReporteUsuario"
+                    app:layout_constraintVertical_bias="0.0"/>
+
+                <EditText
+                    android:id="@+id/editText_nombreUsuario_subirReporteUsuario"
+                    style="@style/EditTextTransparente"
+                    android:inputType="text"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="6:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/textView_nombreUsuario_subirReporteUsuario"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <View
+                    android:id="@+id/view4_subirReporteUsuario"
+                    style="@style/ViewSeparadorAuxiliar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="15:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/editText_nombreUsuario_subirReporteUsuario" />
+
+                <TextView
+                    android:id="@+id/textView_ubicacionDelito_subirReporteUsuario"
+                    style="@style/TxtViewTransparente_LetraAzulOscuro"
+                    android:text="@string/ubicacionDelito_subirReporteUsuario"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="10:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/view4_subirReporteUsuario"
+                    app:layout_constraintVertical_bias="0.0"/>
+
+                <EditText
+                    android:id="@+id/editText_ubicacionDelito_subirReporteUsuario"
+                    style="@style/EditTextTransparente"
+                    android:text="@string/ubicacionDelitoHint_subirReporteUsuario"
+                    android:inputType="text"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="6:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/textView_ubicacionDelito_subirReporteUsuario"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <View
+                    android:id="@+id/view5_subirReporteUsuario"
+                    style="@style/ViewSeparadorAuxiliar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="15:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/editText_ubicacionDelito_subirReporteUsuario" />
+
+                <TextView
+                    android:id="@+id/textView_fechaDelito_subirReporteUsuario"
+                    style="@style/TxtViewTransparente_LetraAzulOscuro"
+                    android:text="@string/fechaDelito_subirReporteUsuario"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="10:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/view5_subirReporteUsuario"
+                    app:layout_constraintVertical_bias="0.0"/>
+
+                <EditText
+                    android:id="@+id/editText_fechaDelito_subirReporteUsuario"
+                    style="@style/EditTextTransparente"
+                    android:hint="@string/fechaDelitoHint_subirReporteUsuario"
+                    android:focusable="false"
+                    android:inputType="date"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="6:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/textView_fechaDelito_subirReporteUsuario"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <View
+                    android:id="@+id/view6_subirReporteUsuario"
+                    style="@style/ViewSeparadorAuxiliar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="15:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/editText_fechaDelito_subirReporteUsuario" />
+
+                <TextView
+                    android:id="@+id/textView_horaDelito_subirReporteUsuario"
+                    style="@style/TxtViewTransparente_LetraAzulOscuro"
+                    android:text="@string/horaDelito_subirReporteUsuario"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="10:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/view6_subirReporteUsuario"
+                    app:layout_constraintVertical_bias="0.0"/>
+
+                <EditText
+                    android:id="@+id/editText_horaDelito_subirReporteUsuario"
+                    style="@style/EditTextTransparente"
+                    android:hint="@string/fechaDelitoHint_subirReporteUsuario"
+                    android:focusable="false"
+                    android:inputType="datetime"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="6:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/textView_horaDelito_subirReporteUsuario"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <View
+                    android:id="@+id/view7_subirReporteUsuario"
+                    style="@style/ViewSeparadorAuxiliar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="15:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/editText_horaDelito_subirReporteUsuario" />
+
+                <TextView
+                    android:id="@+id/textView_cualDelito_subirReporteUsuario"
+                    style="@style/TxtViewTransparente_LetraAzulOscuro"
+                    android:text="@string/cualDelito_subirReporteUsuario"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="10:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/view7_subirReporteUsuario"
+                    app:layout_constraintVertical_bias="0.0"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/consLyt_spinner_subirReporteUsuario"
+                    style="@style/Spinner"
+                    android:background="@drawable/bkgd_borde_azul_oscuro"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="6:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/textView_cualDelito_subirReporteUsuario"
+                    app:layout_constraintVertical_bias="0.0">
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline1_icon_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.9" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline2_icon_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.95" />
+
+                    <View
+                        android:id="@+id/icon_arrow_spinner"
+                        style="@style/BkgdIcon"
+                        android:background="@drawable/bkgd_icon_down_arrow"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/guideline2_icon_spinner"
+                        app:layout_constraintStart_toStartOf="@id/guideline1_icon_spinner"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Spinner
+                        android:id="@+id/spinner_cualDelito_subirReporteUsuario"
+                        style="@style/Spinner"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <View
+                    android:id="@+id/view8_subirReporteUsuario"
+                    style="@style/ViewSeparadorAuxiliar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="15:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/consLyt_spinner_subirReporteUsuario" />
+
+                <TextView
+                    android:id="@+id/textView_comentariosAdicionales_subirReporteUsuario"
+                    style="@style/TxtViewTransparente_LetraAzulOscuro"
+                    android:text="@string/comentariosAdicionales_subirReporteUsuario"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="10:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/view8_subirReporteUsuario"
+                    app:layout_constraintVertical_bias="0.0"/>
+
+                <EditText
+                    android:id="@+id/editText_comentariosAdicionales_subirReporteUsuario"
+                    style="@style/EditTextTransparente"
+                    android:hint="@string/comentariosAdicionalesHint_subirReporteUsuario"
+                    android:inputType="textMultiLine"
+                    android:maxLines="6"
+                    android:gravity="left"
+                    android:padding="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="3:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/textView_comentariosAdicionales_subirReporteUsuario"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <View
+                    android:id="@+id/view9_subirReporteUsuario"
+                    style="@style/ViewSeparadorAuxiliar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="10:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/editText_comentariosAdicionales_subirReporteUsuario" />
+
+                <Button
+                    android:id="@+id/button_enviarReporte_subirReporteUsuario"
+                    style="@style/BtnMoradoOscuro"
+                    android:text="@string/enviarReporteBtn_subirReporteUsuario"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="4:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_button_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_button_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/view9_subirReporteUsuario"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <View
+                    android:id="@+id/view10_subirReporteUsuario"
+                    style="@style/ViewSeparadorAuxiliar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="10:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
+                    app:layout_constraintTop_toBottomOf="@+id/button_enviarReporte_subirReporteUsuario" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

@@ -44,6 +44,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     private Polygon mPolygonAnterior;
     private Marker mMarkerAnterior;
     private int mColorAnterior;
+    public static boolean clickOnEmergenciaDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
 
         //Para pedir permiso de ubicicación
         mPermisos = new Permisos();
-        mPermisos.getPermisoUbicacion(this);
+        mPermisos.getPermisoUbicacion(this,true);
 
         //Se verifica el nivel de bateria del telefono celular
         Notificacion bateria = new Notificacion(this);
@@ -82,6 +83,11 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         if (mGoogleMap!=null){
             //Para activar My Location layer
             actualizarUbicacionUI();
+
+            if (clickOnEmergenciaDialog){
+                mPermisos.getPermisoUbicacion(this,true);
+                clickOnEmergenciaDialog = false;
+            }
         }
 
     }
@@ -104,15 +110,15 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        mPermisos.setmLocationPermissionGranted(false);
+        mPermisos.setLocationPermissionGranted(false);
         if (requestCode == 0) {// If request is cancelled, the result arrays are empty.
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                mPermisos.setmLocationPermissionGranted(true);
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mPermisos.setLocationPermissionGranted(true);
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
         actualizarUbicacionUI();
     }
 
@@ -150,13 +156,13 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         }
         try {
             mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false); //boton de centrar en mapa default de GM
-            if (mPermisos.getmLocationPermissionGranted()) {
+            if (mPermisos.getLocationPermissionGranted()) {
                 mGoogleMap.setMyLocationEnabled(true);
 
             } else {
                 mGoogleMap.setMyLocationEnabled(false);
                 mLastKnownLocation = null;
-                mPermisos.getPermisoUbicacion(this);
+                //mPermisos.getPermisoUbicacion(this);
             }
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
@@ -164,8 +170,6 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     }
 
     private void mostrarUbicacionDispositivo(){
-        LatLng defaultLocation = new LatLng(20.703027011977582, -103.3884804);
-
         UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
         mUbicacionDispositivo.getUbicacionDelDispositivo(new UbicacionDispositivo.OnUbicacionObtenida() {
             @Override
@@ -175,11 +179,12 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
                     centrarMapa();
                 }
                 else {
+                    LatLng defaultLocation = new LatLng(20.703027011977582, -103.3884804);
                     mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
                     mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
                 }
             }
-        }, mPermisos.getmLocationPermissionGranted(),fusedLocationProviderClient, this);
+        }, mPermisos.getLocationPermissionGranted(),fusedLocationProviderClient, this);
     }
 
     public void mostrarUbicacionBuscada(boolean isUbicacionBuscadaEnBD, boolean isFragmentoBuscarLugar, LatLng ubicacionBuscada, String ubicacionBuscadaString){

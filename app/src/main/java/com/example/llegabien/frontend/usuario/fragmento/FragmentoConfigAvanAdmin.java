@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.llegabien.R;
+import com.example.llegabien.frontend.reportes.fragmento.FragmentoSubirReporteAdmin;
 
 public class FragmentoConfigAvanAdmin extends Fragment implements View.OnClickListener{
     private Button mBtnConfigUsuario,mBtnRegresar;

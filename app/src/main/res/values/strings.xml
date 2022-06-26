@@ -16,7 +16,12 @@
     <string name="recordar_inicia_sesion1">Recordar credenciales.</string>
     <string name="contraseñaOlvidada_inicia_sesion1">¿Olvidaste tu contraseña?</string>
     <string name="registrarse_inicia_sesion1">¿No tienes una cuenta? Registrate.</string>
-    <string name="instrucciones1_inicia_sesion2">Reestablece tu contraseña</string>
+
+    <!-- Reestablecer contraseña. -->
+    <string name="instrucciones_restablecer_contraseña">Restablece tu contraseña</string>
+    <string name="instrucciones1_restablecer_contraseña_1">Si usted tiene registrado este número de telefónico con nosotros, recibirá un código de verificación para restablecer su contraseña.</string>
+    <string name="instrucciones1_restablecer_contraseña_2">Ingresa el código de verificación que hemos enviado a tu número telefónico vía SMS.</string>
+    <string name="instrucciones1_restablecer_contraseña_3">Ingresa una nueva contraseña. Después de hacer esto, tendrás que iniciar sesión nuevamente.</string>
 
 
     <!-- Registro -->
@@ -40,16 +45,17 @@
     <string name="iniciaBtn">Inicia</string>
     <string name="siguienteBtn">Siguiente</string>
     <string name="verificarBtn">Verificar</string>
-    <string name="correoTxtView">Correo electrónico</string>
-    <string name="contraseñaTxtView">Contraseña</string>
+    <string name="correoEditTxt">Correo electrónico</string>
+    <string name="contraseñaEditTxt">Contraseña</string>
+    <string name="confirmarContraseñaEditTxt">Confirma contraseña</string>
     <string name="reenviarCodigoBtn">No recibí ningún código. Reenviar</string>
     <string name="instruccionesCodigoCorreoTxtView">Ingresa el código que enviamos a tu correo electrónico.</string>
-    <string name="nombresTxtView">Nombres</string>
-    <string name="apellidosTxtView">Apellidos</string>
-    <string name="fechaNacimientoTxtView">Fecha de nacimiento</string>
-    <string name="celularTxtView">Número de teléfono</string>
-    <string name="confirmarContraseñaTxtView">Confirme contraseña</string>
-
+    <string name="nombresEditTxt">Nombres</string>
+    <string name="apellidosEditTxt">Apellidos</string>
+    <string name="fechaNacimientoEditTxt">Fecha de nacimiento</string>
+    <string name="celularEditTxt">Número de teléfono</string>
+    <string name="celularCountryCodeEditTxt">+</string>
+    <string name="celularCountryCodeTxtView">52</string>
 
     <!-- Errores -->
     <string name="errorStringVacia">Este campo es obligatorio</string>
@@ -74,11 +80,11 @@
     <string name="cambiarContra_editarPerfil">Contraseña</string>
     <string name="eliminarCuenta_editarPerfil">Eliminar cuenta</string>
 
-    <!-- Contraseña -->
+    <!-- Cambiar Contraseña -->
     <string name="titulo_cambiarContra">Contraseña</string>
     <string name="instrucciones_cambiarContra">Aquí puedes cambiar tu contraseña</string>
     <string name="actualContra_cambiarContra">Contraseña actual</string>
-    <string name="nuevaContra_cambiarContra">Contraseña nueva</string>
+    <string name="nuevaContra">Contraseña nueva</string>
     <string name="aceptarBtn_cambiarContra">Aceptar</string>
 
     <!-- Configuracion avanzada -->
@@ -131,6 +137,29 @@
     <string name="pregunta_dialogConfirmarEmergencia">¿Confirmas la operación?</string>
     <string name="confirmar_dialogConfirmarEmergencia">SÍ, CONFIRMO</string>
     <string name="segundos_progressCircle">SEGUNDOS</string>
+
+    <!-- Permisos. -->
+    <string name="titulo_permisos">Permiso de Ubicacion</string>
+    <string name="descripcion_permisos">Necesitamos la ubicación de tus dispositivo móvil para esta esta función.</string>
+    <string name="btnAceptarPermisos_permisos">Aceptar ubicación</string>
+
+    <!-- Subir reporte usuario. -->
+    <string name="titulo_subirReporteUsuario">Subir Reporte</string>
+    <string name="instrucciones1_subirReporteUsuario">Responde todas las preguntas.</string>
+    <string name="instrucciones2_subirReporteUsuario">Para generar un reporte es necesario llenar el siguiente formulario.</string>
+    <string name="enviarReporteBtn_subirReporteUsuario">Enviar reporte</string>
+    <string name="nombreUsuario_subirReporteUsuario">Nombre del usuario:</string>
+    <string name="ubicacionDelito_subirReporteUsuario">Ubicación donde se cometió el delito:</string>
+    <string name="fechaDelito_subirReporteUsuario">¿Qué dia se cometió el delito?</string>
+    <string name="horaDelito_subirReporteUsuario">¿A qué hora se cometió el delito?</string>
+    <string name="cualDelito_subirReporteUsuario">¿Cuál es el delito que se cometió?</string>
+    <string name="comentariosAdicionales_subirReporteUsuario">Comentarios adicionales:</string>
+    <string name="ubicacionDelitoHint_subirReporteUsuario">Tu ubicacion</string>
+    <string name="fechaDelitoHint_subirReporteUsuario">Selecciona la fecha</string>
+    <string name="horaDelitoHint_subirReporteUsuario">Selecciona el delito</string>
+    <string name="cualDelitoHint_subirReporteUsuario">Selecciona el delito que se cometió</string>
+    <string name="comentariosAdicionalesHint_subirReporteUsuario">Escribe comentarios adicionales del suceso</string>
+
 
     <!-- Google Maps API Key. -->
     <string name="api_key">AIzaSyA_1vA9ikwZ0Ju7s5s2-C1QLQ51BQmwSlM</string>

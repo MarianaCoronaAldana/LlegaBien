@@ -180,7 +180,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView2_buscarLugar"
-        android:name="com.example.llegabien.frontend.FragmentoBarraNavegacion"
+        android:name="com.example.llegabien.frontend.app.fragmento.FragmentoBarraNavegacion"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
