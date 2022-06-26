@@ -15,6 +15,7 @@ import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Permisos;
 import com.example.llegabien.backend.mapa.poligonos.Poligono;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
+import com.example.llegabien.backend.notificacion.Notificacion;
 import com.example.llegabien.databinding.ActivityMapsBinding;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoBuscarLugar;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoLugarSeleccionado;
@@ -67,11 +68,17 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         mPermisos = new Permisos();
         mPermisos.getPermisoUbicacion(this);
 
+        //Se verifica el nivel de bateria del telefono celular
+        Notificacion bateria = new Notificacion(this);
     }
 
     @Override
     public void onResume(){
         super.onResume();
+
+        //Se verifica el nivel de bateria del telefono celular
+        Notificacion bateria = new Notificacion(this);
+
         if (mGoogleMap!=null){
             //Para activar My Location layer
             actualizarUbicacionUI();

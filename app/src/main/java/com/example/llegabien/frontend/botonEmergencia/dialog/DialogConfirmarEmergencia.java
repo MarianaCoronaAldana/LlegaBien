@@ -35,7 +35,6 @@ public class DialogConfirmarEmergencia extends Dialog implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-
         Emergencia e = new Emergencia(this.getContext());
         e.EmpezarProtocolo();
         dismiss();

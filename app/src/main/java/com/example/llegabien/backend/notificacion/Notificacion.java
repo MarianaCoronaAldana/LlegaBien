@@ -1,10 +1,13 @@
-package com.example.llegabien.backend.botonEmergencia;
+package com.example.llegabien.backend.notificacion;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
+import android.os.BatteryManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,11 +18,10 @@ import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
 import com.example.llegabien.backend.usuario.usuario;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -28,27 +30,34 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class Emergencia extends AppCompatActivity {
+public class Notificacion extends AppCompatActivity {
 
     private ArrayList<String> mContactos = new ArrayList<String>();
     private OkHttpClient mClient = new OkHttpClient();
-    private String mNombre, mUbicacion;
+    private String mNombre;
     private Context mContext;
     private usuario Usuario;
+    private float mBateria;
+
 
     private Activity mActivity;
     private boolean mIsLocationPermissionGranted;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
-    public Emergencia(Context context){
+    public Notificacion(Context context){
         mContext = context;
-    }
 
-    public Emergencia(Context context, Activity mActivity, boolean mIsLocationPermissionGranted, FusedLocationProviderClient mFusedLocationProviderClient) {
-        this.mActivity = mActivity;
-        this.mIsLocationPermissionGranted = mIsLocationPermissionGranted;
-        this.mFusedLocationProviderClient = mFusedLocationProviderClient;
-        mContext = context;
+        // Se verifica el nivel de bateria del celular, si es menor a 21%, se hace un protocolo
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = mContext.registerReceiver(null, ifilter);
+        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        mBateria = level * 100 / (float)scale;
+        Log.v("QUICKSTART", "Nivel bateria: " + mBateria);
+
+        if(mBateria<21){
+            EmpezarProtocolo();
+        }
     }
 
     public void EmpezarProtocolo(){
@@ -56,10 +65,11 @@ public class Emergencia extends AppCompatActivity {
 
         try {
             //TODO Cambiar link de ngrok aqui
-            post("https://5142-2806-310-120-8860-81ad-d207-7635-8403.ngrok.io/emergencia", new  Callback(){
-            //post("https://6d3a-2806-103e-29-a92b-c89d-16d6-3cf0-69a1.ngrok/", new  Callback(){
+            post("https://5142-2806-310-120-8860-81ad-d207-7635-8403.ngrok.io/bateria", new  Callback(){
                 @Override
                 public void onFailure(Call call, IOException e) {
+                   // Toast.makeText(mContext, "ERROR, NO SE PUDO CONTACTAR A CONTACTOS", Toast.LENGTH_LONG).show();
+                    Log.v("QUICKSTART", "NO SE PUDO CONTACTAR PARA NOTIFICAR WE, ESTOY EN on failure");
                     e.printStackTrace();
                 }
                 @Override
@@ -67,16 +77,19 @@ public class Emergencia extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(mContext,"PROTOCOLO ACTIVADO",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext,"MENOS DEL 20% DE BATERIA, CUIDADO",Toast.LENGTH_SHORT).show();
                             Log.v("QUICKSTART", response.message());
 
-                            if(!response.isSuccessful())
-                                Toast.makeText(mContext, "ERROR, CONTACTE A EMERGENCIAS DIRECTAMENTE!",Toast.LENGTH_LONG).show();
+                            if(!response.isSuccessful()) {
+                                Toast.makeText(mContext, "ERROR, NO SE PUDO CONTACTAR A CONTACTOS", Toast.LENGTH_LONG).show();
+                                Log.v("QUICKSTART", "NO SE PUDO CONTACTAR PARA NOTIFICAR WE");
+                            }
                         }
                     });
                 }
             });
         } catch (IOException e) {
+            Log.v("QUICKSTART", "NO SE PUDO CONTACTAR PARA NOTIFICAR WE, ESTOY EN CATCH");
             e.printStackTrace();
         }
     }
@@ -86,8 +99,7 @@ public class Emergencia extends AppCompatActivity {
 
         RequestBody formBody = new FormBody.Builder()
                 .add("NombreUsuario", mNombre)
-                .add("Ubicacion", mUbicacion)
-                .add("NumeroALlamar", "+523321707532")
+                .add("Bateria", String.valueOf(mBateria))
                 .add("CantidadContactos", String.valueOf(mContactos.size()))
                 .add("Contacto1", mContactos.get(0))
                 .add("Contacto2", mContactos.get(1))
@@ -105,7 +117,6 @@ public class Emergencia extends AppCompatActivity {
         return response;
     }
 
-
     private void InicializarDatos(){
         Usuario = Preferences.getSavedObjectFromPreference(mContext, PREFERENCE_USUARIO, usuario.class);
         for(int i = 0; i<Usuario.getContacto().size(); i++)
@@ -113,23 +124,5 @@ public class Emergencia extends AppCompatActivity {
         for(int i = mContactos.size(); i<5; i++)
             mContactos.add("-1");
         mNombre = Usuario.getNombre() + " " + Usuario.getApellidos();
-        //ubicacionDispositivoString();
-        mUbicacion = "Guadalajara";
-    }
-
-    public void ubicacionDispositivoString() {
-        UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
-        mUbicacionDispositivo.getUbicacionDelDispositivo(new UbicacionDispositivo.OnUbicacionObtenida() {
-            @Override
-            public void isUbicacionObtenida(boolean isUbicacionObtenida, Location ubicacionObtenida) {
-                if (isUbicacionObtenida) {
-                    UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
-                    mUbicacion = ubicacionGeodicacion.degeocodificarUbiciacion(mActivity, ubicacionObtenida.getLatitude(),ubicacionObtenida.getLongitude());
-                }
-                else {
-                    Toast.makeText(mContext, "ERROR, CONTACTE A EMERGENCIAS DIRECTAMENTE!",Toast.LENGTH_LONG).show();
-                }
-            }
-        }, mIsLocationPermissionGranted,mFusedLocationProviderClient, mActivity);
     }
 }
