@@ -77,7 +77,7 @@ public class Notificacion extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(mContext,"MENOS DEL 20% DE BATERIA, CUIDADO",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext,"MENOS DEL 20% DE BATERIA, CUIDADO",Toast.LENGTH_LONG).show();
                             Log.v("QUICKSTART", response.message());
 
                             if(!response.isSuccessful()) {

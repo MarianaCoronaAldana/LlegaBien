@@ -35,7 +35,6 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
     private EditText mEditTxtNombres, mEditTxtApellidos, mEditTxtFechaNacimiento;
     ConectarBD conectarBD = new ConectarBD();
 
-
     public FragmentoRegistrarUsuario1() {
     }
 
@@ -62,7 +61,7 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
         //para usar el mismo ViewModel que los otros fragmentos y compartir informacion
         SharedViewModel = new ViewModelProvider(requireActivity()).get(UsuarioSharedViewModel.class);
 
-       conectarBD.ConectarAnonimoMongoDB();
+        conectarBD.ConectarAnonimoMongoDB();
         return root;
     }
 

@@ -89,8 +89,6 @@ public class UbicacionBD_CRUD {
 
     }
 
-
-
     private void errorConexion(){
         Toast.makeText(mContext, "Hubo un problema en conectarse, intenta mas tarde", Toast.LENGTH_SHORT).show();
     }

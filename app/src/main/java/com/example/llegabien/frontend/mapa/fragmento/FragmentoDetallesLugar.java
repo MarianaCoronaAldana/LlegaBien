@@ -49,7 +49,6 @@ public class FragmentoDetallesLugar extends Fragment {
             mTxtNombre1Lugar.setText(nombreLugar[1]);
         }
 
-
         return root;
     }
 }

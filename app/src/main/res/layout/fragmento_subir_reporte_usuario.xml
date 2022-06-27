@@ -202,6 +202,7 @@
                 <EditText
                     android:id="@+id/editText_nombreUsuario_subirReporteUsuario"
                     style="@style/EditTextTransparente"
+                    android:editable="false"
                     android:inputType="text"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="6:1"
@@ -233,7 +234,7 @@
                 <EditText
                     android:id="@+id/editText_ubicacionDelito_subirReporteUsuario"
                     style="@style/EditTextTransparente"
-                    android:text="@string/ubicacionDelitoHint_subirReporteUsuario"
+                    android:hint="@string/ubicacionDelitoHint_subirReporteUsuario"
                     android:inputType="text"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="6:1"
@@ -298,8 +299,8 @@
                 <EditText
                     android:id="@+id/editText_horaDelito_subirReporteUsuario"
                     style="@style/EditTextTransparente"
-                    android:hint="@string/fechaDelitoHint_subirReporteUsuario"
                     android:focusable="false"
+                    android:hint="@string/horaDelitoHint_subirReporteUsuario"
                     android:inputType="datetime"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="6:1"

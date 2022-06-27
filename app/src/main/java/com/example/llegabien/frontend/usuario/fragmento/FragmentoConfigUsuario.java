@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUsuario;
 
 public class FragmentoConfigUsuario extends Fragment implements View.OnClickListener{
@@ -77,7 +78,7 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
                 startActivity(new Intent(getActivity(), ActivityPaginaPrincipalUsuario.class));
                 break;
             case R.id.button_regresar_configuracionUsuario:
-                //startActivity(new Intent(getActivity(), MapsActivity.class));
+                startActivity(new Intent(getActivity(), ActivityMap.class));
                 break;
 
         }
