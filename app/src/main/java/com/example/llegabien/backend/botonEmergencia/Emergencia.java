@@ -50,7 +50,7 @@ public class Emergencia extends AppCompatActivity  {
                 if (isUbicacionObtenida) {
                     UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
                     inicializarDatos(ubicacionGeodicacion.degeocodificarUbiciacion(mActivity, ubicacionObtenida.getLatitude(),ubicacionObtenida.getLongitude()));
-                    //hacerLlamada();
+                    hacerLlamada();
                     //Toast.makeText(mActivity, mUbicacion,Toast.LENGTH_LONG).show();
                 }
                 else {
@@ -78,7 +78,7 @@ public class Emergencia extends AppCompatActivity  {
     private void hacerLlamada(){
         try {
             //TODO Cambiar link de ngrok aqui
-            post("https://128d-187-201-47-211.ngrok.io/emergencia", new  Callback(){
+            post("https://c0af-200-68-166-53.ngrok.io/emergencia", new  Callback(){
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();

@@ -183,7 +183,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements AdapterVie
     }
 
     // Se encarga de verificar si
-    // 1. ya se subio un reportehace menos de dos horas
+    // 1. ya se subio un reporte hace menos de dos horas
     // 2. se subieron mas de 10 reportes en una semana
     @RequiresApi(api = Build.VERSION_CODES.O)
     private boolean verificarHistorialReportes(Reporte_DAO reporte_DAO){

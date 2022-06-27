@@ -65,7 +65,8 @@ public class Notificacion extends AppCompatActivity {
 
         try {
             //TODO Cambiar link de ngrok aqui
-            post("https://5142-2806-310-120-8860-81ad-d207-7635-8403.ngrok.io/bateria", new  Callback(){
+            post("https://c0af-200-68-166-53.ngrok.io/bateriaS", new  Callback(){
+//            post("https://c0af-200-68-166-53.ngrok.io/bateria", new  Callback(){
                 @Override
                 public void onFailure(Call call, IOException e) {
                    // Toast.makeText(mContext, "ERROR, NO SE PUDO CONTACTAR A CONTACTOS", Toast.LENGTH_LONG).show();
