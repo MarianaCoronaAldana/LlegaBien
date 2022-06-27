@@ -27,8 +27,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClickListener{
 
-    private static final String parametro_usuario = "usuario"; //etiqueta
-
     private UsuarioSharedViewModel SharedViewModel;
 
     private Button mBtnSiguiente, mBtnIniciarSesion, mBtnCerrar;

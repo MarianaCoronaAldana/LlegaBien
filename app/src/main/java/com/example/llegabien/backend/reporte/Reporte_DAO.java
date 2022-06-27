@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
 import com.example.llegabien.backend.usuario.usuario;
 
@@ -15,6 +16,7 @@ import org.bson.types.ObjectId;
 
 import io.realm.ImportFlag;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class Reporte_DAO {
 
@@ -40,6 +42,22 @@ public class Reporte_DAO {
         }
         else
             errorConexion();
+    }
+
+    public RealmResults<reporte> obtenerReportesPorUsuario(reporte Reporte) {
+        realm = conectarBD.conseguirUsuarioMongoDB();
+
+        if(realm!=null){
+            RealmResults<reporte> realmResults = realm.where(reporte.class).equalTo("IdUsuario",Reporte.getIdUsuario()).findAll();
+
+            if (realmResults != null)
+                return realmResults;
+        }
+
+        else
+            errorConexion();
+
+        return null;
     }
 
     private void errorConexion(){

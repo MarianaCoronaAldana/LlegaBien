@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
 import com.example.llegabien.backend.reporte.Reporte_DAO;
 import com.example.llegabien.backend.reporte.reporte;
@@ -34,13 +35,17 @@ import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.usuario.dialog.DialogDatePicker;
 import com.example.llegabien.frontend.usuario.dialog.DialogTimePicker;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+
+import io.realm.RealmResults;
 
 public class FragmentoSubirReporteUsuario extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
@@ -48,6 +53,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements AdapterVie
     private Button mBtnRegresar, mBtnSubirReporte;
     private usuario Usuario;
     private EditText mEditTxtNombre, mEditTxtUbicacion, mEditTxtFechaDelito, mEditTxtHoraDelito, mEditTxtComentariosDelito ;
+    private reporte Reporte;
 
     public FragmentoSubirReporteUsuario() {
         // Required empty public constructor
@@ -90,8 +96,11 @@ public class FragmentoSubirReporteUsuario extends Fragment implements AdapterVie
                 if (validarAllInputs()) {
                     Log.v("QUICKSTART", "Estoy en enviar reporte");
                     Reporte_DAO usuarioBD_CRUD = new Reporte_DAO(this.getContext());
-                    usuarioBD_CRUD.añadirReporte(inicializarReporte());
-                    Toast.makeText(this.getContext(),"Tu reporte será verificado el siguiente fin de semana",Toast.LENGTH_LONG).show();
+                    inicializarReporte();
+                    if(verificarHistorialReportes(usuarioBD_CRUD)) {
+                        usuarioBD_CRUD.añadirReporte(Reporte);
+                        Toast.makeText(this.getContext(), "Tu reporte será verificado el siguiente fin de semana", Toast.LENGTH_LONG).show();
+                    }
                 }
                 break;
             case R.id.button_regresar_subirReporteUsuario:
@@ -157,7 +166,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements AdapterVie
     //Funcion para crear objeto reporte e inicializarlo con los datos obtenidos
     @RequiresApi(api = Build.VERSION_CODES.O)
     private reporte inicializarReporte(){
-        reporte Reporte = new reporte();
+        Reporte = new reporte();
         Reporte.setAutor(mEditTxtNombre.getText().toString());
         Reporte.setIdUsuario(Usuario.get_id());
         Reporte.setComentarios(mEditTxtComentariosDelito.getText().toString());
@@ -169,7 +178,44 @@ public class FragmentoSubirReporteUsuario extends Fragment implements AdapterVie
         Reporte.setFecha(convertToDateViaInstant(localDate.atTime(localTime)));
 
         Log.v("QUICKSTART", "Fecha y hora delito: "+Reporte.getFecha());
+
         return Reporte;
+    }
+
+    // Se encarga de verificar si
+    // 1. ya se subio un reportehace menos de dos horas
+    // 2. se subieron mas de 10 reportes en una semana
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private boolean verificarHistorialReportes(Reporte_DAO reporte_DAO){
+        RealmResults<reporte> reportes = reporte_DAO.obtenerReportesPorUsuario(Reporte);
+        int reportesAnteriores =0;
+
+        convertToLocalDateTimeViaInstant(Reporte.getFecha());
+        Duration diff;
+        diff = Duration.between(convertToLocalDateTimeViaInstant(Reporte.getFecha()), convertToLocalDateTimeViaInstant(Reporte.getFecha()));
+        long diffmINUTTES, diffHoras, diffDias;
+        diffmINUTTES = diff.toMinutes();
+
+        for(int i = 0; i< reportes.size(); i++) {
+            if (reportesAnteriores > 10) {
+                Toast.makeText(this.getContext(), "Has subido demasiados reportes esta semana", Toast.LENGTH_LONG).show();
+                return false;
+            }
+            diff = Duration.between(convertToLocalDateTimeViaInstant(reportes.get(i).getFecha()), convertToLocalDateTimeViaInstant(Reporte.getFecha()));
+            diffHoras = diff.toHours();
+            diffDias = diff.toDays();
+
+            diffmINUTTES = diff.toMinutes();
+            Log.v("QUICKSTART", "diferencia minutos: " + diffmINUTTES);
+
+            if (diffHoras < 2){
+                Toast.makeText(this.getContext(), "Has subido un reporte muy recientemente", Toast.LENGTH_LONG).show();
+                return false;
+            }
+            if(diffDias<7)
+                reportesAnteriores ++;
+        }
+        return true;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -179,14 +225,18 @@ public class FragmentoSubirReporteUsuario extends Fragment implements AdapterVie
                         .toInstant());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
-
 }
