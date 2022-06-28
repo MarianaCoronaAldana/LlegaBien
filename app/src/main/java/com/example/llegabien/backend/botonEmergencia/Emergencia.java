@@ -59,8 +59,8 @@ public class Emergencia extends AppCompatActivity  {
             }
         }, true,fusedLocationProviderClient, mActivity);
     }
-
     private void inicializarDatos(String ubicacion){
+
         Usuario = Preferences.getSavedObjectFromPreference(mActivity, PREFERENCE_USUARIO, usuario.class);
 
         for(int i = 0; i<Usuario.getContacto().size(); i++)

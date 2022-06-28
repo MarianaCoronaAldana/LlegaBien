@@ -1,12 +1,8 @@
 package com.example.llegabien.backend.app;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.gson.Gson;
-
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmObject;
@@ -16,6 +12,7 @@ public class Preferences extends AppCompatActivity {
     private static android.content.SharedPreferences mSharedPreferences;
     public static final String STRING_PREFERENCES = "Preferences";
     public static final String PREFERENCE_ESTADO_BUTTON_SESION = "estado.button.sesion";
+    public static final String PREFERENCE_MENSAJE_PORBATERIA_ENVIADO = "estado.button.sesion";
     public static final String PREFERENCE_ES_ADMIN = "usuario.admin";
     public static final String PREFERENCE_USUARIO = "usuario";
     public static final String PREFERENCE_UBICACION_BUSQUEDA_AUTOCOMPLETADA = "ubicacionBusquedaAutocompletada";

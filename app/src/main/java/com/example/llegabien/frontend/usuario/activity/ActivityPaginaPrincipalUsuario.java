@@ -1,6 +1,7 @@
 package com.example.llegabien.frontend.usuario.activity;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_MENSAJE_PORBATERIA_ENVIADO;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.app.Activity;
@@ -36,6 +37,7 @@ public class ActivityPaginaPrincipalUsuario extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pagina_principal_usuario);
 
+        Preferences.savePreferenceBoolean(this,false, PREFERENCE_MENSAJE_PORBATERIA_ENVIADO);
 
         //para verificar si el boton de recordar sesion fue presionado y saber si ya se inicio sesion
         if(Preferences.getSavedBooleanFromPreference(this,PREFERENCE_ESTADO_BUTTON_SESION)

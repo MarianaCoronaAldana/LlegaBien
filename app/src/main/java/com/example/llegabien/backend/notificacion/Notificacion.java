@@ -1,5 +1,7 @@
 package com.example.llegabien.backend.notificacion;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_MENSAJE_PORBATERIA_ENVIADO;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.app.Activity;
@@ -17,6 +19,7 @@ import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
 import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.google.android.gms.location.FusedLocationProviderClient;
 
 import java.io.IOException;
@@ -56,8 +59,13 @@ public class Notificacion extends AppCompatActivity {
         Log.v("QUICKSTART", "Nivel bateria: " + mBateria);
 
         if(mBateria<21){
-            EmpezarProtocolo();
+            if(!Preferences.getSavedBooleanFromPreference(mContext,PREFERENCE_MENSAJE_PORBATERIA_ENVIADO)) {
+                EmpezarProtocolo();
+            }
         }
+        else
+            Preferences.savePreferenceBoolean(mContext,false, PREFERENCE_MENSAJE_PORBATERIA_ENVIADO);
+
     }
 
     public void EmpezarProtocolo(){
@@ -80,11 +88,18 @@ public class Notificacion extends AppCompatActivity {
                         public void run() {
                             Toast.makeText(mContext,"MENOS DEL 20% DE BATERIA, CUIDADO",Toast.LENGTH_LONG).show();
                             Log.v("QUICKSTART", response.message());
+                            Preferences.savePreferenceBoolean(mContext,true, PREFERENCE_MENSAJE_PORBATERIA_ENVIADO);
 
                             if(!response.isSuccessful()) {
-                                Toast.makeText(mContext, "ERROR, NO SE PUDO CONTACTAR A CONTACTOS", Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, "NO SE PUDO NOTIFICAR A CONTACTOS POR BATERIA", Toast.LENGTH_LONG).show();
                                 Log.v("QUICKSTART", "NO SE PUDO CONTACTAR PARA NOTIFICAR WE");
                             }
+                            /*
+                            else{
+                                Toast.makeText(mContext,"MENOS DEL 20% DE BATERIA, CUIDADO",Toast.LENGTH_LONG).show();
+                                Log.v("QUICKSTART", response.message());
+                                Preferences.savePreferenceBoolean(mContext,true, PREFERENCE_MENSAJE_PORBATERIA_ENVIADO);
+                            }*/
                         }
                     });
                 }
