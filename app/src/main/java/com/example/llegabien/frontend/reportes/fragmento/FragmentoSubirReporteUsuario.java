@@ -172,12 +172,14 @@ public class FragmentoSubirReporteUsuario extends Fragment implements AdapterVie
         Reporte.setComentarios(mEditTxtComentariosDelito.getText().toString());
         Reporte.setUbicacion(mEditTxtUbicacion.getText().toString());
         Reporte.setTipoDelito(mSpinnerCualDelito.getSelectedItem().toString());
+        Reporte.setFechaReporte(convertToDateViaInstant(LocalDateTime.now()));
 
         LocalDate localDate =  LocalDate.parse(mEditTxtFechaDelito.getText(), DateTimeFormatter.ofPattern("d/M/yyyy"));
         LocalTime localTime = LocalTime.parse(mEditTxtHoraDelito.getText(), DateTimeFormatter.ofPattern("HH:mm"));
         Reporte.setFecha(convertToDateViaInstant(localDate.atTime(localTime)));
 
-        Log.v("QUICKSTART", "Fecha y hora delito: "+Reporte.getFecha());
+
+        Log.v("QUICKSTART", "Fecha y hora delito: "+Reporte.getFechaReporte());
 
         return Reporte;
     }
@@ -190,23 +192,20 @@ public class FragmentoSubirReporteUsuario extends Fragment implements AdapterVie
         RealmResults<reporte> reportes = reporte_DAO.obtenerReportesPorUsuario(Reporte);
         int reportesAnteriores =0;
 
-        convertToLocalDateTimeViaInstant(Reporte.getFecha());
         Duration diff;
-        diff = Duration.between(convertToLocalDateTimeViaInstant(Reporte.getFecha()), convertToLocalDateTimeViaInstant(Reporte.getFecha()));
         long diffmINUTTES, diffHoras, diffDias;
-        diffmINUTTES = diff.toMinutes();
 
         for(int i = 0; i< reportes.size(); i++) {
-            if (reportesAnteriores > 10) {
+            if (reportesAnteriores > 9) {
                 Toast.makeText(this.getContext(), "Has subido demasiados reportes esta semana", Toast.LENGTH_LONG).show();
                 return false;
             }
-            diff = Duration.between(convertToLocalDateTimeViaInstant(reportes.get(i).getFecha()), convertToLocalDateTimeViaInstant(Reporte.getFecha()));
+            diff = Duration.between(convertToLocalDateTimeViaInstant(reportes.get(i).getFechaReporte()), convertToLocalDateTimeViaInstant(Reporte.getFechaReporte()));
             diffHoras = diff.toHours();
             diffDias = diff.toDays();
 
             diffmINUTTES = diff.toMinutes();
-            Log.v("QUICKSTART", "diferencia minutos: " + diffmINUTTES);
+            Log.v("QUICKSTART", "diferencia minutos: " + diffmINUTTES+", REPORTESanteriores: "+ reportesAnteriores);
 
             if (diffHoras < 2){
                 Toast.makeText(this.getContext(), "Has subido un reporte muy recientemente", Toast.LENGTH_LONG).show();

@@ -6,6 +6,10 @@ import io.realm.annotations.Required;
 import java.util.Date;
         import org.bson.types.ObjectId;
 
+import io.realm.RealmObject;
+import java.util.Date;
+import org.bson.types.ObjectId;
+
 public class reporte extends RealmObject {
     @PrimaryKey
     private ObjectId _id;
@@ -22,6 +26,8 @@ public class reporte extends RealmObject {
     private String comentarios;
 
     private Date fecha;
+
+    private Date fechaReporte;
 
     private String tipoDelito;
 
@@ -49,10 +55,12 @@ public class reporte extends RealmObject {
     public Date getFecha() { return fecha; }
     public void setFecha(Date fecha) { this.fecha = fecha; }
 
+    public Date getFechaReporte() { return fechaReporte; }
+    public void setFechaReporte(Date fechaReporte) { this.fechaReporte = fechaReporte; }
+
     public String getTipoDelito() { return tipoDelito; }
     public void setTipoDelito(String tipoDelito) { this.tipoDelito = tipoDelito; }
 
     public String getUbicacion() { return ubicacion; }
     public void setUbicacion(String ubicacion) { this.ubicacion = ubicacion; }
 }
-
