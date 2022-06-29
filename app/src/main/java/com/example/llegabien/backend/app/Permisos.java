@@ -22,7 +22,6 @@ public class Permisos {
         return mLocationPermissionGranted;
     }
 
-
     public void getPermisoUbicacion(Activity activity, boolean isInActivity) {
         if (ContextCompat.checkSelfPermission(activity.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -31,23 +30,6 @@ public class Permisos {
         } else {
             if (isInActivity)
                 ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-        }
-    }
-
-    public void HacerLlamada(Context context) {
-        int permiso = ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE);
-        if (permiso == PackageManager.PERMISSION_DENIED) {
-
-            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 1);
-        }
-    }
-
-    public void EnviarMensaje(Context context) {
-        int permiso = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.SEND_SMS);
-        if (permiso == PackageManager.PERMISSION_DENIED) {
-
-            ActivityCompat.requestPermissions((Activity) getApplicationContext(), new String[]{Manifest.permission.SEND_SMS}, 2);
-
         }
     }
 
