@@ -93,28 +93,53 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-        <TextView
-            android:id="@+id/textView_instrucciones_subirReporte"
-            style="@style/TxtViewAzulOscuro"
-            android:text="@string/instrucciones_subirReporte"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/consLyt_selecArchivo_subirReporte"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/bkgd_esquinas_superiores_redondeadas"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="5:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_subirReporte"
-            app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_subirReporte"
-            app:layout_constraintTop_toBottomOf="@id/guideline_fondo_subirReporte"
-            app:layout_constraintVertical_bias="0.05" />
+            app:layout_constraintTop_toTopOf="@id/guideline_fondo_subirReporte">
 
-        <Button
-            android:id="@+id/button_seleccionarArchivo_subirReporte"
-            style="@style/BtnMoradoClaro"
-            android:text="@string/seleccionarArchivoBtn_subirReporte"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="6:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_subirReporte"
-            app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_subirReporte"
-            app:layout_constraintTop_toBottomOf="@id/textView_instrucciones_subirReporte"
-            app:layout_constraintVertical_bias="0.05" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1_textView_button_selecArchivo_subirReporte"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.10" />
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_textView_button_selecArchivo_subirReporte"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.90" />
+
+            <TextView
+                android:id="@+id/textView_instrucciones_subirReporte"
+                style="@style/TxtViewAzulOscuro"
+                android:text="@string/instrucciones_subirReporte"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="5:1"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_selecArchivo_subirReporte"
+                app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_selecArchivo_subirReporte"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.06" />
+
+            <Button
+                android:id="@+id/button_seleccionarArchivo_subirReporte"
+                style="@style/BtnMoradoClaro"
+                android:text="@string/seleccionarArchivoBtn_subirReporte"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="6:1"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_selecArchivo_subirReporte"
+                app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_selecArchivo_subirReporte"
+                app:layout_constraintTop_toBottomOf="@id/textView_instrucciones_subirReporte"
+                app:layout_constraintVertical_bias="0.05" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        
+        
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

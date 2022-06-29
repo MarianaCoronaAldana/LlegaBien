@@ -61,13 +61,13 @@ public class FragmentoSubirReporteAdmin extends Fragment implements View.OnClick
     public void onClick(View view) {
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         switch (view.getId()) {
-            case R.id.button_regresar_subirReporte:
-                getActivity().getSupportFragmentManager().popBackStack();
-                break;
             case R.id.button_seleccionarArchivo_subirReporte:
                 usuarioSubirReporte = new UsuarioSubirReporte();
                 usuarioSubirReporte.inicializarIntent();
                 activityResultLauncher.launch(usuarioSubirReporte.getmIntent());
+                break;
+            case R.id.button_regresar_subirReporte:
+                getActivity().finish();
                 break;
         }
     }

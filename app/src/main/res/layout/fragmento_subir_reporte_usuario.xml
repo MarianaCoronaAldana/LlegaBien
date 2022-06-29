@@ -87,7 +87,7 @@
                 style="@style/TxtViewBlanco"
                 android:background="@android:color/transparent"
                 android:text="@string/titulo_subirReporteUsuario"
-                android:textSize="@dimen/text_size_titulo_small"
+                android:textSize="@dimen/text_size_titulo_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="4:1"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -38,8 +38,7 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
     private Button mBtnSiguiente, mBtnFinalizar;
     private Guideline mGuideline1_Btn1, mGuideline2_Btn1;
     private  ConstraintLayout mConstraintLayout;
-    private int mNumContacto = 1, mBackStackCount = 0, mSiguienteCount = 1;
-    private Fragment parent;
+    private int mNumContacto = 1, mSiguienteCount = 1;
 
     private UsuarioSharedViewModel SharedViewModel;
     private usuario Usuario;
@@ -88,12 +87,14 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
         mEditTxtCountryCode = root.findViewById(R.id.editText_celularCountryCode_registroContactos);
 
         //views de fragmento padre "FragmentoRegistrarUsuario4"
-        parent = (Fragment) this.getParentFragment();
-        mBtnSiguiente = parent.getView().findViewById(R.id.button1_siguiente_registro_4);
-        mBtnFinalizar = parent.getView().findViewById(R.id.button2_finalizar_registro_4);
-        mGuideline1_Btn1 = parent.getView().findViewById(R.id.guideline1_textView_editView_registro_4);
-        mGuideline2_Btn1 = parent.getView().findViewById(R.id.guideline2_button1_registro_4);
-        mConstraintLayout = parent.getView().findViewById(R.id.consLyt_parentPrincipal_registro_4);
+        Fragment parent = (Fragment) this.getParentFragment();
+        if (parent != null) {
+            mBtnSiguiente = parent.getView().findViewById(R.id.button1_siguiente_registro_4);
+            mBtnFinalizar = parent.getView().findViewById(R.id.button2_finalizar_registro_4);
+            mGuideline1_Btn1 = parent.getView().findViewById(R.id.guideline1_textView_editView_infoContacto_registro_4);
+            mGuideline2_Btn1 = parent.getView().findViewById(R.id.guideline2_button1_infoContacto_registro_4);
+            mConstraintLayout = parent.getView().findViewById(R.id.consLyt_infoContacto_registro_4);
+        }
 
         //para cambiar el titulo segun el numero de contacto
         String tituloRegistroContacto = getResources().getString(R.string.contactoEmergencia_registro4) + " " + String.valueOf(mNumContacto);

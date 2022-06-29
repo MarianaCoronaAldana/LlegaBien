@@ -23,6 +23,23 @@
     <string name="instrucciones1_restablecer_contraseña_2">Ingresa el código de verificación que hemos enviado a tu número telefónico vía SMS.</string>
     <string name="instrucciones1_restablecer_contraseña_3">Ingresa una nueva contraseña. Después de hacer esto, tendrás que iniciar sesión nuevamente.</string>
 
+    <!-- Leer contactos. -->
+    <string name="titulo_leerContactos">Contactos</string>
+    <string name="descripcion_leerContactos">Aquí puedes ver la información de tus contactos de emergencia.</string>
+
+    <!-- Editar contactos. -->
+    <string name="titulo_editarContacto">Editar contacto</string>
+    <string name="descripcion_editarContacto">Aquí puedes editar la información del contacto seleccionado.</string>
+    <string name="guardarCambiosBtn_editarContacto">Guardar cambios</string>
+
+
+    <!-- Editar perfil, leer conatcto y editar contactos. -->
+    <string name="nombreCompletoTextView">Nombre completo:</string>
+    <string name="numTelefónicoTextView">Número telefónico:</string>
+
+    <!-- Lista de reportes. -->
+    <string name="titulo_listaReportes">Reportes generados</string>
+    <string name="descripcion_listaReportes">Aquí puedes ver los reportes que has generado.</string>
 
     <!-- Registro -->
     <string name="titulo_registro">Registro</string>
@@ -54,8 +71,8 @@
     <string name="apellidosEditTxt">Apellidos</string>
     <string name="fechaNacimientoEditTxt">Fecha de nacimiento</string>
     <string name="celularEditTxt">Número de teléfono</string>
-    <string name="celularCountryCodeEditTxt">+</string>
-    <string name="celularCountryCodeTxtView">52</string>
+    <string name="celularCountryCodeTxtView">+</string>
+    <string name="celularCountryCodeEditText">52</string>
 
     <!-- Errores -->
     <string name="errorStringVacia">Este campo es obligatorio</string>
@@ -144,7 +161,7 @@
     <string name="btnAceptarPermisos_permisos">Aceptar ubicación</string>
 
     <!-- Subir reporte usuario. -->
-    <string name="titulo_subirReporteUsuario">Subir Reporte</string>
+    <string name="titulo_subirReporteUsuario">Reporte</string>
     <string name="instrucciones1_subirReporteUsuario">Responde todas las preguntas.</string>
     <string name="instrucciones2_subirReporteUsuario">Para generar un reporte es necesario llenar el siguiente formulario.</string>
     <string name="enviarReporteBtn_subirReporteUsuario">Enviar reporte</string>
