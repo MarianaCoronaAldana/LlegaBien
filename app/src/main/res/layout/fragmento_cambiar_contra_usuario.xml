@@ -38,34 +38,11 @@
             app:layout_constraintGuide_percent="0.90" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline1_button_cambiarContra"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.2" />
-
-        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline1_textViewTitulo_cambiarContra"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.25" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2_button_cambiarContra"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.8" />
-
-        <View
-            android:id="@+id/view_fondoAzulClaro_cambiarContra"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@drawable/bkgd_esquinas_superiores_redondeadas"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="@id/guideline_fondo_cambiarContra"
-            app:layout_constraintVertical_bias="0.0" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/consLyt_titulo_cambiarContra"
@@ -96,7 +73,7 @@
                 style="@style/TxtViewBlanco"
                 android:background="@android:color/transparent"
                 android:text="@string/titulo_cambiarContra"
-                android:textSize="@dimen/text_size_titulo_small"
+                android:textSize="@dimen/text_size_titulo_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="4:1"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -105,171 +82,209 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/textView_instrucciones_cambiarContra"
-            style="@style/TxtViewAzulOscuro"
-            android:text="@string/instrucciones_cambiarContra"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="5:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_cambiarContra"
-            app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_cambiarContra"
-            app:layout_constraintTop_toBottomOf="@id/consLyt_titulo_cambiarContra"
-            app:layout_constraintVertical_bias="0.1" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/consLyt_actualContra_cambiarContra"
-            style="@style/EditTextTransparente"
-            android:hint="@string/contraseñaEditTxt"
-            android:inputType="textPassword"
-            android:padding="0dp"
+            android:id="@+id/consLyt_infoContra_cambiarContra"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/bkgd_esquinas_superiores_redondeadas"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="6:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_cambiarContra"
-            app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_cambiarContra"
-            app:layout_constraintTop_toBottomOf="@id/textView_instrucciones_cambiarContra"
-            app:layout_constraintVertical_bias="0.05">
+            app:layout_constraintTop_toTopOf="@id/guideline_fondo_cambiarContra">
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline1_icon_actualContra_cambiarContra"
+                android:id="@+id/guideline1_textView_editView_infoContra_cambiarContra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.88" />
+                app:layout_constraintGuide_percent="0.10" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2_icon_actualContra_cambiarContra"
+                android:id="@+id/guideline2_textView_editView_infoContra_cambiarContra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.95" />
+                app:layout_constraintGuide_percent="0.90" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1_button_infoContra_cambiarContra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.2" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_button_infoContra_cambiarContra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.8" />
+
+            <TextView
+                android:id="@+id/textView_instrucciones_cambiarContra"
+                style="@style/TxtViewAzulOscuro"
+                android:text="@string/instrucciones_cambiarContra"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="5:1"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_infoContra_cambiarContra"
+                app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_infoContra_cambiarContra"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.06" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/consLyt_actualContra_cambiarContra"
+                style="@style/EditTextTransparente"
+                android:hint="@string/contraseñaEditTxt"
+                android:inputType="textPassword"
+                android:padding="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="6:1"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_infoContra_cambiarContra"
+                app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_infoContra_cambiarContra"
+                app:layout_constraintTop_toBottomOf="@id/textView_instrucciones_cambiarContra"
+                app:layout_constraintVertical_bias="0.05">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline1_icon_actualContra_cambiarContra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.88" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2_icon_actualContra_cambiarContra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.95" />
+
+                <Button
+                    android:id="@+id/button_mostrarContra_contraActual_cambiarContra"
+                    style="@style/BkgdIconContraseña"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_icon_actualContra_cambiarContra"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_icon_actualContra_cambiarContra"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/editText_actualContra_cambiarContra"
+                    style="@style/EditTextTransparente"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/actualContra_cambiarContra"
+                    android:inputType="textPassword"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guideline1_icon_actualContra_cambiarContra"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/consLyt_nuevaContra_cambiarContra"
+                style="@style/EditTextTransparente"
+                android:hint="@string/contraseñaEditTxt"
+                android:inputType="textPassword"
+                android:padding="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="6:1"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_infoContra_cambiarContra"
+                app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_infoContra_cambiarContra"
+                app:layout_constraintTop_toBottomOf="@+id/consLyt_actualContra_cambiarContra"
+                app:layout_constraintVertical_bias="0.055">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline1_icon_nuevaContra_cambiarContra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.88" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2_icon_nuevaContra_cambiarContra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.95" />
+
+                <Button
+                    android:id="@+id/button_mostrarContra_contraNueva_cambiarContra"
+                    style="@style/BkgdIconContraseña"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_icon_nuevaContra_cambiarContra"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_icon_nuevaContra_cambiarContra"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/editText_nuevaContra_cambiarContra"
+                    style="@style/EditTextTransparente"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/nuevaContra"
+                    android:inputType="textPassword"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guideline1_icon_nuevaContra_cambiarContra"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/consLyt_confirmarContra_cambiarContra"
+                style="@style/EditTextTransparente"
+                android:hint="@string/contraseñaEditTxt"
+                android:inputType="textPassword"
+                android:padding="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="6:1"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_infoContra_cambiarContra"
+                app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_infoContra_cambiarContra"
+                app:layout_constraintTop_toBottomOf="@+id/consLyt_nuevaContra_cambiarContra"
+                app:layout_constraintVertical_bias="0.06">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline1_icon_confirmarContra_cambiarContra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.88" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2_icon_confirmarContra_cambiarContra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.95" />
+
+                <Button
+                    android:id="@+id/button_mostrarContra_confirmarContra_cambiarContra"
+                    style="@style/BkgdIconContraseña"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_icon_confirmarContra_cambiarContra"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_icon_confirmarContra_cambiarContra"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/editText_confirmarContra_cambiarContra"
+                    style="@style/EditTextTransparente"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/confirmarContraseñaEditTxt"
+                    android:inputType="textPassword"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guideline1_icon_confirmarContra_cambiarContra"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <Button
-                android:id="@+id/button_mostrarContra_contraActual_cambiarContra"
-                style="@style/BkgdIconContraseña"
+                android:id="@+id/button_aceptar_cambiarContra"
+                style="@style/BtnMoradoOscuro"
+                android:text="@string/aceptarBtn_cambiarContra"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/guideline2_icon_actualContra_cambiarContra"
-                app:layout_constraintStart_toStartOf="@id/guideline1_icon_actualContra_cambiarContra"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/editText_actualContra_cambiarContra"
-                style="@style/EditTextTransparente"
-                android:background="@android:color/transparent"
-                android:hint="@string/actualContra_cambiarContra"
-                android:inputType="textPassword"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/guideline1_icon_actualContra_cambiarContra"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintDimensionRatio="4:1"
+                app:layout_constraintEnd_toEndOf="@id/guideline2_button_infoContra_cambiarContra"
+                app:layout_constraintStart_toStartOf="@id/guideline1_button_infoContra_cambiarContra"
+                app:layout_constraintTop_toBottomOf="@id/consLyt_confirmarContra_cambiarContra"
+                app:layout_constraintVertical_bias="0.1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/consLyt_nuevaContra_cambiarContra"
-            style="@style/EditTextTransparente"
-            android:hint="@string/contraseñaEditTxt"
-            android:inputType="textPassword"
-            android:padding="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="6:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_cambiarContra"
-            app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_cambiarContra"
-            app:layout_constraintTop_toBottomOf="@+id/consLyt_actualContra_cambiarContra"
-            app:layout_constraintVertical_bias="0.055">
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline1_icon_nuevaContra_cambiarContra"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.88" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2_icon_nuevaContra_cambiarContra"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.95" />
-
-            <Button
-                android:id="@+id/button_mostrarContra_contraNueva_cambiarContra"
-                style="@style/BkgdIconContraseña"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/guideline2_icon_nuevaContra_cambiarContra"
-                app:layout_constraintStart_toStartOf="@id/guideline1_icon_nuevaContra_cambiarContra"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/editText_nuevaContra_cambiarContra"
-                style="@style/EditTextTransparente"
-                android:background="@android:color/transparent"
-                android:hint="@string/nuevaContra"
-                android:inputType="textPassword"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/guideline1_icon_nuevaContra_cambiarContra"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/consLyt_confirmarContra_cambiarContra"
-            style="@style/EditTextTransparente"
-            android:hint="@string/contraseñaEditTxt"
-            android:inputType="textPassword"
-            android:padding="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="6:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_cambiarContra"
-            app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_cambiarContra"
-            app:layout_constraintTop_toBottomOf="@+id/consLyt_nuevaContra_cambiarContra"
-            app:layout_constraintVertical_bias="0.06">
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline1_icon_confirmarContra_cambiarContra"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.88" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2_icon_confirmarContra_cambiarContra"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.95" />
-
-            <Button
-                android:id="@+id/button_mostrarContra_confirmarContra_cambiarContra"
-                style="@style/BkgdIconContraseña"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/guideline2_icon_confirmarContra_cambiarContra"
-                app:layout_constraintStart_toStartOf="@id/guideline1_icon_confirmarContra_cambiarContra"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/editText_confirmarContra_cambiarContra"
-                style="@style/EditTextTransparente"
-                android:background="@android:color/transparent"
-                android:hint="@string/confirmarContraseñaEditTxt"
-                android:inputType="textPassword"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/guideline1_icon_confirmarContra_cambiarContra"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <Button
-            android:id="@+id/button_aceptar_cambiarContra"
-            style="@style/BtnMoradoOscuro"
-            android:text="@string/aceptarBtn_cambiarContra"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="4:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2_button_cambiarContra"
-            app:layout_constraintStart_toStartOf="@id/guideline1_button_cambiarContra"
-            app:layout_constraintTop_toBottomOf="@id/consLyt_confirmarContra_cambiarContra"
-            app:layout_constraintVertical_bias="0.1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

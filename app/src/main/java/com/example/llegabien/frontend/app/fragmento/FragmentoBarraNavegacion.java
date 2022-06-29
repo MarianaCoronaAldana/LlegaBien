@@ -20,6 +20,7 @@ import android.widget.Button;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Permisos;
 import com.example.llegabien.frontend.botonEmergencia.fragmento.FragmentoBotonEmergencia;
+import com.example.llegabien.frontend.contactos.activity.ActivityEditarLeerContactos;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.reportes.activity.ActivityReportes;
 import com.example.llegabien.frontend.usuario.fragmento.FragmentoIniciarSesion1;
@@ -53,6 +54,7 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
         //listeners
         mBtnEmergencia.setOnTouchListener(this);
         mBtnSubirReporte.setOnClickListener(this);
+        mBtnContactos.setOnClickListener(this);
 
         return root;
     }
@@ -68,6 +70,9 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
         switch (view.getId()) {
             case R.id.button_subirReporte_barraNavegacion:
                 startActivity(new Intent(getActivity(), ActivityReportes.class));
+                break;
+            case R.id.button_contactos_barraNavegacion:
+                startActivity(new Intent(getActivity(), ActivityEditarLeerContactos.class));
                 break;
         }
     }

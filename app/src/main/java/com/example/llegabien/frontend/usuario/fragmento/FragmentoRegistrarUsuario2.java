@@ -87,7 +87,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
         return root;
     }
 
-    //listener function
+    // FUNCIONES LISTENER //
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -132,7 +132,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
         Usuario.setCorreoElectronico(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT).trim());
         String numTelefonico = "+" + mEditTxtCountryCode.getText().toString() + mEditTxtNumTelefonico.getText().toString();
         Usuario.setTelCelular(numTelefonico.trim());
-        Usuario.setContrasena(encriptarContraseña(mEditTxtContraseña.getText().toString()));
+        Usuario.setContrasena(encriptarContrasena(mEditTxtContraseña.getText().toString()));
 
         SharedViewModel.setUsuario(Usuario);
     }
@@ -195,7 +195,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
     }
 
     // Recibe la contraseña en texto plano y la regresa encriptada
-    private static String encriptarContraseña(String textoPlano) {
+    private static String encriptarContrasena(String textoPlano) {
         return Encriptar.Encriptar(textoPlano);
     }
 }
