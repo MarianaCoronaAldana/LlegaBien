@@ -45,7 +45,6 @@ public class DialogDatePicker extends DialogFragment {
         DialogDatePicker dialogDatePicker = DialogDatePicker.newInstance(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-
                 // +1 porque Enero es 0
                 month++;
 

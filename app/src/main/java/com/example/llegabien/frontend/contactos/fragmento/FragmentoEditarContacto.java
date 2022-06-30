@@ -1,29 +1,45 @@
 package com.example.llegabien.frontend.contactos.fragmento;
 
-import android.app.Activity;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
+
+import static io.realm.Realm.getApplicationContext;
+
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainer;
-import androidx.fragment.app.FragmentContainerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.llegabien.R;
+import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.contactos.usuario_contacto;
+import com.example.llegabien.backend.usuario.UsuarioBD_CRUD;
+import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
+import com.example.llegabien.backend.usuario.usuario;
 
 public class FragmentoEditarContacto extends Fragment implements View.OnClickListener {
 
     private int mIdContacto;
-    private Button mBtnRegresar;
+    private Button mBtnRegresar, mBtnEditarContacto;
+    private EditText mEditTxtNombreContacto, mEditTxtCountryCode, mEditTxtTelefonoContacto;
+    private String mStringIdContacto;
+    private usuario mUsuario = new usuario();
 
     public FragmentoEditarContacto() {
     }
 
-    public FragmentoEditarContacto(int idContacto) {
-        mIdContacto = idContacto;
+    public FragmentoEditarContacto(int idContacto, usuario Usuario) {
+        mStringIdContacto = String.valueOf(idContacto);
+        mUsuario = Usuario;
+        inicializarId();
     }
 
     @Override
@@ -34,19 +50,89 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
 
         //wiring up
         mBtnRegresar = root.findViewById(R.id.button_regresar_editarContacto);
+        mBtnEditarContacto = root.findViewById(R.id.button_enviarReporte_subirReporteUsuario);
+        mEditTxtNombreContacto = root.findViewById(R.id.editText1_nombre_editarContacto);
+        mEditTxtCountryCode = root.findViewById(R.id.editText_celularCountryCode_editarContacto);
+        mEditTxtTelefonoContacto = root.findViewById(R.id.editText_celular_editarContacto);
 
         //listeners
         mBtnRegresar.setOnClickListener(this);
+        mBtnEditarContacto.setOnClickListener(this);
+
+        Log.v("QUICKSTART", "Estoy en EDITAR contactos, id: " + mIdContacto);
+
+        mostrarDatos();
 
         return root;
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.button_regresar_editarContacto)
-            getActivity().getSupportFragmentManager().popBackStack();
-        else {
-
+        switch (view.getId()) {
+            case R.id.button_regresar_editarContacto:
+                getActivity().getSupportFragmentManager().popBackStack();
+                break;
+            case R.id.button_enviarReporte_subirReporteUsuario:
+                if(validarAllInputs()){
+                    actualizarContacto();
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+                break;
         }
     }
+
+    // Dependiendo del contacto elegido por el usuario, se determina el id de contacto con el que se debe trabajar
+    private void inicializarId() {
+        if(mStringIdContacto.contains("1"))
+            mIdContacto = 0;
+        else if(mStringIdContacto.contains("2"))
+            mIdContacto = 1;
+        else if(mStringIdContacto.contains("3"))
+            mIdContacto = 2;
+        else if(mStringIdContacto.contains("4"))
+            mIdContacto = 3;
+        else if(mStringIdContacto.contains("5"))
+            mIdContacto = 4;
+    }
+
+    private void mostrarDatos() {
+        mEditTxtNombreContacto.setText(mUsuario.getContacto().get(mIdContacto).getNombre());
+        mEditTxtCountryCode.setText(mUsuario.getContacto().get(mIdContacto).getTelCelular().substring(0, 2));
+        mEditTxtTelefonoContacto.setText(mUsuario.getContacto().get(mIdContacto).getTelCelular().substring(2));
+    }
+
+    private boolean validarAllInputs() {
+        UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
+        boolean esInputValido = true, esNumTelefonicoValido, esCountryCodeValido;
+        esNumTelefonicoValido =  usuarioInputValidaciones.validarNumTelefonico(getActivity(),mEditTxtTelefonoContacto);
+        esCountryCodeValido = usuarioInputValidaciones.validarNumTelefonico(getActivity(), mEditTxtCountryCode);
+        if (!usuarioInputValidaciones.validarNombre(getActivity(),mEditTxtNombreContacto))
+            esInputValido = false;
+        if (esCountryCodeValido && esNumTelefonicoValido) {
+            if(!usuarioInputValidaciones.validarNumTelefonico_libphonenumber(getActivity(),mEditTxtTelefonoContacto,mEditTxtCountryCode))
+                esInputValido = false;
+        }
+        else
+            esInputValido = false;
+        return esInputValido;
+    }
+
+    private void actualizarContacto(){
+        usuario_contacto contacto = new usuario_contacto();
+        contacto.setNombre(mEditTxtNombreContacto.getText().toString());
+        contacto.setTelCelular(mEditTxtCountryCode.getText().toString()+mEditTxtTelefonoContacto.getText().toString());
+
+        mUsuario.getContacto().set(mIdContacto, contacto);
+
+        UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD(this.getContext());
+        if (usuarioBD_CRUD.updateUser(mUsuario)) {
+            Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
+            mUsuario = usuarioBD_CRUD.readUsuarioPorCorreo(mUsuario.getCorreoElectronico());
+            Preferences.savePreferenceObjectRealm(getActivity(), PREFERENCE_USUARIO, mUsuario);
+        }
+        else
+            Toast.makeText(getApplicationContext(), "Hubo un error, intente mas tarde", Toast.LENGTH_SHORT).show();
+    }
+
 }
+
