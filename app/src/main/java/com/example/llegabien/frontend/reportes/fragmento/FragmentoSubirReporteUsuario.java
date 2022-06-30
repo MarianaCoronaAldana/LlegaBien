@@ -3,18 +3,21 @@ package com.example.llegabien.frontend.reportes.fragmento;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,38 +25,58 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.llegabien.R;
+import com.example.llegabien.backend.app.Permisos;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
-import com.example.llegabien.backend.mongoDB.ConectarBD;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
 import com.example.llegabien.backend.reporte.Reporte_DAO;
 import com.example.llegabien.backend.reporte.reporte;
-import com.example.llegabien.backend.usuario.UsuarioBD_CRUD;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
-import com.example.llegabien.frontend.app.fragmento.FragmentoAuxiliar;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.usuario.dialog.DialogDatePicker;
 import com.example.llegabien.frontend.usuario.dialog.DialogTimePicker;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import io.realm.RealmResults;
 
-public class FragmentoSubirReporteUsuario extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class FragmentoSubirReporteUsuario extends Fragment implements View.OnClickListener {
 
     private Spinner mSpinnerCualDelito;
-    private Button mBtnRegresar, mBtnSubirReporte;
+    private Button mBtnRegresar, mBtnSubirReporte, mBtnUbicacion;
     private usuario Usuario;
-    private EditText mEditTxtNombre, mEditTxtUbicacion, mEditTxtFechaDelito, mEditTxtHoraDelito, mEditTxtComentariosDelito ;
+    private EditText mEditTxtNombre, mEditTxtFechaDelito, mEditTxtHoraDelito, mEditTxtComentariosDelito;
     private reporte Reporte;
+    private UbicacionBusquedaAutocompletada ubicacionBusquedaAutocompletada;
+    private ActivityResultLauncher<Intent> activityResultLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult activityResult) {
+                            int result = activityResult.getResultCode();
+                            Intent data = activityResult.getData();
+                            ubicacionBusquedaAutocompletada.verificarResultadoBusqueda(new UbicacionBusquedaAutocompletada.OnUbicacionBuscadaObtenida() {
+                                @Override
+                                public void isUbicacionBuscadaObtenida(boolean isUbicacionBuscadaObtenida, boolean isUbicacionBuscadaenBD, LatLng ubicacionBuscada, String ubicacionBuscadaString) {
+                                    if (isUbicacionBuscadaObtenida)
+                                        mBtnUbicacion.setText(ubicacionBuscadaString);
+                                }
+                            }, result, data, getActivity());
+                        }
+                    }
+            );
 
     public FragmentoSubirReporteUsuario() {
         // Required empty public constructor
@@ -70,20 +93,26 @@ public class FragmentoSubirReporteUsuario extends Fragment implements AdapterVie
         mBtnRegresar = (Button) root.findViewById(R.id.button_regresar_subirReporteUsuario);
         mBtnSubirReporte = (Button) root.findViewById(R.id.button_enviarReporte_subirReporteUsuario);
         mEditTxtNombre = (EditText) root.findViewById(R.id.editText_nombreUsuario_subirReporteUsuario);
-        mEditTxtUbicacion = (EditText) root.findViewById(R.id.editText_ubicacionDelito_subirReporteUsuario);
+        mBtnUbicacion = root.findViewById(R.id.button_ubicacionDelito_subirReporteUsuario);
         mEditTxtFechaDelito = (EditText) root.findViewById(R.id.editText_fechaDelito_subirReporteUsuario);
         mEditTxtHoraDelito = (EditText) root.findViewById(R.id.editText_horaDelito_subirReporteUsuario);
         mEditTxtComentariosDelito = (EditText) root.findViewById(R.id.editText_comentariosAdicionales_subirReporteUsuario);
 
         // Listeners
-        mSpinnerCualDelito.setOnItemSelectedListener(this);
         mBtnRegresar.setOnClickListener(this);
         mBtnSubirReporte.setOnClickListener(this);
         mEditTxtFechaDelito.setOnClickListener(this);
         mEditTxtHoraDelito.setOnClickListener(this);
+        mBtnUbicacion.setOnClickListener(this);
 
-        // Para inicializar valores del del reporte.
+        // Para inicializar valores del reporte.
         inicializarDatos();
+
+        // Para obtener ubicacion actual.
+        obtenerUbicacionActual();
+
+        // Para inicializar valores del spinner.
+        setSpinner();
 
         return root;
     }
@@ -97,15 +126,12 @@ public class FragmentoSubirReporteUsuario extends Fragment implements AdapterVie
                     Log.v("QUICKSTART", "Estoy en enviar reporte");
                     Reporte_DAO usuarioBD_CRUD = new Reporte_DAO(this.getContext());
                     inicializarReporte();
-                    if(verificarHistorialReportes(usuarioBD_CRUD)) {
+                    if (verificarHistorialReportes(usuarioBD_CRUD)) {
                         usuarioBD_CRUD.añadirReporte(Reporte);
                         Toast.makeText(this.getContext(), "Tu reporte será verificado el siguiente fin de semana", Toast.LENGTH_LONG).show();
                     }
                 }
                 break;
-            case R.id.button_regresar_subirReporteUsuario:
-                    startActivity(new Intent(getActivity(), ActivityMap.class));
-            break;
             case R.id.editText_fechaDelito_subirReporteUsuario:
                 Log.v("QUICKSTART", "Estoy en poner fecha delito");
                 DialogDatePicker dialogDatePicker = new DialogDatePicker();
@@ -118,8 +144,18 @@ public class FragmentoSubirReporteUsuario extends Fragment implements AdapterVie
                 dialogTimePicker.mostrarTimePickerDialog(mEditTxtHoraDelito, this);
                 mEditTxtHoraDelito.setError(null);
                 break;
+            case R.id.button_ubicacionDelito_subirReporteUsuario:
+                ubicacionBusquedaAutocompletada = new UbicacionBusquedaAutocompletada();
+                ubicacionBusquedaAutocompletada.inicializarIntent(getActivity());
+                activityResultLauncher.launch(ubicacionBusquedaAutocompletada.getIntent());
+                break;
+            case R.id.button_regresar_subirReporteUsuario:
+                startActivity(new Intent(getActivity(), ActivityMap.class));
+                break;
         }
     }
+
+    // OTRAS FUNCIONES//
 
     // Para poner de default el nombre del usuario en el formulario
     private void inicializarDatos() {
@@ -127,50 +163,38 @@ public class FragmentoSubirReporteUsuario extends Fragment implements AdapterVie
         mEditTxtNombre.setText(Usuario.getNombre() + " " + Usuario.getApellidos());
         mEditTxtNombre.setEnabled(false);
         mEditTxtNombre.setClickable(false);
-
-        // Para inicializar valores del spinner.
-        setSpinner();
     }
 
-    private void setSpinner(){
-        String[] delitos = { "Homicidio", "Secuestro",
-                "Extorsión", "Acoso sexual",
-                "Robo", "Lesiones",
-                "Abuso sexual", "Abuso de autoridad",
-                "Vandalismo", "Tiroteo"};
+    private void obtenerUbicacionActual() {
+        Permisos permisos = new Permisos();
+        permisos.getPermisoUbicacion(getActivity(), false);
+        if (permisos.getLocationPermissionGranted()) {
+            FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-        // Create the instance of ArrayAdapter having the list of courses
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), R.layout.spinner_item, delitos);
+            UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
+            mUbicacionDispositivo.getUbicacionDelDispositivo(new UbicacionDispositivo.OnUbicacionObtenida() {
+                @Override
+                public void isUbicacionObtenida(boolean isUbicacionObtenida, Location ubicacionObtenida) {
+                    if (isUbicacionObtenida) {
+                        UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
+                        String Ubicacion = ubicacionGeodicacion.degeocodificarUbiciacion(getActivity(),
+                                ubicacionObtenida.getLatitude(), ubicacionObtenida.getLongitude());
 
-        // Set simple layout resource file for each item of spinner
-        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-
-        // Set the ArrayAdapter (ad) data on the Spinner which binds data to spinner
-        mSpinnerCualDelito.setAdapter(arrayAdapter);
-    }
-
-    // Verificar que algunos campos no estén vacios
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private boolean validarAllInputs(){
-        UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
-        boolean esInputValido = true;
-      if (!usuarioInputValidaciones.validarStringVacia(getActivity(),mEditTxtFechaDelito))
-            esInputValido = false;
-      if (!usuarioInputValidaciones.validarStringVacia(getActivity(),mEditTxtHoraDelito))
-            esInputValido = false;
-      if (!usuarioInputValidaciones.validarStringVacia(getActivity(),mEditTxtUbicacion))
-            esInputValido = false;
-        return esInputValido;
+                        mBtnUbicacion.setText(Ubicacion);
+                    }
+                }
+            }, true, fusedLocationProviderClient, getActivity());
+        }
     }
 
     //Funcion para crear objeto reporte e inicializarlo con los datos obtenidos
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private reporte inicializarReporte(){
+    private void inicializarReporte() {
         Reporte = new reporte();
         Reporte.setAutor(mEditTxtNombre.getText().toString());
         Reporte.setIdUsuario(Usuario.get_id());
         Reporte.setComentarios(mEditTxtComentariosDelito.getText().toString());
-        Reporte.setUbicacion(mEditTxtUbicacion.getText().toString());
+        Reporte.setUbicacion(mBtnUbicacion.getText().toString());
         Reporte.setTipoDelito(mSpinnerCualDelito.getSelectedItem().toString());
         Reporte.setFechaReporte(convertToDateViaInstant(LocalDateTime.now()));
 
@@ -179,23 +203,22 @@ public class FragmentoSubirReporteUsuario extends Fragment implements AdapterVie
         Reporte.setFecha(convertToDateViaInstant(localDate.atTime(localTime)));
 
 
-        Log.v("QUICKSTART", "Fecha y hora delito: "+Reporte.getFechaReporte());
+        Log.v("QUICKSTART", "Fecha y hora delito: " + Reporte.getFechaReporte());
 
-        return Reporte;
     }
 
     // Se encarga de verificar si
     // 1. ya se subio un reporte hace menos de dos horas
     // 2. se subieron mas de 10 reportes en una semana
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private boolean verificarHistorialReportes(Reporte_DAO reporte_DAO){
+    private boolean verificarHistorialReportes(Reporte_DAO reporte_DAO) {
         RealmResults<reporte> reportes = reporte_DAO.obtenerReportesPorUsuario(Reporte);
-        int reportesAnteriores =0;
+        int reportesAnteriores = 0;
 
         Duration diff;
         long diffmINUTTES, diffHoras, diffDias;
 
-        for(int i = 0; i< reportes.size(); i++) {
+        for (int i = 0; i < reportes.size(); i++) {
             if (reportesAnteriores > 9) {
                 Toast.makeText(this.getContext(), "Has subido demasiados reportes esta semana", Toast.LENGTH_LONG).show();
                 return false;
@@ -205,14 +228,14 @@ public class FragmentoSubirReporteUsuario extends Fragment implements AdapterVie
             diffDias = diff.toDays();
 
             diffmINUTTES = diff.toMinutes();
-            Log.v("QUICKSTART", "diferencia minutos: " + diffmINUTTES+", REPORTESanteriores: "+ reportesAnteriores);
+            Log.v("QUICKSTART", "diferencia minutos: " + diffmINUTTES + ", REPORTESanteriores: " + reportesAnteriores);
 
-            if (diffHoras < 2){
+            if (diffHoras < 2) {
                 Toast.makeText(this.getContext(), "Has subido un reporte muy recientemente", Toast.LENGTH_LONG).show();
                 return false;
             }
-            if(diffDias<7)
-                reportesAnteriores ++;
+            if (diffDias < 7)
+                reportesAnteriores++;
         }
         return true;
     }
@@ -231,11 +254,36 @@ public class FragmentoSubirReporteUsuario extends Fragment implements AdapterVie
                 .toLocalDateTime();
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+    private void setSpinner() {
+        String[] delitos = {"Homicidio", "Secuestro",
+                "Extorsión", "Acoso sexual",
+                "Robo", "Lesiones",
+                "Abuso sexual", "Abuso de autoridad",
+                "Vandalismo", "Tiroteo"};
+
+        // Create the instance of ArrayAdapter having the list of courses
+        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), R.layout.spinner_item, delitos);
+
+        // Set simple layout resource file for each item of spinner
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+
+        // Set the ArrayAdapter (ad) data on the Spinner which binds data to spinner
+        mSpinnerCualDelito.setAdapter(arrayAdapter);
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
+    // Verificar que algunos campos no estén vacios
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private boolean validarAllInputs() {
+        UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
+        boolean esInputValido = true;
+        if (!usuarioInputValidaciones.validarStringVacia(getActivity(), mEditTxtFechaDelito))
+            esInputValido = false;
+        if (!usuarioInputValidaciones.validarStringVacia(getActivity(), mEditTxtHoraDelito))
+            esInputValido = false;
+        if (mBtnUbicacion.getText().toString().equals(getActivity().getResources().getString(R.string.ubicacionDelito_subirReporteUsuario))) {
+            esInputValido = false;
+            mBtnUbicacion.setError("Ingresa una ubicación válida.");
+        }
+        return esInputValido;
     }
 }

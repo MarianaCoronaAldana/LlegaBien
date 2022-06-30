@@ -236,6 +236,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
+
         getActivity().getSupportFragmentManager().popBackStack();
     }
 }

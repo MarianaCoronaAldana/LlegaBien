@@ -23,6 +23,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.frontend.contactos.activity.ActivityEditarLeerContactos;
+import com.example.llegabien.frontend.contactos.fragmento.FragmentoLeerContactos;
+import com.example.llegabien.frontend.reportes.activity.ActivityReportes;
+import com.example.llegabien.frontend.reportes.fragmento.FragmentoListaReportes;
 import com.example.llegabien.frontend.contactos.fragmento.FragmentoLeerContactos;
 import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUsuario;
 
@@ -43,17 +47,19 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
         View root = inflater.inflate(R.layout.fragmento_configuracion_usuario, container, false);
 
         //wiring up
-        mBtnEditarPerfil = (ConstraintLayout) root.findViewById(R.id.button_editarPerfil_configuracionUsuario);
-        mBtnContactos = (ConstraintLayout) root.findViewById(R.id.button_contactos_configuracionUsuario);
-        mBtnCerrarSesion = (Button) root.findViewById(R.id.button_cerrarSesion_configuracionUsuario);
-        mBtnRegresar = (Button) root.findViewById(R.id.button_regresar_configuracionUsuario);
-        mTxtViewCorreo = (TextView) root.findViewById(R.id.textView_correoUsuario_configuracionUsuario);
-        mTxtViewNombre = (TextView) root.findViewById(R.id.textView_nombreUsuario_configuracionUsuario);
+        mBtnEditarPerfil = root.findViewById(R.id.button_editarPerfil_configuracionUsuario);
+        mBtnCerrarSesion = root.findViewById(R.id.button_cerrarSesion_configuracionUsuario);
+        mBtnRegresar = root.findViewById(R.id.button_regresar_configuracionUsuario);
+        mBtnHistorialReportes = root.findViewById(R.id.button_historialReportes_configuracionUsuario);
+        mBtnContactos = root.findViewById(R.id.button_contactos_configuracionUsuario);
+        mTxtViewCorreo = root.findViewById(R.id.textView_correoUsuario_configuracionUsuario);
+        mTxtViewNombre = root.findViewById(R.id.textView_nombreUsuario_configuracionUsuario);
 
         //listeners
         mBtnEditarPerfil.setOnClickListener(this);
         mBtnCerrarSesion.setOnClickListener(this);
         mBtnRegresar.setOnClickListener(this);
+        mBtnHistorialReportes.setOnClickListener(this);
         mBtnContactos.setOnClickListener(this);
 
         setDatosUsuario();
@@ -79,8 +85,14 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
 
                 startActivity(new Intent(getActivity(), ActivityPaginaPrincipalUsuario.class));
                 break;
+            case R.id.button_historialReportes_configuracionUsuario:
+                FragmentoListaReportes fragmentoListaReportes = new FragmentoListaReportes();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+                fragmentTransaction.replace(R.id.fragment_configuracion, fragmentoListaReportes).commit();
+                fragmentTransaction.addToBackStack(null);
+                break;
             case R.id.button_regresar_configuracionUsuario:
-                //startActivity(new Intent(getActivity(), MapsActivity.class));
+                getActivity().finish();
                 break;
             case R.id.button_contactos_configuracionUsuario:
                 FragmentoLeerContactos fragmentoContactos = new FragmentoLeerContactos();
