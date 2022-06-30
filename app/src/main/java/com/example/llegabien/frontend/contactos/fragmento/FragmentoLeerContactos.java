@@ -352,7 +352,6 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
 
             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
             FragmentoEditarContacto fragmentoEditarContacto = new FragmentoEditarContacto(view.getId(), Usuario);
-            //FragmentoEditarContacto fragmentoEditarContacto = new FragmentoEditarContacto();
             fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
             fragmentTransaction.replace(R.id.fragmentContainerView_leerEditarContactos, fragmentoEditarContacto).commit();
             fragmentTransaction.addToBackStack(null);

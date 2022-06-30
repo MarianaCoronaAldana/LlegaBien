@@ -73,7 +73,6 @@ public class ConectarBD {
         return realm;
     }
 
-
     // Para conseguir el usuario actual de la app
     public Realm conseguirUsuarioMongoDB(){
         App app = aplicacionLlegaBien.getApp();
@@ -106,7 +105,7 @@ public class ConectarBD {
             }
         });
 
-        app.removeUser(app.currentUser());
+     //   app.removeUser(app.currentUser());
     }
 
     public static void borrarCuentaCorreo(){

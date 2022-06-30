@@ -60,6 +60,24 @@ public class Reporte_DAO {
         return null;
     }
 
+
+    public RealmResults<reporte> obtenerReportesPorUsuario(usuario Usuario) {
+        realm = conectarBD.conseguirUsuarioMongoDB();
+
+        if(realm!=null){
+            RealmResults<reporte> realmResults = realm.where(reporte.class).equalTo("IdUsuario",Usuario.get_id()).findAll();
+            Log.v("QUICKSTART", "Estoy en REPORTE DAO, size: " + realmResults.size());
+
+            if (realmResults != null)
+                return realmResults;
+        }
+
+        else
+            errorConexion();
+
+        return null;
+    }
+
     private void errorConexion(){
         Toast.makeText(mContext, "Hubo un problema en conectarse, intenta mas tarde", Toast.LENGTH_SHORT).show();
     }

@@ -1,6 +1,9 @@
 package com.example.llegabien.frontend.reportes.fragmento;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
+
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -12,7 +15,9 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -23,6 +28,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.llegabien.R;
+import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.reporte.Reporte_DAO;
+import com.example.llegabien.backend.reporte.reporte;
+import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.frontend.contactos.activity.ActivityEditarLeerContactos;
+import com.example.llegabien.frontend.contactos.fragmento.FragmentoEditarContacto;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import io.realm.RealmResults;
 
 public class FragmentoListaReportes extends Fragment implements View.OnClickListener {
 
@@ -30,6 +46,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
     private View mViewAuxiliar;
     private Guideline mGuideline10Porciento, mGuideline90Porciente;
     private Button mBtnRegresar;
+    private  RealmResults<reporte> reportes;
 
     public FragmentoListaReportes() {
         // Required empty public constructor
@@ -52,8 +69,10 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
         //listeners
         mBtnRegresar.setOnClickListener(this);
 
+        usuario Usuario = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_USUARIO, usuario.class);
+        Reporte_DAO reporte_DAO = new Reporte_DAO(this.getContext());
+        reportes = reporte_DAO.obtenerReportesPorUsuario(Usuario);
         crearVistaContacto();
-
 
         return root;
     }
@@ -62,12 +81,8 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void crearVistaContacto() {
         ConstraintSet constraintSet = new ConstraintSet();
-        String tipoDelito = "Acoso sexual";
-        String fechaDelito = "12/12/2021, 09:47";
-        String ubicacionDelito = "Calle Paseo de los Abetos 339 9";
 
-        for (int i = 0; i < 5; i++) {
-
+        for (int i = 0; i < reportes.size(); i++) {
             // ConstraintLayout principal
             constraintSet.clone(mConsLytScrollView);
             mConsLytPrincipalReporte = new ConstraintLayout(this.getActivity());
@@ -75,8 +90,9 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             mConsLytPrincipalReporte.setBackground(getActivity().getResources().getDrawable(R.drawable.bkgd_esquinas_redondeadas));
             mConsLytPrincipalReporte.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.morado_claro));
 
-            mConsLytScrollView.addView(mConsLytPrincipalReporte);
+            mConsLytPrincipalReporte.setContentDescription(reportes.get(i).get_id().toString());
 
+            mConsLytScrollView.addView(mConsLytPrincipalReporte);
             constraintSet.connect(mConsLytPrincipalReporte.getId(), ConstraintSet.START, mGuideline10Porciento.getId(), ConstraintSet.START, 0);
             constraintSet.connect(mConsLytPrincipalReporte.getId(), ConstraintSet.END, mGuideline90Porciente.getId(), ConstraintSet.END, 0);
             constraintSet.connect(mConsLytPrincipalReporte.getId(), ConstraintSet.TOP, mViewAuxiliar.getId(), ConstraintSet.BOTTOM, 0);
@@ -180,7 +196,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             TextView txtViewTipoDelito = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.TxtViewTransparente));
             txtViewTipoDelito.setId(View.generateViewId());
 
-            txtViewTipoDelito.setText(tipoDelito);
+            txtViewTipoDelito.setText(reportes.get(i).getTipoDelito());
             txtViewTipoDelito.setTypeface(Typeface.DEFAULT_BOLD);
             txtViewTipoDelito.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
 
@@ -198,7 +214,8 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             TextView txtViewFechaReporte = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.TxtViewTransparente));
             txtViewFechaReporte.setId(View.generateViewId());
 
-            txtViewFechaReporte.setText(fechaDelito);
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
+            txtViewFechaReporte.setText(dateFormat.format(reportes.get(i).getFecha()));
             txtViewFechaReporte.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_size_parrafo_medium));
             txtViewFechaReporte.setGravity(Gravity.END|Gravity.CENTER_VERTICAL);
 
@@ -216,9 +233,8 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             TextView txtViewUbicacionDelito = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.TxtViewTransparente));
             txtViewUbicacionDelito.setId(View.generateViewId());
 
-            txtViewUbicacionDelito.setText(ubicacionDelito);
+            txtViewUbicacionDelito.setText(reportes.get(i).getUbicacion());
             txtViewFechaReporte.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
-
             mConsLytPrincipalReporte.addView(txtViewUbicacionDelito);
 
             constraintSet.constrainHeight(txtViewUbicacionDelito.getId(), ConstraintSet.PARENT_ID);
@@ -236,7 +252,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-
-        getActivity().getSupportFragmentManager().popBackStack();
+        if (view.getId() == R.id.button_regresar_listaReportes)
+            getActivity().getSupportFragmentManager().popBackStack();
     }
 }

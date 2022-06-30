@@ -95,10 +95,7 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
                 getActivity().finish();
                 break;
             case R.id.button_contactos_configuracionUsuario:
-                FragmentoLeerContactos fragmentoContactos = new FragmentoLeerContactos();
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-                fragmentTransaction.replace(R.id.fragment_configuracion, fragmentoContactos).commit();
-                fragmentTransaction.addToBackStack(null);
+                startActivity(new Intent(getActivity(), ActivityEditarLeerContactos.class));
                 break;
         }
 

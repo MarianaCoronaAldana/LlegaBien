@@ -124,10 +124,10 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
             case R.id.button_enviarReporte_subirReporteUsuario:
                 if (validarAllInputs()) {
                     Log.v("QUICKSTART", "Estoy en enviar reporte");
-                    Reporte_DAO usuarioBD_CRUD = new Reporte_DAO(this.getContext());
+                    Reporte_DAO reporteDAO = new Reporte_DAO(this.getContext());
                     inicializarReporte();
-                    if (verificarHistorialReportes(usuarioBD_CRUD)) {
-                        usuarioBD_CRUD.añadirReporte(Reporte);
+                    if (verificarHistorialReportes(reporteDAO)) {
+                        reporteDAO.añadirReporte(Reporte);
                         Toast.makeText(this.getContext(), "Tu reporte será verificado el siguiente fin de semana", Toast.LENGTH_LONG).show();
                     }
                 }
