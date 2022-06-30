@@ -231,8 +231,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/view4_subirReporteUsuario"
                     app:layout_constraintVertical_bias="0.0"/>
 
-                <EditText
-                    android:id="@+id/editText_ubicacionDelito_subirReporteUsuario"
+                <Button
+                    android:id="@+id/button_ubicacionDelito_subirReporteUsuario"
                     style="@style/EditTextTransparente"
                     android:hint="@string/ubicacionDelitoHint_subirReporteUsuario"
                     android:inputType="text"
@@ -250,7 +250,7 @@
                     app:layout_constraintDimensionRatio="15:1"
                     app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_subirReporteUsuario"
                     app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_subirReporteUsuario"
-                    app:layout_constraintTop_toBottomOf="@+id/editText_ubicacionDelito_subirReporteUsuario" />
+                    app:layout_constraintTop_toBottomOf="@+id/button_ubicacionDelito_subirReporteUsuario" />
 
                 <TextView
                     android:id="@+id/textView_fechaDelito_subirReporteUsuario"

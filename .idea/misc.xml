@@ -20,11 +20,13 @@
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_cambiar_contra_usuario.xml" value="0.1" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_iniciar_sesion1.xml" value="0.264" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_iniciar_sesion2.xml" value="0.2961672473867596" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_lista_reportes.xml" value="0.1" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_registrar_usuario1.xml" value="0.1" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_restablecer_contrasena1.xml" value="0.12158054711246201" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_restablecer_contrasena2.xml" value="0.12158054711246201" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_restablecer_contrasena3.xml" value="0.12158054711246201" />
-        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_subir_reporte_usuario.xml" value="0.152" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_subir_reporte_admin.xml" value="0.1" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_subir_reporte_usuario.xml" value="0.6" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/spinner_dropdown_item.xml" value="0.264" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/spinner_item.xml" value="0.12972972972972974" />
         <entry key="..\:/Downloads/CETI/Proyecto/LlegaBien/app/src/main/res/layout/activity_configuracion_admin.xml" value="0.28940217391304346" />
