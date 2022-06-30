@@ -174,7 +174,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements AdapterVie
         Reporte.setTipoDelito(mSpinnerCualDelito.getSelectedItem().toString());
         Reporte.setFechaReporte(convertToDateViaInstant(LocalDateTime.now()));
 
-        LocalDate localDate =  LocalDate.parse(mEditTxtFechaDelito.getText(), DateTimeFormatter.ofPattern("d/M/yyyy"));
+        LocalDate localDate =  LocalDate.parse(mEditTxtFechaDelito.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         LocalTime localTime = LocalTime.parse(mEditTxtHoraDelito.getText(), DateTimeFormatter.ofPattern("HH:mm"));
         Reporte.setFecha(convertToDateViaInstant(localDate.atTime(localTime)));
 

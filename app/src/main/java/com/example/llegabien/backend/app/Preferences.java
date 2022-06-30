@@ -18,7 +18,7 @@ public class Preferences extends AppCompatActivity {
     public static final String PREFERENCE_UBICACION_BUSQUEDA_AUTOCOMPLETADA = "ubicacionBusquedaAutocompletada";
     public static final String PREFERENCE_UBICACION = "ubicacion";
 
-    // Guaradar preferencia sobre un tipo boolean
+    // Guardar preferencia sobre un tipo boolean
     public static void savePreferenceBoolean(Context c, boolean b, String key){
         mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES,c.MODE_PRIVATE);
         mSharedPreferences.edit().putBoolean(key,b).apply();
@@ -38,7 +38,6 @@ public class Preferences extends AppCompatActivity {
                 .deleteRealmIfMigrationNeeded()
                 .build()).copyFromRealm(object));
         mSharedPreferences.edit().putString(key, jsonObjectRealm).apply();
-
     }
 
     public static void savePreferenceObject(Context c, String key, Object object) {

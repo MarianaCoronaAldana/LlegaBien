@@ -48,4 +48,3 @@
         app:layout_constraintTop_toTopOf="@id/guideline_barraNavegacion_editarLeerContactos"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

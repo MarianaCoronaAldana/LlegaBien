@@ -124,7 +124,7 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
        Usuario.setNombre(mEditTxtNombres.getText().toString().trim());
        Usuario.setApellidos(mEditTxtApellidos.getText().toString().trim());
 
-       DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+       DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
        LocalDate localDate =  LocalDate.parse(mEditTxtFechaNacimiento.getText().toString(), dateTimeFormatter);
        Usuario.setFNacimiento(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 

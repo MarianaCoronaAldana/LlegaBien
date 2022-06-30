@@ -24,6 +24,5 @@ public class Utilidades {
             editText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             button.setText("hide");
         }
-
     }
 }

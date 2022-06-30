@@ -147,7 +147,7 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
         mEditTxtCorreo.setText(Usuario.getCorreoElectronico());
         mEditTxtNumTelefonico.setText(Usuario.getTelCelular());
 
-        DateFormat dateFormat = new SimpleDateFormat("dd / M / yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         mEditTxtFechaNacimiento.setText(dateFormat.format(Usuario.getFNacimiento()));
     }
 
@@ -159,7 +159,7 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
         Usuario.setCorreoElectronico(mEditTxtCorreo.getText().toString());
         Usuario.setTelCelular(mEditTxtNumTelefonico.getText().toString());
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd / M / yyyy");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate localDate =  LocalDate.parse(mEditTxtFechaNacimiento.getText().toString(), dateTimeFormatter);
         Usuario.setFNacimiento(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 

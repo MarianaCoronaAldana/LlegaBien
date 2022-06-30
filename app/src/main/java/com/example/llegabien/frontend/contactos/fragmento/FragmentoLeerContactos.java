@@ -1,5 +1,7 @@
 package com.example.llegabien.frontend.contactos.fragmento;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
+
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,14 +23,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.llegabien.R;
+import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.frontend.usuario.fragmento.FragmentoEditarPerfilUsuario;
 
 public class FragmentoLeerContactos extends Fragment implements View.OnClickListener {
 
     private ConstraintLayout mConsLytScrollView, mConsLytPrincipalContacto;
     private View mViewAuxiliar;
     private Button mBtnRegersar;
+    private usuario Usuario;
 
-    
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,8 +49,9 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
         //listeners
         mBtnRegersar.setOnClickListener(this);
 
+        Usuario = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_USUARIO, usuario.class);
         crearVistaContacto();
-        
+
         return root;
     }
 
@@ -53,7 +59,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
     private void crearVistaContacto() {
         ConstraintSet constraintSet = new ConstraintSet();
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < Usuario.getContacto().size(); i++) {
 
             // ConstraintLayout principal
             constraintSet.clone(mConsLytScrollView);
@@ -222,7 +228,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             TextView txtViewDatoNombreContacto = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.EditTextTransparente));
 
             txtViewDatoNombreContacto.setId(View.generateViewId());
-
+            txtViewDatoNombreContacto.setText(Usuario.getContacto().get(i).getNombre());
             txtViewDatoNombreContacto.setClickable(true);
             txtViewDatoNombreContacto.setFocusable(true);
             txtViewDatoNombreContacto.setOnClickListener(this);
@@ -266,7 +272,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             TextView txtViewDatoNumTelefonicoContacto = new TextView(this.getActivity(), null, 0, R.style.EditTextTransparente);
 
             txtViewDatoNumTelefonicoContacto.setId(View.generateViewId());
-
+            txtViewDatoNumTelefonicoContacto.setText(Usuario.getContacto().get(i).getTelCelular().substring(2));
             txtViewDatoNumTelefonicoContacto.setClickable(true);
             txtViewDatoNumTelefonicoContacto.setFocusable(true);
             txtViewDatoNumTelefonicoContacto.setOnClickListener(this);
@@ -287,7 +293,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             TextView txtViewDatoCountryCode = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.EditTextTransparente));
 
             txtViewDatoCountryCode.setId(View.generateViewId());
-
+            txtViewDatoCountryCode.setText(Usuario.getContacto().get(i).getTelCelular().substring(0, 2));
             txtViewDatoCountryCode.setClickable(true);
             txtViewDatoCountryCode.setFocusable(true);
             txtViewDatoCountryCode.setOnClickListener(this);
@@ -330,7 +336,6 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
 
         // Para agregar cambios a "mConstLytPrincipalContacto"
         constraintSet.applyTo(mConsLytScrollView);
-
     }
 
     @Override
@@ -339,7 +344,8 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             getActivity().finish();
         else {
             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-            FragmentoEditarContacto fragmentoEditarContacto = new FragmentoEditarContacto(view.getId());
+//            FragmentoEditarContacto fragmentoEditarContacto = new FragmentoEditarContacto(view.getId());
+            FragmentoEditarContacto fragmentoEditarContacto = new FragmentoEditarContacto();
             fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
             fragmentTransaction.replace(R.id.fragmentContainerView_leerEditarContactos, fragmentoEditarContacto).commit();
             fragmentTransaction.addToBackStack(null);

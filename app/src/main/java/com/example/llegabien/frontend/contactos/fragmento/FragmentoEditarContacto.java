@@ -19,6 +19,9 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
     private int mIdContacto;
     private Button mBtnRegresar;
 
+    public FragmentoEditarContacto() {
+    }
+
     public FragmentoEditarContacto(int idContacto) {
         mIdContacto = idContacto;
     }
@@ -36,8 +39,6 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
         mBtnRegresar.setOnClickListener(this);
 
         return root;
-
-
     }
 
     @Override

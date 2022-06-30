@@ -45,8 +45,21 @@ public class DialogDatePicker extends DialogFragment {
         DialogDatePicker dialogDatePicker = DialogDatePicker.newInstance(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+
                 // +1 porque Enero es 0
-                final String fechaSeleccionada = day + "/" + (month+1) + "/" + year;
+                month++;
+
+                String sMonth="", sDay="";
+                if(month<10)
+                    sMonth+= "0";
+
+                if(day<10)
+                    sDay+= "0";
+
+                sMonth+=String.valueOf(month);
+                sDay+=String.valueOf(day);
+
+                final String fechaSeleccionada = sDay + "/" + sMonth + "/" + year;
                 editTextFechaNacimiento.setText(fechaSeleccionada);
             }
         });

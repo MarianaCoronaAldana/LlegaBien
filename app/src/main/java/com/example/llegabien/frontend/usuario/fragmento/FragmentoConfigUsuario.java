@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.frontend.contactos.fragmento.FragmentoLeerContactos;
 import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUsuario;
 
 public class FragmentoConfigUsuario extends Fragment implements View.OnClickListener{
@@ -43,6 +44,7 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
 
         //wiring up
         mBtnEditarPerfil = (ConstraintLayout) root.findViewById(R.id.button_editarPerfil_configuracionUsuario);
+        mBtnContactos = (ConstraintLayout) root.findViewById(R.id.button_contactos_configuracionUsuario);
         mBtnCerrarSesion = (Button) root.findViewById(R.id.button_cerrarSesion_configuracionUsuario);
         mBtnRegresar = (Button) root.findViewById(R.id.button_regresar_configuracionUsuario);
         mTxtViewCorreo = (TextView) root.findViewById(R.id.textView_correoUsuario_configuracionUsuario);
@@ -52,6 +54,7 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
         mBtnEditarPerfil.setOnClickListener(this);
         mBtnCerrarSesion.setOnClickListener(this);
         mBtnRegresar.setOnClickListener(this);
+        mBtnContactos.setOnClickListener(this);
 
         setDatosUsuario();
 
@@ -79,7 +82,12 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
             case R.id.button_regresar_configuracionUsuario:
                 //startActivity(new Intent(getActivity(), MapsActivity.class));
                 break;
-
+            case R.id.button_contactos_configuracionUsuario:
+                FragmentoLeerContactos fragmentoContactos = new FragmentoLeerContactos();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+                fragmentTransaction.replace(R.id.fragment_configuracion, fragmentoContactos).commit();
+                fragmentTransaction.addToBackStack(null);
+                break;
         }
 
     }

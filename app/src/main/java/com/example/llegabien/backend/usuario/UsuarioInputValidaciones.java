@@ -60,7 +60,7 @@ public class UsuarioInputValidaciones {
             return false;
         else {
             LocalDate fechaHoy = LocalDate.now();
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate fechaNacimiento = LocalDate.parse(mStringParaValidar, dateTimeFormatter);
             Period periodo = Period.between(fechaNacimiento, fechaHoy);
             if (periodo.getYears() < 16) {
