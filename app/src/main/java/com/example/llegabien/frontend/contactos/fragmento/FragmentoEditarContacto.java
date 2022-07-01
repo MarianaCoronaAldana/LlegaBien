@@ -37,9 +37,10 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
     }
 
     public FragmentoEditarContacto(int idContacto, usuario Usuario) {
+        Log.v("QUICKSTART", "Estoy en EDITAR contactos, id: " + mIdContacto);
         mStringIdContacto = String.valueOf(idContacto);
+        mIdContacto = idContacto;
         mUsuario = Usuario;
-        inicializarId();
     }
 
     @Override
@@ -81,20 +82,6 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
         }
     }
 
-    // Dependiendo del contacto elegido por el usuario, se determina el id de contacto con el que se debe trabajar
-    private void inicializarId() {
-        if(mStringIdContacto.contains("1"))
-            mIdContacto = 0;
-        else if(mStringIdContacto.contains("2"))
-            mIdContacto = 1;
-        else if(mStringIdContacto.contains("3"))
-            mIdContacto = 2;
-        else if(mStringIdContacto.contains("4"))
-            mIdContacto = 3;
-        else if(mStringIdContacto.contains("5"))
-            mIdContacto = 4;
-    }
-
     private void mostrarDatos() {
         mEditTxtNombreContacto.setText(mUsuario.getContacto().get(mIdContacto).getNombre());
         mEditTxtCountryCode.setText(mUsuario.getContacto().get(mIdContacto).getTelCelular().substring(0, 2));
@@ -133,5 +120,4 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
         else
             Toast.makeText(getApplicationContext(), "Hubo un error, intente mas tarde", Toast.LENGTH_SHORT).show();
     }
-
 }
