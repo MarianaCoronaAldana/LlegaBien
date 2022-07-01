@@ -25,5 +25,4 @@ public class usuario_contacto extends RealmObject  {
 
     public usuario_contacto() {
     }
-
 }

@@ -208,7 +208,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             // Textview "Nombre del contacto"
             TextView txtViewNombreContacto = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.TxtViewTransparente_LetraAzulOscuro));
 
-    //        txtViewNombreContacto.setId(View.generateViewId());
+            //        txtViewNombreContacto.setId(View.generateViewId());
             txtViewNombreContacto.setId(Integer.valueOf(sI+sI));
 
             txtViewNombreContacto.setText(getResources().getString(R.string.nombreCompletoTextView));

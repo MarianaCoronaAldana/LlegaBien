@@ -90,6 +90,8 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             mConsLytPrincipalReporte.setBackground(getActivity().getResources().getDrawable(R.drawable.bkgd_esquinas_redondeadas));
             mConsLytPrincipalReporte.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.morado_claro));
 
+            mConsLytPrincipalReporte.setClickable(true);
+            mConsLytPrincipalReporte.setOnClickListener(this);
             mConsLytPrincipalReporte.setContentDescription(reportes.get(i).get_id().toString());
 
             mConsLytScrollView.addView(mConsLytPrincipalReporte);
@@ -252,6 +254,8 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
+        Log.v("QUICKSTART", "ME HICIERON CLICK :D");
+
         if (view.getId() == R.id.button_regresar_listaReportes)
             getActivity().getSupportFragmentManager().popBackStack();
     }
