@@ -25,6 +25,7 @@ import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.frontend.app.Utilidades;
 import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUsuario;
 import com.example.llegabien.frontend.usuario.dialog.DialogDatePicker;
 import com.example.llegabien.backend.usuario.UsuarioBD_CRUD;
@@ -142,10 +143,14 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
     // Escribir dentro de las EditText los datos previos del usuario
     private void setDatosUsuario() {
         Usuario = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_USUARIO, usuario.class);
+        String countryCode = Utilidades.obtenerCountryCode(Usuario.getTelCelular());
+        String numTel = Usuario.getTelCelular().replace(countryCode, "");
+
         mEditTxtNombres.setText(Usuario.getNombre());
         mEditTxtApellidos.setText(Usuario.getApellidos());
         mEditTxtCorreo.setText(Usuario.getCorreoElectronico());
-        mEditTxtNumTelefonico.setText(Usuario.getTelCelular());
+        mEditTxtNumTelefonico.setText(numTel);
+        mEditTxtCountryCode.setText(countryCode);
 
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         mEditTxtFechaNacimiento.setText(dateFormat.format(Usuario.getFNacimiento()));
@@ -157,7 +162,7 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
         Usuario.setNombre(mEditTxtNombres.getText().toString());
         Usuario.setApellidos(mEditTxtApellidos.getText().toString());
         Usuario.setCorreoElectronico(mEditTxtCorreo.getText().toString());
-        Usuario.setTelCelular(mEditTxtNumTelefonico.getText().toString());
+        Usuario.setTelCelular(mEditTxtCountryCode.getText().toString() + mEditTxtNumTelefonico.getText().toString());
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate localDate =  LocalDate.parse(mEditTxtFechaNacimiento.getText().toString(), dateTimeFormatter);

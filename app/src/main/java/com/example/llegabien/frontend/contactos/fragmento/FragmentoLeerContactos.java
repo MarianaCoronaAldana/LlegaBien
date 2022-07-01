@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.frontend.app.Utilidades;
 import com.example.llegabien.frontend.usuario.fragmento.FragmentoEditarPerfilUsuario;
 
 public class FragmentoLeerContactos extends Fragment implements View.OnClickListener {
@@ -59,10 +60,13 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void crearVistaContacto() {
         ConstraintSet constraintSet = new ConstraintSet();
+        String countryCode;
+        String numTel;
 
         for (int i = 0; i < Usuario.getContacto().size(); i++) {
-            String sI = String.valueOf(i);
             Log.v("QUICKSTART", "Estoy en LEER contactos, id 11: " + Integer.valueOf(String.valueOf(i)+String.valueOf(i)));
+            countryCode = Utilidades.obtenerCountryCode(Usuario.getContacto().get(i).getTelCelular());
+            numTel = Usuario.getContacto().get(i).getTelCelular().replace(countryCode, "");
 
             // ConstraintLayout principal
             constraintSet.clone(mConsLytScrollView);
@@ -284,7 +288,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             TextView txtViewDatoNumTelefonicoContacto = new TextView(this.getActivity(), null, 0, R.style.EditTextTransparente);
 
             txtViewDatoNumTelefonicoContacto.setId(View.generateViewId());
-            txtViewDatoNumTelefonicoContacto.setText(Usuario.getContacto().get(i).getTelCelular().substring(2));
+            txtViewDatoNumTelefonicoContacto.setText(numTel);
             txtViewDatoNumTelefonicoContacto.setClickable(true);
             txtViewDatoNumTelefonicoContacto.setFocusable(true);
             txtViewDatoNumTelefonicoContacto.setOnClickListener(this);
@@ -306,7 +310,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             TextView txtViewDatoCountryCode = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.EditTextTransparente));
 
             txtViewDatoCountryCode.setId(View.generateViewId());
-            txtViewDatoCountryCode.setText(Usuario.getContacto().get(i).getTelCelular().substring(0, 2));
+            txtViewDatoCountryCode.setText(countryCode);
             txtViewDatoCountryCode.setClickable(true);
             txtViewDatoCountryCode.setFocusable(true);
             txtViewDatoCountryCode.setOnClickListener(this);

@@ -24,6 +24,7 @@ import com.example.llegabien.backend.contactos.usuario_contacto;
 import com.example.llegabien.backend.usuario.UsuarioBD_CRUD;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.frontend.app.Utilidades;
 
 public class FragmentoEditarContacto extends Fragment implements View.OnClickListener {
 
@@ -83,9 +84,12 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
     }
 
     private void mostrarDatos() {
+        String countryCode = Utilidades.obtenerCountryCode(mUsuario.getContacto().get(mIdContacto).getTelCelular());
+        String numTel = mUsuario.getContacto().get(mIdContacto).getTelCelular().replace(countryCode, "");
+
         mEditTxtNombreContacto.setText(mUsuario.getContacto().get(mIdContacto).getNombre());
-        mEditTxtCountryCode.setText(mUsuario.getContacto().get(mIdContacto).getTelCelular().substring(0, 2));
-        mEditTxtTelefonoContacto.setText(mUsuario.getContacto().get(mIdContacto).getTelCelular().substring(2));
+        mEditTxtCountryCode.setText(countryCode);
+        mEditTxtTelefonoContacto.setText(numTel);
     }
 
     private boolean validarAllInputs() {

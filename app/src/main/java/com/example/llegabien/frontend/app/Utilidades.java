@@ -9,6 +9,9 @@ import android.widget.EditText;
 import androidx.core.content.ContextCompat;
 
 import com.example.llegabien.R;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 
 public class Utilidades {
 
@@ -24,5 +27,18 @@ public class Utilidades {
             editText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             button.setText("hide");
         }
+    }
+
+    public static String obtenerCountryCode(String numTelefonico){
+        numTelefonico = "+" + numTelefonico;
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        try {
+            // phone must begin with '+'
+            Phonenumber.PhoneNumber numberProto = phoneUtil.parse(numTelefonico, "");
+            return String.valueOf(numberProto.getCountryCode());
+        } catch (NumberParseException e) {
+            System.err.println("NumberParseException was thrown: " + e.toString());
+        }
+        return null;
     }
 }

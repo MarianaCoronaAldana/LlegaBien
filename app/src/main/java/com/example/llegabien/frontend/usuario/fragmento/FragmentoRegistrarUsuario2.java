@@ -130,7 +130,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
     //Obtiene los datos introducidos por el usuario y los une al objeto usuario con el que se está trabajando
     private void usuarioConDatos() {
         Usuario.setCorreoElectronico(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT).trim());
-        String numTelefonico = "+" + mEditTxtCountryCode.getText().toString() + mEditTxtNumTelefonico.getText().toString();
+        String numTelefonico = mEditTxtCountryCode.getText().toString() + mEditTxtNumTelefonico.getText().toString();
         Usuario.setTelCelular(numTelefonico.trim());
         Usuario.setContrasena(encriptarContrasena(mEditTxtContraseña.getText().toString()));
 
