@@ -3,8 +3,6 @@ package com.example.llegabien.frontend.reportes.fragmento;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,7 +13,6 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.util.TypedValue;
@@ -32,8 +29,6 @@ import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.reporte.Reporte_DAO;
 import com.example.llegabien.backend.reporte.reporte;
 import com.example.llegabien.backend.usuario.usuario;
-import com.example.llegabien.frontend.contactos.activity.ActivityEditarLeerContactos;
-import com.example.llegabien.frontend.contactos.fragmento.FragmentoEditarContacto;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -42,7 +37,7 @@ import io.realm.RealmResults;
 
 public class FragmentoListaReportes extends Fragment implements View.OnClickListener {
 
-    private ConstraintLayout mConsLytScrollView, mConsLytPrincipalReporte;
+    private ConstraintLayout mConsLytScrollView;
     private View mViewAuxiliar;
     private Guideline mGuideline10Porciento, mGuideline90Porciente;
     private Button mBtnRegresar;
@@ -72,38 +67,51 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
         usuario Usuario = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_USUARIO, usuario.class);
         Reporte_DAO reporte_DAO = new Reporte_DAO(this.getContext());
         reportes = reporte_DAO.obtenerReportesPorUsuario(Usuario);
-        crearVistaContacto();
+        crearVistaListaReportes();
 
         return root;
     }
 
+    // FUNCIONES LISTENER //
+    @Override
+    public void onClick(View view) {
+        Log.v("QUICKSTART", "ME HICIERON CLICK :D");
+
+        if (view.getId() == R.id.button_regresar_listaReportes)
+            getActivity().getSupportFragmentManager().popBackStack();
+    }
+
+    //OTRAS FUNCIONES//
+
     @SuppressLint("UseCompatLoadingForDrawables")
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void crearVistaContacto() {
+    private void crearVistaListaReportes() {
         ConstraintSet constraintSet = new ConstraintSet();
 
         for (int i = 0; i < reportes.size(); i++) {
             // ConstraintLayout principal
             constraintSet.clone(mConsLytScrollView);
-            mConsLytPrincipalReporte = new ConstraintLayout(this.getActivity());
-            mConsLytPrincipalReporte.setId(View.generateViewId());
-            mConsLytPrincipalReporte.setBackground(getActivity().getResources().getDrawable(R.drawable.bkgd_esquinas_redondeadas));
-            mConsLytPrincipalReporte.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.morado_claro));
+            ConstraintLayout consLytPrincipalReporte = new ConstraintLayout(this.getActivity());
+            consLytPrincipalReporte.setId(View.generateViewId());
+            consLytPrincipalReporte.setBackground(getActivity().getResources().getDrawable(R.drawable.bkgd_esquinas_redondeadas));
+            consLytPrincipalReporte.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.morado_claro));
 
-            mConsLytPrincipalReporte.setContentDescription(reportes.get(i).get_id().toString());
+            consLytPrincipalReporte.setClickable(true);
+            consLytPrincipalReporte.setOnClickListener(this);
+            consLytPrincipalReporte.setContentDescription(reportes.get(i).get_id().toString());
 
-            mConsLytScrollView.addView(mConsLytPrincipalReporte);
-            constraintSet.connect(mConsLytPrincipalReporte.getId(), ConstraintSet.START, mGuideline10Porciento.getId(), ConstraintSet.START, 0);
-            constraintSet.connect(mConsLytPrincipalReporte.getId(), ConstraintSet.END, mGuideline90Porciente.getId(), ConstraintSet.END, 0);
-            constraintSet.connect(mConsLytPrincipalReporte.getId(), ConstraintSet.TOP, mViewAuxiliar.getId(), ConstraintSet.BOTTOM, 0);
-            constraintSet.connect(mConsLytPrincipalReporte.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
+            mConsLytScrollView.addView(consLytPrincipalReporte);
+            constraintSet.connect(consLytPrincipalReporte.getId(), ConstraintSet.START, mGuideline10Porciento.getId(), ConstraintSet.START, 0);
+            constraintSet.connect(consLytPrincipalReporte.getId(), ConstraintSet.END, mGuideline90Porciente.getId(), ConstraintSet.END, 0);
+            constraintSet.connect(consLytPrincipalReporte.getId(), ConstraintSet.TOP, mViewAuxiliar.getId(), ConstraintSet.BOTTOM, 0);
+            constraintSet.connect(consLytPrincipalReporte.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
 
-            constraintSet.constrainWidth(mConsLytPrincipalReporte.getId(), ConstraintSet.PARENT_ID);
-            constraintSet.constrainHeight(mConsLytPrincipalReporte.getId(), 0);
+            constraintSet.constrainWidth(consLytPrincipalReporte.getId(), ConstraintSet.PARENT_ID);
+            constraintSet.constrainHeight(consLytPrincipalReporte.getId(), 0);
 
-            constraintSet.setDimensionRatio(mConsLytPrincipalReporte.getId(), "7:2");
+            constraintSet.setDimensionRatio(consLytPrincipalReporte.getId(), "7:2");
 
-            constraintSet.setVerticalBias(mConsLytPrincipalReporte.getId(), 0.0f);
+            constraintSet.setVerticalBias(consLytPrincipalReporte.getId(), 0.0f);
             //Fin de ConstraintLayout principal
 
             // Separador
@@ -115,7 +123,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
 
             constraintSet.connect(viewSeparadorFinal.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
             constraintSet.connect(viewSeparadorFinal.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
-            constraintSet.connect(viewSeparadorFinal.getId(), ConstraintSet.TOP, mConsLytPrincipalReporte.getId(), ConstraintSet.BOTTOM, 0);
+            constraintSet.connect(viewSeparadorFinal.getId(), ConstraintSet.TOP, consLytPrincipalReporte.getId(), ConstraintSet.BOTTOM, 0);
             constraintSet.connect(viewSeparadorFinal.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
 
             constraintSet.setDimensionRatio(viewSeparadorFinal.getId(), "15:1");
@@ -129,7 +137,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             // Fin ConstraintLayout principal
 
             // Se cambia de ConstraintLayout
-            constraintSet.clone(mConsLytPrincipalReporte);
+            constraintSet.clone(consLytPrincipalReporte);
 
             // Guideline "5 porciento"
             Guideline guideline5Porciento = new Guideline(this.getActivity());
@@ -180,7 +188,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             viewSeparador.setId(View.generateViewId());
             viewSeparador.setBackgroundColor(getActivity().getResources().getColor(R.color.negro));
 
-            mConsLytPrincipalReporte.addView(viewSeparador);
+            consLytPrincipalReporte.addView(viewSeparador);
 
             constraintSet.connect(viewSeparador.getId(), ConstraintSet.START, guideline5Porciento.getId(), ConstraintSet.START, 0);
             constraintSet.connect(viewSeparador.getId(), ConstraintSet.END, guideline95Porciento.getId(), ConstraintSet.END, 0);
@@ -200,7 +208,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             txtViewTipoDelito.setTypeface(Typeface.DEFAULT_BOLD);
             txtViewTipoDelito.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
 
-            mConsLytPrincipalReporte.addView(txtViewTipoDelito);
+            consLytPrincipalReporte.addView(txtViewTipoDelito);
 
             constraintSet.constrainHeight(txtViewTipoDelito.getId(), ConstraintSet.PARENT_ID);
 
@@ -219,7 +227,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             txtViewFechaReporte.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_size_parrafo_medium));
             txtViewFechaReporte.setGravity(Gravity.END|Gravity.CENTER_VERTICAL);
 
-            mConsLytPrincipalReporte.addView(txtViewFechaReporte);
+            consLytPrincipalReporte.addView(txtViewFechaReporte);
 
             constraintSet.constrainHeight(txtViewFechaReporte.getId(), ConstraintSet.PARENT_ID);
 
@@ -235,7 +243,8 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
 
             txtViewUbicacionDelito.setText(reportes.get(i).getUbicacion());
             txtViewFechaReporte.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
-            mConsLytPrincipalReporte.addView(txtViewUbicacionDelito);
+
+            consLytPrincipalReporte.addView(txtViewUbicacionDelito);
 
             constraintSet.constrainHeight(txtViewUbicacionDelito.getId(), ConstraintSet.PARENT_ID);
 
@@ -245,16 +254,8 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             constraintSet.connect(txtViewUbicacionDelito.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
             // Fin de Textview "UbicacionDelito"
 
-            constraintSet.applyTo(mConsLytPrincipalReporte);
+            constraintSet.applyTo(consLytPrincipalReporte);
 
         }
-    }
-
-    @Override
-    public void onClick(View view) {
-        Log.v("QUICKSTART", "ME HICIERON CLICK :D");
-
-        if (view.getId() == R.id.button_regresar_listaReportes)
-            getActivity().getSupportFragmentManager().popBackStack();
     }
 }

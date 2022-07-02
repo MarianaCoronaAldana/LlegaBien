@@ -33,10 +33,6 @@
     <string name="guardarCambiosBtn_editarContacto">Guardar cambios</string>
 
 
-    <!-- Editar perfil, leer conatcto y editar contactos. -->
-    <string name="nombreCompletoTextView">Nombre completo:</string>
-    <string name="numTelefónicoTextView">Número telefónico:</string>
-
     <!-- Lista de reportes. -->
     <string name="titulo_listaReportes">Reportes generados</string>
     <string name="descripcion_listaReportes">Aquí puedes ver los reportes que has generado.</string>
@@ -59,20 +55,7 @@
     <string name="finalizarBtn_registro4">Finalizar</string>
 
     <!-- Registro, Iniciar sesión, Editar perfil, Cambiar contraseña -->
-    <string name="iniciaBtn">Inicia</string>
-    <string name="siguienteBtn">Siguiente</string>
-    <string name="verificarBtn">Verificar</string>
-    <string name="correoEditTxt">Correo electrónico</string>
-    <string name="contraseñaEditTxt">Contraseña</string>
-    <string name="confirmarContraseñaEditTxt">Confirma contraseña</string>
-    <string name="reenviarCodigoBtn">No recibí ningún código. Reenviar</string>
-    <string name="instruccionesCodigoCorreoTxtView">Ingresa el código que enviamos a tu correo electrónico.</string>
-    <string name="nombresEditTxt">Nombres</string>
-    <string name="apellidosEditTxt">Apellidos</string>
-    <string name="fechaNacimientoEditTxt">Fecha de nacimiento</string>
-    <string name="celularEditTxt">Número de teléfono</string>
-    <string name="celularCountryCodeTxtView">+</string>
-    <string name="celularCountryCodeEditText">52</string>
+
 
     <!-- Errores -->
     <string name="errorStringVacia">Este campo es obligatorio</string>
@@ -102,7 +85,6 @@
     <string name="instrucciones_cambiarContra">Aquí puedes cambiar tu contraseña</string>
     <string name="actualContra_cambiarContra">Contraseña actual</string>
     <string name="nuevaContra">Contraseña nueva</string>
-    <string name="aceptarBtn_cambiarContra">Aceptar</string>
 
     <!-- Configuracion avanzada -->
     <string name="otrosPerfiles_configAvan">Editar otros perfiles</string>
@@ -157,7 +139,7 @@
 
     <!-- Permisos. -->
     <string name="titulo_permisos">Permiso de Ubicacion</string>
-    <string name="descripcion_permisos">Necesitamos la ubicación de tus dispositivo móvil para esta esta función.</string>
+    <string name="descripcion_permisos">Necesitamos la ubicación de tu dispositivo móvil para esta esta función.</string>
     <string name="btnAceptarPermisos_permisos">Aceptar ubicación</string>
 
     <!-- Subir reporte usuario. -->
@@ -176,6 +158,29 @@
     <string name="horaDelitoHint_subirReporteUsuario">Selecciona la hora</string>
     <string name="cualDelitoHint_subirReporteUsuario">Selecciona el delito que se cometió</string>
     <string name="comentariosAdicionalesHint_subirReporteUsuario">Escribe comentarios adicionales del suceso</string>
+
+    <!-- Strings generales. -->
+    <string name="iniciaBtn">Inicia</string>
+    <string name="siguienteBtn">Siguiente</string>
+    <string name="verificarBtn">Verificar</string>
+    <string name="correoEditTxt">Correo electrónico</string>
+    <string name="contraseñaEditTxt">Contraseña</string>
+    <string name="confirmarContraseñaEditTxt">Confirma contraseña</string>
+    <string name="reenviarCodigoBtn">No recibí ningún código. Reenviar</string>
+    <string name="instruccionesCodigoCorreoTxtView">Ingresa el código que enviamos a tu correo electrónico.</string>
+    <string name="nombresEditTxt">Nombres</string>
+    <string name="apellidosEditTxt">Apellidos</string>
+    <string name="fechaNacimientoEditTxt">Fecha de nacimiento</string>
+    <string name="celularEditTxt">Número de teléfono</string>
+    <string name="celularCountryCodeTxtView">+</string>
+    <string name="celularCountryCodeEditText">52</string>
+    <string name="nombreCompletoTextView">Nombre completo:</string>
+    <string name="numTelefónicoTextView">Número telefónico:</string>
+    <string name="aceptarBtn">Aceptar</string>
+
+    <!-- Google Maps API Key. -->
+    <string name="titulo_favoritos">Favoritos</string>
+    <string name="descripcion_favoritos">Aquí puedes ver tus lugares favoritos.</string>
 
     <!-- Google Maps API Key. -->
     <string name="api_key">AIzaSyA_1vA9ikwZ0Ju7s5s2-C1QLQ51BQmwSlM</string>

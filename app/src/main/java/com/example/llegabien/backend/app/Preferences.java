@@ -1,7 +1,11 @@
 package com.example.llegabien.backend.app;
+import static java.lang.String.valueOf;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -15,18 +19,13 @@ public class Preferences extends AppCompatActivity {
     public static final String PREFERENCE_MENSAJE_PORBATERIA_ENVIADO = "mensaje.por.bateria.enviado";
     public static final String PREFERENCE_ES_ADMIN = "usuario.admin";
     public static final String PREFERENCE_USUARIO = "usuario";
-    public static final String PREFERENCE_UBICACION_BUSQUEDA_AUTOCOMPLETADA = "ubicacionBusquedaAutocompletada";
     public static final String PREFERENCE_UBICACION = "ubicacion";
+    public static final String PREFERENCE_FAVORITO = "favorito";
 
     // Guardar preferencia sobre un tipo boolean
     public static void savePreferenceBoolean(Context c, boolean b, String key){
         mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES,c.MODE_PRIVATE);
         mSharedPreferences.edit().putBoolean(key,b).apply();
-    }
-
-    public static void savePreferenceString(Context c, String b, String key){
-        android.content.SharedPreferences preferences = c.getSharedPreferences(STRING_PREFERENCES,c.MODE_PRIVATE);
-        preferences.edit().putString(key,b).apply();
     }
 
     // Para guardar preferencias de un objeto realm
@@ -40,17 +39,6 @@ public class Preferences extends AppCompatActivity {
         mSharedPreferences.edit().putString(key, jsonObjectRealm).apply();
     }
 
-    public static void savePreferenceObject(Context c, String key, Object object) {
-        final Gson gson = new Gson();
-        mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES, c.MODE_PRIVATE);
-        String jsonObject = gson.toJson(object);
-        mSharedPreferences.edit().putString(key, jsonObject ).apply();
-    }
-
-    public static String getSavedStringFromPreference(Context c,String key){
-        mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES,c.MODE_PRIVATE);
-        return mSharedPreferences.getString(key,"no hay string");
-    }
 
     // Obtener preferencia acerca de un tipo boolean
     public static boolean getSavedBooleanFromPreference(Context c,String key){

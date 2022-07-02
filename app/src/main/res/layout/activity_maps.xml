@@ -21,10 +21,8 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView1_fragemntoBuscarLugar_activityMaps"
-        android:name="com.example.llegabien.frontend.mapa.fragmento.FragmentoBuscarLugar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView_botonEmergencia"

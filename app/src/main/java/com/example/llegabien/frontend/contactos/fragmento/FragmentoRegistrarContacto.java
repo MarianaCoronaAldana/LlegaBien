@@ -179,8 +179,8 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
     //Funcion para tomar datos del contacto y añadirlo al objeto Usuario
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void tomarDatosContacto(){
-        Contacto.setNombre(mEditTxtNombre.getText().toString());
-        Contacto.setTelCelular(mEditTxtNumTelefonico.getText().toString());
+        Contacto.setNombre(mEditTxtNombre.getText().toString().trim());
+        Contacto.setTelCelular(mEditTxtCountryCode.getText().toString().trim() + mEditTxtNumTelefonico.getText().toString().trim());
 
         if(mNumContacto==1) {
             RealmList<usuario_contacto> Contactos =  new  RealmList <usuario_contacto>();

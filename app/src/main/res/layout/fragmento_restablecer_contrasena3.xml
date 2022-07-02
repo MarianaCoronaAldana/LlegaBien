@@ -200,7 +200,7 @@
         <Button
             android:id="@+id/button_aceptar_restablecer_contraseña_3"
             style="@style/BtnMoradoOscuro"
-            android:text="@string/aceptarBtn_cambiarContra"
+            android:text="@string/aceptarBtn"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/guideline2_button_restablecer_contraseña_3"
             app:layout_constraintStart_toStartOf="@id/guideline1_button_restablecer_contraseña_3"

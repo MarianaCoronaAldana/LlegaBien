@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.llegabien.R;
@@ -31,7 +32,6 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
     private int mIdContacto;
     private Button mBtnRegresar, mBtnEditarContacto;
     private EditText mEditTxtNombreContacto, mEditTxtCountryCode, mEditTxtTelefonoContacto;
-    private String mStringIdContacto;
     private usuario mUsuario = new usuario();
 
     public FragmentoEditarContacto() {
@@ -39,7 +39,6 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
 
     public FragmentoEditarContacto(int idContacto, usuario Usuario) {
         Log.v("QUICKSTART", "Estoy en EDITAR contactos, id: " + mIdContacto);
-        mStringIdContacto = String.valueOf(idContacto);
         mIdContacto = idContacto;
         mUsuario = Usuario;
     }
@@ -56,6 +55,7 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
         mEditTxtNombreContacto = root.findViewById(R.id.editText1_nombre_editarContacto);
         mEditTxtCountryCode = root.findViewById(R.id.editText_celularCountryCode_editarContacto);
         mEditTxtTelefonoContacto = root.findViewById(R.id.editText_celular_editarContacto);
+        TextView txtViewNumContacto = root.findViewById(R.id.textView_numContacto_editarContacto);
 
         //listeners
         mBtnRegresar.setOnClickListener(this);
@@ -63,6 +63,10 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
 
         Log.v("QUICKSTART", "Estoy en EDITAR contactos, id: " + mIdContacto);
 
+        // Para imprimir el número de contacto.
+        txtViewNumContacto.setText(txtViewNumContacto.getText().toString() + " " + (mIdContacto + 1));
+
+        // Para mostrar los datos del correspondiente contacto.
         mostrarDatos();
 
         return root;
@@ -110,8 +114,8 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
 
     private void actualizarContacto(){
         usuario_contacto contacto = new usuario_contacto();
-        contacto.setNombre(mEditTxtNombreContacto.getText().toString());
-        contacto.setTelCelular(mEditTxtCountryCode.getText().toString()+mEditTxtTelefonoContacto.getText().toString());
+        contacto.setNombre(mEditTxtNombreContacto.getText().toString().trim());
+        contacto.setTelCelular(mEditTxtCountryCode.getText().toString()+mEditTxtTelefonoContacto.getText().toString().trim());
 
         mUsuario.getContacto().set(mIdContacto, contacto);
 

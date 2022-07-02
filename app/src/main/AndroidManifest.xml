@@ -26,31 +26,34 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LlegaBien">
         <activity
+            android:name=".frontend.favoritos.activity.ActivityFavoritos"
+            android:exported="true" />
+        <activity
             android:name=".frontend.contactos.activity.ActivityEditarLeerContactos"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".frontend.reportes.activity.ActivityReportes"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".frontend.usuario.activity.ActivityConfiguracionAdmin"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".frontend.usuario.activity.ActivityConfiguracionUsuario"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".frontend.usuario.activity.ActivityPaginaPrincipalUsuario"
             android:configChanges="orientation"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".frontend.app.activity.ActivitySplashScreen"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -66,8 +69,7 @@
             android:name=".frontend.mapa.activity.ActivityMap"
             android:exported="true"
             android:label="@string/title_activity_maps"
-            android:windowSoftInputMode="adjustPan"/>
-
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

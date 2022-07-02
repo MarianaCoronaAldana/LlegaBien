@@ -63,8 +63,9 @@ public class UbicacionBusquedaAutocompletada {
             UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
             Address ubicacionGeocodificada = ubicacionGeodicacion.geocodificarUbiciacion(c, address);
             LatLng ubicacionBuscada = new LatLng(ubicacionGeocodificada.getLatitude(), ubicacionGeocodificada.getLongitude());
+            UbicacionBD_CRUD ubicacionBD_crud = new UbicacionBD_CRUD(c);
 
-            boolean isUbicacionBuscadaEnBD = getUbicacionBuscada(c,ubicacionBuscada.latitude,ubicacionBuscada.longitude);
+            boolean isUbicacionBuscadaEnBD = ubicacionBD_crud.obtenerUbicacionBuscada(ubicacionBuscada.latitude,ubicacionBuscada.longitude);
             onUbicacionBuscadaObtenida.isUbicacionBuscadaObtenida(true, isUbicacionBuscadaEnBD,ubicacionBuscada, address);
 
         }
@@ -80,36 +81,4 @@ public class UbicacionBusquedaAutocompletada {
             onUbicacionBuscadaObtenida.isUbicacionBuscadaObtenida(false, false,null, null);
         }
     }
-
-    private boolean getUbicacionBuscada(Context c, double latitude, double longitude){
-        Poligono poligono = new Poligono();
-        ubicacion ubicacion;
-
-        UbicacionBD_CRUD ubicacionBD_CRUD = new UbicacionBD_CRUD(c);
-
-        mResultadosUbicaciones = ubicacionBD_CRUD.obetenerCalles();
-        if(mResultadosUbicaciones != null){ }
-
-        mResultadosUbicaciones = ubicacionBD_CRUD.obetenerColonias();
-        if(mResultadosUbicaciones != null){
-            ubicacion = poligono.isUbicacionEnPoligono(mResultadosUbicaciones,latitude, longitude);
-            if (ubicacion != null) {
-                Preferences.savePreferenceObjectRealm(c, PREFERENCE_UBICACION, ubicacion);
-                return true;
-            }
-        }
-
-        mResultadosUbicaciones = ubicacionBD_CRUD.obetenerMunicipios();
-        if(mResultadosUbicaciones != null){
-            ubicacion = poligono.isUbicacionEnPoligono(mResultadosUbicaciones,latitude, longitude);
-            if (ubicacion != null) {
-                Preferences.savePreferenceObjectRealm(c, PREFERENCE_UBICACION, ubicacion);
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
 }

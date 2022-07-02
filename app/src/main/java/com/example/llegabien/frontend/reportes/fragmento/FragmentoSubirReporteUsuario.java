@@ -150,7 +150,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
                 activityResultLauncher.launch(ubicacionBusquedaAutocompletada.getIntent());
                 break;
             case R.id.button_regresar_subirReporteUsuario:
-                startActivity(new Intent(getActivity(), ActivityMap.class));
+                getActivity().finish();
                 break;
         }
     }

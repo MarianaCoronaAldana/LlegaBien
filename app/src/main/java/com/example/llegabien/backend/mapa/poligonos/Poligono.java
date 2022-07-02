@@ -75,7 +75,7 @@ public class Poligono {
     }
 
     private void crearPoligono(GoogleMap googleMap, LatLng[] points,int fillColor){
-        Polygon polygon = googleMap.addPolygon(
+        googleMap.addPolygon(
                 new PolygonOptions()
                         .add(points)
                         .strokeWidth(7)

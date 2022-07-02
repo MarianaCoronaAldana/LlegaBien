@@ -151,12 +151,11 @@ public class UsuarioInputValidaciones {
         return true;
     }
 
-    public boolean validarConfirmarContraseña(String contraseña, Context context, EditText
-            editText) {
+    public boolean validarConfirmarContraseña(String contraseña, Context context, EditText editText) {
         if (!validarStringVacia(context, editText))
             return false;
 
-        else if (!contraseña.equals(editText.getText().toString())) {
+        else if (!contraseña.trim().equals(editText.getText().toString())) {
             editText.setError(context.getResources().getString(R.string.errorConfirmarContraseña));
             return false;
         }
