@@ -90,8 +90,6 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             mConsLytPrincipalReporte.setBackground(getActivity().getResources().getDrawable(R.drawable.bkgd_esquinas_redondeadas));
             mConsLytPrincipalReporte.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.morado_claro));
 
-            mConsLytPrincipalReporte.setClickable(true);
-            mConsLytPrincipalReporte.setOnClickListener(this);
             mConsLytPrincipalReporte.setContentDescription(reportes.get(i).get_id().toString());
 
             mConsLytScrollView.addView(mConsLytPrincipalReporte);
