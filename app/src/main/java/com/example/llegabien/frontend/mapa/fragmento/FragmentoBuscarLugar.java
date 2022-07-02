@@ -28,8 +28,6 @@ import com.google.android.libraries.places.api.Places;
 
 public class FragmentoBuscarLugar extends Fragment implements View.OnClickListener{
 
-    private Button mBtnBusqueda, mBtnConfiguracion;
-    private ConstraintLayout mBtnCentrarMapa;
     private UbicacionBusquedaAutocompletada ubicacionBusquedaAutocompletada;
     private ActivityResultLauncher<Intent> activityResultLauncher =
             registerForActivityResult(
@@ -43,7 +41,7 @@ public class FragmentoBuscarLugar extends Fragment implements View.OnClickListen
                                 @Override
                                 public void isUbicacionBuscadaObtenida(boolean isUbicacionBuscadaObtenida, boolean isUbicacionBuscadaenBD, LatLng ubicacionBuscada, String ubicacionBuscadaString) {
                                     if (isUbicacionBuscadaObtenida)
-                                        ((ActivityMap)getActivity()).mostrarUbicacionBuscada(isUbicacionBuscadaenBD, true, ubicacionBuscada, ubicacionBuscadaString);
+                                        ((ActivityMap) getActivity()).mostrarUbicacionBuscada(isUbicacionBuscadaenBD, true, ubicacionBuscada, ubicacionBuscadaString);
                                 }
                             }, result, data, getActivity());
                         }
@@ -66,14 +64,14 @@ public class FragmentoBuscarLugar extends Fragment implements View.OnClickListen
         }
 
         //wiring up
-        mBtnBusqueda = (Button) root.findViewById(R.id.button_titulo_barraBusqueda_buscarLugar);
-        mBtnConfiguracion = (Button) root.findViewById(R.id.button_configuracion_barraBusqueda);
-        mBtnCentrarMapa = (ConstraintLayout) root.findViewById(R.id.button_centrarMapa_buscarLugar);
+        Button btnBusqueda = (Button) root.findViewById(R.id.button_titulo_barraBusqueda_buscarLugar);
+        Button btnConfiguracion = (Button) root.findViewById(R.id.button_configuracion_barraBusqueda);
+        ConstraintLayout btnCentrarMapa = (ConstraintLayout) root.findViewById(R.id.button_centrarMapa_buscarLugar);
 
         //listeners
-        mBtnBusqueda.setOnClickListener(this);
-        mBtnConfiguracion.setOnClickListener(this);
-        mBtnCentrarMapa.setOnClickListener(this);
+        btnBusqueda.setOnClickListener(this);
+        btnConfiguracion.setOnClickListener(this);
+        btnCentrarMapa.setOnClickListener(this);
 
         return root;
     }

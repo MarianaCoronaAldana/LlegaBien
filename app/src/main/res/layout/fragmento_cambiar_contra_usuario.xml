@@ -276,7 +276,7 @@
             <Button
                 android:id="@+id/button_aceptar_cambiarContra"
                 style="@style/BtnMoradoOscuro"
-                android:text="@string/aceptarBtn_cambiarContra"
+                android:text="@string/aceptarBtn"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="4:1"
                 app:layout_constraintEnd_toEndOf="@id/guideline2_button_infoContra_cambiarContra"

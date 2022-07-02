@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.mapa.poligonos.Poligono;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
 
 import io.realm.Realm;
@@ -87,6 +88,35 @@ public class UbicacionBD_CRUD {
         else
             errorConexion();
 
+    }
+
+    public boolean obtenerUbicacionBuscada(double latitude, double longitude){
+        Poligono poligono = new Poligono();
+        RealmResults<ubicacion> resultadosUbicaciones;
+        ubicacion ubicacion;
+
+        resultadosUbicaciones = obetenerCalles();
+        if(resultadosUbicaciones != null){ }
+
+        resultadosUbicaciones = obetenerColonias();
+        if(resultadosUbicaciones != null){
+            ubicacion = poligono.isUbicacionEnPoligono(resultadosUbicaciones,latitude, longitude);
+            if (ubicacion != null) {
+                Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_UBICACION, ubicacion);
+                return true;
+            }
+        }
+
+        resultadosUbicaciones = obetenerMunicipios();
+        if(resultadosUbicaciones != null){
+            ubicacion = poligono.isUbicacionEnPoligono(resultadosUbicaciones,latitude, longitude);
+            if (ubicacion != null) {
+                Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_UBICACION, ubicacion);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void errorConexion(){

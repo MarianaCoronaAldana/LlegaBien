@@ -60,13 +60,12 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void crearVistaContacto() {
         ConstraintSet constraintSet = new ConstraintSet();
-        String countryCode;
-        String numTel;
 
         for (int i = 0; i < Usuario.getContacto().size(); i++) {
+            String countryCode =Utilidades.obtenerCountryCode(Usuario.getContacto().get(i).getTelCelular());
+            String numTel = Usuario.getContacto().get(i).getTelCelular().replace(countryCode, "");
+
             Log.v("QUICKSTART", "Estoy en LEER contactos, id 11: " + Integer.valueOf(String.valueOf(i)+String.valueOf(i)));
-            countryCode = Utilidades.obtenerCountryCode(Usuario.getContacto().get(i).getTelCelular());
-            numTel = Usuario.getContacto().get(i).getTelCelular().replace(countryCode, "");
 
             // ConstraintLayout principal
             constraintSet.clone(mConsLytScrollView);
@@ -120,7 +119,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             TextView txtViewNumContacto = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.TxtViewBlanco));
             txtViewNumContacto.setId(View.generateViewId());
 
-            String stringNumContacto = getResources().getString(R.string.contactoEmergencia_registro4) + " " + (i);
+            String stringNumContacto = getResources().getString(R.string.contactoEmergencia_registro4) + " " + (i + 1);
             txtViewNumContacto.setText(stringNumContacto);
             txtViewNumContacto.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_size_titulo_small));
             txtViewNumContacto.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.azul_claro));
@@ -217,7 +216,6 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             // Textview "Nombre del contacto"
             TextView txtViewNombreContacto = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.TxtViewTransparente_LetraAzulOscuro));
 
-            //        txtViewNombreContacto.setId(View.generateViewId());
             txtViewNombreContacto.setId(View.generateViewId());
 
             txtViewNombreContacto.setText(getResources().getString(R.string.nombreCompletoTextView));
@@ -310,7 +308,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             TextView txtViewDatoCountryCode = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.EditTextTransparente));
 
             txtViewDatoCountryCode.setId(View.generateViewId());
-            txtViewDatoCountryCode.setText(countryCode);
+            txtViewDatoCountryCode.setText("+" + countryCode);
             txtViewDatoCountryCode.setClickable(true);
             txtViewDatoCountryCode.setFocusable(true);
             txtViewDatoCountryCode.setOnClickListener(this);
@@ -326,7 +324,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             constraintSet.setDimensionRatio(txtViewDatoCountryCode.getId(), "35:20");
 
             constraintSet.setVerticalBias(txtViewDatoCountryCode.getId(), 0.0f);
-            // Fin de textView "Daro country code"
+            // Fin de textView "Dato country code"
 
             // Para agregar cambios a "mConstLytPrincipalContacto"
             constraintSet.applyTo(consLytInformacionContacto);

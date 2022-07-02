@@ -1,5 +1,6 @@
 package com.example.llegabien.frontend.mapa.fragmento;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_FAVORITO;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_UBICACION;
 
 import android.content.Intent;
@@ -24,7 +25,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.mapa.favoritos.favorito;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
 import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -33,9 +36,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 public class FragmentoLugarSeleccionado extends Fragment implements View.OnClickListener {
 
     private TextView mTxtNombre1Lugar, mTxtNombre2Lugar, mTxtDelitosSemana, mTxtMediaHistorica, mTxtSeguridad;
-    private ConstraintLayout mBtnCentrarMapa;
+    ConstraintLayout mBtnGuardarEnFavoritos;
     private View mIconSeguridad;
-    private String mUbicacionBuscada = null;
+    private String mUbicacionBuscada = null, mActividadAnterior = null;
+    private LatLng mCoordenadasParaFavorito = null;
     private UbicacionBusquedaAutocompletada ubicacionBusquedaAutocompletada;
     private final ActivityResultLauncher<Intent> activityResultLauncher =
             registerForActivityResult(
@@ -47,21 +51,25 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
                             Intent data = activityResult.getData();
                             ubicacionBusquedaAutocompletada.verificarResultadoBusqueda(new UbicacionBusquedaAutocompletada.OnUbicacionBuscadaObtenida() {
                                 @Override
-                                public void isUbicacionBuscadaObtenida(boolean isUbicacionBuscadaObtenida, boolean isUbicacionBuscadaenBD, LatLng ubicacionBuscada, String ubicacionBuscadaString) {
+                                public void isUbicacionBuscadaObtenida(boolean isUbicacionBuscadaObtenida, boolean isUbicacionBuscadaEnBD, LatLng ubicacionBuscada, String ubicacionBuscadaString) {
                                     if (isUbicacionBuscadaObtenida)
-                                        ((ActivityMap)getActivity()).mostrarUbicacionBuscada(isUbicacionBuscadaenBD, false, ubicacionBuscada,ubicacionBuscadaString);
+                                        ((ActivityMap) getActivity()).mostrarUbicacionBuscada(isUbicacionBuscadaEnBD, false, ubicacionBuscada, ubicacionBuscadaString);
                                 }
-                            },result, data, getActivity());
+                            }, result, data, getActivity());
                         }
                     }
             );
 
-    public FragmentoLugarSeleccionado() {
-        // Required empty public constructor
+    public FragmentoLugarSeleccionado(String actividadAnterior) {
+        mActividadAnterior = actividadAnterior;
     }
 
     public void setUbicacionBuscada(String ubicacionBuscada) {
         mUbicacionBuscada = ubicacionBuscada;
+    }
+
+    public void setCoordenadasParaFavorito(LatLng coordenadasParaFavorito) {
+        mCoordenadasParaFavorito= coordenadasParaFavorito;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -75,7 +83,8 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
         BottomSheetBehavior<ConstraintLayout> mBottomSheetBehavior = BottomSheetBehavior.from(root.findViewById(R.id.bottomSheet_detallesLugar));
         Button mBtnRegresar = root.findViewById(R.id.button_regresar_barraBusqueda_lugarSeleccionado);
         Button mBtnBarraBusqueda = root.findViewById(R.id.button_titulo_barraBusqueda_lugarSeleccionado);
-        mBtnCentrarMapa = root.findViewById(R.id.button_centrarMapa_lugarSeleccionado);
+        ConstraintLayout btnCentrarMapa = root.findViewById(R.id.button_centrarMapa_lugarSeleccionado);
+        mBtnGuardarEnFavoritos = root.findViewById(R.id.button_añadirFavorito_detallesLugar);
         mTxtNombre1Lugar = root.findViewById(R.id.textView1_nombreLugar_detallesLugar);
         mTxtNombre2Lugar = root.findViewById(R.id.textView2_nombreLugar_detallesLugar);
         mTxtSeguridad = root.findViewById(R.id.textView_seguridad_detallesLugar);
@@ -89,13 +98,14 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
         //listeners
         mBtnRegresar.setOnClickListener(this);
         mBtnBarraBusqueda.setOnClickListener(this);
-        mBtnCentrarMapa.setOnClickListener(this);
+        btnCentrarMapa.setOnClickListener(this);
+        mBtnGuardarEnFavoritos.setOnClickListener(this);
         mBottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if(newState == BottomSheetBehavior.STATE_EXPANDED)
+                if (newState == BottomSheetBehavior.STATE_EXPANDED)
                     Log.i("BottomSheetCallback", "BottomSheetBehavior.STATE_EXPANDED");
-                if(newState == BottomSheetBehavior.STATE_COLLAPSED)
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED)
                     Log.i("BottomSheetCallback", "BottomSheetBehavior.STATE_COLLAPSED");
                 else
                     Log.i("BottomSheetCallback", "BottomSheetBehavior.OTHER");
@@ -122,11 +132,20 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
                 ubicacionBusquedaAutocompletada.inicializarIntent(getActivity());
                 activityResultLauncher.launch(ubicacionBusquedaAutocompletada.getIntent());
                 break;
+            case R.id.button_añadirFavorito_detallesLugar:
+                if (mCoordenadasParaFavorito != null) {
+                    UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
+                    String nombreLugar = ubicacionGeodicacion.degeocodificarUbiciacion(getActivity(),
+                                            mCoordenadasParaFavorito.latitude, mCoordenadasParaFavorito.longitude);
+                    // TODO: Añadir datos a la BD, el nombre del lugar y el objecto geojson con la latitud y longitud de "mCoordenadasParaFavorito".
+                    // TODO: Modificar los campos de la colección "favoritos" para que no exita relacion con la colección "ubicacion".
+                }
+                break;
             case R.id.button_regresar_barraBusqueda_lugarSeleccionado:
-                ((ActivityMap)getActivity()).abrirFragmentoBuscarLugar();
+                ((ActivityMap) getActivity()).abrirFragmentoBuscarLugar();
                 break;
             case R.id.button_centrarMapa_lugarSeleccionado:
-                ((ActivityMap)getActivity()).centrarMapa();
+                ((ActivityMap) getActivity()).centrarMapa();
                 break;
         }
     }
@@ -134,12 +153,21 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
 
     //OTRAS FUNCIONES//
 
-    private void setValoresBotttomSheet(){
+    private void setValoresBotttomSheet() {
         ubicacion ubicacion = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_UBICACION, ubicacion.class);
+
         String[] nombreLugar = null;
 
         if (ubicacion != null) {
-            if (mUbicacionBuscada != null)
+            if (mActividadAnterior.equals("FAVORITOS")){
+                mBtnGuardarEnFavoritos.setVisibility(View.GONE);
+                // TODO: obtener latitud y longitud del ebjecto geojson
+                favorito favorito = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_FAVORITO, favorito.class);
+                nombreLugar = favorito.getNombre().split(",", 2);
+                //LatLng ubicacionFavorito = favorito.getUbicacion();
+                //((ActivityMap) getActivity()).mostrarFavorito(ubicacionFavorito);
+            }
+            else if (mUbicacionBuscada != null)
                 nombreLugar = mUbicacionBuscada.split(",", 2);
             else
                 nombreLugar = ubicacion.getNombre().split(",", 2);
@@ -155,11 +183,11 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
             String seguridad = ubicacion.getSeguridad();
             mTxtSeguridad.setText(seguridad);
             if (seguridad.equals("Seguridad baja"))
-                mIconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(this.getContext(),R.color.rojo_icon));
+                mIconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(this.getContext(), R.color.rojo_icon));
             if (seguridad.equals("Seguridad media"))
-                mIconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(this.getContext(),R.color.amarillo_icon));
+                mIconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(this.getContext(), R.color.amarillo_icon));
             if (seguridad.equals("Seguridad alta"))
-                mIconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(this.getContext(),R.color.verde_icon));
+                mIconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(this.getContext(), R.color.verde_icon));
         }
     }
 
