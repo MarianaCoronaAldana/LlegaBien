@@ -1,5 +1,7 @@
 package com.example.llegabien.frontend.favoritos.activity;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -20,18 +22,27 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.llegabien.R;
+import com.example.llegabien.backend.mapa.favoritos.Favorito_DAO;
+import com.example.llegabien.backend.mapa.favoritos.favorito;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionBD_CRUD;
 
 import java.lang.ref.PhantomReference;
 import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
+
+import org.bson.types.ObjectId;
+
+import io.realm.RealmResults;
 
 public class ActivityFavoritos extends AppCompatActivity implements View.OnClickListener {
     private ConstraintLayout mConsLytScrollView;
     private View mViewAuxiliar;
     private Guideline mGuideline10Porciento, mGuideline90Porciente;
     private Button mBtnRegresar;
-
+    private  RealmResults<favorito> favoritos;
+    private usuario Usuario;
+    private Favorito_DAO favoritoDAO;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -49,6 +60,10 @@ public class ActivityFavoritos extends AppCompatActivity implements View.OnClick
         //listeners
         mBtnRegresar.setOnClickListener(this);
 
+        Usuario = Preferences.getSavedObjectFromPreference(this, PREFERENCE_USUARIO, usuario.class);
+        favoritoDAO = new Favorito_DAO(this);
+        favoritos = favoritoDAO.obtenerFavoritosDeUsuario(Usuario);
+
         // Para crear la vista de favoritos
         crearVistaFavoritos();
     }
@@ -62,13 +77,9 @@ public class ActivityFavoritos extends AppCompatActivity implements View.OnClick
         }
         else{
             UbicacionBD_CRUD ubicacionBD_crud = new UbicacionBD_CRUD(this);
-            String idFavorito = String.valueOf(view.getContentDescription());
-            // TODO: Obtener la latitud y longitud del objecto favorito con el Id.
-            // TODO: Utilizar la latitud y longitud para los parametros de la siguiente funcion.
-            //ubicacionBD_crud.obtenerUbicacionBuscada();
-
-            // TODO: Guardar el objecto favorito en preferences para poder utilizarlo en otra actividad.
-            //Preferences.savePreferenceObjectRealm(this,Preferences.PREFERENCE_FAVORITO, favorito);
+            ObjectId idFavorito = new ObjectId(String.valueOf(view.getContentDescription()));
+            favorito Favorito = favoritoDAO.obtenerFavoritoPorId(idFavorito);
+            ubicacionBD_crud.obtenerUbicacionBuscada(Favorito.getUbicacion().getCoordinates().get(0),Favorito.getUbicacion().getCoordinates().get(1));
 
             // Para abrir fragmento "Lugar seleccionado".
             Intent intent = new Intent(this, ActivityMap.class);
@@ -86,7 +97,7 @@ public class ActivityFavoritos extends AppCompatActivity implements View.OnClick
     private void crearVistaFavoritos() {
         ConstraintSet constraintSet = new ConstraintSet();
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < favoritos.size(); i++) {
             // ConstraintLayout principal
             constraintSet.clone(mConsLytScrollView);
             ConstraintLayout consLytPrincipalFavorito = new ConstraintLayout(this);
@@ -98,7 +109,7 @@ public class ActivityFavoritos extends AppCompatActivity implements View.OnClick
 
             consLytPrincipalFavorito.setClickable(true);
             consLytPrincipalFavorito.setOnClickListener(this);
-            //consLytPrincipalFavorito.setContentDescription(Favoritos.get(i).get_id().toString());
+            consLytPrincipalFavorito.setContentDescription(favoritos.get(i).get_id().toString());
 
             mConsLytScrollView.addView(consLytPrincipalFavorito);
             constraintSet.connect(consLytPrincipalFavorito.getId(), ConstraintSet.START, mGuideline10Porciento.getId(), ConstraintSet.START, 0);
@@ -203,7 +214,7 @@ public class ActivityFavoritos extends AppCompatActivity implements View.OnClick
             TextView txtViewUbicacion = new TextView(new ContextThemeWrapper(this, R.style.TxtViewTransparente));
             txtViewUbicacion.setId(View.generateViewId());
 
-            txtViewUbicacion.setText("Calle Paseo de los Abetos 339 9");
+            txtViewUbicacion.setText(favoritos.get(i).getNombre());
             txtViewUbicacion.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_size_parrafo));
             txtViewUbicacion.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
 

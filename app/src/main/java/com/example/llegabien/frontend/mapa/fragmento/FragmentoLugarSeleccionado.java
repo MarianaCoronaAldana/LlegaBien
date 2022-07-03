@@ -2,6 +2,7 @@ package com.example.llegabien.frontend.mapa.fragmento;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_FAVORITO;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_UBICACION;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.content.Intent;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -25,13 +27,19 @@ import androidx.fragment.app.Fragment;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.mapa.favoritos.Favorito_DAO;
 import com.example.llegabien.backend.mapa.favoritos.favorito;
+import com.example.llegabien.backend.mapa.favoritos.favorito_ubicacion;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
 import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
+import com.example.llegabien.backend.reporte.Reporte_DAO;
+import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
+import io.realm.RealmList;
 
 public class FragmentoLugarSeleccionado extends Fragment implements View.OnClickListener {
 
@@ -137,8 +145,7 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
                     UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
                     String nombreLugar = ubicacionGeodicacion.degeocodificarUbiciacion(getActivity(),
                                             mCoordenadasParaFavorito.latitude, mCoordenadasParaFavorito.longitude);
-                    // TODO: Añadir datos a la BD, el nombre del lugar y el objecto geojson con la latitud y longitud de "mCoordenadasParaFavorito".
-                    // TODO: Modificar los campos de la colección "favoritos" para que no exita relacion con la colección "ubicacion".
+                    añadirFavoritoaBD(nombreLugar);
                 }
                 break;
             case R.id.button_regresar_barraBusqueda_lugarSeleccionado:
@@ -150,7 +157,6 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
         }
     }
 
-
     //OTRAS FUNCIONES//
 
     private void setValoresBotttomSheet() {
@@ -158,7 +164,7 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
 
         String[] nombreLugar = null;
 
-        if (ubicacion != null) {
+        if (ubicacion != null && mActividadAnterior != null ) {
             if (mActividadAnterior.equals("FAVORITOS")){
                 mBtnGuardarEnFavoritos.setVisibility(View.GONE);
                 // TODO: obtener latitud y longitud del ebjecto geojson
@@ -189,6 +195,33 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
             if (seguridad.equals("Seguridad alta"))
                 mIconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(this.getContext(), R.color.verde_icon));
         }
+    }
+
+
+    private void añadirFavoritoaBD(String nombreLugar) {
+        RealmList<Double> coordenadas = new RealmList<Double>();
+        usuario Usuario = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_USUARIO, usuario.class);
+        favorito_ubicacion Favorito_ubicacion = new favorito_ubicacion();
+        favorito Favorito = new favorito();
+        Favorito_DAO favoritoDAO = new Favorito_DAO(this.getContext());
+
+        coordenadas.add(mCoordenadasParaFavorito.latitude);
+        coordenadas.add(mCoordenadasParaFavorito.longitude);
+
+        Favorito_ubicacion.setCoordinates(coordenadas);
+
+        Favorito.setIdUsuario(Usuario.get_id());
+        Favorito.setNombre(nombreLugar);
+        Favorito.setUbicacion(Favorito_ubicacion);
+
+        if(!favoritoDAO.obtenerFavoritoPorNombre_Id(Usuario.get_id(), Favorito.getNombre())) {
+            favoritoDAO.añadirFavorito(Favorito);
+            Toast.makeText(this.getContext(), "Ubicacion añadida a favoritos", Toast.LENGTH_LONG).show();
+        }
+        else
+            Toast.makeText(this.getContext(), "Ya tienes esta ubicacion guardada!", Toast.LENGTH_LONG).show();
+
+        Log.v("QUICKSTART", "Estoy en lugar seleccionado, nombre: " + Favorito.getNombre());
     }
 
 }

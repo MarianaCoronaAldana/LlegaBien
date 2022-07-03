@@ -4,6 +4,8 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.RealmClass;
 import io.realm.annotations.Required;
+import io.realm.RealmList;
+import io.realm.RealmObject;
 
 @RealmClass(embedded = true)
 public class favorito_ubicacion extends RealmObject {
@@ -18,6 +20,4 @@ public class favorito_ubicacion extends RealmObject {
 
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
-
-    public favorito_ubicacion(){}
 }

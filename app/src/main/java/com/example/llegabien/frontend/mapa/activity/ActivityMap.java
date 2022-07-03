@@ -53,10 +53,17 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
 
         // Para saber si la actividad anterior es la de favoritos y abrir el correspondiente fragmento.
         String activityAnterior = getIntent().getStringExtra("ACTIVITY_ANTERIOR");
-        if (activityAnterior.equals("FAVORITOS")){
-            FragmentoLugarSeleccionado fragmentoLugarSeleccionado = new FragmentoLugarSeleccionado(activityAnterior);
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.add(R.id.fragmentContainerView1_fragemntoBuscarLugar_activityMaps, fragmentoLugarSeleccionado).commit();
+        if(activityAnterior!=null){
+            if (activityAnterior.equals("FAVORITOS")){
+                FragmentoLugarSeleccionado fragmentoLugarSeleccionado = new FragmentoLugarSeleccionado(activityAnterior);
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.add(R.id.fragmentContainerView1_fragemntoBuscarLugar_activityMaps, fragmentoLugarSeleccionado).commit();
+            }
+            else{
+                FragmentoBuscarLugar fragmentoBuscarLugar = new FragmentoBuscarLugar();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.add(R.id.fragmentContainerView1_fragemntoBuscarLugar_activityMaps, fragmentoBuscarLugar).commit();
+            }
         }
         else{
             FragmentoBuscarLugar fragmentoBuscarLugar = new FragmentoBuscarLugar();
