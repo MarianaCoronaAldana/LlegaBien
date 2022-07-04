@@ -3,17 +3,8 @@ package com.example.llegabien.frontend.reportes.fragmento;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,22 +15,27 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Permisos;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
-import com.example.llegabien.backend.reporte.Reporte_DAO;
+import com.example.llegabien.backend.reporte.ReporteDAO;
 import com.example.llegabien.backend.reporte.reporte;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
-import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.usuario.dialog.DialogDatePicker;
 import com.example.llegabien.frontend.usuario.dialog.DialogTimePicker;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -54,12 +50,12 @@ import io.realm.RealmResults;
 public class FragmentoSubirReporteUsuario extends Fragment implements View.OnClickListener {
 
     private Spinner mSpinnerCualDelito;
-    private Button mBtnRegresar, mBtnSubirReporte, mBtnUbicacion;
+    private Button mBtnUbicacion;
     private usuario Usuario;
     private EditText mEditTxtNombre, mEditTxtFechaDelito, mEditTxtHoraDelito, mEditTxtComentariosDelito;
     private reporte Reporte;
     private UbicacionBusquedaAutocompletada ubicacionBusquedaAutocompletada;
-    private ActivityResultLauncher<Intent> activityResultLauncher =
+    private final ActivityResultLauncher<Intent> activityResultLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
                     new ActivityResultCallback<ActivityResult>() {
@@ -67,13 +63,10 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
                         public void onActivityResult(ActivityResult activityResult) {
                             int result = activityResult.getResultCode();
                             Intent data = activityResult.getData();
-                            ubicacionBusquedaAutocompletada.verificarResultadoBusqueda(new UbicacionBusquedaAutocompletada.OnUbicacionBuscadaObtenida() {
-                                @Override
-                                public void isUbicacionBuscadaObtenida(boolean isUbicacionBuscadaObtenida, boolean isUbicacionBuscadaenBD, LatLng ubicacionBuscada, String ubicacionBuscadaString) {
-                                    if (isUbicacionBuscadaObtenida)
-                                        mBtnUbicacion.setText(ubicacionBuscadaString);
-                                }
-                            }, result, data, getActivity());
+                            ubicacionBusquedaAutocompletada.verificarResultadoBusqueda((isUbicacionBuscadaObtenida, isUbicacionBuscadaenBD, ubicacionBuscada, ubicacionBuscadaString) -> {
+                                if (isUbicacionBuscadaObtenida)
+                                    mBtnUbicacion.setText(ubicacionBuscadaString);
+                            }, result, data, requireActivity());
                         }
                     }
             );
@@ -90,8 +83,8 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
 
         // Wiring up
         mSpinnerCualDelito = root.findViewById(R.id.spinner_cualDelito_subirReporteUsuario);
-        mBtnRegresar = (Button) root.findViewById(R.id.button_regresar_subirReporteUsuario);
-        mBtnSubirReporte = (Button) root.findViewById(R.id.button_enviarReporte_subirReporteUsuario);
+        Button mBtnRegresar = (Button) root.findViewById(R.id.button_regresar_subirReporteUsuario);
+        Button mBtnSubirReporte = (Button) root.findViewById(R.id.button_enviarReporte_subirReporteUsuario);
         mEditTxtNombre = (EditText) root.findViewById(R.id.editText_nombreUsuario_subirReporteUsuario);
         mBtnUbicacion = root.findViewById(R.id.button_ubicacionDelito_subirReporteUsuario);
         mEditTxtFechaDelito = (EditText) root.findViewById(R.id.editText_fechaDelito_subirReporteUsuario);
@@ -120,70 +113,66 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
     //FUNCIONES LISTENER//
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_enviarReporte_subirReporteUsuario:
-                if (validarAllInputs()) {
-                    Log.v("QUICKSTART", "Estoy en enviar reporte");
-                    Reporte_DAO reporteDAO = new Reporte_DAO(this.getContext());
-                    inicializarReporte();
-                    if (verificarHistorialReportes(reporteDAO)) {
-                        reporteDAO.añadirReporte(Reporte);
-                        Toast.makeText(this.getContext(), "Tu reporte será verificado el siguiente fin de semana", Toast.LENGTH_LONG).show();
-                    }
+        if (view.getId() == R.id.button_enviarReporte_subirReporteUsuario) {
+            if (validarAllInputs()) {
+                Log.v("QUICKSTART", "Estoy en enviar reporte");
+                ReporteDAO reporteDAO = new ReporteDAO(this.getContext());
+                inicializarReporte();
+                if (verificarHistorialReportes(reporteDAO)) {
+                    reporteDAO.anadirReporte(Reporte);
+                    Toast.makeText(this.getContext(), "Tu reporte será verificado el siguiente fin de semana", Toast.LENGTH_LONG).show();
                 }
-                break;
-            case R.id.editText_fechaDelito_subirReporteUsuario:
-                Log.v("QUICKSTART", "Estoy en poner fecha delito");
-                DialogDatePicker dialogDatePicker = new DialogDatePicker();
-                dialogDatePicker.mostrarDatePickerDialog(mEditTxtFechaDelito, this);
-                mEditTxtFechaDelito.setError(null);
-                break;
-            case R.id.editText_horaDelito_subirReporteUsuario:
-                Log.v("QUICKSTART", "Estoy en poner HORA delito");
-                DialogTimePicker dialogTimePicker = new DialogTimePicker();
-                dialogTimePicker.mostrarTimePickerDialog(mEditTxtHoraDelito, this);
-                mEditTxtHoraDelito.setError(null);
-                break;
-            case R.id.button_ubicacionDelito_subirReporteUsuario:
-                ubicacionBusquedaAutocompletada = new UbicacionBusquedaAutocompletada();
-                ubicacionBusquedaAutocompletada.inicializarIntent(getActivity());
-                activityResultLauncher.launch(ubicacionBusquedaAutocompletada.getIntent());
-                break;
-            case R.id.button_regresar_subirReporteUsuario:
-                getActivity().finish();
-                break;
+            }
+        } else if (view.getId() == R.id.editText_fechaDelito_subirReporteUsuario){
+            Log.v("QUICKSTART", "Estoy en poner fecha delito");
+            DialogDatePicker dialogDatePicker = new DialogDatePicker();
+            dialogDatePicker.mostrarDatePickerDialog(mEditTxtFechaDelito, this);
+            mEditTxtFechaDelito.setError(null);
         }
+        else if (view.getId() == R.id.editText_horaDelito_subirReporteUsuario){
+            Log.v("QUICKSTART", "Estoy en poner HORA delito");
+            DialogTimePicker dialogTimePicker = new DialogTimePicker();
+            dialogTimePicker.mostrarTimePickerDialog(mEditTxtHoraDelito, this);
+            mEditTxtHoraDelito.setError(null);
+        }
+        else if (view.getId() == R.id.button_ubicacionDelito_subirReporteUsuario){
+            ubicacionBusquedaAutocompletada = new UbicacionBusquedaAutocompletada();
+            ubicacionBusquedaAutocompletada.inicializarIntent(requireActivity());
+            activityResultLauncher.launch(ubicacionBusquedaAutocompletada.getIntent());
+        }
+        else if (view.getId() == R.id.button_regresar_subirReporteUsuario)
+            requireActivity().finish();
     }
 
     // OTRAS FUNCIONES//
 
     // Para poner de default el nombre del usuario en el formulario
     private void inicializarDatos() {
-        Usuario = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_USUARIO, usuario.class);
-        mEditTxtNombre.setText(Usuario.getNombre() + " " + Usuario.getApellidos());
+        Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_USUARIO, usuario.class);
+        if (Usuario != null) {
+            String nombreUsuarioEditTxt = Usuario.getNombre() + " " + Usuario.getApellidos();
+            mEditTxtNombre.setText(nombreUsuarioEditTxt);
+        }
         mEditTxtNombre.setEnabled(false);
         mEditTxtNombre.setClickable(false);
     }
 
     private void obtenerUbicacionActual() {
         Permisos permisos = new Permisos();
-        permisos.getPermisoUbicacion(getActivity(), false);
+        permisos.getPermisoUbicacion(requireActivity(), false);
         if (permisos.getLocationPermissionGranted()) {
-            FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+            FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 
             UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
-            mUbicacionDispositivo.getUbicacionDelDispositivo(new UbicacionDispositivo.OnUbicacionObtenida() {
-                @Override
-                public void isUbicacionObtenida(boolean isUbicacionObtenida, Location ubicacionObtenida) {
-                    if (isUbicacionObtenida) {
-                        UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
-                        String Ubicacion = ubicacionGeodicacion.degeocodificarUbiciacion(getActivity(),
-                                ubicacionObtenida.getLatitude(), ubicacionObtenida.getLongitude());
+            mUbicacionDispositivo.getUbicacionDelDispositivo((isUbicacionObtenida, ubicacionObtenida) -> {
+                if (isUbicacionObtenida) {
+                    UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
+                    String Ubicacion = ubicacionGeodicacion.degeocodificarUbiciacion(requireActivity(),
+                            ubicacionObtenida.getLatitude(), ubicacionObtenida.getLongitude());
 
-                        mBtnUbicacion.setText(Ubicacion);
-                    }
+                    mBtnUbicacion.setText(Ubicacion);
                 }
-            }, true, fusedLocationProviderClient, getActivity());
+            }, true, fusedLocationProviderClient, requireActivity());
         }
     }
 
@@ -198,7 +187,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
         Reporte.setTipoDelito(mSpinnerCualDelito.getSelectedItem().toString());
         Reporte.setFechaReporte(convertToDateViaInstant(LocalDateTime.now()));
 
-        LocalDate localDate =  LocalDate.parse(mEditTxtFechaDelito.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate localDate = LocalDate.parse(mEditTxtFechaDelito.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         LocalTime localTime = LocalTime.parse(mEditTxtHoraDelito.getText(), DateTimeFormatter.ofPattern("HH:mm"));
         Reporte.setFecha(convertToDateViaInstant(localDate.atTime(localTime)));
 
@@ -211,7 +200,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
     // 1. ya se subio un reporte hace menos de dos horas
     // 2. se subieron mas de 10 reportes en una semana
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private boolean verificarHistorialReportes(Reporte_DAO reporte_DAO) {
+    private boolean verificarHistorialReportes(ReporteDAO reporte_DAO) {
         RealmResults<reporte> reportes = reporte_DAO.obtenerReportesPorUsuario(Reporte);
         int reportesAnteriores = 0;
 
@@ -262,7 +251,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
                 "Vandalismo", "Tiroteo"};
 
         // Create the instance of ArrayAdapter having the list of courses
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), R.layout.spinner_item, delitos);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(requireActivity(), R.layout.spinner_item, delitos);
 
         // Set simple layout resource file for each item of spinner
         arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -276,11 +265,11 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
     private boolean validarAllInputs() {
         UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
         boolean esInputValido = true;
-        if (!usuarioInputValidaciones.validarStringVacia(getActivity(), mEditTxtFechaDelito))
+        if (usuarioInputValidaciones.validarStringVacia(requireActivity(), mEditTxtFechaDelito))
             esInputValido = false;
-        if (!usuarioInputValidaciones.validarStringVacia(getActivity(), mEditTxtHoraDelito))
+        if (usuarioInputValidaciones.validarStringVacia(requireActivity(), mEditTxtHoraDelito))
             esInputValido = false;
-        if (mBtnUbicacion.getText().toString().equals(getActivity().getResources().getString(R.string.ubicacionDelito_subirReporteUsuario))) {
+        if (mBtnUbicacion.getText().toString().equals(requireActivity().getResources().getString(R.string.ubicacionDelito_subirReporteUsuario))) {
             esInputValido = false;
             mBtnUbicacion.setError("Ingresa una ubicación válida.");
         }

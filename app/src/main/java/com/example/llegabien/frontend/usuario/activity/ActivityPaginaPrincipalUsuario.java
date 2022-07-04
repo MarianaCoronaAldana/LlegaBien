@@ -5,7 +5,6 @@ import static com.example.llegabien.backend.app.Preferences.PREFERENCE_MENSAJE_P
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -26,12 +25,6 @@ import com.example.llegabien.frontend.usuario.fragmento.FragmentoRegistrarUsuari
 
 public class ActivityPaginaPrincipalUsuario extends AppCompatActivity implements View.OnClickListener {
 
-    //Button
-    private Button mBtnCrearCuenta, mBtnIniciarSesion;
-
-    //ImageView
-    private ImageView mImgViewGif;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +39,11 @@ public class ActivityPaginaPrincipalUsuario extends AppCompatActivity implements
         }
 
         //wiring up
-        mBtnIniciarSesion = (Button) findViewById(R.id.button_inicia_sesion_pagina_principal);
-        mBtnCrearCuenta = (Button) findViewById(R.id.button_crea_cuenta_pagina_principal);
-        mImgViewGif = (ImageView) findViewById(R.id.imageView2_gif_pagina_principal);
+        Button mBtnIniciarSesion = (Button) findViewById(R.id.button_inicia_sesion_pagina_principal);
+        //Button
+        Button mBtnCrearCuenta = (Button) findViewById(R.id.button_crea_cuenta_pagina_principal);
+        //ImageView
+        ImageView mImgViewGif = (ImageView) findViewById(R.id.imageView2_gif_pagina_principal);
 
         //listeners
         mBtnCrearCuenta.setOnClickListener(this);
@@ -66,15 +61,13 @@ public class ActivityPaginaPrincipalUsuario extends AppCompatActivity implements
                 .setCustomAnimations(R.anim.slide_up, R.anim.slide_down,R.anim.slide_up, R.anim.slide_down)
                 .addToBackStack(null);
 
-        switch (view.getId()) {
-            case R.id.button_inicia_sesion_pagina_principal:
-                FragmentoIniciarSesion1 fragmentoIniciarSesion1 = new FragmentoIniciarSesion1();
-                fragmentTransaction.add(R.id.fragment_pagina_principal, fragmentoIniciarSesion1).commit();
-                break;
-            case R.id.button_crea_cuenta_pagina_principal:
-                FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
-                fragmentTransaction.add(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario1).commit();
-                break;
+        if (view.getId() == R.id.button_inicia_sesion_pagina_principal){
+            FragmentoIniciarSesion1 fragmentoIniciarSesion1 = new FragmentoIniciarSesion1();
+            fragmentTransaction.add(R.id.fragment_pagina_principal, fragmentoIniciarSesion1).commit();
+        }
+        else if (view.getId() == R.id.button_crea_cuenta_pagina_principal){
+            FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
+            fragmentTransaction.add(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario1).commit();
         }
     }
 

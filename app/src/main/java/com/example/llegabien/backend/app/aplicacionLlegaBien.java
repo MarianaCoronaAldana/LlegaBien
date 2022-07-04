@@ -7,9 +7,6 @@ import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
 
 public class aplicacionLlegaBien extends Application {
-
-    String PARTITION_EXTRA_KEY = "PARTITION";
-    String PROJECT_NAME_EXTRA_KEY = "LlegaBien";
     static App app_LlegaBien;
 
     @Override public void onCreate() {

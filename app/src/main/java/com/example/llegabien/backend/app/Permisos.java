@@ -1,10 +1,6 @@
 package com.example.llegabien.backend.app;
 
-import static io.realm.Realm.getApplicationContext;
-
-import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 
 import androidx.core.app.ActivityCompat;

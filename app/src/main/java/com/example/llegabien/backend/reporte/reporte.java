@@ -1,14 +1,12 @@
 package com.example.llegabien.backend.reporte;
+
+import org.bson.types.ObjectId;
+
+import java.util.Date;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
-
-import java.util.Date;
-        import org.bson.types.ObjectId;
-
-import io.realm.RealmObject;
-import java.util.Date;
-import org.bson.types.ObjectId;
 
 public class reporte extends RealmObject {
     @PrimaryKey

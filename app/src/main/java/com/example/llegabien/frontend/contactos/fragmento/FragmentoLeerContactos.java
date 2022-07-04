@@ -27,31 +27,29 @@ import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.app.Utilidades;
-import com.example.llegabien.frontend.usuario.fragmento.FragmentoEditarPerfilUsuario;
 
 public class FragmentoLeerContactos extends Fragment implements View.OnClickListener {
 
     private ConstraintLayout mConsLytScrollView, mConsLytPrincipalContacto;
     private View mViewAuxiliar;
-    private Button mBtnRegersar;
     private usuario Usuario;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this.getActivity() fragment
+        // Inflate the layout for this.requireActivity() fragment
         View root = inflater.inflate(R.layout.fragmento_leer_contactos, container, false);
 
         //wiring up
         mConsLytScrollView = root.findViewById(R.id.consLyt_scrollView_leerContactos);
         mViewAuxiliar = root.findViewById(R.id.view2_leerContactos);
-        mBtnRegersar = root.findViewById(R.id.button_regresar_leerContactos);
+        Button mBtnRegersar = root.findViewById(R.id.button_regresar_leerContactos);
 
         //listeners
         mBtnRegersar.setOnClickListener(this);
 
-        Usuario = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_USUARIO, usuario.class);
+        Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_USUARIO, usuario.class);
         crearVistaContacto();
 
         return root;
@@ -65,11 +63,9 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             String countryCode =Utilidades.obtenerCountryCode(Usuario.getContacto().get(i).getTelCelular());
             String numTel = Usuario.getContacto().get(i).getTelCelular().replace(countryCode, "");
 
-            Log.v("QUICKSTART", "Estoy en LEER contactos, id 11: " + Integer.valueOf(String.valueOf(i)+String.valueOf(i)));
-
             // ConstraintLayout principal
             constraintSet.clone(mConsLytScrollView);
-            mConsLytPrincipalContacto = new ConstraintLayout(this.getActivity());
+            mConsLytPrincipalContacto = new ConstraintLayout(this.requireActivity());
             mConsLytPrincipalContacto.setId(View.generateViewId());
 
             mConsLytScrollView.addView(mConsLytPrincipalContacto);
@@ -99,7 +95,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             constraintSet.clone(mConsLytPrincipalContacto);
 
             // Separador
-            View viewSeparador = new View(new ContextThemeWrapper(this.getActivity(), R.style.ViewSeparador));
+            View viewSeparador = new View(new ContextThemeWrapper(this.requireActivity(), R.style.ViewSeparador));
             viewSeparador.setId(View.generateViewId());
             viewSeparador.setBackgroundColor(Color.parseColor("#AFBED8"));
 
@@ -116,13 +112,13 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             //Fin de Separador
 
             // Textview "Número de contacto"
-            TextView txtViewNumContacto = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.TxtViewBlanco));
+            TextView txtViewNumContacto = new TextView(new ContextThemeWrapper(this.requireActivity(), R.style.TxtViewBlanco));
             txtViewNumContacto.setId(View.generateViewId());
 
             String stringNumContacto = getResources().getString(R.string.contactoEmergencia_registro4) + " " + (i + 1);
             txtViewNumContacto.setText(stringNumContacto);
             txtViewNumContacto.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_size_titulo_small));
-            txtViewNumContacto.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.azul_claro));
+            txtViewNumContacto.setBackgroundTintList(ContextCompat.getColorStateList(requireActivity(), R.color.azul_claro));
 
             mConsLytPrincipalContacto.addView(txtViewNumContacto);
 
@@ -140,7 +136,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             // Fin de Textview "Número de contacto"
 
             // ConstraintLayout "Información del contacto"
-            ConstraintLayout consLytInformacionContacto = new ConstraintLayout(this.getActivity());
+            ConstraintLayout consLytInformacionContacto = new ConstraintLayout(this.requireActivity());
 
             consLytInformacionContacto.setId(View.generateViewId());
             consLytInformacionContacto.setBackgroundColor(getResources().getColor(R.color.blanco));
@@ -170,7 +166,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             constraintSet.clone(consLytInformacionContacto);
 
             // Guideline "10 porciento"
-            Guideline guideline10Porciento = new Guideline(this.getActivity());
+            Guideline guideline10Porciento = new Guideline(this.requireActivity());
             guideline10Porciento.setId(View.generateViewId());
 
             constraintSet.constrainWidth(guideline10Porciento.getId(), ConstraintSet.PARENT_ID);
@@ -181,7 +177,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             // Fin de guideline "10 porciento"
 
             // Guideline "33 porciento"
-            Guideline guideline33Porciento = new Guideline(this.getActivity());
+            Guideline guideline33Porciento = new Guideline(this.requireActivity());
             guideline33Porciento.setId(View.generateViewId());
 
             constraintSet.constrainWidth(guideline33Porciento.getId(), ConstraintSet.PARENT_ID);
@@ -192,7 +188,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             // Fin de guideline "33 porciento"
 
             // Guideline "35 porciento"
-            Guideline guideline35Porciento = new Guideline(this.getActivity());
+            Guideline guideline35Porciento = new Guideline(this.requireActivity());
             guideline35Porciento.setId(View.generateViewId());
 
             constraintSet.constrainWidth(guideline35Porciento.getId(), ConstraintSet.PARENT_ID);
@@ -203,7 +199,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             // Fin de guideline "35 porciento"
 
             // Guideline "90 porciento"
-            Guideline guideline90Porciento = new Guideline(this.getActivity());
+            Guideline guideline90Porciento = new Guideline(this.requireActivity());
             guideline90Porciento.setId(View.generateViewId());
 
             constraintSet.constrainWidth(guideline90Porciento.getId(), ConstraintSet.PARENT_ID);
@@ -214,7 +210,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             // Fin de guideline "90 porciento"
 
             // Textview "Nombre del contacto"
-            TextView txtViewNombreContacto = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.TxtViewTransparente_LetraAzulOscuro));
+            TextView txtViewNombreContacto = new TextView(new ContextThemeWrapper(this.requireActivity(), R.style.TxtViewTransparente_LetraAzulOscuro));
 
             txtViewNombreContacto.setId(View.generateViewId());
 
@@ -237,7 +233,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             // Fin de textview "Nombre del contacto"
 
             // TextView "Dato nombre del contacto"
-            TextView txtViewDatoNombreContacto = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.EditTextTransparente));
+            TextView txtViewDatoNombreContacto = new TextView(new ContextThemeWrapper(this.requireActivity(), R.style.EditTextTransparente));
 
             txtViewDatoNombreContacto.setId(View.generateViewId());
             txtViewDatoNombreContacto.setText(Usuario.getContacto().get(i).getNombre());
@@ -259,7 +255,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             // Fin de textView "Dato nombre del contacto"
 
             // Textview "Numero telefonico del contacto"
-            TextView txtViewNumTelefonicoContacto = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.TxtViewTransparente_LetraAzulOscuro));
+            TextView txtViewNumTelefonicoContacto = new TextView(new ContextThemeWrapper(this.requireActivity(), R.style.TxtViewTransparente_LetraAzulOscuro));
 
             txtViewNumTelefonicoContacto.setId(View.generateViewId());
 
@@ -283,7 +279,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             // Fin de textview "Numero telefonico del contacto"
 
             // TextView "Dato número telefónico del contacto"
-            TextView txtViewDatoNumTelefonicoContacto = new TextView(this.getActivity(), null, 0, R.style.EditTextTransparente);
+            TextView txtViewDatoNumTelefonicoContacto = new TextView(this.requireActivity(), null, 0, R.style.EditTextTransparente);
 
             txtViewDatoNumTelefonicoContacto.setId(View.generateViewId());
             txtViewDatoNumTelefonicoContacto.setText(numTel);
@@ -305,10 +301,11 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             // Fin de textView "Dato número telefónico del contacto"
 
             // TextView "Dato country code"
-            TextView txtViewDatoCountryCode = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.EditTextTransparente));
+            TextView txtViewDatoCountryCode = new TextView(new ContextThemeWrapper(this.requireActivity(), R.style.EditTextTransparente));
 
             txtViewDatoCountryCode.setId(View.generateViewId());
-            txtViewDatoCountryCode.setText("+" + countryCode);
+            String countryCodeTxtView = "+" + countryCode;
+            txtViewDatoCountryCode.setText(countryCodeTxtView);
             txtViewDatoCountryCode.setClickable(true);
             txtViewDatoCountryCode.setFocusable(true);
             txtViewDatoCountryCode.setOnClickListener(this);
@@ -334,7 +331,7 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
         constraintSet.clone(mConsLytScrollView);
 
         // Separador
-        View viewSeparadorFinal = new View(new ContextThemeWrapper(this.getActivity(), R.style.ViewSeparadorAuxiliar));
+        View viewSeparadorFinal = new View(new ContextThemeWrapper(this.requireActivity(), R.style.ViewSeparadorAuxiliar));
 
         viewSeparadorFinal.setId(View.generateViewId());
 
@@ -357,13 +354,12 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.button_regresar_leerContactos)
-            getActivity().finish();
+            requireActivity().finish();
         else {
-            TextView txtViewDatoNombreContacto = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.EditTextTransparente));
             Log.v("QUICKSTART", "Estoy en LEER contactos, ID: " + view.getId());
 
-            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-            FragmentoEditarContacto fragmentoEditarContacto = new FragmentoEditarContacto(Integer.valueOf(String.valueOf(view.getContentDescription())), Usuario);
+            FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+            FragmentoEditarContacto fragmentoEditarContacto = new FragmentoEditarContacto(Integer.parseInt(String.valueOf(view.getContentDescription())), Usuario);
             fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
             fragmentTransaction.replace(R.id.fragmentContainerView_leerEditarContactos, fragmentoEditarContacto).commit();
             fragmentTransaction.addToBackStack(null);

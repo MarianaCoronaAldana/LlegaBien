@@ -3,8 +3,6 @@ package com.example.llegabien.frontend.usuario.fragmento;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 import static io.realm.Realm.getApplicationContext;
 
-import static android.app.PendingIntent.getActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,17 +18,20 @@ import androidx.fragment.app.Fragment;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Encriptar;
 import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.usuario.UsuarioDAO;
 import com.example.llegabien.backend.usuario.UsuarioBD_Validaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
-import com.example.llegabien.backend.usuario.UsuarioBD_CRUD;
 import com.example.llegabien.frontend.app.Utilidades;
 import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUsuario;
 
-public class FragmentoCambiarContraUsuario extends Fragment implements View.OnClickListener{
+public class FragmentoCambiarContraUsuario extends Fragment implements View.OnClickListener {
 
-    private Button mBtnAceptar, mBtnRegresar, mBtnMostrarContra1, mBtnMostrarContra2, mBtnMostrarContra3;
-    private EditText mEditTxtActualContraseña, mEditTxtNuevaContraseña, mEditTxtConfirmarContraseña;
+    private Button mBtnAceptar;
+    private Button mBtnMostrarContra1;
+    private Button mBtnMostrarContra2;
+    private Button mBtnMostrarContra3;
+    private EditText mEditTxtActualContrasena, mEditTxtNuevaContrasena, mEditTxtConfirmarContrasena;
     usuario Usuario;
 
     public FragmentoCambiarContraUsuario() {
@@ -45,13 +46,13 @@ public class FragmentoCambiarContraUsuario extends Fragment implements View.OnCl
 
         //wiring up
         mBtnAceptar = root.findViewById(R.id.button_aceptar_cambiarContra);
-        mBtnRegresar = root.findViewById(R.id.button_regresar_cambiarContra);
+        Button mBtnRegresar = root.findViewById(R.id.button_regresar_cambiarContra);
         mBtnMostrarContra1 = root.findViewById(R.id.button_mostrarContra_contraActual_cambiarContra);
         mBtnMostrarContra2 = root.findViewById(R.id.button_mostrarContra_contraNueva_cambiarContra);
         mBtnMostrarContra3 = root.findViewById(R.id.button_mostrarContra_confirmarContra_cambiarContra);
-        mEditTxtActualContraseña = root.findViewById(R.id.editText_actualContra_cambiarContra);
-        mEditTxtNuevaContraseña = root.findViewById(R.id.editText_nuevaContra_cambiarContra);
-        mEditTxtConfirmarContraseña = root.findViewById(R.id.editText_confirmarContra_cambiarContra);
+        mEditTxtActualContrasena = root.findViewById(R.id.editText_actualContra_cambiarContra);
+        mEditTxtNuevaContrasena = root.findViewById(R.id.editText_nuevaContra_cambiarContra);
+        mEditTxtConfirmarContrasena = root.findViewById(R.id.editText_confirmarContra_cambiarContra);
 
         //listeners
         mBtnAceptar.setOnClickListener(this);
@@ -66,75 +67,71 @@ public class FragmentoCambiarContraUsuario extends Fragment implements View.OnCl
     //FUNCIONES LISTENERS//
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_aceptar_cambiarContra:
-                if(validarAllInputs()) {
-                    actualizarContraseñaUsuario();
-                    startActivity(new Intent(getActivity(), ActivityPaginaPrincipalUsuario.class));
-                }
-                break;
-            case R.id.button_regresar_cambiarContra:
-                getActivity().getSupportFragmentManager().popBackStack();
-                break;
-            case R.id.button_mostrarContra_contraActual_cambiarContra:
-                Utilidades.mostrarContraseña(mEditTxtActualContraseña,mBtnMostrarContra1, this.getContext());
-                break;
-            case R.id.button_mostrarContra_contraNueva_cambiarContra:
-                Utilidades.mostrarContraseña(mEditTxtNuevaContraseña,mBtnMostrarContra2, this.getContext());
-                break;
-            case R.id.button_mostrarContra_confirmarContra_cambiarContra:
-                Utilidades.mostrarContraseña(mEditTxtConfirmarContraseña,mBtnMostrarContra3,this.getContext());
-                break;
-        }
+        if (view.getId() == R.id.button_aceptar_cambiarContra) {
+            if (validarAllInputs()) {
+                actualizarContrasenaUsuario();
+                startActivity(new Intent(requireActivity(), ActivityPaginaPrincipalUsuario.class));
+            }
+        } else if (view.getId() == R.id.button_regresar_cambiarContra)
+            requireActivity().getSupportFragmentManager().popBackStack();
+
+        else if (view.getId() == R.id.button_mostrarContra_contraActual_cambiarContra)
+            Utilidades.mostrarContraseña(mEditTxtActualContrasena, mBtnMostrarContra1, this.getContext());
+
+        else if (view.getId() == R.id.button_mostrarContra_contraNueva_cambiarContra)
+            Utilidades.mostrarContraseña(mEditTxtNuevaContrasena, mBtnMostrarContra2, this.getContext());
+
+        else if (view.getId() == R.id.button_mostrarContra_confirmarContra_cambiarContra)
+            Utilidades.mostrarContraseña(mEditTxtConfirmarContrasena, mBtnMostrarContra3, this.getContext());
+
     }
 
     //OTRAS FUNCIONES//
     private boolean validarAllInputs() {
-        Usuario = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_USUARIO, usuario.class);
+        Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_USUARIO, usuario.class);
         UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
-        UsuarioBD_Validaciones validar = new UsuarioBD_Validaciones(this.getActivity());
+        UsuarioBD_Validaciones validar = new UsuarioBD_Validaciones(this.requireActivity());
 
         boolean esInputValido = true;
 
-        if (usuarioInputValidaciones.validarContraseña(getActivity(),mEditTxtNuevaContraseña)) {
-            if (!usuarioInputValidaciones.validarConfirmarContraseña(mEditTxtNuevaContraseña.getText().toString(), getActivity(), mEditTxtConfirmarContraseña))
+        if (usuarioInputValidaciones.validarContrasena(requireActivity(), mEditTxtNuevaContrasena)) {
+            if (usuarioInputValidaciones.validarConfirmarContrasena(mEditTxtNuevaContrasena.getText().toString(), requireActivity(), mEditTxtConfirmarContrasena))
                 esInputValido = false;
 
-            if (mEditTxtActualContraseña.getText().toString().equals(mEditTxtNuevaContraseña.getText().toString())){
+            if (mEditTxtActualContrasena.getText().toString().equals(mEditTxtNuevaContrasena.getText().toString())) {
                 esInputValido = false;
                 Toast.makeText(this.getContext(), "La contraseña actual es igual a la nueva contraseña", Toast.LENGTH_LONG).show();
             }
 
-            if(!validar.verificarCorreoContrasena(Usuario.getCorreoElectronico(), encriptarContraseña(mEditTxtActualContraseña.getText().toString()), "La contraseña 'actual' no existe")) {
+            if (!validar.verificarCorreoContrasena(Usuario.getCorreoElectronico(), encriptarContrasena(mEditTxtActualContrasena.getText().toString()), "La contraseña 'actual' no existe")) {
                 esInputValido = false;
                 Log.v("QUICKSTART", "La contraseña actual escrita es incorrecta, mongoDB: " + Usuario.getContrasena() + "P de Android: "
-                        + encriptarContraseña(mEditTxtActualContraseña.getText().toString()) +"P.    correo: " + Usuario.getCorreoElectronico());
+                        + encriptarContrasena(mEditTxtActualContrasena.getText().toString()) + "P.    correo: " + Usuario.getCorreoElectronico());
             }
-        }
-        else
+        } else
             esInputValido = false;
 
         return esInputValido;
     }
 
     // Actualizar contraseña del usuario en MongoDB
-    private void actualizarContraseñaUsuario() {
-        Usuario.setContrasena(encriptarContraseña(mEditTxtNuevaContraseña.getText().toString()));
+    private void actualizarContrasenaUsuario() {
+        Usuario.setContrasena(encriptarContrasena(mEditTxtNuevaContrasena.getText().toString()));
 
-        UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD(this.getContext());
-        if(usuarioBD_CRUD.updateUser(Usuario)) {
+        UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
+        if (usuarioDAO.updateUser(Usuario)) {
             Toast.makeText(getApplicationContext(), "Contraseña cambiada exitosamente", Toast.LENGTH_SHORT).show();
 
             mBtnAceptar.setEnabled(false);
 
-            Usuario = usuarioBD_CRUD.readUsuarioPorCorreo(Usuario.getCorreoElectronico());
-            Preferences.savePreferenceObjectRealm(getActivity(), PREFERENCE_USUARIO, Usuario);
+            Usuario = usuarioDAO.readUsuarioPorCorreo(Usuario.getCorreoElectronico());
+            Preferences.savePreferenceObjectRealm(requireActivity(), PREFERENCE_USUARIO, Usuario);
         }
     }
 
     // Recibe la contraseña en texto plano y la regresa encriptada
-    private static String encriptarContraseña(String textoPlano) {
-        return Encriptar.Encriptar(textoPlano);
+    private static String encriptarContrasena(String textoPlano) {
+        return Encriptar.EncriptarContrasena(textoPlano);
     }
 
 }

@@ -4,26 +4,19 @@ import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.mongodb.lang.NonNull;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class UsuarioFirebaseVerificaciones {
 
-    private Activity mActivity;
+    private final Activity mActivity;
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
     public interface OnCodigoCorreoEnviado {
@@ -76,67 +69,55 @@ public class UsuarioFirebaseVerificaciones {
     }
 
 
-    public void enviarCorreoDeVerificacion(OnCodigoCorreoEnviado onCodigoCorreoEnviado, String correo, String contraseña){
+    public void enviarCorreoDeVerificacion(OnCodigoCorreoEnviado onCodigoCorreoEnviado, String correo, String contrasena){
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuth.createUserWithEmailAndPassword(correo, contraseña)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override 
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@androidx.annotation.NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        onCodigoCorreoEnviado.isCorreoEnviado(true);
-                                        Toast.makeText(mActivity, "SI SE PUDO REGISTRAR Y SE ENVIO EL CODIGO AL CORREO", Toast.LENGTH_SHORT).show();
-                                    }
-                                    else {
-                                        onCodigoCorreoEnviado.isCorreoEnviado(false);
-                                        Toast.makeText(mActivity, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                        Log.v("QUICKSTART", task.getException().getMessage());
-                                    }
-                                }
-                            });
-                        }
-                        else
-                            Toast.makeText(mActivity, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+        firebaseAuth.createUserWithEmailAndPassword(correo, contrasena)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Objects.requireNonNull(firebaseAuth.getCurrentUser()).sendEmailVerification().addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                onCodigoCorreoEnviado.isCorreoEnviado(true);
+                                Toast.makeText(mActivity, "SI SE PUDO REGISTRAR Y SE ENVIO EL CODIGO AL CORREO", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                onCodigoCorreoEnviado.isCorreoEnviado(false);
+                                Toast.makeText(mActivity, Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.v("QUICKSTART", task1.getException().getMessage());
+                            }
+                        });
                     }
+                    else
+                        Toast.makeText(mActivity, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                 });
 
     }
 
     public void validarCodigoNumTelefonico(OnCodigoNumTelefonicoVerificado onCodigoNumTelefonicoVerificado, String verificationId, String codigoNumTelefonico){
         PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId,codigoNumTelefonico);
-        FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@androidx.annotation.NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
-                    onCodigoNumTelefonicoVerificado.isNumTelefonicoVerificado(true);
-                }
-                else {
-                    onCodigoNumTelefonicoVerificado.isNumTelefonicoVerificado(false);
-                    Toast.makeText(mActivity, "El código ingresaste es incorrecto.", Toast.LENGTH_SHORT).show();
-                }
+        FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential).addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                onCodigoNumTelefonicoVerificado.isNumTelefonicoVerificado(true);
+            }
+            else {
+                onCodigoNumTelefonicoVerificado.isNumTelefonicoVerificado(false);
+                Toast.makeText(mActivity, "El código ingresaste es incorrecto.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public void validarCorreoVerificado(OnCorreoVerificado onCorreoVerificado, String correo, String contraseña){
+    public void validarCorreoVerificado(OnCorreoVerificado onCorreoVerificado, String correo, String contrasena){
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuth.signInWithEmailAndPassword(correo, contraseña).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@androidx.annotation.NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    if(firebaseAuth.getCurrentUser().isEmailVerified())
-                        onCorreoVerificado.isCorreoVerificado(true);
-                    else{
-                        onCorreoVerificado.isCorreoVerificado(false);
-                        Toast.makeText(mActivity, "Por favor, verifica tu correo electrónico para completar tu registro", Toast.LENGTH_SHORT).show();
-                    }
+        firebaseAuth.signInWithEmailAndPassword(correo, contrasena).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                if(Objects.requireNonNull(firebaseAuth.getCurrentUser()).isEmailVerified())
+                    onCorreoVerificado.isCorreoVerificado(true);
+                else{
+                    onCorreoVerificado.isCorreoVerificado(false);
+                    Toast.makeText(mActivity, "Por favor, verifica tu correo electrónico para completar tu registro", Toast.LENGTH_SHORT).show();
                 }
-                else
-                    Toast.makeText(mActivity, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
             }
+            else
+                Toast.makeText(mActivity, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 }

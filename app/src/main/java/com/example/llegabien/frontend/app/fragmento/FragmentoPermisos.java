@@ -13,10 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.llegabien.R;
-import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 
 public class FragmentoPermisos extends Fragment implements View.OnClickListener {
-    private Button mBtnAceptarPermisos;
 
     public FragmentoPermisos() {
         // Required empty public constructor
@@ -29,7 +27,7 @@ public class FragmentoPermisos extends Fragment implements View.OnClickListener 
         View root = inflater.inflate(R.layout.fragmento_permisos, container, false);
 
         //wiring up
-        mBtnAceptarPermisos = root.findViewById(R.id.button_aceptarPermiso_permisos);
+        Button mBtnAceptarPermisos = root.findViewById(R.id.button_aceptarPermiso_permisos);
 
         //listeners
         mBtnAceptarPermisos.setOnClickListener(this);
@@ -41,8 +39,8 @@ public class FragmentoPermisos extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         Intent intent = new Intent();
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+        Uri uri = Uri.fromParts("package", requireActivity().getPackageName(), null);
         intent.setData(uri);
-        getActivity().startActivity(intent);
+        requireActivity().startActivity(intent);
     }
 }

@@ -10,7 +10,6 @@ import androidx.constraintlayout.widget.Guideline;
 import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,9 +23,8 @@ import android.widget.TextView;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.mapa.favoritos.Favorito_DAO;
 import com.example.llegabien.backend.mapa.favoritos.favorito;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionBD_CRUD;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionDAO;
 
-import java.lang.ref.PhantomReference;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
@@ -39,9 +37,7 @@ public class ActivityFavoritos extends AppCompatActivity implements View.OnClick
     private ConstraintLayout mConsLytScrollView;
     private View mViewAuxiliar;
     private Guideline mGuideline10Porciento, mGuideline90Porciente;
-    private Button mBtnRegresar;
     private  RealmResults<favorito> favoritos;
-    private usuario Usuario;
     private Favorito_DAO favoritoDAO;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -55,43 +51,42 @@ public class ActivityFavoritos extends AppCompatActivity implements View.OnClick
         mViewAuxiliar = findViewById(R.id.view2_favoritos);
         mGuideline10Porciento = findViewById(R.id.guideline1_textView_editView_scrollView_favoritos);
         mGuideline90Porciente = findViewById(R.id.guideline2_textView_editView_scrollView_favoritos);
-        mBtnRegresar = findViewById(R.id.button_regresar_favoritos);
+        Button mBtnRegresar = findViewById(R.id.button_regresar_favoritos);
 
         //listeners
         mBtnRegresar.setOnClickListener(this);
 
-        Usuario = Preferences.getSavedObjectFromPreference(this, PREFERENCE_USUARIO, usuario.class);
+        usuario usuario = Preferences.getSavedObjectFromPreference(this, PREFERENCE_USUARIO, com.example.llegabien.backend.usuario.usuario.class);
         favoritoDAO = new Favorito_DAO(this);
-        favoritos = favoritoDAO.obtenerFavoritosDeUsuario(Usuario);
+        favoritos = favoritoDAO.obtenerFavoritosDeUsuario(usuario);
 
         // Para crear la vista de favoritos
         crearVistaFavoritos();
     }
 
     // FUNCIONES LISTENER //
-    
+
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.button_regresar_favoritos){
             finish();
         }
         else{
-            UbicacionBD_CRUD ubicacionBD_crud = new UbicacionBD_CRUD(this);
+            UbicacionDAO ubicacionDAO = new UbicacionDAO(this);
             ObjectId idFavorito = new ObjectId(String.valueOf(view.getContentDescription()));
             favorito Favorito = favoritoDAO.obtenerFavoritoPorId(idFavorito);
-            ubicacionBD_crud.obtenerUbicacionBuscada(Favorito.getUbicacion().getCoordinates().get(0),Favorito.getUbicacion().getCoordinates().get(1));
+            ubicacionDAO.obtenerUbicacionBuscada(Favorito.getUbicacion().getCoordinates().get(0),Favorito.getUbicacion().getCoordinates().get(1));
 
             // Para abrir fragmento "Lugar seleccionado".
             Intent intent = new Intent(this, ActivityMap.class);
             intent.putExtra("ACTIVITY_ANTERIOR","FAVORITOS");
             startActivity(intent);
-            startActivity(intent);
         }
-            
+
     }
-    
+
     // OTRAS FUNCIONES //
-    
+
     @SuppressLint("UseCompatLoadingForDrawables")
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void crearVistaFavoritos() {
@@ -217,6 +212,7 @@ public class ActivityFavoritos extends AppCompatActivity implements View.OnClick
             txtViewUbicacion.setText(favoritos.get(i).getNombre());
             txtViewUbicacion.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_size_parrafo));
             txtViewUbicacion.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
+            txtViewUbicacion.setMaxLines(1);
 
             consLytPrincipalFavorito.addView(txtViewUbicacion);
 

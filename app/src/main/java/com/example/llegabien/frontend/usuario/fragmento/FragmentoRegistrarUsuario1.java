@@ -29,7 +29,6 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
 
     private UsuarioSharedViewModel SharedViewModel;
 
-    private Button mBtnSiguiente, mBtnIniciarSesion, mBtnCerrar;
     private EditText mEditTxtNombres, mEditTxtApellidos, mEditTxtFechaNacimiento;
     ConectarBD conectarBD = new ConectarBD();
 
@@ -43,9 +42,9 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
         View root = inflater.inflate(R.layout.fragmento_registrar_usuario1, container, false);
 
         //wiring up
-        mBtnSiguiente= (Button) root.findViewById(R.id.button_siguiente_registro_1);
-        mBtnIniciarSesion = (Button) root.findViewById(R.id.button_iniciarSesion_registro_1);
-        mBtnCerrar = (Button) root.findViewById(R.id.button_cerrar_registro_1);
+        Button mBtnSiguiente = (Button) root.findViewById(R.id.button_siguiente_registro_1);
+        Button mBtnIniciarSesion = (Button) root.findViewById(R.id.button_iniciarSesion_registro_1);
+        Button mBtnCerrar = (Button) root.findViewById(R.id.button_cerrar_registro_1);
         mEditTxtNombres = (EditText) root.findViewById(R.id.editText_nombres_registro_1);
         mEditTxtApellidos = (EditText) root.findViewById(R.id.editText_apellidos_registro_1);
         mEditTxtFechaNacimiento = (EditText) root.findViewById(R.id.editText_fechaNacimiento_registro_1);
@@ -68,37 +67,34 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
     @Override
     public void onClick(View view) {
         FragmentoAuxiliar fragmentoAuxiliar = new FragmentoAuxiliar();
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        switch (view.getId()) {
-            case R.id.button_siguiente_registro_1:
-                if (validarAllInputs()) {
-                    //Para obtener los datos del formulario y hacer una instancia de Usuario
-                    SharedViewModel.setUsuario(usuarioConDatos());
+        FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        if (view.getId() ==  R.id.button_siguiente_registro_1){
+            if (validarAllInputs()) {
+                //Para obtener los datos del formulario y hacer una instancia de Usuario
+                SharedViewModel.setUsuario(usuarioConDatos());
 
-                    // Para pasar al siguiente fragmento
-                    FragmentoRegistrarUsuario2 fragmentoRegistrarUsuario2 = new FragmentoRegistrarUsuario2();
-                    fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-                    fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario2).commit();
-                    fragmentTransaction.addToBackStack(null);
-                }
-                break;
-            case R.id.button_iniciarSesion_registro_1:
-                FragmentoIniciarSesion1 fragmentoIniciarSesion1 = new FragmentoIniciarSesion1();
-                fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
-                fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoIniciarSesion1).commit();
-                break;
-            case R.id.button_cerrar_registro_1:
-                fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
-                fragmentTransaction.replace(R.id.fragment_pagina_principal,fragmentoAuxiliar).commit();
-                fragmentTransaction.remove(fragmentoAuxiliar);
-                break;
-            case R.id.editText_fechaNacimiento_registro_1:
-                DialogDatePicker dialogDatePicker = new DialogDatePicker();
-                dialogDatePicker.mostrarDatePickerDialog(mEditTxtFechaNacimiento, this);
-                mEditTxtFechaNacimiento.setError(null);
-                break;
+                // Para pasar al siguiente fragmento
+                FragmentoRegistrarUsuario2 fragmentoRegistrarUsuario2 = new FragmentoRegistrarUsuario2();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+                fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario2).commit();
+                fragmentTransaction.addToBackStack(null);
+            }
         }
-
+        else if(view.getId() == R.id.button_iniciarSesion_registro_1) {
+            FragmentoIniciarSesion1 fragmentoIniciarSesion1 = new FragmentoIniciarSesion1();
+            fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
+            fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoIniciarSesion1).commit();
+        }
+        else if(view.getId() == R.id.button_cerrar_registro_1) {
+            fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
+            fragmentTransaction.replace(R.id.fragment_pagina_principal,fragmentoAuxiliar).commit();
+            fragmentTransaction.remove(fragmentoAuxiliar);
+        }
+        else if(view.getId() == R.id.editText_fechaNacimiento_registro_1) {
+            DialogDatePicker dialogDatePicker = new DialogDatePicker();
+            dialogDatePicker.mostrarDatePickerDialog(mEditTxtFechaNacimiento, this);
+            mEditTxtFechaNacimiento.setError(null);
+        }
     }
 
     //OTRAS FUNCIONES//
@@ -107,11 +103,11 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
     private boolean validarAllInputs(){
         UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
         boolean esInputValido = true;
-        if (!usuarioInputValidaciones.validarNombre(getActivity(),mEditTxtNombres))
+        if (usuarioInputValidaciones.validarNombre(requireActivity(), mEditTxtNombres))
             esInputValido = false;
-        if ( !usuarioInputValidaciones.validarNombre(getActivity(),mEditTxtApellidos))
+        if (usuarioInputValidaciones.validarNombre(requireActivity(), mEditTxtApellidos))
             esInputValido = false;
-        if (!usuarioInputValidaciones.validarFechaNacimiento(getActivity(),mEditTxtFechaNacimiento))
+        if (usuarioInputValidaciones.validarFechaNacimiento(requireActivity(), mEditTxtFechaNacimiento))
             esInputValido = false;
 
         return esInputValido;

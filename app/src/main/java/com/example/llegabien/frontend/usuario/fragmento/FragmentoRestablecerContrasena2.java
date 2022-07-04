@@ -1,12 +1,6 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
-
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -15,16 +9,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.llegabien.R;
-import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.usuario.UsuarioBD_CRUD;
+import com.example.llegabien.backend.usuario.UsuarioDAO;
 import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
-import com.example.llegabien.backend.usuario.usuario;
 
 public class FragmentoRestablecerContrasena2 extends Fragment implements View.OnClickListener, TextWatcher {
 
-    private Button mBtnRegresar, mBtnVerificar;
     private EditText mEditTxtCodigo1, mEditTxtCodigo2, mEditTxtCodigo3, mEditTxtCodigo4, mEditTxtCodigo5, mEditTxtCodigo6;
     private String mNumTelefonico, mVerificacionIdFireBase;
 
@@ -44,8 +38,8 @@ public class FragmentoRestablecerContrasena2 extends Fragment implements View.On
         View root = inflater.inflate(R.layout.fragmento_restablecer_contrasena2, container, false);
 
         //wiring up
-        mBtnVerificar= root.findViewById(R.id.button_verificar_restablecer_contraseña_2);
-        mBtnRegresar = root.findViewById(R.id.button_regresar_restablecer_contraseña_2);
+        Button mBtnVerificar = root.findViewById(R.id.button_verificar_restablecer_contraseña_2);
+        Button mBtnRegresar = root.findViewById(R.id.button_regresar_restablecer_contraseña_2);
         mEditTxtCodigo1 = root.findViewById(R.id.editText1_codigo_restablecer_contraseña_2);
         mEditTxtCodigo2 = root.findViewById(R.id.editText2_codigo_restablecer_contraseña_2);
         mEditTxtCodigo3 = root.findViewById(R.id.editText3_codigo_restablecer_contraseña_2);
@@ -69,23 +63,19 @@ public class FragmentoRestablecerContrasena2 extends Fragment implements View.On
     //listener function
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_regresar_restablecer_contraseña_2:
-                getActivity().getSupportFragmentManager().popBackStack();
-                break;
-            case R.id.button_verificar_restablecer_contraseña_2:
-                if (validarAllInputs()){
-                    verificarCodigoNumTelefonico();
-                }
-                break;
-
+        if (view.getId() == R.id.button_verificar_restablecer_contraseña_2){
+            if (validarAllInputs()){
+                verificarCodigoNumTelefonico();
+            }
         }
+        else if(view.getId() == R.id.button_regresar_restablecer_contraseña_2)
+            requireActivity().getSupportFragmentManager().popBackStack();
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count)
     {
-        EditText text = (EditText) getActivity().getCurrentFocus();
+        EditText text = (EditText) requireActivity().getCurrentFocus();
 
         if (text != null && text.length() > 0)
         {
@@ -104,17 +94,17 @@ public class FragmentoRestablecerContrasena2 extends Fragment implements View.On
     private boolean validarAllInputs(){
         UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
         boolean esInputValido = true;
-        if (!usuarioInputValidaciones.validarStringVacia(this.getActivity(),mEditTxtCodigo1))
+        if (usuarioInputValidaciones.validarStringVacia(this.requireActivity(), mEditTxtCodigo1))
             esInputValido = false;
-        if ( !usuarioInputValidaciones.validarStringVacia(this.getActivity(),mEditTxtCodigo2))
+        if (usuarioInputValidaciones.validarStringVacia(this.requireActivity(), mEditTxtCodigo2))
             esInputValido = false;
-        if (!usuarioInputValidaciones.validarStringVacia(this.getActivity(),mEditTxtCodigo3))
+        if (usuarioInputValidaciones.validarStringVacia(this.requireActivity(), mEditTxtCodigo3))
             esInputValido = false;
-        if ( !usuarioInputValidaciones.validarStringVacia(this.getActivity(),mEditTxtCodigo4))
+        if (usuarioInputValidaciones.validarStringVacia(this.requireActivity(), mEditTxtCodigo4))
             esInputValido = false;
-        if (!usuarioInputValidaciones.validarStringVacia(this.getActivity(),mEditTxtCodigo5))
+        if (usuarioInputValidaciones.validarStringVacia(this.requireActivity(), mEditTxtCodigo5))
             esInputValido = false;
-        if ( !usuarioInputValidaciones.validarStringVacia(this.getActivity(),mEditTxtCodigo6))
+        if (usuarioInputValidaciones.validarStringVacia(this.requireActivity(), mEditTxtCodigo6))
             esInputValido = false;
 
         return esInputValido;
@@ -129,20 +119,17 @@ public class FragmentoRestablecerContrasena2 extends Fragment implements View.On
                         mEditTxtCodigo5.getText().toString() +
                         mEditTxtCodigo6.getText().toString();
 
-        UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(getActivity());
-        usuarioFirebaseVerificaciones.validarCodigoNumTelefonico(new UsuarioFirebaseVerificaciones.OnCodigoNumTelefonicoVerificado() {
-            @Override
-            public void isNumTelefonicoVerificado(boolean isNumTelefonicoVerificado) {
-                if (isNumTelefonicoVerificado){
-                    UsuarioBD_CRUD usuarioBD_crud = new UsuarioBD_CRUD(FragmentoRestablecerContrasena2.this.getContext());
-                    usuarioBD_crud.readUsuarioPorNumTelefonico(mNumTelefonico);
+        UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(requireActivity());
+        usuarioFirebaseVerificaciones.validarCodigoNumTelefonico(isNumTelefonicoVerificado -> {
+            if (isNumTelefonicoVerificado){
+                UsuarioDAO usuarioDAO = new UsuarioDAO(FragmentoRestablecerContrasena2.this.getContext());
+                usuarioDAO.readUsuarioPorNumTelefonico(mNumTelefonico);
 
-                    FragmentoRestablecerContrasena3 fragmentoRestablecerContrasena3 = new FragmentoRestablecerContrasena3();
-                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);
-                    fragmentTransaction.add(R.id.fragment_pagina_principal, fragmentoRestablecerContrasena3).commit();
-                    fragmentTransaction.addToBackStack(null);
-                }
+                FragmentoRestablecerContrasena3 fragmentoRestablecerContrasena3 = new FragmentoRestablecerContrasena3();
+                FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);
+                fragmentTransaction.add(R.id.fragment_pagina_principal, fragmentoRestablecerContrasena3).commit();
+                fragmentTransaction.addToBackStack(null);
             }
         }, mVerificacionIdFireBase, codigo);
     }

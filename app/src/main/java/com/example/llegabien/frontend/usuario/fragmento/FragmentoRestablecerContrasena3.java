@@ -1,7 +1,6 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
-import static io.realm.Realm.getApplicationContext;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,14 +16,16 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Encriptar;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.usuario.UsuarioBD_CRUD;
+import com.example.llegabien.backend.usuario.UsuarioDAO;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.app.Utilidades;
 
 public class FragmentoRestablecerContrasena3 extends Fragment implements View.OnClickListener {
-    private EditText mEditTxtContraseña, mEditTxtConfirmarContraseña;
-    private Button mBtnAceptar, mBtnMostrarContra1, mBtnMostrarContra2, mBtnRegresar;
+    private EditText mEditTxtContrasena, mEditTxtConfirmarContrasena;
+    private Button mBtnAceptar;
+    private Button mBtnMostrarContra1;
+    private Button mBtnMostrarContra2;
 
     public FragmentoRestablecerContrasena3() {
         // Required empty public constructor
@@ -37,12 +38,12 @@ public class FragmentoRestablecerContrasena3 extends Fragment implements View.On
         View root = inflater.inflate(R.layout.fragmento_restablecer_contrasena3, container, false);
 
         //wiring up
-        mEditTxtContraseña = root.findViewById(R.id.editText_contraseña_restablecer_contraseña_3);
-        mEditTxtConfirmarContraseña = root.findViewById(R.id.editText_confirmarContraseña_restablecer_contraseña_3);
+        mEditTxtContrasena = root.findViewById(R.id.editText_contraseña_restablecer_contraseña_3);
+        mEditTxtConfirmarContrasena = root.findViewById(R.id.editText_confirmarContraseña_restablecer_contraseña_3);
         mBtnAceptar= root.findViewById(R.id.button_aceptar_restablecer_contraseña_3);
         mBtnMostrarContra1= root.findViewById(R.id.button_mostrarContra_contraseña_restablecer_contraseña_3);
         mBtnMostrarContra2 = root.findViewById(R.id.button_mostrarContra_confirmarContra_restablecer_contraseña_3);
-        mBtnRegresar  = root.findViewById(R.id.button_regresar_restablecer_contraseña_3);
+        Button mBtnRegresar = root.findViewById(R.id.button_regresar_restablecer_contraseña_3);
 
 
         //listeners
@@ -58,39 +59,38 @@ public class FragmentoRestablecerContrasena3 extends Fragment implements View.On
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_aceptar_restablecer_contraseña_3:
-                if (validarAllInputs())
-                    actualizarContraseñaUsuario();
-                break;
-            case R.id.button_mostrarContra_contraseña_restablecer_contraseña_3:
-                Utilidades.mostrarContraseña(mEditTxtContraseña, mBtnMostrarContra1, this.getContext());
-                break;
-            case R.id.button_mostrarContra_confirmarContra_restablecer_contraseña_3:
-                Utilidades.mostrarContraseña(mEditTxtConfirmarContraseña, mBtnMostrarContra2, this.getContext());
-                break;
-            case R.id.button_regresar_restablecer_contraseña_3:
-                getActivity().getSupportFragmentManager().popBackStack();
-                break;
-
+        if (view.getId() == R.id.button_aceptar_restablecer_contraseña_3){
+            if (validarAllInputs())
+                actualizarContrasenaUsuario();
         }
+       else if (view.getId() == R.id.button_mostrarContra_contraseña_restablecer_contraseña_3)
+            Utilidades.mostrarContraseña(mEditTxtContrasena, mBtnMostrarContra1, this.getContext());
+        else if (view.getId() == R.id.button_mostrarContra_confirmarContra_restablecer_contraseña_3)
+            Utilidades.mostrarContraseña(mEditTxtConfirmarContrasena, mBtnMostrarContra2, this.getContext());
+        else if (view.getId() == R.id.button_regresar_restablecer_contraseña_3)
+            requireActivity().getSupportFragmentManager().popBackStack();
     }
 
-    private void actualizarContraseñaUsuario() {
-        usuario Usuario = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_USUARIO, usuario.class);
-        Usuario.setContrasena(Encriptar.Encriptar(mEditTxtContraseña.getText().toString()));
+    private void actualizarContrasenaUsuario() {
+        String correo = null;
+        usuario Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_USUARIO, usuario.class);
 
-        UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD(this.getContext());
-        if (usuarioBD_CRUD.updateUser(Usuario)) {
-            Toast.makeText(getApplicationContext(), "Contraseña cambiada exitosamente.", Toast.LENGTH_SHORT).show();
+        if (Usuario != null) {
+            Usuario.setContrasena(Encriptar.EncriptarContrasena(mEditTxtContrasena.getText().toString()));
+            correo = Usuario.getCorreoElectronico();
+        }
+
+        UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
+        if (usuarioDAO.updateUser(Usuario)) {
+            Toast.makeText(requireContext(), "Contraseña cambiada exitosamente.", Toast.LENGTH_SHORT).show();
 
             mBtnAceptar.setEnabled(false);
 
-            Usuario = usuarioBD_CRUD.readUsuarioPorCorreo(Usuario.getCorreoElectronico());
-            Preferences.savePreferenceObjectRealm(getActivity(), PREFERENCE_USUARIO, Usuario);
+            Usuario = usuarioDAO.readUsuarioPorCorreo(correo);
+            Preferences.savePreferenceObjectRealm(requireActivity(), PREFERENCE_USUARIO, Usuario);
 
             FragmentoIniciarSesion1 fragmentoIniciarSesion1 = new FragmentoIniciarSesion1();
-            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction()
+            FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(R.anim.slide_up, R.anim.slide_down,R.anim.slide_up, R.anim.slide_down)
                     .addToBackStack(null);
             fragmentTransaction.add(R.id.fragment_pagina_principal, fragmentoIniciarSesion1).commit();
@@ -104,8 +104,8 @@ public class FragmentoRestablecerContrasena3 extends Fragment implements View.On
         UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
         boolean esInputValido = true;
 
-        if (usuarioInputValidaciones.validarContraseña(getActivity(), mEditTxtContraseña)){
-            if (!usuarioInputValidaciones.validarConfirmarContraseña(mEditTxtContraseña.getText().toString(), getActivity(), mEditTxtConfirmarContraseña))
+        if (usuarioInputValidaciones.validarContrasena(requireActivity(), mEditTxtContrasena)){
+            if (usuarioInputValidaciones.validarConfirmarContrasena(mEditTxtContrasena.getText().toString(), requireActivity(), mEditTxtConfirmarContrasena))
                 esInputValido = false;
         }
         else

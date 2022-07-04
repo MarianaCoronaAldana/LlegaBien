@@ -11,19 +11,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
-import com.example.llegabien.backend.usuario.UsuarioBD_CRUD;
 import com.example.llegabien.backend.usuario.UsuarioBD_Validaciones;
 import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
-import com.example.llegabien.backend.usuario.usuario;
-
-import java.util.Locale;
 
 public class FragmentoRestablecerContrasena1 extends Fragment implements View.OnClickListener {
 
-    private Button mBtnSiguiente, mBtnRegresar;
     private EditText mEditTxtCountryCode, mEditTxtNumTelefonico;
-    private UsuarioBD_Validaciones mValidar;
 
     public FragmentoRestablecerContrasena1() {
         // Required empty public constructor
@@ -36,10 +30,10 @@ public class FragmentoRestablecerContrasena1 extends Fragment implements View.On
         View root = inflater.inflate(R.layout.fragmento_restablecer_contrasena1, container, false);
 
         //wiring up
-        mBtnSiguiente = root.findViewById(R.id.button_siguiente_restablecer_contraseña_1);
+        Button mBtnSiguiente = root.findViewById(R.id.button_siguiente_restablecer_contraseña_1);
         mEditTxtCountryCode = root.findViewById(R.id.editText_countryCode_restablecer_contraseña_1);
         mEditTxtNumTelefonico = root.findViewById(R.id.editText_numTelefonico_restablecer_contraseña_1);
-        mBtnRegresar = root.findViewById(R.id.button_regresar_restablecer_contraseña_1);
+        Button mBtnRegresar = root.findViewById(R.id.button_regresar_restablecer_contraseña_1);
 
 
         //listeners
@@ -53,23 +47,19 @@ public class FragmentoRestablecerContrasena1 extends Fragment implements View.On
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_siguiente_restablecer_contraseña_1:
-                if (validarAllInputs()) {
-                    mValidar = new UsuarioBD_Validaciones(this.getContext());
+        if(view.getId() == R.id.button_siguiente_restablecer_contraseña_1){
+            if (validarAllInputs()) {
+                UsuarioBD_Validaciones mValidar = new UsuarioBD_Validaciones(this.getContext());
 
-                    String numTelefonico = mEditTxtCountryCode.getText().toString() +
-                            mEditTxtNumTelefonico.getText().toString();
+                String numTelefonico = mEditTxtCountryCode.getText().toString() +
+                        mEditTxtNumTelefonico.getText().toString();
 
-                    if (mValidar.validarExistenciaCorreoTelefono(null, numTelefonico))
-                        enviarCodigoRestablecerContraseña(numTelefonico);
-                }
-                break;
-            case R.id.button_regresar_restablecer_contraseña_1:
-                getActivity().getSupportFragmentManager().popBackStack();
-                break;
-
+                if (mValidar.validarExistenciaCorreoTelefono(null, numTelefonico))
+                    enviarCodigoRestablecerContrasena(numTelefonico);
+            }
         }
+        else if(view.getId() == R.id.button_regresar_restablecer_contraseña_1)
+            requireActivity().getSupportFragmentManager().popBackStack();
     }
 
     //OTRAS FUNCIONES//
@@ -78,11 +68,11 @@ public class FragmentoRestablecerContrasena1 extends Fragment implements View.On
         UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
         boolean esInputValido = true, esNumTelefonicoValido, esCountryCodeValido;
 
-        esNumTelefonicoValido = usuarioInputValidaciones.validarNumTelefonico(getActivity(), mEditTxtNumTelefonico);
-        esCountryCodeValido = usuarioInputValidaciones.validarNumTelefonico(getActivity(), mEditTxtCountryCode);
+        esNumTelefonicoValido = usuarioInputValidaciones.validarNumTelefonico(requireActivity(), mEditTxtNumTelefonico);
+        esCountryCodeValido = usuarioInputValidaciones.validarNumTelefonico(requireActivity(), mEditTxtCountryCode);
 
         if (esCountryCodeValido && esNumTelefonicoValido) {
-            if (!usuarioInputValidaciones.validarNumTelefonico_libphonenumber(getActivity(), mEditTxtNumTelefonico, mEditTxtCountryCode))
+            if (usuarioInputValidaciones.validarNumTelefonico_libphonenumber(requireActivity(), mEditTxtNumTelefonico, mEditTxtCountryCode))
                 esInputValido = false;
         } else
             esInputValido = false;
@@ -90,18 +80,15 @@ public class FragmentoRestablecerContrasena1 extends Fragment implements View.On
         return esInputValido;
     }
 
-    private void enviarCodigoRestablecerContraseña(String numTelefonico) {
-        UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(getActivity());
-        usuarioFirebaseVerificaciones.enviarCodigoNumTelefonico(new UsuarioFirebaseVerificaciones.OnCodigoNumTelefonicoEnviado() {
-            @Override
-            public void isSMSEnviado(boolean isSMSEnviado, String verificationId) {
-                if (isSMSEnviado) {
-                    FragmentoRestablecerContrasena2 fragmentoRestablecerContrasena2 = new FragmentoRestablecerContrasena2(numTelefonico, verificationId);
-                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-                    fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRestablecerContrasena2).commit();
-                    fragmentTransaction.addToBackStack(null);
-                }
+    private void enviarCodigoRestablecerContrasena(String numTelefonico) {
+        UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(requireActivity());
+        usuarioFirebaseVerificaciones.enviarCodigoNumTelefonico((isSMSEnviado, verificationId) -> {
+            if (isSMSEnviado) {
+                FragmentoRestablecerContrasena2 fragmentoRestablecerContrasena2 = new FragmentoRestablecerContrasena2(numTelefonico, verificationId);
+                FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+                fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRestablecerContrasena2).commit();
+                fragmentTransaction.addToBackStack(null);
             }
         }, "+" + numTelefonico);
     }

@@ -26,7 +26,7 @@ import android.widget.TextView;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.reporte.Reporte_DAO;
+import com.example.llegabien.backend.reporte.ReporteDAO;
 import com.example.llegabien.backend.reporte.reporte;
 import com.example.llegabien.backend.usuario.usuario;
 
@@ -40,7 +40,6 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
     private ConstraintLayout mConsLytScrollView;
     private View mViewAuxiliar;
     private Guideline mGuideline10Porciento, mGuideline90Porciente;
-    private Button mBtnRegresar;
     private  RealmResults<reporte> reportes;
 
     public FragmentoListaReportes() {
@@ -59,13 +58,13 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
         mViewAuxiliar = root.findViewById(R.id.view2_listaReportes);
         mGuideline10Porciento = root.findViewById(R.id.guideline1_textView_editView_scrollView_listaReportes);
         mGuideline90Porciente = root.findViewById(R.id.guideline2_textView_editView_scrollView_listaReportes);
-        mBtnRegresar = root.findViewById(R.id.button_regresar_listaReportes);
+        Button mBtnRegresar = root.findViewById(R.id.button_regresar_listaReportes);
 
         //listeners
         mBtnRegresar.setOnClickListener(this);
 
-        usuario Usuario = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_USUARIO, usuario.class);
-        Reporte_DAO reporte_DAO = new Reporte_DAO(this.getContext());
+        usuario Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_USUARIO, usuario.class);
+        ReporteDAO reporte_DAO = new ReporteDAO(this.getContext());
         reportes = reporte_DAO.obtenerReportesPorUsuario(Usuario);
         crearVistaListaReportes();
 
@@ -78,7 +77,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
         Log.v("QUICKSTART", "ME HICIERON CLICK :D");
 
         if (view.getId() == R.id.button_regresar_listaReportes)
-            getActivity().getSupportFragmentManager().popBackStack();
+            requireActivity().getSupportFragmentManager().popBackStack();
     }
 
     //OTRAS FUNCIONES//
@@ -91,10 +90,10 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
         for (int i = 0; i < reportes.size(); i++) {
             // ConstraintLayout principal
             constraintSet.clone(mConsLytScrollView);
-            ConstraintLayout consLytPrincipalReporte = new ConstraintLayout(this.getActivity());
+            ConstraintLayout consLytPrincipalReporte = new ConstraintLayout(this.requireActivity());
             consLytPrincipalReporte.setId(View.generateViewId());
-            consLytPrincipalReporte.setBackground(getActivity().getResources().getDrawable(R.drawable.bkgd_esquinas_redondeadas));
-            consLytPrincipalReporte.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.morado_claro));
+            consLytPrincipalReporte.setBackground(requireActivity().getResources().getDrawable(R.drawable.bkgd_esquinas_redondeadas));
+            consLytPrincipalReporte.setBackgroundTintList(ContextCompat.getColorStateList(requireActivity(), R.color.morado_claro));
 
             consLytPrincipalReporte.setClickable(true);
             consLytPrincipalReporte.setOnClickListener(this);
@@ -115,7 +114,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             //Fin de ConstraintLayout principal
 
             // Separador
-            View viewSeparadorFinal = new View(new ContextThemeWrapper(this.getActivity(), R.style.ViewSeparadorAuxiliar));
+            View viewSeparadorFinal = new View(new ContextThemeWrapper(this.requireActivity(), R.style.ViewSeparadorAuxiliar));
 
             viewSeparadorFinal.setId(View.generateViewId());
 
@@ -140,7 +139,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             constraintSet.clone(consLytPrincipalReporte);
 
             // Guideline "5 porciento"
-            Guideline guideline5Porciento = new Guideline(this.getActivity());
+            Guideline guideline5Porciento = new Guideline(this.requireActivity());
             guideline5Porciento.setId(View.generateViewId());
 
             constraintSet.constrainWidth(guideline5Porciento.getId(), ConstraintSet.PARENT_ID);
@@ -151,7 +150,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             // Fin de guideline "5 porciento"
 
             // Guideline "95 porciento"
-            Guideline guideline95Porciento = new Guideline(this.getActivity());
+            Guideline guideline95Porciento = new Guideline(this.requireActivity());
             guideline95Porciento.setId(View.generateViewId());
 
             constraintSet.constrainWidth(guideline95Porciento.getId(), ConstraintSet.PARENT_ID);
@@ -162,7 +161,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             // Fin de guideline "95 porciento"
 
             // Guideline "45 porciento"
-            Guideline guideline45Porciento = new Guideline(this.getActivity());
+            Guideline guideline45Porciento = new Guideline(this.requireActivity());
             guideline45Porciento.setId(View.generateViewId());
 
             constraintSet.constrainWidth(guideline45Porciento.getId(), ConstraintSet.PARENT_ID);
@@ -173,7 +172,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             // Fin de guideline "45 porciento"
 
             // Guideline "50 porciento"
-            Guideline guideline50Porciento = new Guideline(this.getActivity());
+            Guideline guideline50Porciento = new Guideline(this.requireActivity());
             guideline50Porciento.setId(View.generateViewId());
 
             constraintSet.constrainWidth(guideline50Porciento.getId(), ConstraintSet.PARENT_ID);
@@ -184,9 +183,9 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             // Fin de guideline "50 porciento"
 
             // Separador
-            View viewSeparador = new View(new ContextThemeWrapper(this.getActivity(), R.style.ViewSeparador));
+            View viewSeparador = new View(new ContextThemeWrapper(this.requireActivity(), R.style.ViewSeparador));
             viewSeparador.setId(View.generateViewId());
-            viewSeparador.setBackgroundColor(getActivity().getResources().getColor(R.color.negro));
+            viewSeparador.setBackgroundColor(requireActivity().getResources().getColor(R.color.negro));
 
             consLytPrincipalReporte.addView(viewSeparador);
 
@@ -201,12 +200,13 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             //Fin de Separador
 
             // Textview "TipoDelito"
-            TextView txtViewTipoDelito = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.TxtViewTransparente));
+            TextView txtViewTipoDelito = new TextView(new ContextThemeWrapper(this.requireActivity(), R.style.TxtViewTransparente));
             txtViewTipoDelito.setId(View.generateViewId());
 
             txtViewTipoDelito.setText(reportes.get(i).getTipoDelito());
             txtViewTipoDelito.setTypeface(Typeface.DEFAULT_BOLD);
             txtViewTipoDelito.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
+            txtViewTipoDelito.setMaxLines(1);
 
             consLytPrincipalReporte.addView(txtViewTipoDelito);
 
@@ -219,13 +219,14 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             // Fin de Textview "TipoDelito"
 
             // Textview "FechaReporte"
-            TextView txtViewFechaReporte = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.TxtViewTransparente));
+            TextView txtViewFechaReporte = new TextView(new ContextThemeWrapper(this.requireActivity(), R.style.TxtViewTransparente));
             txtViewFechaReporte.setId(View.generateViewId());
 
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
+            @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
             txtViewFechaReporte.setText(dateFormat.format(reportes.get(i).getFecha()));
             txtViewFechaReporte.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_size_parrafo_medium));
             txtViewFechaReporte.setGravity(Gravity.END|Gravity.CENTER_VERTICAL);
+            txtViewFechaReporte.setMaxLines(1);
 
             consLytPrincipalReporte.addView(txtViewFechaReporte);
 
@@ -238,11 +239,12 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             // Fin de Textview "FechaReporte"
 
             // Textview "UbicacionDelito"
-            TextView txtViewUbicacionDelito = new TextView(new ContextThemeWrapper(this.getActivity(), R.style.TxtViewTransparente));
+            TextView txtViewUbicacionDelito = new TextView(new ContextThemeWrapper(this.requireActivity(), R.style.TxtViewTransparente));
             txtViewUbicacionDelito.setId(View.generateViewId());
 
             txtViewUbicacionDelito.setText(reportes.get(i).getUbicacion());
-            txtViewFechaReporte.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
+            txtViewUbicacionDelito.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
+            txtViewUbicacionDelito.setMaxLines(1);
 
             consLytPrincipalReporte.addView(txtViewUbicacionDelito);
 

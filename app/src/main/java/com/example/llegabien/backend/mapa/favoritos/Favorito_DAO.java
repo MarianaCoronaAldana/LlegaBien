@@ -1,7 +1,6 @@
 package com.example.llegabien.backend.mapa.favoritos;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_FAVORITO;
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.widget.Toast;
 
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
-import com.example.llegabien.backend.reporte.reporte;
 import com.example.llegabien.backend.usuario.usuario;
 
 import org.bson.types.ObjectId;
@@ -19,24 +17,21 @@ import io.realm.RealmResults;
 
 public class Favorito_DAO {
 
-    private ConectarBD conectarBD = new ConectarBD();
+    private final ConectarBD conectarBD = new ConectarBD();
     private Realm realm;
-    private Context mContext;
+    private final Context mContext;
 
     public Favorito_DAO(Context context){
         mContext = context;
     }
 
-    public void añadirFavorito(favorito Favorito) {
+    public void anadirFavorito(favorito Favorito) {
         Favorito.set_id(new ObjectId());
         Favorito.set_partition("LlegaBien");
         realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
-            realm.executeTransactionAsync(transactionRealm -> {
-                transactionRealm.insert(Favorito);
-            });
-
+            realm.executeTransactionAsync(transactionRealm -> transactionRealm.insert(Favorito));
             realm.close();
         }
         else
@@ -44,31 +39,11 @@ public class Favorito_DAO {
     }
 
     // Obtiene todos los objetos favorito asociados al id del usuario
-    public RealmResults<favorito> obtenerFavoritosDeUsuario(favorito Favorito) {
-        realm = conectarBD.conseguirUsuarioMongoDB();
-
-        if(realm!=null){
-            RealmResults<favorito> realmResults = realm.where(favorito.class).equalTo("IdUsuario",Favorito.getIdUsuario()).findAll();
-
-            if (realmResults != null)
-                return realmResults;
-        }
-
-        else
-            errorConexion();
-
-        return null;
-    }
-
-    // Obtiene todos los objetos favorito asociados al id del usuario
     public RealmResults<favorito> obtenerFavoritosDeUsuario(usuario Usuario) {
         realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
-            RealmResults<favorito> realmResults = realm.where(favorito.class).equalTo("IdUsuario",Usuario.get_id()).findAll();
-
-            if (realmResults != null)
-                return realmResults;
+            return realm.where(favorito.class).equalTo("IdUsuario",Usuario.get_id()).findAll();
         }
 
         else
@@ -110,10 +85,7 @@ public class Favorito_DAO {
                     .equalTo("nombre", nombre)
                     .findFirst();
 
-            if (task != null) {
-                return true;
-            }
-            return false;
+            return task != null;
         }
 
         else

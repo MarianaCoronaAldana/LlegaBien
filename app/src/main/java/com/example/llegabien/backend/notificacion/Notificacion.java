@@ -1,26 +1,20 @@
 package com.example.llegabien.backend.notificacion;
 
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_MENSAJE_PORBATERIA_ENVIADO;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.location.Location;
 import android.os.BatteryManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
 import com.example.llegabien.backend.usuario.usuario;
-import com.example.llegabien.frontend.mapa.activity.ActivityMap;
-import com.google.android.gms.location.FusedLocationProviderClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,17 +29,12 @@ import okhttp3.Response;
 
 public class Notificacion extends AppCompatActivity {
 
-    private ArrayList<String> mContactos = new ArrayList<String>();
-    private OkHttpClient mClient = new OkHttpClient();
+    private final ArrayList<String> mContactos = new ArrayList<>();
+    private final OkHttpClient mClient = new OkHttpClient();
     private String mNombre;
-    private Context mContext;
+    private final Context mContext;
     private usuario Usuario;
-    private float mBateria;
-
-
-    private Activity mActivity;
-    private boolean mIsLocationPermissionGranted;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private final float mBateria;
 
     public Notificacion(Context context){
         mContext = context;
@@ -73,33 +62,24 @@ public class Notificacion extends AppCompatActivity {
 
         try {
             //TODO Cambiar link de ngrok aqui
-            post("https://c0af-200-68-166-53.ngrok.io/bateriaS", new  Callback(){
+            post(new  Callback(){
 //            post("https://c0af-200-68-166-53.ngrok.io/bateria", new  Callback(){
                 @Override
-                public void onFailure(Call call, IOException e) {
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
                    // Toast.makeText(mContext, "ERROR, NO SE PUDO CONTACTAR A CONTACTOS", Toast.LENGTH_LONG).show();
                     Log.v("QUICKSTART", "NO SE PUDO CONTACTAR PARA NOTIFICAR WE, ESTOY EN on failure");
                     e.printStackTrace();
                 }
                 @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(mContext,"MENOS DEL 20% DE BATERIA, CUIDADO",Toast.LENGTH_LONG).show();
-                            Log.v("QUICKSTART", response.message());
-                            Preferences.savePreferenceBoolean(mContext,true, PREFERENCE_MENSAJE_PORBATERIA_ENVIADO);
+                public void onResponse(@NonNull Call call, @NonNull Response response) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(mContext,"MENOS DEL 20% DE BATERIA, CUIDADO",Toast.LENGTH_LONG).show();
+                        Log.v("QUICKSTART", response.message());
+                        Preferences.savePreferenceBoolean(mContext,true, PREFERENCE_MENSAJE_PORBATERIA_ENVIADO);
 
-                            if(!response.isSuccessful()) {
-                                Toast.makeText(mContext, "NO SE PUDO NOTIFICAR A CONTACTOS POR BATERIA", Toast.LENGTH_LONG).show();
-                                Log.v("QUICKSTART", "NO SE PUDO CONTACTAR PARA NOTIFICAR WE");
-                            }
-                            /*
-                            else{
-                                Toast.makeText(mContext,"MENOS DEL 20% DE BATERIA, CUIDADO",Toast.LENGTH_LONG).show();
-                                Log.v("QUICKSTART", response.message());
-                                Preferences.savePreferenceBoolean(mContext,true, PREFERENCE_MENSAJE_PORBATERIA_ENVIADO);
-                            }*/
+                        if(!response.isSuccessful()) {
+                            Toast.makeText(mContext, "NO SE PUDO NOTIFICAR A CONTACTOS POR BATERIA", Toast.LENGTH_LONG).show();
+                            Log.v("QUICKSTART", "NO SE PUDO CONTACTAR PARA NOTIFICAR WE");
                         }
                     });
                 }
@@ -110,7 +90,7 @@ public class Notificacion extends AppCompatActivity {
         }
     }
 
-    Call post(String url, Callback callback) throws IOException {
+    void post(Callback callback) throws IOException {
         Log.v("QUICKSTART", "Contacto 1: " + Usuario.getContacto().first().getTelCelular());
 
         RequestBody formBody = new FormBody.Builder()
@@ -124,21 +104,22 @@ public class Notificacion extends AppCompatActivity {
                 .add("Contacto5", mContactos.get(4))
                 .build();
         Request request = new Request.Builder()
-                .url(url)
+                .url("https://c0af-200-68-166-53.ngrok.io/bateriaS")
                 .post(formBody)
                 .build();
         Call response = mClient.newCall(request);
         response.enqueue(callback);
 
-        return response;
     }
 
     private void InicializarDatos(){
         Usuario = Preferences.getSavedObjectFromPreference(mContext, PREFERENCE_USUARIO, usuario.class);
-        for(int i = 0; i<Usuario.getContacto().size(); i++)
-            mContactos.add("+" + Usuario.getContacto().get(i).getTelCelular());
-        for(int i = mContactos.size(); i<5; i++)
-            mContactos.add("-1");
-        mNombre = Usuario.getNombre() + " " + Usuario.getApellidos();
+        if (Usuario != null) {
+            for (int i = 0; i < Usuario.getContacto().size(); i++)
+                mContactos.add("+" + Usuario.getContacto().get(i).getTelCelular());
+            for (int i = mContactos.size(); i < 5; i++)
+                mContactos.add("-1");
+            mNombre = Usuario.getNombre() + " " + Usuario.getApellidos();
+        }
     }
 }

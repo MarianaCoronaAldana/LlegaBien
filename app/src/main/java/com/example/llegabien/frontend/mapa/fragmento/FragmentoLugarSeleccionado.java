@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -33,7 +34,6 @@ import com.example.llegabien.backend.mapa.favoritos.favorito_ubicacion;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
 import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
-import com.example.llegabien.backend.reporte.Reporte_DAO;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -46,7 +46,8 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
     private TextView mTxtNombre1Lugar, mTxtNombre2Lugar, mTxtDelitosSemana, mTxtMediaHistorica, mTxtSeguridad;
     ConstraintLayout mBtnGuardarEnFavoritos;
     private View mIconSeguridad;
-    private String mUbicacionBuscada = null, mActividadAnterior = null;
+    private String mUbicacionBuscada = null;
+    private final String mActividadAnterior;
     private LatLng mCoordenadasParaFavorito = null;
     private UbicacionBusquedaAutocompletada ubicacionBusquedaAutocompletada;
     private final ActivityResultLauncher<Intent> activityResultLauncher =
@@ -57,12 +58,9 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
                         public void onActivityResult(ActivityResult activityResult) {
                             int result = activityResult.getResultCode();
                             Intent data = activityResult.getData();
-                            ubicacionBusquedaAutocompletada.verificarResultadoBusqueda(new UbicacionBusquedaAutocompletada.OnUbicacionBuscadaObtenida() {
-                                @Override
-                                public void isUbicacionBuscadaObtenida(boolean isUbicacionBuscadaObtenida, boolean isUbicacionBuscadaEnBD, LatLng ubicacionBuscada, String ubicacionBuscadaString) {
-                                    if (isUbicacionBuscadaObtenida)
-                                        ((ActivityMap) getActivity()).mostrarUbicacionBuscada(isUbicacionBuscadaEnBD, false, ubicacionBuscada, ubicacionBuscadaString);
-                                }
+                            ubicacionBusquedaAutocompletada.verificarResultadoBusqueda((isUbicacionBuscadaObtenida, isUbicacionBuscadaEnBD, ubicacionBuscada, ubicacionBuscadaString) -> {
+                                if (isUbicacionBuscadaObtenida)
+                                    ((ActivityMap) requireActivity()).mostrarUbicacionBuscada(isUbicacionBuscadaEnBD, false, ubicacionBuscada, ubicacionBuscadaString);
                             }, result, data, getActivity());
                         }
                     }
@@ -77,7 +75,7 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
     }
 
     public void setCoordenadasParaFavorito(LatLng coordenadasParaFavorito) {
-        mCoordenadasParaFavorito= coordenadasParaFavorito;
+        mCoordenadasParaFavorito = coordenadasParaFavorito;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -134,52 +132,56 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
     //FUNCIONES LISTENERS//
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_titulo_barraBusqueda_lugarSeleccionado:
-                ubicacionBusquedaAutocompletada = new UbicacionBusquedaAutocompletada();
-                ubicacionBusquedaAutocompletada.inicializarIntent(getActivity());
-                activityResultLauncher.launch(ubicacionBusquedaAutocompletada.getIntent());
-                break;
-            case R.id.button_añadirFavorito_detallesLugar:
-                if (mCoordenadasParaFavorito != null) {
-                    UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
-                    String nombreLugar = ubicacionGeodicacion.degeocodificarUbiciacion(getActivity(),
-                                            mCoordenadasParaFavorito.latitude, mCoordenadasParaFavorito.longitude);
-                    añadirFavoritoaBD(nombreLugar);
-                }
-                break;
-            case R.id.button_regresar_barraBusqueda_lugarSeleccionado:
-                ((ActivityMap) getActivity()).abrirFragmentoBuscarLugar();
-                break;
-            case R.id.button_centrarMapa_lugarSeleccionado:
-                ((ActivityMap) getActivity()).centrarMapa();
-                break;
-        }
+        if (view.getId() == R.id.button_titulo_barraBusqueda_lugarSeleccionado) {
+            ubicacionBusquedaAutocompletada = new UbicacionBusquedaAutocompletada();
+            ubicacionBusquedaAutocompletada.inicializarIntent(getActivity());
+            activityResultLauncher.launch(ubicacionBusquedaAutocompletada.getIntent());
+        } else if (view.getId() == R.id.button_añadirFavorito_detallesLugar) {
+            if (mCoordenadasParaFavorito != null) {
+                UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
+                String nombreLugar = ubicacionGeodicacion.degeocodificarUbiciacion(getActivity(),
+                        mCoordenadasParaFavorito.latitude, mCoordenadasParaFavorito.longitude);
+                anadirFavoritoaBD(nombreLugar);
+            }
+        } else if (view.getId() == R.id.button_regresar_barraBusqueda_lugarSeleccionado) {
+            if (mActividadAnterior != null) {
+                if (mActividadAnterior.equals("FAVORITOS"))
+                    requireActivity().finish();
+            } else
+                ((ActivityMap) requireActivity()).abrirFragmentoBuscarLugar();
+
+        } else if (view.getId() == R.id.button_centrarMapa_lugarSeleccionado)
+            ((ActivityMap) requireActivity()).centrarMapa();
     }
 
     //OTRAS FUNCIONES//
 
     private void setValoresBotttomSheet() {
-        ubicacion ubicacion = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_UBICACION, ubicacion.class);
-
+        ubicacion ubicacion = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_UBICACION, ubicacion.class);
         String[] nombreLugar = null;
 
-        if (ubicacion != null && mActividadAnterior != null ) {
-            if (mActividadAnterior.equals("FAVORITOS")){
-                mBtnGuardarEnFavoritos.setVisibility(View.GONE);
-                // TODO: obtener latitud y longitud del ebjecto geojson
-                favorito favorito = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_FAVORITO, favorito.class);
-                nombreLugar = favorito.getNombre().split(",", 2);
-                //LatLng ubicacionFavorito = favorito.getUbicacion();
-                //((ActivityMap) getActivity()).mostrarFavorito(ubicacionFavorito);
-            }
-            else if (mUbicacionBuscada != null)
+        if (ubicacion != null) {
+            if (mActividadAnterior != null) {
+                if (mActividadAnterior.equals("FAVORITOS")) {
+                    mBtnGuardarEnFavoritos.setClickable(false);
+
+                    favorito favorito = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_FAVORITO, favorito.class);
+                    if (favorito != null) {
+                        nombreLugar = favorito.getNombre().split(",", 2);
+
+                        LatLng ubicacionFavorito = new LatLng(favorito.getUbicacion().getCoordinates().get(0), favorito.getUbicacion().getCoordinates().get(1));
+                        ((ActivityMap) requireActivity()).setLatLngMarkerFavorito(ubicacionFavorito);
+                    }
+                }
+            } else if (mUbicacionBuscada != null)
                 nombreLugar = mUbicacionBuscada.split(",", 2);
             else
                 nombreLugar = ubicacion.getNombre().split(",", 2);
 
-            mTxtNombre1Lugar.setText(nombreLugar[0].trim());
-            mTxtNombre2Lugar.setText(nombreLugar[1].trim());
+            if (nombreLugar != null) {
+                mTxtNombre1Lugar.setText(nombreLugar[0].trim());
+                mTxtNombre2Lugar.setText(nombreLugar[1].trim());
+            }
 
             String delitosSemana = mTxtDelitosSemana.getText().toString() + " " + ubicacion.getDelitos_semana();
             String mediaHistorica = mTxtMediaHistorica.getText().toString() + " " + ubicacion.getMedia_historica_double();
@@ -189,18 +191,18 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
             String seguridad = ubicacion.getSeguridad();
             mTxtSeguridad.setText(seguridad);
             if (seguridad.equals("Seguridad baja"))
-                mIconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(this.getContext(), R.color.rojo_icon));
+                mIconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.rojo_icon));
             if (seguridad.equals("Seguridad media"))
-                mIconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(this.getContext(), R.color.amarillo_icon));
+                mIconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.amarillo_icon));
             if (seguridad.equals("Seguridad alta"))
-                mIconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(this.getContext(), R.color.verde_icon));
+                mIconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.verde_icon));
         }
     }
 
 
-    private void añadirFavoritoaBD(String nombreLugar) {
-        RealmList<Double> coordenadas = new RealmList<Double>();
-        usuario Usuario = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_USUARIO, usuario.class);
+    private void anadirFavoritoaBD(String nombreLugar) {
+        RealmList<Double> coordenadas = new RealmList<>();
+        usuario Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_USUARIO, usuario.class);
         favorito_ubicacion Favorito_ubicacion = new favorito_ubicacion();
         favorito Favorito = new favorito();
         Favorito_DAO favoritoDAO = new Favorito_DAO(this.getContext());
@@ -210,18 +212,23 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
 
         Favorito_ubicacion.setCoordinates(coordenadas);
 
-        Favorito.setIdUsuario(Usuario.get_id());
-        Favorito.setNombre(nombreLugar);
-        Favorito.setUbicacion(Favorito_ubicacion);
+        if (Usuario != null) {
+            Favorito.setIdUsuario(Usuario.get_id());
 
-        if(!favoritoDAO.obtenerFavoritoPorNombre_Id(Usuario.get_id(), Favorito.getNombre())) {
-            favoritoDAO.añadirFavorito(Favorito);
-            Toast.makeText(this.getContext(), "Ubicacion añadida a favoritos", Toast.LENGTH_LONG).show();
+            Favorito.setNombre(nombreLugar);
+            Favorito.setUbicacion(Favorito_ubicacion);
+
+            if (!favoritoDAO.obtenerFavoritoPorNombre_Id(Usuario.get_id(), Favorito.getNombre())) {
+                favoritoDAO.anadirFavorito(Favorito);
+                Toast.makeText(this.getContext(), "Ubicacion añadida a favoritos", Toast.LENGTH_LONG).show();
+            } else
+                Toast.makeText(this.getContext(), "Ya tienes esta ubicacion guardada!", Toast.LENGTH_LONG).show();
+
+            Log.v("QUICKSTART", "Estoy en lugar seleccionado, nombre: " + Favorito.getNombre());
         }
-        else
-            Toast.makeText(this.getContext(), "Ya tienes esta ubicacion guardada!", Toast.LENGTH_LONG).show();
 
-        Log.v("QUICKSTART", "Estoy en lugar seleccionado, nombre: " + Favorito.getNombre());
     }
+
+
 
 }

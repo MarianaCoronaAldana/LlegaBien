@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -27,13 +26,13 @@ import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.backend.usuario.UsuarioSharedViewModel;
 import com.example.llegabien.frontend.usuario.fragmento.FragmentoIniciarSesion1;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
-import com.example.llegabien.backend.usuario.UsuarioBD_CRUD;
+import com.example.llegabien.backend.usuario.UsuarioDAO;
+
 
 import io.realm.RealmList;
 
 public class FragmentoRegistrarContacto extends Fragment implements View.OnClickListener{
 
-    private TextView mTxtTitulo;
     private EditText mEditTxtNombre, mEditTxtNumTelefonico, mEditTxtCountryCode;
     private Button mBtnSiguiente, mBtnFinalizar;
     private Guideline mGuideline1_Btn1, mGuideline2_Btn1;
@@ -43,7 +42,6 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
     private UsuarioSharedViewModel SharedViewModel;
     private usuario Usuario;
     private final usuario_contacto Contacto =  new  usuario_contacto();
-    private final ConectarBD conectarBD = new ConectarBD();
 
     public FragmentoRegistrarContacto(){}
 
@@ -60,14 +58,11 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
 
         SharedViewModel = new ViewModelProvider(requireActivity()).get(UsuarioSharedViewModel.class);
 
-        final Observer<usuario> nameObserver = new Observer<usuario>() {
-            @Override
-            public void onChanged(@Nullable final usuario user) {
-                Usuario = user;
+        final Observer<usuario> nameObserver = user -> {
+            Usuario = user;
 
-                Log.v("QUICKSTART", "nombre: " + Usuario.getNombre()
-                        + "apellido: " + Usuario.getApellidos() + "ESTOY DENTRO DE CONTACTO");
-            }
+            Log.v("QUICKSTART", "nombre: " + Usuario.getNombre()
+                    + "apellido: " + Usuario.getApellidos() + "ESTOY DENTRO DE CONTACTO");
         };
 
         //para usar el mismo ViewModel que los otros fragmentos y compartir informacion
@@ -81,7 +76,7 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
         View root = inflater.inflate(R.layout.fragmento_registrar_contacto, container, false);
 
         //wiring up
-        mTxtTitulo = root.findViewById(R.id.textView_titulo_registroContactos);
+        TextView mTxtTitulo = root.findViewById(R.id.textView_titulo_registroContactos);
         mEditTxtNombre = root.findViewById(R.id.editText_nombre_registroContactos);
         mEditTxtNumTelefonico = root.findViewById(R.id.editText_celular_registroContactos);
         mEditTxtCountryCode = root.findViewById(R.id.editText_celularCountryCode_registroContactos);
@@ -89,15 +84,15 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
         //views de fragmento padre "FragmentoRegistrarUsuario4"
         Fragment parent = (Fragment) this.getParentFragment();
         if (parent != null) {
-            mBtnSiguiente = parent.getView().findViewById(R.id.button1_siguiente_registro_4);
-            mBtnFinalizar = parent.getView().findViewById(R.id.button2_finalizar_registro_4);
-            mGuideline1_Btn1 = parent.getView().findViewById(R.id.guideline1_textView_editView_infoContacto_registro_4);
-            mGuideline2_Btn1 = parent.getView().findViewById(R.id.guideline2_button1_infoContacto_registro_4);
-            mConstraintLayout = parent.getView().findViewById(R.id.consLyt_infoContacto_registro_4);
+            mBtnSiguiente = parent.requireView().findViewById(R.id.button1_siguiente_registro_4);
+            mBtnFinalizar = parent.requireView().findViewById(R.id.button2_finalizar_registro_4);
+            mGuideline1_Btn1 = parent.requireView().findViewById(R.id.guideline1_textView_editView_infoContacto_registro_4);
+            mGuideline2_Btn1 = parent.requireView().findViewById(R.id.guideline2_button1_infoContacto_registro_4);
+            mConstraintLayout = parent.requireView().findViewById(R.id.consLyt_infoContacto_registro_4);
         }
 
         //para cambiar el titulo segun el numero de contacto
-        String tituloRegistroContacto = getResources().getString(R.string.contactoEmergencia_registro4) + " " + String.valueOf(mNumContacto);
+        String tituloRegistroContacto = getResources().getString(R.string.contactoEmergencia_registro4) + " " + mNumContacto;
         mTxtTitulo.setText(tituloRegistroContacto);
 
         //listeners
@@ -112,43 +107,40 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View view) {
-        FragmentTransaction fragmentTransaction;
-        switch (view.getId()) {
-            case R.id.button1_siguiente_registro_4:
-                if (validarAllInputs()) {
-                    tomarDatosContacto();
-                    if (mNumContacto >= 1){
-                        ConstraintSet constraintSet = new ConstraintSet();
-                        constraintSet.clone(mConstraintLayout);
-                        constraintSet.connect(mBtnSiguiente.getId(),ConstraintSet.START,mGuideline1_Btn1.getId(),ConstraintSet.START,0);
-                        constraintSet.connect(mBtnSiguiente.getId(),ConstraintSet.END,mGuideline2_Btn1.getId(),ConstraintSet.END,0);
-                        constraintSet.setDimensionRatio(mBtnSiguiente.getId(),"6:2");
-                        constraintSet.applyTo(mConstraintLayout);
-                        mBtnFinalizar.setVisibility(View.VISIBLE);
-                        mBtnFinalizar.setClickable(true);
-                    }
-                    if (mNumContacto == 5){
-                        //Se integra al usuario a la BD
-                        terminarRegistro();
-                    }
-                    else {
-                        mNumContacto++;
-                        mSiguienteCount++;
-                        fragmentTransaction = getParentFragmentManager().beginTransaction();
-                        FragmentoRegistrarContacto fragmentoRegistrarContacto = new FragmentoRegistrarContacto(mNumContacto, mSiguienteCount);
-                        fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-                        fragmentTransaction.add(R.id.fragmentContainerView_registrarContactos_registro_4, fragmentoRegistrarContacto).commit();
-                        fragmentTransaction.addToBackStack(null);
-                    }
+        if (view.getId() ==  R.id.button1_siguiente_registro_4){
+            if (validarAllInputs()) {
+                tomarDatosContacto();
+                if (mNumContacto >= 1){
+                    ConstraintSet constraintSet = new ConstraintSet();
+                    constraintSet.clone(mConstraintLayout);
+                    constraintSet.connect(mBtnSiguiente.getId(),ConstraintSet.START,mGuideline1_Btn1.getId(),ConstraintSet.START,0);
+                    constraintSet.connect(mBtnSiguiente.getId(),ConstraintSet.END,mGuideline2_Btn1.getId(),ConstraintSet.END,0);
+                    constraintSet.setDimensionRatio(mBtnSiguiente.getId(),"6:2");
+                    constraintSet.applyTo(mConstraintLayout);
+                    mBtnFinalizar.setVisibility(View.VISIBLE);
+                    mBtnFinalizar.setClickable(true);
                 }
-                break;
-            case R.id.button2_finalizar_registro_4:
-                if (validarAllInputs()) {
+                if (mNumContacto == 5){
                     //Se integra al usuario a la BD
-                    tomarDatosContacto();
                     terminarRegistro();
                 }
-                break;
+                else {
+                    mNumContacto++;
+                    mSiguienteCount++;
+                    FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                    FragmentoRegistrarContacto fragmentoRegistrarContacto = new FragmentoRegistrarContacto(mNumContacto, mSiguienteCount);
+                    fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+                    fragmentTransaction.add(R.id.fragmentContainerView_registrarContactos_registro_4, fragmentoRegistrarContacto).commit();
+                    fragmentTransaction.addToBackStack(null);
+                }
+            }
+        }
+        else if (view.getId() ==  R.id.button2_finalizar_registro_4){
+            if (validarAllInputs()) {
+                //Se integra al usuario a la BD
+                tomarDatosContacto();
+                terminarRegistro();
+            }
         }
     }
 
@@ -159,14 +151,14 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
         UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
         boolean esInputValido = true, esNumTelefonicoValido, esCountryCodeValido;
 
-        esNumTelefonicoValido =  usuarioInputValidaciones.validarNumTelefonico(getActivity(),mEditTxtNumTelefonico);
-        esCountryCodeValido = usuarioInputValidaciones.validarNumTelefonico(getActivity(), mEditTxtCountryCode);
+        esNumTelefonicoValido =  usuarioInputValidaciones.validarNumTelefonico(requireActivity(),mEditTxtNumTelefonico);
+        esCountryCodeValido = usuarioInputValidaciones.validarNumTelefonico(requireActivity(), mEditTxtCountryCode);
 
-        if (!usuarioInputValidaciones.validarNombre(getActivity(),mEditTxtNombre))
+        if (usuarioInputValidaciones.validarNombre(requireActivity(), mEditTxtNombre))
             esInputValido = false;
 
         if (esCountryCodeValido && esNumTelefonicoValido) {
-            if(!usuarioInputValidaciones.validarNumTelefonico_libphonenumber(getActivity(),mEditTxtNumTelefonico,mEditTxtCountryCode))
+            if(usuarioInputValidaciones.validarNumTelefonico_libphonenumber(requireActivity(), mEditTxtNumTelefonico, mEditTxtCountryCode))
                 esInputValido = false;
         }
         else
@@ -183,7 +175,7 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
         Contacto.setTelCelular(mEditTxtCountryCode.getText().toString().trim() + mEditTxtNumTelefonico.getText().toString().trim());
 
         if(mNumContacto==1) {
-            RealmList<usuario_contacto> Contactos =  new  RealmList <usuario_contacto>();
+            RealmList<usuario_contacto> Contactos = new RealmList<>();
             Contactos.add(Contacto);
             Usuario.setContacto(Contactos);
         }
@@ -195,10 +187,10 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
     }
 
     private void terminarRegistro(){
-        UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD(this.getContext());
-        usuarioBD_CRUD.añadirUser(Usuario);
-        conectarBD.registrarCuentaCorreo(Usuario.getCorreoElectronico(), Usuario.getContrasena());
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
+        usuarioDAO.anadirUser(Usuario);
+        ConectarBD.registrarCuentaCorreo(Usuario.getCorreoElectronico(), Usuario.getContrasena());
+        FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
         FragmentoIniciarSesion1 fragmentoIniciarSesion1 = new FragmentoIniciarSesion1();
         fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
         fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoIniciarSesion1).commit();

@@ -7,6 +7,8 @@ import android.widget.Toast;
 
 import com.example.llegabien.backend.app.aplicacionLlegaBien;
 
+import java.util.Objects;
+
 import io.realm.Realm;
 import io.realm.mongodb.App;
 import io.realm.mongodb.Credentials;
@@ -22,7 +24,7 @@ public class ConectarBD {
     SyncConfiguration config = null;
 
     //PARA LOGING ANONIMO
-    public Realm ConectarAnonimoMongoDB(){
+    public void ConectarAnonimoMongoDB(){
         App app = aplicacionLlegaBien.getApp();
         Credentials credentials = Credentials.anonymous();
         Log.v("QUICKSTART", "hola");
@@ -46,10 +48,9 @@ public class ConectarBD {
             realm = Realm.getInstance(config);
         }
 
-        return realm;
     }
 
-    public Realm ConectarCorreoMongoDB(String email, String password){
+    public void ConectarCorreoMongoDB(String email, String password){
         App app = aplicacionLlegaBien.getApp();
         Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
 
@@ -70,7 +71,6 @@ public class ConectarBD {
             realm = Realm.getInstance(config);
         }
 
-        return realm;
     }
 
     // Para conseguir el usuario actual de la app
@@ -116,7 +116,7 @@ public class ConectarBD {
 
     public void cerrarMongoDB(){
         App app = aplicacionLlegaBien.getApp();
-        app.currentUser().logOutAsync(result -> {
+        Objects.requireNonNull(app.currentUser()).logOutAsync(result -> {
             if (result.isSuccess()) {
                 Log.v("QUICKSTART", "Successfully logged out.");
             } else {

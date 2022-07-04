@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
@@ -17,11 +16,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Encriptar;
+import com.example.llegabien.backend.usuario.UsuarioBD_Validaciones;
 import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
-import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.backend.usuario.UsuarioSharedViewModel;
-import com.example.llegabien.backend.usuario.UsuarioBD_Validaciones;
+import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.app.Utilidades;
 
 import java.util.Locale;
@@ -30,12 +29,12 @@ import java.util.Locale;
 public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClickListener {
 
 
-    private Button mBtnSiguiente, mBtnRegresar, mBtnMostrarContra1, mBtnMostrarContra2;
-    private EditText mEditTxtNumTelefonico, mEditTxtCorreo, mEditTxtContraseña, mEditTxtConfirmarContraseña,mEditTxtCountryCode;
+    private Button mBtnMostrarContra1, mBtnMostrarContra2;
+    private EditText mEditTxtNumTelefonico, mEditTxtCorreo, mEditTxtContrasena, mEditTxtConfirmarContrasena,mEditTxtCountryCode;
 
     private UsuarioSharedViewModel SharedViewModel;
     usuario Usuario = new usuario();
-    UsuarioBD_Validaciones validar = new UsuarioBD_Validaciones(getActivity());
+    UsuarioBD_Validaciones validar = new UsuarioBD_Validaciones(requireActivity());
 
     public FragmentoRegistrarUsuario2() {
 
@@ -47,14 +46,11 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
 
         SharedViewModel = new ViewModelProvider(requireActivity()).get(UsuarioSharedViewModel.class);
 
-        final Observer<usuario> nameObserver = new Observer<usuario>() {
-            @Override
-            public void onChanged(@Nullable final usuario user) {
-                Usuario = user;
+        final Observer<usuario> nameObserver = user -> {
+            Usuario = user;
 
-                Log.v("QUICKSTART", "nombre: " + Usuario.getNombre()
-                        + "apellido: " + Usuario.getApellidos() + "ESTOY DENTRO DE REGISTRO2");
-            }
+            Log.v("QUICKSTART", "nombre: " + Usuario.getNombre()
+                    + "apellido: " + Usuario.getApellidos() + "ESTOY DENTRO DE REGISTRO2");
         };
 
         //para usar el mismo ViewModel que los otros fragmentos y compartir informacion
@@ -68,14 +64,14 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
         View root = inflater.inflate(R.layout.fragmento_registrar_usuario2, container, false);
 
         //wiring up
-        mBtnSiguiente = root.findViewById(R.id.button_siguiente_registro_2);
-        mBtnRegresar = root.findViewById(R.id.button_regresar_registro_2);
+        Button mBtnSiguiente = root.findViewById(R.id.button_siguiente_registro_2);
+        Button mBtnRegresar = root.findViewById(R.id.button_regresar_registro_2);
         mBtnMostrarContra1 = root.findViewById(R.id.button_mostrarContra_contraseña_registro_2);
         mBtnMostrarContra2 = root.findViewById(R.id.button_mostrarContra_confirmarContra_registro_2);
         mEditTxtCorreo = root.findViewById(R.id.editText_correo_registro_2);
         mEditTxtNumTelefonico = root.findViewById(R.id.editText_celular_registro_2);
-        mEditTxtContraseña = root.findViewById(R.id.editText_contraseña_registro_2);
-        mEditTxtConfirmarContraseña = root.findViewById(R.id.editText_confirmarContraseña_registro_2);
+        mEditTxtContrasena = root.findViewById(R.id.editText_contraseña_registro_2);
+        mEditTxtConfirmarContrasena = root.findViewById(R.id.editText_confirmarContraseña_registro_2);
         mEditTxtCountryCode = root.findViewById(R.id.editText_celularCountryCode_registro_2);
 
         //listeners
@@ -90,38 +86,33 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
     // FUNCIONES LISTENER //
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_siguiente_registro_2:
-                if (validarAllInputs()){
-                    if(!validarExistencia()) {
+        if (view.getId() == R.id.button_siguiente_registro_2){
+            if (validarAllInputs()){
+                if(!validarExistencia()) {
 
-                        //para obtener los datos del fragmento y añadirlos a la clase usuario
-                        usuarioConDatos();
+                    //para obtener los datos del fragmento y añadirlos a la clase usuario
+                    usuarioConDatos();
 
-                        //REPONER//
-                        //para mandar codigo a teléfono y email
-                        //enviarCodigos();
+                    //REPONER//
+                    //para mandar codigo a teléfono y email
+                    //enviarCodigos();
 
-                        FragmentoRegistrarUsuario3 fragmentoRegistrarUsuario3 = new FragmentoRegistrarUsuario3();
-                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-                        fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario3).commit();
-                        fragmentTransaction.addToBackStack(null);
-                    }
-                    else
-                            Toast.makeText(getActivity(),"El correo electronico o el numero telefonico ya está registrado",Toast.LENGTH_LONG).show();
+                    FragmentoRegistrarUsuario3 fragmentoRegistrarUsuario3 = new FragmentoRegistrarUsuario3();
+                    FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+                    fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario3).commit();
+                    fragmentTransaction.addToBackStack(null);
                 }
-                break;
-            case R.id.button_regresar_registro_2:
-                getActivity().getSupportFragmentManager().popBackStack();
-                break;
-            case R.id.button_mostrarContra_contraseña_registro_2:
-                Utilidades.mostrarContraseña(mEditTxtContraseña,mBtnMostrarContra1,this.getActivity());
-                break;
-            case R.id.button_mostrarContra_confirmarContra_registro_2:
-                Utilidades.mostrarContraseña(mEditTxtConfirmarContraseña,mBtnMostrarContra2,this.getActivity());
-                break;
+                else
+                    Toast.makeText(requireActivity(),"El correo electronico o el numero telefonico ya está registrado",Toast.LENGTH_LONG).show();
+            }
         }
+        else if (view.getId() == R.id.button_regresar_registro_2)
+            requireActivity().getSupportFragmentManager().popBackStack();
+        else if (view.getId() == R.id.button_mostrarContra_contraseña_registro_2)
+            Utilidades.mostrarContraseña(mEditTxtContrasena,mBtnMostrarContra1,this.requireActivity());
+        else if (view.getId() == R.id.button_mostrarContra_confirmarContra_registro_2)
+            Utilidades.mostrarContraseña(mEditTxtConfirmarContrasena,mBtnMostrarContra2,this.requireActivity());
     }
 
 
@@ -131,7 +122,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
     private void usuarioConDatos() {
         Usuario.setCorreoElectronico(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT).trim());
         Usuario.setTelCelular(mEditTxtCountryCode.getText().toString().trim() + mEditTxtNumTelefonico.getText().toString().trim());
-        Usuario.setContrasena(encriptarContrasena(mEditTxtContraseña.getText().toString()));
+        Usuario.setContrasena(encriptarContrasena(mEditTxtContrasena.getText().toString()));
 
         SharedViewModel.setUsuario(Usuario);
     }
@@ -140,21 +131,21 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
         UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
         boolean esInputValido = true, esNumTelefonicoValido, esCountryCodeValido;
 
-        esNumTelefonicoValido =  usuarioInputValidaciones.validarNumTelefonico(getActivity(),mEditTxtNumTelefonico);
-        esCountryCodeValido = usuarioInputValidaciones.validarNumTelefonico(getActivity(), mEditTxtCountryCode);
+        esNumTelefonicoValido =  usuarioInputValidaciones.validarNumTelefonico(requireActivity(),mEditTxtNumTelefonico);
+        esCountryCodeValido = usuarioInputValidaciones.validarNumTelefonico(requireActivity(), mEditTxtCountryCode);
 
-        if (!usuarioInputValidaciones.validarCorreoElectronico(getActivity(), mEditTxtCorreo))
+        if (usuarioInputValidaciones.validarCorreoElectronico(requireActivity(), mEditTxtCorreo))
             esInputValido = false;
 
         if (esCountryCodeValido && esNumTelefonicoValido) {
-            if(!usuarioInputValidaciones.validarNumTelefonico_libphonenumber(getActivity(),mEditTxtNumTelefonico,mEditTxtCountryCode))
+            if(usuarioInputValidaciones.validarNumTelefonico_libphonenumber(requireActivity(), mEditTxtNumTelefonico, mEditTxtCountryCode))
                 esInputValido = false;
         }
         else
             esInputValido = false;
 
-        if (usuarioInputValidaciones.validarContraseña(getActivity(), mEditTxtContraseña)){
-            if (!usuarioInputValidaciones.validarConfirmarContraseña(mEditTxtContraseña.getText().toString(), getActivity(), mEditTxtConfirmarContraseña))
+        if (usuarioInputValidaciones.validarContrasena(requireActivity(), mEditTxtContrasena)){
+            if (usuarioInputValidaciones.validarConfirmarContrasena(mEditTxtContrasena.getText().toString(), requireActivity(), mEditTxtConfirmarContrasena))
                 esInputValido = false;
         }
         else
@@ -167,24 +158,18 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
         String numTelefonico = mEditTxtCountryCode.getText().toString() +
                                             mEditTxtNumTelefonico.getText().toString();
 
-        UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(getActivity());
-        usuarioFirebaseVerificaciones.enviarCodigoNumTelefonico(new UsuarioFirebaseVerificaciones.OnCodigoNumTelefonicoEnviado() {
-            @Override
-            public void isSMSEnviado(boolean isSMSEnviado, String verificationId) {
-                if (isSMSEnviado){
-                    usuarioFirebaseVerificaciones.enviarCorreoDeVerificacion(new UsuarioFirebaseVerificaciones.OnCodigoCorreoEnviado() {
-                        @Override
-                        public void isCorreoEnviado(boolean isCorreoEnviado) {
-                            if(isCorreoEnviado){
-                                FragmentoRegistrarUsuario3 fragmentoRegistrarUsuario3 = new FragmentoRegistrarUsuario3(verificationId);
-                                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-                                fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario3).commit();
-                                fragmentTransaction.addToBackStack(null);
-                            }
-                        }
-                    }, mEditTxtCorreo.getText().toString(), mEditTxtContraseña.getText().toString());
-                }
+        UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(requireActivity());
+        usuarioFirebaseVerificaciones.enviarCodigoNumTelefonico((isSMSEnviado, verificationId) -> {
+            if (isSMSEnviado){
+                usuarioFirebaseVerificaciones.enviarCorreoDeVerificacion(isCorreoEnviado -> {
+                    if(isCorreoEnviado){
+                        FragmentoRegistrarUsuario3 fragmentoRegistrarUsuario3 = new FragmentoRegistrarUsuario3(verificationId);
+                        FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+                        fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario3).commit();
+                        fragmentTransaction.addToBackStack(null);
+                    }
+                }, mEditTxtCorreo.getText().toString(), mEditTxtContrasena.getText().toString());
             }
         }, "+" + numTelefonico);
     }
@@ -195,6 +180,6 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
 
     // Recibe la contraseña en texto plano y la regresa encriptada
     private static String encriptarContrasena(String textoPlano) {
-        return Encriptar.Encriptar(textoPlano);
+        return Encriptar.EncriptarContrasena(textoPlano);
     }
 }

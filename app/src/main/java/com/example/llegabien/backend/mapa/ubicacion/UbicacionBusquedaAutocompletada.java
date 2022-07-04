@@ -4,37 +4,26 @@ import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_UBICACION;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.util.Log;
 
-import androidx.fragment.app.Fragment;
-
-import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.poligonos.Poligono;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
-import com.google.maps.android.PolyUtil;
-
-import org.bson.types.ObjectId;
 
 import java.util.Arrays;
 import java.util.List;
 
-import io.realm.RealmResults;
-
 public class UbicacionBusquedaAutocompletada {
 
     private Intent mIntent;
-    private RealmResults<ubicacion> mResultadosUbicaciones;
+
     public interface OnUbicacionBuscadaObtenida {
         void isUbicacionBuscadaObtenida(boolean isUbicacionBuscadaObtenida, boolean isUbicacionBuscadaEnBD, LatLng ubicacionBuscada, String ubicacionBuscadaString);
     }
@@ -63,9 +52,9 @@ public class UbicacionBusquedaAutocompletada {
             UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
             Address ubicacionGeocodificada = ubicacionGeodicacion.geocodificarUbiciacion(c, address);
             LatLng ubicacionBuscada = new LatLng(ubicacionGeocodificada.getLatitude(), ubicacionGeocodificada.getLongitude());
-            UbicacionBD_CRUD ubicacionBD_crud = new UbicacionBD_CRUD(c);
+            UbicacionDAO ubicacionDAO = new UbicacionDAO(c);
 
-            boolean isUbicacionBuscadaEnBD = ubicacionBD_crud.obtenerUbicacionBuscada(ubicacionBuscada.latitude,ubicacionBuscada.longitude);
+            boolean isUbicacionBuscadaEnBD = ubicacionDAO.obtenerUbicacionBuscada(ubicacionBuscada.latitude,ubicacionBuscada.longitude);
             onUbicacionBuscadaObtenida.isUbicacionBuscadaObtenida(true, isUbicacionBuscadaEnBD,ubicacionBuscada, address);
 
         }

@@ -4,14 +4,10 @@ import static com.example.llegabien.backend.app.Preferences.PREFERENCE_UBICACION
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
-import android.widget.Toast;
-
-import androidx.annotation.RequiresApi;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionBD_CRUD;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionDAO;
 import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -20,8 +16,6 @@ import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.maps.android.PolyUtil;
 
-import org.bson.types.ObjectId;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +23,8 @@ import io.realm.RealmResults;
 
 public class Poligono {
 
-    private RealmResults<ubicacion> mResultadosColonias;
     private Context mContext;
-    private UbicacionBD_CRUD mUbicacionBD_CRUD = new UbicacionBD_CRUD(mContext);
+    private final UbicacionDAO mUbicacionDAO = new UbicacionDAO(mContext);
 
     public Poligono(Context context){
         mContext = context;
@@ -40,8 +33,8 @@ public class Poligono {
     public Poligono() {}
 
     public void getColonias(GoogleMap googleMap){
-        String coordenadasPoligono = "", seguridad = "";
-        mResultadosColonias = mUbicacionBD_CRUD.obetenerColonias();
+        String coordenadasPoligono, seguridad;
+        RealmResults<ubicacion> mResultadosColonias = mUbicacionDAO.obetenerColonias();
         if (mResultadosColonias != null) {
             for (int i = 0; i < mResultadosColonias.size(); i++) {
                 coordenadasPoligono = mResultadosColonias.get(i).getCoordenadas_string();
@@ -55,7 +48,7 @@ public class Poligono {
 
     private void mostrarPoligono(List<LatLng> listLatLong, GoogleMap googleMap, String seguridad){
         //boolean isInside = PolyUtil.containsLocation(20.750693880142634, -103.38741952291363,listLatLong,true);
-        LatLng[] points = listLatLong.toArray(new LatLng[listLatLong.size()]);
+        LatLng[] points = listLatLong.toArray(new LatLng[0]);
 
         switch (seguridad){
             case "Seguridad baja":
@@ -87,7 +80,7 @@ public class Poligono {
 
     public void getInfoPoligono(Polygon polygon){
         String coordenadasPoligono = getCoordenadasFromList(polygon.getPoints());
-        mUbicacionBD_CRUD.obetenerUbicacionConPoligono(coordenadasPoligono, mContext);
+        mUbicacionDAO.obetenerUbicacionConPoligono(coordenadasPoligono, mContext);
         ubicacion ubicacion = Preferences.getSavedObjectFromPreference(mContext, PREFERENCE_UBICACION, ubicacion.class);
         if (ubicacion != null) {
             String seguridad = ubicacion.getSeguridad();
@@ -137,22 +130,22 @@ public class Poligono {
     }
 
     public String getCoordenadasFromList(List<LatLng> points){
-        String coordenadasPoligono = "";
+        StringBuilder coordenadasPoligono = new StringBuilder();
 
         for(int i = 0; i < points.size(); i++){
-            Double latitude = points.get(i).latitude;
-            Double longitude = points.get(i).longitude;
+            double latitude = points.get(i).latitude;
+            double longitude = points.get(i).longitude;
             if (i == 0)
-                coordenadasPoligono = coordenadasPoligono + String.valueOf(longitude) + "," + String.valueOf(latitude);
+                coordenadasPoligono.append(longitude).append(",").append(latitude);
             else
-                coordenadasPoligono = coordenadasPoligono + "," + String.valueOf(longitude) + "," + String.valueOf(latitude);
+                coordenadasPoligono.append(",").append(longitude).append(",").append(latitude);
         }
 
-        return coordenadasPoligono;
+        return coordenadasPoligono.toString();
     }
 
     public ubicacion isUbicacionEnPoligono (RealmResults<ubicacion> resultadosUbicaciones, double latitude, double longitude){
-        String coordenadas = "";
+        String coordenadas;
 
         for (int i = 0; i < resultadosUbicaciones.size(); i++) {
             coordenadas = resultadosUbicaciones.get(i).getCoordenadas_string();

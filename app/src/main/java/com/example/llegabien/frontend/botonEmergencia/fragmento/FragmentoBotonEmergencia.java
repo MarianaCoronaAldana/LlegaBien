@@ -1,7 +1,6 @@
 package com.example.llegabien.frontend.botonEmergencia.fragmento;
 
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -63,36 +62,32 @@ public class FragmentoBotonEmergencia extends Fragment {
 
     //start timer
     public void startTimer() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mWindow = getActivity().getWindow();
-            mColorActivityAnterior = mWindow.getStatusBarColor();
-            mWindow.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            mWindow.setStatusBarColor(getResources().getColor(R.color.blanco));
-            mWindow.setNavigationBarColor(getResources().getColor(R.color.blanco));
-        }
+        mWindow = requireActivity().getWindow();
+        mColorActivityAnterior = mWindow.getStatusBarColor();
+        mWindow.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        mWindow.setStatusBarColor(getResources().getColor(R.color.blanco));
+        mWindow.setNavigationBarColor(getResources().getColor(R.color.blanco));
 
         mCountDownTimer = new CountDownTimer(3000, 300) {
             public void onTick(long millisUntilFinished) {
-                String segundosFaltantes = "0" + String.valueOf(TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished + 1000));
+                String segundosFaltantes = "0" + TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished + 1000);
 
                 mTxtSegundosFaltantes.setText(segundosFaltantes);
                 mProgressCircle.setProgress(mProgressCircle.getProgress() + 10);
             }
 
             public void onFinish() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    mWindow.setStatusBarColor(mColorActivityAnterior);
-                    mWindow.setNavigationBarColor(mColorActivityAnterior);
-                }
+                mWindow.setStatusBarColor(mColorActivityAnterior);
+                mWindow.setNavigationBarColor(mColorActivityAnterior);
                 mFondoBlancoBarraNavegacion.setBackgroundColor(Color.TRANSPARENT);
                 mProgressCircle.setProgress(0);
 
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("FragmentoBotonEmergencia");
+                FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                Fragment fragment = requireActivity().getSupportFragmentManager().findFragmentByTag("FragmentoBotonEmergencia");
                 if (fragment != null)
                     fragmentTransaction.remove(fragment).commit();
 
-                DialogConfirmarEmergencia dialogConfirmarEmergencia = new DialogConfirmarEmergencia(getActivity());
+                DialogConfirmarEmergencia dialogConfirmarEmergencia = new DialogConfirmarEmergencia(requireActivity());
                 dialogConfirmarEmergencia.show();
             }
         };
@@ -101,10 +96,8 @@ public class FragmentoBotonEmergencia extends Fragment {
 
     //cancel timer
     public void cancelTimer() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mWindow.setStatusBarColor(mColorActivityAnterior);
-            mWindow.setNavigationBarColor(mColorActivityAnterior);
-        }
+        mWindow.setStatusBarColor(mColorActivityAnterior);
+        mWindow.setNavigationBarColor(mColorActivityAnterior);
 
         if (mCountDownTimer != null)
             mCountDownTimer.cancel();

@@ -1,18 +1,14 @@
 package com.example.llegabien.backend.mapa.ubicacion;
 
 import android.app.Activity;
-import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-
-import java.util.concurrent.Executor;
 
 public class UbicacionDispositivo{
 

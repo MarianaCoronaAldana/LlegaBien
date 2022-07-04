@@ -3,7 +3,6 @@ package com.example.llegabien.backend.mapa.ubicacion;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_UBICACION;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.llegabien.backend.app.Preferences;
@@ -13,12 +12,12 @@ import com.example.llegabien.backend.mongoDB.ConectarBD;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class UbicacionBD_CRUD {
+public class UbicacionDAO {
     Realm realm;
     ConectarBD conectarBD = new ConectarBD();
-    private Context mContext;
+    private final Context mContext;
 
-    public UbicacionBD_CRUD(Context context){
+    public UbicacionDAO(Context context){
         mContext = context;
     }
 
@@ -26,10 +25,8 @@ public class UbicacionBD_CRUD {
         realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
-            RealmResults<ubicacion> realmResults = realm.where(ubicacion.class).equalTo("tipo","colonia").findAll();
 
-            if (realmResults != null)
-                return realmResults;
+            return realm.where(ubicacion.class).equalTo("tipo","colonia").findAll();
         }
 
         else
@@ -42,11 +39,7 @@ public class UbicacionBD_CRUD {
         realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
-            RealmResults<ubicacion> realmResults = realm.where(ubicacion.class).equalTo("tipo","municipio").findAll();
-
-            if (realmResults != null)
-                return realmResults;
-
+            return realm.where(ubicacion.class).equalTo("tipo","municipio").findAll();
         }
 
         else
@@ -59,10 +52,8 @@ public class UbicacionBD_CRUD {
         realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
-            RealmResults<ubicacion> realmResults = realm.where(ubicacion.class).equalTo("tipo","calle").findAll();
 
-            if (realmResults != null)
-                return realmResults;
+            return realm.where(ubicacion.class).equalTo("tipo","calle").findAll();
         }
 
         else

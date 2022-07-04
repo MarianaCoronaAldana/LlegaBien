@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -35,34 +34,31 @@ public class DialogDatePicker extends DialogFragment {
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), AlertDialog.THEME_HOLO_LIGHT, listener, year, month, day);
-        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());;
+        DatePickerDialog datePickerDialog = new DatePickerDialog(requireActivity(), AlertDialog.THEME_HOLO_LIGHT, listener, year, month, day);
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
 
         return datePickerDialog;
     }
 
     public void mostrarDatePickerDialog(EditText editTextFechaNacimiento, Fragment fragmento) {
-        DialogDatePicker dialogDatePicker = DialogDatePicker.newInstance(new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                // +1 porque Enero es 0
-                month++;
+        DialogDatePicker dialogDatePicker = DialogDatePicker.newInstance((datePicker, year, month, day) -> {
+            // +1 porque Enero es 0
+            month++;
 
-                String sMonth="", sDay="";
-                if(month<10)
-                    sMonth+= "0";
+            String sMonth="", sDay="";
+            if(month<10)
+                sMonth+= "0";
 
-                if(day<10)
-                    sDay+= "0";
+            if(day<10)
+                sDay+= "0";
 
-                sMonth+=String.valueOf(month);
-                sDay+=String.valueOf(day);
+            sMonth+=String.valueOf(month);
+            sDay+=String.valueOf(day);
 
-                final String fechaSeleccionada = sDay + "/" + sMonth + "/" + year;
-                editTextFechaNacimiento.setText(fechaSeleccionada);
-            }
+            final String fechaSeleccionada = sDay + "/" + sMonth + "/" + year;
+            editTextFechaNacimiento.setText(fechaSeleccionada);
         });
 
-        dialogDatePicker.show(fragmento.getActivity().getSupportFragmentManager(), "datePicker");
+        dialogDatePicker.show(fragmento.requireActivity().getSupportFragmentManager(), "datePicker");
     }
 }

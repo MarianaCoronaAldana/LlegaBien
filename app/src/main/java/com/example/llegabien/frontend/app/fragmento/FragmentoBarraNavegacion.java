@@ -3,6 +3,7 @@ package com.example.llegabien.frontend.app.fragmento;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,20 +25,18 @@ import com.example.llegabien.frontend.contactos.activity.ActivityEditarLeerConta
 import com.example.llegabien.frontend.favoritos.activity.ActivityFavoritos;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.reportes.activity.ActivityReportes;
-import com.example.llegabien.frontend.usuario.fragmento.FragmentoIniciarSesion1;
-import com.example.llegabien.frontend.usuario.fragmento.FragmentoRegistrarUsuario1;
 
 public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchListener, View.OnClickListener {
 
     private Button mBtnEmergencia;
-    private ConstraintLayout mBtnFavoritos, mBtnSubirReporte, mBtnHistorialRutas,mBtnContactos, mFondoBlanco;;
+    private ConstraintLayout mBtnFavoritos, mBtnSubirReporte, mBtnHistorialRutas,mBtnContactos, mFondoBlanco;
     private ObjectAnimator mScaleDown;
-    private Permisos mPermisos;
 
     public FragmentoBarraNavegacion() {
         // Required empty public constructor
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,41 +64,33 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
     @Override
     public void onClick(View view)
     {
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.slide_up, R.anim.slide_down,R.anim.slide_up, R.anim.slide_down)
-                .addToBackStack(null);
-
-        switch (view.getId()) {
-            case R.id.button_subirReporte_barraNavegacion:
-                startActivity(new Intent(getActivity(), ActivityReportes.class));
-                break;
-            case R.id.button_contactos_barraNavegacion:
-                startActivity(new Intent(getActivity(), ActivityEditarLeerContactos.class));
-                break;
-            case R.id.button_favoritos_barraNavegacion:
-                startActivity(new Intent(getActivity(), ActivityFavoritos.class));
-                break;
-        }
+        if (view.getId() == R.id.button_subirReporte_barraNavegacion)
+            startActivity(new Intent(requireActivity(), ActivityReportes.class));
+        else if (view.getId() == R.id.button_contactos_barraNavegacion)
+            startActivity(new Intent(requireActivity(), ActivityEditarLeerContactos.class));
+        else if (view.getId() == R.id.button_favoritos_barraNavegacion)
+            startActivity(new Intent(requireActivity(), ActivityFavoritos.class));
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
         FragmentoBotonEmergencia fragmentoBotonEmergencia = new FragmentoBotonEmergencia(mFondoBlanco);
         FragmentoPermisos fragmentoPermisos = new FragmentoPermisos();
         //when button is pressed
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            mPermisos = new Permisos();
-            mPermisos.getPermisoUbicacion(getActivity(), false);
+            Permisos mPermisos = new Permisos();
+            mPermisos.getPermisoUbicacion(requireActivity(), false);
             if(mPermisos.getLocationPermissionGranted()){
                 mBtnFavoritos.setVisibility(View.INVISIBLE);
                 mBtnSubirReporte.setVisibility(View.INVISIBLE);
                 mBtnHistorialRutas.setVisibility(View.INVISIBLE);
                 mBtnContactos.setVisibility(View.INVISIBLE);
                 mScaleDown.end();
-                mFondoBlanco.setBackgroundColor(getActivity().getResources().getColor(R.color.blanco));
+                mFondoBlanco.setBackgroundColor(requireActivity().getResources().getColor(R.color.blanco));
 
-                if(this.getActivity() instanceof ActivityMap){
+                if(this.requireActivity() instanceof ActivityMap){
                     //show the progressCircle
                     fragmentTransaction.add(R.id.fragmentContainerView_botonEmergencia, fragmentoBotonEmergencia, "FragmentoBotonEmergencia").commit();
                 }
@@ -116,7 +107,7 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
             mScaleDown.start();
 
             //hide the progressCircle
-            Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("FragmentoBotonEmergencia");
+            Fragment fragment = requireActivity().getSupportFragmentManager().findFragmentByTag("FragmentoBotonEmergencia");
             if (fragment != null)
                 fragmentTransaction.remove(fragment).commit();
         }

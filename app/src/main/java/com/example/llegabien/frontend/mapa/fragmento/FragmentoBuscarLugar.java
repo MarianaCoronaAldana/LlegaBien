@@ -23,13 +23,12 @@ import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.usuario.activity.ActivityConfiguracionUsuario;
 import com.example.llegabien.frontend.usuario.dialog.DialogTipoConfiguracion;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 
 public class FragmentoBuscarLugar extends Fragment implements View.OnClickListener{
 
     private UbicacionBusquedaAutocompletada ubicacionBusquedaAutocompletada;
-    private ActivityResultLauncher<Intent> activityResultLauncher =
+    private final ActivityResultLauncher<Intent> activityResultLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
                     new ActivityResultCallback<ActivityResult>() {
@@ -37,13 +36,10 @@ public class FragmentoBuscarLugar extends Fragment implements View.OnClickListen
                         public void onActivityResult(ActivityResult activityResult) {
                             int result = activityResult.getResultCode();
                             Intent data = activityResult.getData();
-                            ubicacionBusquedaAutocompletada.verificarResultadoBusqueda(new UbicacionBusquedaAutocompletada.OnUbicacionBuscadaObtenida() {
-                                @Override
-                                public void isUbicacionBuscadaObtenida(boolean isUbicacionBuscadaObtenida, boolean isUbicacionBuscadaenBD, LatLng ubicacionBuscada, String ubicacionBuscadaString) {
-                                    if (isUbicacionBuscadaObtenida)
-                                        ((ActivityMap) getActivity()).mostrarUbicacionBuscada(isUbicacionBuscadaenBD, true, ubicacionBuscada, ubicacionBuscadaString);
-                                }
-                            }, result, data, getActivity());
+                            ubicacionBusquedaAutocompletada.verificarResultadoBusqueda((isUbicacionBuscadaObtenida, isUbicacionBuscadaenBD, ubicacionBuscada, ubicacionBuscadaString) -> {
+                                if (isUbicacionBuscadaObtenida)
+                                    ((ActivityMap) requireActivity()).mostrarUbicacionBuscada(isUbicacionBuscadaenBD, true, ubicacionBuscada, ubicacionBuscadaString);
+                            }, result, data, requireActivity());
                         }
                     }
             );
@@ -60,7 +56,7 @@ public class FragmentoBuscarLugar extends Fragment implements View.OnClickListen
         View root = inflater.inflate(R.layout.fragmento_buscar_lugar, container, false);
         String apiKey = getString(R.string.api_key);
         if (!Places.isInitialized()) {
-            Places.initialize(this.getActivity().getApplicationContext(), apiKey);
+            Places.initialize(this.requireActivity().getApplicationContext(), apiKey);
         }
 
         //wiring up
@@ -79,25 +75,22 @@ public class FragmentoBuscarLugar extends Fragment implements View.OnClickListen
     //FUNCIONES LISTENERS//
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_titulo_barraBusqueda_buscarLugar:
-                ubicacionBusquedaAutocompletada = new UbicacionBusquedaAutocompletada();
-                ubicacionBusquedaAutocompletada.inicializarIntent(getActivity());
-                activityResultLauncher.launch(ubicacionBusquedaAutocompletada.getIntent());
-                break;
-            case R.id.button_configuracion_barraBusqueda:
-                // Si el usuario es del tipo Administrador, se manda a un lugar distinto que a un usuario normal
-                if(Preferences.getSavedBooleanFromPreference(this.getActivity(), PREFERENCE_ES_ADMIN)){
-                    DialogTipoConfiguracion dialogTipoConfiguracion = new DialogTipoConfiguracion(this.getActivity());
-                    dialogTipoConfiguracion.show();
-                }
-                else
-                    startActivity(new Intent(this.getActivity(), ActivityConfiguracionUsuario.class));
-                break;
-            case R.id.button_centrarMapa_buscarLugar:
-                ((ActivityMap)getActivity()).centrarMapa();
-                break;
+        if (view.getId() == R.id.button_titulo_barraBusqueda_buscarLugar){
+            ubicacionBusquedaAutocompletada = new UbicacionBusquedaAutocompletada();
+            ubicacionBusquedaAutocompletada.inicializarIntent(requireActivity());
+            activityResultLauncher.launch(ubicacionBusquedaAutocompletada.getIntent());
         }
+        else if (view.getId() == R.id.button_configuracion_barraBusqueda){
+            // Si el usuario es del tipo Administrador, se manda a un lugar distinto que a un usuario normal
+            if(Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_ES_ADMIN)){
+                DialogTipoConfiguracion dialogTipoConfiguracion = new DialogTipoConfiguracion(this.requireActivity());
+                dialogTipoConfiguracion.show();
+            }
+            else
+                startActivity(new Intent(this.requireActivity(), ActivityConfiguracionUsuario.class));
+        }
+        else if (view.getId() == R.id.button_centrarMapa_buscarLugar)
+            ((ActivityMap)requireActivity()).centrarMapa();
     }
 
 }

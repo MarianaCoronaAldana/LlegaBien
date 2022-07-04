@@ -3,10 +3,10 @@ package com.example.llegabien.backend.botonEmergencia;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.app.Activity;
-import android.location.Location;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.llegabien.backend.app.Preferences;
@@ -18,6 +18,7 @@ import com.google.android.gms.location.LocationServices;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -28,12 +29,12 @@ import okhttp3.Response;
 
 public class Emergencia extends AppCompatActivity  {
 
-    private ArrayList<String> mContactos = new ArrayList<String>();
-    private OkHttpClient mClient = new OkHttpClient();
+    private final ArrayList<String> mContactos = new ArrayList<>();
+    private final OkHttpClient mClient = new OkHttpClient();
     private String mNombre, mUbicacion;
     private usuario Usuario;
 
-    private Activity mActivity;
+    private final Activity mActivity;
 
     public Emergencia(Activity activity){
         mActivity = activity;
@@ -44,18 +45,15 @@ public class Emergencia extends AppCompatActivity  {
         FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mActivity);
 
         UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
-        mUbicacionDispositivo.getUbicacionDelDispositivo(new UbicacionDispositivo.OnUbicacionObtenida() {
-            @Override
-            public void isUbicacionObtenida(boolean isUbicacionObtenida, Location ubicacionObtenida) {
-                if (isUbicacionObtenida) {
-                    UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
-                    inicializarDatos(ubicacionGeodicacion.degeocodificarUbiciacion(mActivity, ubicacionObtenida.getLatitude(),ubicacionObtenida.getLongitude()));
-                    hacerLlamada();
-                    //Toast.makeText(mActivity, mUbicacion,Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Toast.makeText(mActivity, "ERROR, CONTACTE A EMERGENCIAS DIRECTAMENTE!",Toast.LENGTH_LONG).show();
-                }
+        mUbicacionDispositivo.getUbicacionDelDispositivo((isUbicacionObtenida, ubicacionObtenida) -> {
+            if (isUbicacionObtenida) {
+                UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
+                inicializarDatos(ubicacionGeodicacion.degeocodificarUbiciacion(mActivity, ubicacionObtenida.getLatitude(),ubicacionObtenida.getLongitude()));
+                hacerLlamada();
+                //Toast.makeText(mActivity, mUbicacion,Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(mActivity, "ERROR, CONTACTE A EMERGENCIAS DIRECTAMENTE!",Toast.LENGTH_LONG).show();
             }
         }, true,fusedLocationProviderClient, mActivity);
     }
@@ -63,37 +61,37 @@ public class Emergencia extends AppCompatActivity  {
 
         Usuario = Preferences.getSavedObjectFromPreference(mActivity, PREFERENCE_USUARIO, usuario.class);
 
-        for(int i = 0; i<Usuario.getContacto().size(); i++)
-            mContactos.add("+" + Usuario.getContacto().get(i).getTelCelular());
+        if (Usuario != null) {
+            for (int i = 0; i < Usuario.getContacto().size(); i++)
+                mContactos.add("+" + Usuario.getContacto().get(i).getTelCelular());
 
-        for(int i = mContactos.size(); i<5; i++)
-            mContactos.add("-1");
 
-        mNombre = Usuario.getNombre() + " " + Usuario.getApellidos();
+            for (int i = mContactos.size(); i < 5; i++)
+                mContactos.add("-1");
 
-        mUbicacion = ubicacion;
+            mNombre = Usuario.getNombre() + " " + Usuario.getApellidos();
+
+            mUbicacion = ubicacion;
+        }
 
     }
 
     private void hacerLlamada(){
         try {
             //TODO Cambiar link de ngrok aqui
-            post("https://c0af-200-68-166-53.ngrok.io/emergencia", new  Callback(){
+            post(new  Callback(){
                 @Override
-                public void onFailure(Call call, IOException e) {
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
                     e.printStackTrace();
                 }
                 @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(mActivity,response.message(),Toast.LENGTH_SHORT).show();
-                            Log.v("QUICKSTART", response.message());
+                public void onResponse(@NonNull Call call, @NonNull Response response) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(mActivity,response.message(),Toast.LENGTH_SHORT).show();
+                        Log.v("QUICKSTART", response.message());
 
-                            if(!response.isSuccessful())
-                                Toast.makeText(mActivity, "ERROR, CONTACTE A EMERGENCIAS DIRECTAMENTE!",Toast.LENGTH_LONG).show();
-                        }
+                        if(!response.isSuccessful())
+                            Toast.makeText(mActivity, "ERROR, CONTACTE A EMERGENCIAS DIRECTAMENTE!",Toast.LENGTH_LONG).show();
                     });
                 }
             });
@@ -102,7 +100,7 @@ public class Emergencia extends AppCompatActivity  {
         }
     }
 
-    Call post(String url, Callback callback) throws IOException {
+    private void post(Callback callback) throws IOException {
         Log.v("QUICKSTART", "Contacto 1: " + Usuario.getContacto().first().getTelCelular());
 
         RequestBody formBody = new FormBody.Builder()
@@ -117,12 +115,11 @@ public class Emergencia extends AppCompatActivity  {
                 .add("Contacto5", mContactos.get(4))
                 .build();
         Request request = new Request.Builder()
-                .url(url)
+                .url("https://c0af-200-68-166-53.ngrok.io/emergencia")
                 .post(formBody)
                 .build();
         Call response = mClient.newCall(request);
         response.enqueue(callback);
 
-        return response;
     }
 }

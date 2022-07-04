@@ -1,42 +1,34 @@
 package com.example.llegabien.backend.reporte;
 
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
-import static io.realm.Realm.getApplicationContext;
-
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
 import com.example.llegabien.backend.usuario.usuario;
 
 import org.bson.types.ObjectId;
 
-import io.realm.ImportFlag;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class Reporte_DAO {
+public class ReporteDAO {
 
-    private ConectarBD conectarBD = new ConectarBD();
+    private final ConectarBD conectarBD = new ConectarBD();
     private Realm realm;
-    private Context mContext;
+    private final Context mContext;
 
-    public Reporte_DAO(Context context){
+    public ReporteDAO(Context context){
         mContext = context;
     }
 
-    public void añadirReporte(reporte Reporte) {
+    public void anadirReporte(reporte Reporte) {
         Reporte.set_id(new ObjectId());
         Reporte.set_partition("LlegaBien");
         realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
-            realm.executeTransactionAsync(transactionRealm -> {
-                transactionRealm.insert(Reporte);
-            });
+            realm.executeTransactionAsync(transactionRealm -> transactionRealm.insert(Reporte));
 
             realm.close();
         }
@@ -48,10 +40,7 @@ public class Reporte_DAO {
         realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
-            RealmResults<reporte> realmResults = realm.where(reporte.class).equalTo("IdUsuario",Reporte.getIdUsuario()).findAll();
-
-            if (realmResults != null)
-                return realmResults;
+            return realm.where(reporte.class).equalTo("IdUsuario",Reporte.getIdUsuario()).findAll();
         }
 
         else
@@ -67,9 +56,7 @@ public class Reporte_DAO {
         if(realm!=null){
             RealmResults<reporte> realmResults = realm.where(reporte.class).equalTo("IdUsuario",Usuario.get_id()).findAll();
             Log.v("QUICKSTART", "Estoy en REPORTE DAO, size: " + realmResults.size());
-
-            if (realmResults != null)
-                return realmResults;
+            return realmResults;
         }
 
         else

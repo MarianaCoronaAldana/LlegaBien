@@ -24,7 +24,6 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
 
     // Se verifica que el correo y telefono del usuario no hayan sido registrados anteriormente
     public boolean validarExistenciaCorreoTelefono(String correo, String telefono) {
-         //realm = conectarBD.ConectarAnonimoMongoDB();
         realm = conectarBD.conseguirUsuarioMongoDB();
         if(realm!=null){
             usuario task = realm.where(usuario.class).equalTo("correoElectronico", correo)
@@ -32,8 +31,7 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
                     .equalTo("telCelular", telefono)
                     .findFirst();
 
-            if (task != null)
-                return true;
+            return task != null;
         }
 
         else

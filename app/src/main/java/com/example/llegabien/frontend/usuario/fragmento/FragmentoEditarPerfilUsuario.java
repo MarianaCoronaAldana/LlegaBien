@@ -6,6 +6,7 @@ import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import static io.realm.Realm.getApplicationContext;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,7 +29,7 @@ import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.app.Utilidades;
 import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUsuario;
 import com.example.llegabien.frontend.usuario.dialog.DialogDatePicker;
-import com.example.llegabien.backend.usuario.UsuarioBD_CRUD;
+import com.example.llegabien.backend.usuario.UsuarioDAO;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,10 +38,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnClickListener{
-    private ConstraintLayout mBtnCambiarContra, mBtnAceptar;
-    private Button mBtnEliminarCuenta, mBtnRegresar;
-    private EditText mEditTxtNombres, mEditTxtApellidos, mEditTxtFechaNacimiento, mEditTxtNumTelefonico, mEditTxtCorreo,mEditTxtCountryCode;
+public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnClickListener {
+    private ConstraintLayout mBtnAceptar;
+    private EditText mEditTxtNombres, mEditTxtApellidos, mEditTxtFechaNacimiento, mEditTxtNumTelefonico, mEditTxtCorreo, mEditTxtCountryCode;
 
     usuario Usuario;
 
@@ -56,9 +56,9 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
 
         //wiring up
         mBtnAceptar = root.findViewById(R.id.button2_aceptar_editarPerfil);
-        mBtnCambiarContra  = root.findViewById(R.id.button1_cambiarContra_editarPerfil);
-        mBtnEliminarCuenta  = root.findViewById(R.id.button_eliminarCuenta_editarPerfil);
-        mBtnRegresar = root.findViewById(R.id.button_regresar_editarPerfil);
+        ConstraintLayout mBtnCambiarContra = root.findViewById(R.id.button1_cambiarContra_editarPerfil);
+        Button mBtnEliminarCuenta = root.findViewById(R.id.button_eliminarCuenta_editarPerfil);
+        Button mBtnRegresar = root.findViewById(R.id.button_regresar_editarPerfil);
         mEditTxtNombres = root.findViewById(R.id.editText_nombres_editarPerfil);
         mEditTxtApellidos = root.findViewById(R.id.editText_apellidos_editarPerfil);
         mEditTxtFechaNacimiento = root.findViewById(R.id.editText_fechaNacimiento_editarPerfil);
@@ -81,35 +81,32 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button1_cambiarContra_editarPerfil:
-                FragmentoCambiarContraUsuario fragmentoCambiarContraUsuario = new FragmentoCambiarContraUsuario();
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-                fragmentTransaction.replace(R.id.fragment_configuracion, fragmentoCambiarContraUsuario).commit();
-                fragmentTransaction.addToBackStack(null);
-                break;
-            case R.id.button2_aceptar_editarPerfil:
-                if (validarAllInputs()){
-                    updateUser();
-                }
-                break;
-            case R.id.button_eliminarCuenta_editarPerfil:
-                deleteUsuario();
-                Preferences.savePreferenceBoolean(getActivity(),false, PREFERENCE_ESTADO_BUTTON_SESION);
-                Preferences.savePreferenceBoolean(getActivity(), false, PREFERENCE_ES_ADMIN);
-
-                startActivity(new Intent(getActivity(), ActivityPaginaPrincipalUsuario.class));
-                break;
-            case R.id.editText_fechaNacimiento_editarPerfil:
-                DialogDatePicker dialogDatePicker = new DialogDatePicker();
-                dialogDatePicker.mostrarDatePickerDialog(mEditTxtFechaNacimiento, this);
-                mEditTxtFechaNacimiento.setError(null);
-                break;
-            case R.id.button_regresar_editarPerfil:
-                getActivity().getSupportFragmentManager().popBackStack();
-                break;
+        if (view.getId() == R.id.button1_cambiarContra_editarPerfil) {
+            FragmentoCambiarContraUsuario fragmentoCambiarContraUsuario = new FragmentoCambiarContraUsuario();
+            FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+            fragmentTransaction.replace(R.id.fragment_configuracion, fragmentoCambiarContraUsuario).commit();
+            fragmentTransaction.addToBackStack(null);
         }
+        else if (view.getId() == R.id.button2_aceptar_editarPerfil) {
+            if (validarAllInputs())
+                updateUser();
+        }
+        else if (view.getId() == R.id.button_eliminarCuenta_editarPerfil) {
+            deleteUsuario();
+            Preferences.savePreferenceBoolean(requireActivity(), false, PREFERENCE_ESTADO_BUTTON_SESION);
+            Preferences.savePreferenceBoolean(requireActivity(), false, PREFERENCE_ES_ADMIN);
+
+            startActivity(new Intent(requireActivity(), ActivityPaginaPrincipalUsuario.class));
+        }
+        else if (view.getId() == R.id.button_eliminarCuenta_editarPerfil) {
+            DialogDatePicker dialogDatePicker = new DialogDatePicker();
+            dialogDatePicker.mostrarDatePickerDialog(mEditTxtFechaNacimiento, this);
+            mEditTxtFechaNacimiento.setError(null);
+        }
+        else if (view.getId() == R.id.editText_fechaNacimiento_editarPerfil)
+            requireActivity().getSupportFragmentManager().popBackStack();
+
     }
 
     //OTRAS FUNCIONES//
@@ -119,22 +116,21 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
         UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
         boolean esInputValido = true, esNumTelefonicoValido, esCountryCodeValido;
 
-        esNumTelefonicoValido =  usuarioInputValidaciones.validarNumTelefonico(getActivity(),mEditTxtNumTelefonico);
-        esCountryCodeValido = usuarioInputValidaciones.validarNumTelefonico(getActivity(), mEditTxtCountryCode);
+        esNumTelefonicoValido = usuarioInputValidaciones.validarNumTelefonico(requireActivity(), mEditTxtNumTelefonico);
+        esCountryCodeValido = usuarioInputValidaciones.validarNumTelefonico(requireActivity(), mEditTxtCountryCode);
 
-        if (!usuarioInputValidaciones.validarNombre(getActivity(),mEditTxtNombres))
+        if (usuarioInputValidaciones.validarNombre(requireActivity(), mEditTxtNombres))
             esInputValido = false;
-        if ( !usuarioInputValidaciones.validarNombre(getActivity(),mEditTxtApellidos))
+        if (usuarioInputValidaciones.validarNombre(requireActivity(), mEditTxtApellidos))
             esInputValido = false;
-        if (!usuarioInputValidaciones.validarFechaNacimiento(getActivity(),mEditTxtFechaNacimiento))
+        if (usuarioInputValidaciones.validarFechaNacimiento(requireActivity(), mEditTxtFechaNacimiento))
             esInputValido = false;
-        if (!usuarioInputValidaciones.validarCorreoElectronico(getActivity(), mEditTxtCorreo))
+        if (usuarioInputValidaciones.validarCorreoElectronico(requireActivity(), mEditTxtCorreo))
             esInputValido = false;
         if (esCountryCodeValido && esNumTelefonicoValido) {
-            if(!usuarioInputValidaciones.validarNumTelefonico_libphonenumber(getActivity(),mEditTxtNumTelefonico,mEditTxtCountryCode))
+            if (usuarioInputValidaciones.validarNumTelefonico_libphonenumber(requireActivity(), mEditTxtNumTelefonico, mEditTxtCountryCode))
                 esInputValido = false;
-        }
-        else
+        } else
             esInputValido = false;
 
         return esInputValido;
@@ -142,17 +138,23 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
 
     // Escribir dentro de las EditText los datos previos del usuario
     private void setDatosUsuario() {
-        Usuario = Preferences.getSavedObjectFromPreference(getActivity(), PREFERENCE_USUARIO, usuario.class);
-        String countryCode = Utilidades.obtenerCountryCode(Usuario.getTelCelular());
-        String numTel = Usuario.getTelCelular().replace(countryCode, "");
+        String countryCode, numTel = null;
+        Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_USUARIO, usuario.class);
+        if (Usuario != null) {
+            countryCode = Utilidades.obtenerCountryCode(Usuario.getTelCelular());
 
-        mEditTxtNombres.setText(Usuario.getNombre());
-        mEditTxtApellidos.setText(Usuario.getApellidos());
-        mEditTxtCorreo.setText(Usuario.getCorreoElectronico());
-        mEditTxtNumTelefonico.setText(numTel);
-        mEditTxtCountryCode.setText(countryCode);
+            if (countryCode != null) {
+                numTel = Usuario.getTelCelular().replace(countryCode, "");
+            }
 
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            mEditTxtNombres.setText(Usuario.getNombre());
+            mEditTxtApellidos.setText(Usuario.getApellidos());
+            mEditTxtCorreo.setText(Usuario.getCorreoElectronico());
+            mEditTxtNumTelefonico.setText(numTel);
+            mEditTxtCountryCode.setText(countryCode);
+        }
+
+        @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         mEditTxtFechaNacimiento.setText(dateFormat.format(Usuario.getFNacimiento()));
     }
 
@@ -165,29 +167,29 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
         Usuario.setTelCelular(mEditTxtCountryCode.getText().toString() + mEditTxtNumTelefonico.getText().toString());
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate localDate =  LocalDate.parse(mEditTxtFechaNacimiento.getText().toString(), dateTimeFormatter);
+        LocalDate localDate = LocalDate.parse(mEditTxtFechaNacimiento.getText().toString(), dateTimeFormatter);
         Usuario.setFNacimiento(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
         updateUsuario();
     }
 
     // Actualizar al usuario en MongoDB
-    public void updateUsuario(){
-        UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD(this.getContext());
-        if (usuarioBD_CRUD.updateUser(Usuario)) {
+    public void updateUsuario() {
+        UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
+        if (usuarioDAO.updateUser(Usuario)) {
             Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
 
             mBtnAceptar.setEnabled(false);
 
-            Usuario = usuarioBD_CRUD.readUsuarioPorCorreo(Usuario.getCorreoElectronico());
-            Preferences.savePreferenceObjectRealm(getActivity(), PREFERENCE_USUARIO, Usuario);
+            Usuario = usuarioDAO.readUsuarioPorCorreo(Usuario.getCorreoElectronico());
+            Preferences.savePreferenceObjectRealm(requireActivity(), PREFERENCE_USUARIO, Usuario);
         }
     }
 
     // Borrar al usuario en MongoDB
-    public void deleteUsuario(){
-        UsuarioBD_CRUD usuarioBD_CRUD = new UsuarioBD_CRUD(this.getContext());
-        usuarioBD_CRUD.deleteUser(Usuario);
+    public void deleteUsuario() {
+        UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
+        usuarioDAO.deleteUser(Usuario);
         Usuario = null;
     }
 

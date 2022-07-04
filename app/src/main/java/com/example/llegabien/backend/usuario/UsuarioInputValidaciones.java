@@ -2,8 +2,6 @@ package com.example.llegabien.backend.usuario;
 
 import android.content.Context;
 import android.os.Build;
-import android.text.TextUtils;
-import android.util.Patterns;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -31,33 +29,33 @@ public class UsuarioInputValidaciones {
 
         if (mStringParaValidar.isEmpty()) {
             editText.setError(context.getResources().getString(R.string.errorStringVacia));
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public boolean validarNombre(Context context, EditText editText) {
         mStringPattern = "(^|\\s)([A-Za-zÑñÁáÉéÍíÓóÚú]+['\\-]?[A-Za-zÑñÁáÉéÍíÓóÚú]+)(\\s+([A-Za-zÑñÁáÉéÍíÓóÚú]+['\\-]?[A-Za-zÑñÁáÉéÍíÓóÚú]+))*($|\\s)";
         mStringParaValidar = editText.getText().toString().trim();
 
-        if (!validarStringVacia(context, editText))
-            return false;
+        if (validarStringVacia(context, editText))
+            return true;
         else {
             mPattern = Pattern.compile(mStringPattern);
             mMatcher = mPattern.matcher(mStringParaValidar);
             if (!mMatcher.matches()) {
                 editText.setError(context.getResources().getString(R.string.errorNombreApellidos));
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public boolean validarFechaNacimiento(Context context, EditText editText) {
         mStringParaValidar = editText.getText().toString().trim();
-        if (!validarStringVacia(context, editText))
-            return false;
+        if (validarStringVacia(context, editText))
+            return true;
         else {
             LocalDate fechaHoy = LocalDate.now();
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -66,27 +64,27 @@ public class UsuarioInputValidaciones {
             if (periodo.getYears() < 16) {
                 editText.setError(context.getResources().getString(R.string.errorFechaNacimiento));
                 Toast.makeText(context, context.getResources().getString(R.string.errorFechaNacimiento), Toast.LENGTH_SHORT).show();
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public boolean validarCorreoElectronico(Context context, EditText editText) {
         mStringPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
         mStringParaValidar = editText.getText().toString().trim();
 
-        if (!validarStringVacia(context, editText))
-            return false;
+        if (validarStringVacia(context, editText))
+            return true;
         else {
             mPattern = Pattern.compile(mStringPattern);
             mMatcher = mPattern.matcher(mStringParaValidar);
             if (!mMatcher.matches()) {
                 editText.setError(context.getResources().getString(R.string.errorCorreoElectronico));
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public boolean validarNumTelefonico(Context context, EditText editText) {
@@ -96,7 +94,7 @@ public class UsuarioInputValidaciones {
         mPattern = Pattern.compile(mStringPattern);
         mMatcher = mPattern.matcher(mStringParaValidar);
 
-        if (!validarStringVacia(context, editText))
+        if (validarStringVacia(context, editText))
             return false;
         else {
 
@@ -116,29 +114,29 @@ public class UsuarioInputValidaciones {
 
         PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
         countryCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(countryCode));
-        Phonenumber.PhoneNumber phoneNumber = null;
+        Phonenumber.PhoneNumber phoneNumber;
 
         try {
             phoneNumber = phoneNumberUtil.parse(numeroTelefonico, countryCode);
         } catch (NumberParseException e) {
             System.err.println(e);
             editTxtPhoneNumber.setError(context.getResources().getString(R.string.errorNumeroTelefonico));
-            return false;
+            return true;
         }
 
         if (!phoneNumberUtil.isValidNumber(phoneNumber)){
             editTxtPhoneNumber.setError(context.getResources().getString(R.string.errorNumeroTelefonico));
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
-    public boolean validarContraseña(Context context, EditText editText) {
+    public boolean validarContrasena(Context context, EditText editText) {
         mStringPattern = "(^|\\s)(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&+-])[A-Za-z\\d@$!%*?&+-]{8,}($|\\s)";
         mStringParaValidar = editText.getText().toString().trim();
 
-        if (!validarStringVacia(context, editText))
+        if (validarStringVacia(context, editText))
             return false;
         else {
             mPattern = Pattern.compile(mStringPattern);
@@ -151,14 +149,14 @@ public class UsuarioInputValidaciones {
         return true;
     }
 
-    public boolean validarConfirmarContraseña(String contraseña, Context context, EditText editText) {
-        if (!validarStringVacia(context, editText))
-            return false;
+    public boolean validarConfirmarContrasena(String contrasena, Context context, EditText editText) {
+        if (validarStringVacia(context, editText))
+            return true;
 
-        else if (!contraseña.trim().equals(editText.getText().toString())) {
+        else if (!contrasena.trim().equals(editText.getText().toString())) {
             editText.setError(context.getResources().getString(R.string.errorConfirmarContraseña));
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 }

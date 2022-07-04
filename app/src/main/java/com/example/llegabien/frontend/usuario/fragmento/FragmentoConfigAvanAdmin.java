@@ -14,9 +14,8 @@ import android.widget.Button;
 import com.example.llegabien.R;
 import com.example.llegabien.frontend.reportes.fragmento.FragmentoSubirReporteAdmin;
 
-public class FragmentoConfigAvanAdmin extends Fragment implements View.OnClickListener{
-    private Button mBtnConfigUsuario,mBtnRegresar;
-    private ConstraintLayout mBtnSubirReporte, mBtnOtrosPerfiles;
+public class FragmentoConfigAvanAdmin extends Fragment implements View.OnClickListener {
+    private ConstraintLayout mBtnOtrosPerfiles;
 
     public FragmentoConfigAvanAdmin() {
         // Required empty public constructor
@@ -29,9 +28,9 @@ public class FragmentoConfigAvanAdmin extends Fragment implements View.OnClickLi
         View root = inflater.inflate(R.layout.fragmento_config_avan_admin, container, false);
 
         //wiring up
-        mBtnSubirReporte = (ConstraintLayout) root.findViewById(R.id.button_subirReporte_configuracionAdmin);
-        mBtnConfigUsuario = (Button) root.findViewById(R.id.button_configUsuario_configuracionAdmin);
-        mBtnRegresar = (Button) root.findViewById(R.id.button_regresar_configuracionAdmin);
+        ConstraintLayout mBtnSubirReporte = (ConstraintLayout) root.findViewById(R.id.button_subirReporte_configuracionAdmin);
+        Button mBtnConfigUsuario = (Button) root.findViewById(R.id.button_configUsuario_configuracionAdmin);
+        Button mBtnRegresar = (Button) root.findViewById(R.id.button_regresar_configuracionAdmin);
 
 
         //listeners
@@ -45,24 +44,23 @@ public class FragmentoConfigAvanAdmin extends Fragment implements View.OnClickLi
     //FUNCIONES LISTENERS//
     @Override
     public void onClick(View view) {
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        switch (view.getId()) {
-            case R.id.button_subirReporte_configuracionAdmin:
-                FragmentoSubirReporteAdmin fragmentoSubirReporteAdmin = new FragmentoSubirReporteAdmin();
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-                fragmentTransaction.replace(R.id.fragment_configuracion, fragmentoSubirReporteAdmin).commit();
-                fragmentTransaction.addToBackStack(null);
-                break;
-            case R.id.button_configUsuario_configuracionAdmin:
-                FragmentoConfigUsuario fragmentoConfigUsuario = new FragmentoConfigUsuario();
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-                fragmentTransaction.replace(R.id.fragment_configuracion, fragmentoConfigUsuario).commit();
-                fragmentTransaction.addToBackStack(null);
-                break;
-            case R.id.button_regresar_configuracionAdmin:
-                getActivity().getSupportFragmentManager().popBackStack();
-                break;
+        FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        if (view.getId() == R.id.button_subirReporte_configuracionAdmin) {
+            FragmentoSubirReporteAdmin fragmentoSubirReporteAdmin = new FragmentoSubirReporteAdmin();
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+            fragmentTransaction.replace(R.id.fragment_configuracion, fragmentoSubirReporteAdmin).commit();
+            fragmentTransaction.addToBackStack(null);
         }
+        else if (view.getId() == R.id.button_configUsuario_configuracionAdmin) {
+            FragmentoConfigUsuario fragmentoConfigUsuario = new FragmentoConfigUsuario();
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+            fragmentTransaction.replace(R.id.fragment_configuracion, fragmentoConfigUsuario).commit();
+            fragmentTransaction.addToBackStack(null);
+        }
+        else if (view.getId() == R.id.button_regresar_configuracionAdmin)
+            requireActivity().getSupportFragmentManager().popBackStack();
+
+
     }
 
 }

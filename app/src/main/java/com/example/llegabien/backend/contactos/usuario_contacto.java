@@ -3,8 +3,6 @@ package com.example.llegabien.backend.contactos;
 import io.realm.RealmObject;
 import io.realm.annotations.RealmClass;
 
-;
-
 @RealmClass(embedded = true)
 
 public class usuario_contacto extends RealmObject  {

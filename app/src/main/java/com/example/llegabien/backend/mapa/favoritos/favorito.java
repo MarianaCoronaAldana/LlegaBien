@@ -1,16 +1,10 @@
 package com.example.llegabien.backend.mapa.favoritos;
 
-import com.example.llegabien.backend.usuario.usuario;
-
 import org.bson.types.ObjectId;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
-import io.realm.RealmObject;
-import org.bson.types.ObjectId;
-import io.realm.RealmObject;
-import org.bson.types.ObjectId;
 
 public class favorito extends RealmObject {
     @PrimaryKey

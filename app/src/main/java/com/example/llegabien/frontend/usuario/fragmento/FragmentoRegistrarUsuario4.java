@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.example.llegabien.R;
-import com.example.llegabien.backend.usuario.usuario;
 
 public class FragmentoRegistrarUsuario4 extends Fragment {
 

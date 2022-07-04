@@ -12,28 +12,28 @@ import com.example.llegabien.backend.mongoDB.ConectarBD;
 
 import org.bson.types.ObjectId;
 
+import java.util.Objects;
+
 import io.realm.ImportFlag;
 import io.realm.Realm;
 
-public class UsuarioBD_CRUD {
+public class UsuarioDAO {
 
-    private ConectarBD conectarBD = new ConectarBD();
+    private final ConectarBD conectarBD = new ConectarBD();
     private Realm realm;
-    private Context mContext;
+    private final Context mContext;
 
-    public UsuarioBD_CRUD(Context context){
+    public UsuarioDAO(Context context){
         mContext = context;
     }
 
-    public void añadirUser(usuario Usuario) {
+    public void anadirUser(usuario Usuario) {
         Usuario.set_id(new ObjectId());
         Usuario.set_partition("LlegaBien");
         realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
-            realm.executeTransactionAsync(transactionRealm -> {
-                transactionRealm.insert(Usuario);
-            });
+            realm.executeTransactionAsync(transactionRealm -> transactionRealm.insert(Usuario));
 
             realm.close();
         }
@@ -48,7 +48,7 @@ public class UsuarioBD_CRUD {
         if(realm!=null){
             realm.executeTransactionAsync(transactionRealm -> {
                 usuario task = transactionRealm.where(usuario.class).equalTo("_id",Usuario.get_id()).findFirst();
-                task.deleteFromRealm();
+                Objects.requireNonNull(task).deleteFromRealm();
             });
             Toast.makeText(getApplicationContext(), "Cuenta eliminada con exito", Toast.LENGTH_SHORT).show();
             realm.close();
@@ -103,10 +103,8 @@ public class UsuarioBD_CRUD {
         return null;
     }
 
-    public usuario readUsuarioPorNumTelefonico(String numTelefonico) {
+    public void readUsuarioPorNumTelefonico(String numTelefonico) {
         realm = conectarBD.conseguirUsuarioMongoDB();
-        //realm = conectarBD.ConectarCorreoMongoDB(correo, contrasena);
-
         if(realm!=null){
             usuario task = realm.where(usuario.class).equalTo("telCelular", numTelefonico)
                     .findFirst();
@@ -116,16 +114,12 @@ public class UsuarioBD_CRUD {
 
                 // Se guarda al usuario en una clase accesible para muchas clases
                 Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_USUARIO, task);
-
-                // Se cierra la cuenta con la que se estan haciendo transacciones en MongoDB y se crea una con el correo y contraseña del usuario
-                return task;
             }
         }
 
         else
             errorConexion();
 
-        return null;
     }
 
     private void errorConexion(){

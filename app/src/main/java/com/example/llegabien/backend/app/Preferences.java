@@ -1,12 +1,11 @@
 package com.example.llegabien.backend.app;
-import static java.lang.String.valueOf;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmObject;
@@ -24,14 +23,14 @@ public class Preferences extends AppCompatActivity {
 
     // Guardar preferencia sobre un tipo boolean
     public static void savePreferenceBoolean(Context c, boolean b, String key){
-        mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES,c.MODE_PRIVATE);
+        mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES, MODE_PRIVATE);
         mSharedPreferences.edit().putBoolean(key,b).apply();
     }
 
     // Para guardar preferencias de un objeto realm
     public static void savePreferenceObjectRealm(Context c, String key, RealmObject object) {
         final Gson gson = new Gson();
-        mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES, c.MODE_PRIVATE);
+        mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES, MODE_PRIVATE);
         String jsonObjectRealm = gson.toJson(Realm.getInstance(new RealmConfiguration.Builder()
                 .schemaVersion(5)
                 .deleteRealmIfMigrationNeeded()
@@ -42,13 +41,13 @@ public class Preferences extends AppCompatActivity {
 
     // Obtener preferencia acerca de un tipo boolean
     public static boolean getSavedBooleanFromPreference(Context c,String key){
-        mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES,c.MODE_PRIVATE);
+        mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES, MODE_PRIVATE);
         return mSharedPreferences.getBoolean(key,false);//Si es que nunca se ha guardado nada en esta key pues retornara false
     }
 
     // Para obtener preferencias de un objeto
     public static <GenericClass> GenericClass getSavedObjectFromPreference(Context c, String key, Class<GenericClass> classType) {
-        mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES,c.MODE_PRIVATE);
+        mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES, MODE_PRIVATE);
         if (mSharedPreferences.contains(key)) {
             final Gson gson = new Gson();
             return gson.fromJson(mSharedPreferences.getString(key, null), classType);

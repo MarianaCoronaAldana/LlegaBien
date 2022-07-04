@@ -30,10 +30,10 @@ import java.util.Locale;
 
 public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickListener{
     private RadioButton mBtnRecordarSesion;
-    private Button mBtnIniciarSesion, mBtnContraseñaOlvidada, mBtnCerrar, mBtnRegistrarse, mBtnMostrarContra;
-    private EditText mEditTxtCorreo, mEditTxtContraseña;
+    private Button mBtnMostrarContra;
+    private EditText mEditTxtCorreo, mEditTxtContrasena;
     private boolean isActivateRadioButton;
-    private ConectarBD mConectarBD = new ConectarBD();
+    private final ConectarBD mConectarBD = new ConectarBD();
     private UsuarioBD_Validaciones mValidar;
 
     public FragmentoIniciarSesion1() {
@@ -47,24 +47,24 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
 
         //wiring up
         mBtnRecordarSesion = root.findViewById(R.id.radioBtn_recordar_inicia_sesion_1);
-        mBtnIniciarSesion = root.findViewById(R.id.button_inicia_inicia_sesion_1);
-        mBtnContraseñaOlvidada = root.findViewById(R.id.button_contraseña_olvidada_inicia_sesion_1);
+        Button mBtnIniciarSesion = root.findViewById(R.id.button_inicia_inicia_sesion_1);
+        Button mBtnContrasenaOlvidada = root.findViewById(R.id.button_contraseña_olvidada_inicia_sesion_1);
         mBtnMostrarContra = root.findViewById(R.id.button_mostrarContra_contraseña_inicia_sesion_1);
-        mBtnCerrar = root.findViewById(R.id.button_cerrar_inicia_sesion_1);
-        mBtnRegistrarse = root.findViewById(R.id.button_registrarse_inicia_sesion_1);
+        Button mBtnCerrar = root.findViewById(R.id.button_cerrar_inicia_sesion_1);
+        Button mBtnRegistrarse = root.findViewById(R.id.button_registrarse_inicia_sesion_1);
         mEditTxtCorreo = root.findViewById(R.id.editText_correo_inicia_sesion_1);
-        mEditTxtContraseña = root.findViewById(R.id.editText_contraseña_inicia_sesion_1);
+        mEditTxtContrasena = root.findViewById(R.id.editText_contraseña_inicia_sesion_1);
 
         //listeners
         mBtnRecordarSesion.setOnClickListener(this);
         mBtnIniciarSesion.setOnClickListener(this);
-        mBtnContraseñaOlvidada.setOnClickListener(this);
+        mBtnContrasenaOlvidada.setOnClickListener(this);
         mBtnCerrar.setOnClickListener(this);
         mBtnRegistrarse.setOnClickListener(this);
         mBtnMostrarContra.setOnClickListener(this);
 
         //Para inicializar la clase UsuarioBD_Validaciones
-        mValidar = new UsuarioBD_Validaciones(this.getActivity());
+        mValidar = new UsuarioBD_Validaciones(this.requireActivity());
 
         isActivateRadioButton = mBtnRecordarSesion.isChecked(); //DESACTIVADO
 
@@ -77,44 +77,39 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View view) {
         FragmentoAuxiliar fragmentoAuxiliar = new FragmentoAuxiliar();
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        switch (view.getId()) {
-            case R.id.radioBtn_recordar_inicia_sesion_1:
-                //ACTIVADO
-                if (isActivateRadioButton) {
-                    mBtnRecordarSesion.setChecked(false);
-                }
-                isActivateRadioButton = mBtnRecordarSesion.isChecked();
-                break;
-            case R.id.button_inicia_inicia_sesion_1:
-                Preferences.savePreferenceBoolean(this.getActivity(),mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
-
-                if (validarAllInputs()) {
-                    //QUITAR DESPUES DE HACER PRUEBAS//
-                    verificarCorreoContraseña();
-                }
-                break;
-            case R.id.button_registrarse_inicia_sesion_1:
-                FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
-                fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
-                fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario1).commit();
-                break;
-            case R.id.button_contraseña_olvidada_inicia_sesion_1:
-                FragmentoRestablecerContrasena1 fragmentoRestablecerContrasena1 = new FragmentoRestablecerContrasena1();
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);
-                fragmentTransaction.replace(R.id.fragment_pagina_principal,fragmentoRestablecerContrasena1).commit();
-                fragmentTransaction.addToBackStack(null);
-                break;
-            case R.id.button_cerrar_inicia_sesion_1:
-                fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
-                fragmentTransaction.replace(R.id.fragment_pagina_principal,fragmentoAuxiliar).commit();
-                fragmentTransaction.remove(fragmentoAuxiliar);
-                break;
-
-            case R.id.button_mostrarContra_contraseña_inicia_sesion_1:
-                Utilidades.mostrarContraseña(mEditTxtContraseña, mBtnMostrarContra, this.getActivity());
-                break;
+        FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        if (view.getId() == R.id.radioBtn_recordar_inicia_sesion_1){
+            if (isActivateRadioButton) {
+                mBtnRecordarSesion.setChecked(false);
+            }
+            isActivateRadioButton = mBtnRecordarSesion.isChecked();
         }
+        else if (view.getId() == R.id.button_inicia_inicia_sesion_1){
+            Preferences.savePreferenceBoolean(this.requireActivity(),mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
+
+            if (validarAllInputs()) {
+                //QUITAR DESPUES DE HACER PRUEBAS//
+                verificarCorreoContrasena();
+            }
+        }
+        else if (view.getId() == R.id.button_registrarse_inicia_sesion_1){
+            FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
+            fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
+            fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario1).commit();
+        }
+        else if (view.getId() == R.id.button_contraseña_olvidada_inicia_sesion_1){
+            FragmentoRestablecerContrasena1 fragmentoRestablecerContrasena1 = new FragmentoRestablecerContrasena1();
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);
+            fragmentTransaction.replace(R.id.fragment_pagina_principal,fragmentoRestablecerContrasena1).commit();
+            fragmentTransaction.addToBackStack(null);
+        }
+        else if (view.getId() == R.id.button_cerrar_inicia_sesion_1){
+            fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
+            fragmentTransaction.replace(R.id.fragment_pagina_principal,fragmentoAuxiliar).commit();
+            fragmentTransaction.remove(fragmentoAuxiliar);
+        }
+        else if (view.getId() == R.id.button_inicia_inicia_sesion_1)
+            Utilidades.mostrarContraseña(mEditTxtContrasena, mBtnMostrarContra, this.requireActivity());
     }
 
 
@@ -123,40 +118,37 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
     private boolean validarAllInputs(){
         UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
         boolean esInputValido = true;
-        if (!usuarioInputValidaciones.validarStringVacia(this.getActivity(),mEditTxtCorreo))
+        if (usuarioInputValidaciones.validarStringVacia(this.requireActivity(), mEditTxtCorreo))
             esInputValido = false;
-        if ( !usuarioInputValidaciones.validarStringVacia(this.getActivity(),mEditTxtContraseña))
+        if (usuarioInputValidaciones.validarStringVacia(this.requireActivity(), mEditTxtContrasena))
             esInputValido = false;
 
         return esInputValido;
     }
 
     private void verificarCorreoVerificado(){
-        UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(getActivity());
-        usuarioFirebaseVerificaciones.validarCorreoVerificado(new UsuarioFirebaseVerificaciones.OnCorreoVerificado() {
-            @Override
-            public void isCorreoVerificado(boolean isCorreoVerificado) {
-                if (isCorreoVerificado)
-                    startActivity(new Intent(getActivity(), ActivityMap.class));
-            }
-        }, mEditTxtCorreo.getText().toString(), mEditTxtContraseña.getText().toString());
+        UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(requireActivity());
+        usuarioFirebaseVerificaciones.validarCorreoVerificado(isCorreoVerificado -> {
+            if (isCorreoVerificado)
+                startActivity(new Intent(requireActivity(), ActivityMap.class));
+        }, mEditTxtCorreo.getText().toString(), mEditTxtContrasena.getText().toString());
     }
 
 
-    private void verificarCorreoContraseña() {
-        if(mValidar.validarAdmin(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContraseña(mEditTxtContraseña.getText().toString())))
-            Preferences.savePreferenceBoolean(this.getActivity(), true, PREFERENCE_ES_ADMIN);
+    private void verificarCorreoContrasena() {
+        if(mValidar.validarAdmin(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContrasena(mEditTxtContrasena.getText().toString())))
+            Preferences.savePreferenceBoolean(this.requireActivity(), true, PREFERENCE_ES_ADMIN);
 
-        else if(mValidar.verificarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContraseña(mEditTxtContraseña.getText().toString()), "El correo electronico o la contraseña son incorrectos")) {
+        else if(mValidar.verificarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContrasena(mEditTxtContrasena.getText().toString()), "El correo electronico o la contraseña son incorrectos")) {
             //REPONER//
             //para verificar que el usuario haya validado su cuenta de correo
             //verificarCorreoVerificado();
-            startActivity(new Intent(getActivity(), ActivityMap.class));
+            startActivity(new Intent(requireActivity(), ActivityMap.class));
         }
     }
 
     // Recibe la contraseña en texto plano y la regresa encriptada
-    private static String encriptarContraseña(String textoPlano) {
-        return Encriptar.Encriptar(textoPlano);
+    private static String encriptarContrasena(String textoPlano) {
+        return Encriptar.EncriptarContrasena(textoPlano);
     }
 }
