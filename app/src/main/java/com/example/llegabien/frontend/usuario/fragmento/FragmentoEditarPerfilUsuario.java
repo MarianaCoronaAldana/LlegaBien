@@ -74,16 +74,8 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
         mBtnEliminarCuenta.setOnClickListener(this);
         mBtnRegresar.setOnClickListener(this);
 
-        ajustesAdministrador();
         setDatosUsuario();
         return root;
-    }
-
-    private void ajustesAdministrador() {
-        if(Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_EDITANDO_USUARIO_CON_ADMIN)) {
-            mBtnCambiarContra.setEnabled(false);
-            mBtnCambiarContra.setVisibility(View.INVISIBLE);
-        }
     }
 
     //FUNCIONES LISTENERS//
@@ -195,7 +187,6 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
         UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
         if (usuarioDAO.updateUser(Usuario)) {
             Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
-
             mBtnAceptar.setEnabled(false);
 
             configuracionesFinalesPreferences();

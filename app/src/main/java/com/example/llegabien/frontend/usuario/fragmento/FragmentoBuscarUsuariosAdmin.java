@@ -84,11 +84,10 @@ public class FragmentoBuscarUsuariosAdmin extends Fragment implements View.OnCli
         if (view.getId() == R.id.button_regresar_listaUsuarios_admin)
             requireActivity().getSupportFragmentManager().popBackStack();
         else
-            editarUsuario();
+            editarUsuario(view);
     }
 
-    private void editarUsuario() {
-        Log.v("QUICKSTART", "Estoy en LEER usuarios, ID: " + view.getContentDescription());
+    private void editarUsuario(View view) {
         UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
 
         Preferences.savePreferenceBoolean(this.requireActivity(), true, PREFERENCE_EDITANDO_USUARIO_CON_ADMIN);
