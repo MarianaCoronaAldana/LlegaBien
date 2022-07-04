@@ -18,8 +18,10 @@ public class Preferences extends AppCompatActivity {
     public static final String PREFERENCE_MENSAJE_PORBATERIA_ENVIADO = "mensaje.por.bateria.enviado";
     public static final String PREFERENCE_ES_ADMIN = "usuario.admin";
     public static final String PREFERENCE_USUARIO = "usuario";
+    public static final String PREFERENCE_ADMIN = "administrador";
     public static final String PREFERENCE_UBICACION = "ubicacion";
     public static final String PREFERENCE_FAVORITO = "favorito";
+    public static final String PREFERENCE_EDITANDO_USUARIO_CON_ADMIN = "editando.usuario.admin";
 
     // Guardar preferencia sobre un tipo boolean
     public static void savePreferenceBoolean(Context c, boolean b, String key){

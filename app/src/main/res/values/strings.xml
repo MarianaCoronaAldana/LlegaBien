@@ -37,6 +37,10 @@
     <string name="titulo_listaReportes">Reportes generados</string>
     <string name="descripcion_listaReportes">Aquí puedes ver los reportes que has generado.</string>
 
+    <!-- Lista de usuarios desde admin. -->
+    <string name="titulo_listaUsuarios_admin">Usuarios registrados</string>
+    <string name="descripcion_listaUsuarios_admin">Aquí puedes ver los usuarios de la aplicación.</string>
+
     <!-- Registro -->
     <string name="titulo_registro">Registro</string>
     <string name="instrucciones_registro">Ingresa tus datos personales</string>

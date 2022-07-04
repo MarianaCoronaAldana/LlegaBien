@@ -136,8 +136,10 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
 
 
     private void verificarCorreoContrasena() {
-        if(mValidar.validarAdmin(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContrasena(mEditTxtContrasena.getText().toString())))
+        if(mValidar.validarAdmin(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContrasena(mEditTxtContrasena.getText().toString()))) {
             Preferences.savePreferenceBoolean(this.requireActivity(), true, PREFERENCE_ES_ADMIN);
+            startActivity(new Intent(requireActivity(), ActivityMap.class));
+        }
 
         else if(mValidar.verificarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContrasena(mEditTxtContrasena.getText().toString()), "El correo electronico o la contraseña son incorrectos")) {
             //REPONER//
