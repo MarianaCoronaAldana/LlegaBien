@@ -9,12 +9,14 @@ import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.util.Log;
 import android.widget.Toast;
+import android.app.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.frontend.notificacion.dialog.DialogNotificacionBateria;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,12 +34,20 @@ public class Notificacion extends AppCompatActivity {
     private final ArrayList<String> mContactos = new ArrayList<>();
     private final OkHttpClient mClient = new OkHttpClient();
     private String mNombre;
-    private final Context mContext;
+    private Context mContext = null;
     private usuario Usuario;
     private final float mBateria;
+    private Activity mActivity;
 
-    public Notificacion(Context context){
+    public Notificacion(float Bateria, Context c){
+        mBateria = Bateria;
+        mContext = c;
+        EmpezarProtocolo();
+    }
+
+    public Notificacion(Context context, Activity activity){
         mContext = context;
+        mActivity = activity;
 
         // Se verifica el nivel de bateria del celular, si es menor a 21%, se hace un protocolo
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
@@ -49,13 +59,15 @@ public class Notificacion extends AppCompatActivity {
 
         if(mBateria<21){
             if(!Preferences.getSavedBooleanFromPreference(mContext,PREFERENCE_MENSAJE_PORBATERIA_ENVIADO)) {
-                EmpezarProtocolo();
+                DialogNotificacionBateria dialogNotificacionBateria = new DialogNotificacionBateria(mActivity, mBateria);
+                dialogNotificacionBateria.show();
+                //EmpezarProtocolo();
             }
         }
         else
             Preferences.savePreferenceBoolean(mContext,false, PREFERENCE_MENSAJE_PORBATERIA_ENVIADO);
-
     }
+
 
     public void EmpezarProtocolo(){
         InicializarDatos();

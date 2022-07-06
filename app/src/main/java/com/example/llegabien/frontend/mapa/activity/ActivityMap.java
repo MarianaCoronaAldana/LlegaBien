@@ -64,7 +64,6 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         } else
             abrirFragmentoBuscarLugar();
 
-
         //wiring up
         com.example.llegabien.databinding.ActivityMapsBinding binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -84,14 +83,13 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         //Para pedir permiso de ubicicación
         mPermisos = new Permisos();
         mPermisos.getPermisoUbicacion(this, true);
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
         //Se verifica el nivel de bateria del telefono celular
-        Notificacion bateria = new Notificacion(this);
+        Notificacion bateria = new Notificacion(getApplicationContext(), this);
 
         if (mGoogleMap != null) {
             //Para activar My Location layer
@@ -120,7 +118,6 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         else
             //Para obtener la ubicación actual del dispositivo y ubicacion buscada (si existe)
             mostrarUbicacionDispositivo();
-
 
     }
 
