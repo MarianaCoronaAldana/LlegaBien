@@ -1,7 +1,6 @@
 package com.example.llegabien.frontend.rutas.directionhelpers;
 
-import android.util.Log;
-
+import com.example.llegabien.backend.ruta.directions.rutaDirections;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -12,17 +11,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by Vishal on 10/20/2018.
- */
-
 public class DataParser {
-    public List<List<HashMap<String, String>>> parse(JSONObject jObject) {
-
+    public rutaDirections parser(JSONObject jObject) {
         List<List<HashMap<String, String>>> routes = new ArrayList<>();
         JSONArray jRoutes;
         JSONArray jLegs;
         JSONArray jSteps;
+        rutaDirections directions = new rutaDirections();
+        List <String> distancias = new ArrayList(), duraciones = new ArrayList();
+
         try {
             jRoutes = jObject.getJSONArray("routes");
             /** Traversing all routes */
@@ -32,15 +29,8 @@ public class DataParser {
                 /** Traversing all legs */
                 for (int j = 0; j < jLegs.length(); j++) {
 
-                    String distancia = "", duracion = "";
-
-                    distancia = (String) ((JSONObject) ((JSONObject) jLegs.get(j)).get("distance")).get("text");
-                    duracion = (String) ((JSONObject) ((JSONObject) jLegs.get(j)).get("duration")).get("text");
-
-
-                    /*distancia = ((String) jLegs.get(j)).get("distance").get("text");
-                    duracion = ((String) jLegs.get(j)).get("duration").get("text");*/
-                    Log.v("QUICKSTART", "DISTANCIA, TIEMPO: " + distancia + " , " + duracion);
+                    distancias.add ((String) ((JSONObject) ((JSONObject) jLegs.get(j)).get("distance")).get("text"));
+                    duraciones.add ((String) ((JSONObject) ((JSONObject) jLegs.get(j)).get("duration")).get("text"));
 
                     jSteps = ((JSONObject) jLegs.get(j)).getJSONArray("steps");
                     /** Traversing all steps */
@@ -66,16 +56,14 @@ public class DataParser {
             e.printStackTrace();
         } catch (Exception e) {
         }
-        return routes;
+
+        directions.setDistancia(distancias);
+        directions.setDuracion(duraciones);
+        directions.setRutasDirectionsJSON(routes);
+        return directions;
     }
 
-
-    /**
-     * Method to decode polyline points
-     * Courtesy : https://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java
-     */
     private List<LatLng> decodePoly(String encoded) {
-
         List<LatLng> poly = new ArrayList<>();
         int index = 0, len = encoded.length();
         int lat = 0, lng = 0;

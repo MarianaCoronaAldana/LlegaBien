@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.llegabien.backend.ruta.directions.rutaDirections;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -17,9 +18,10 @@ import java.util.List;
  * Created by Vishal on 10/20/2018.
  */
 
-public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
+public class PointsParser extends AsyncTask<String, Integer, rutaDirections> {
     TaskLoadedCallback taskCallback;
     String directionMode = "driving";
+    rutaDirections rutas = new rutaDirections();
 
     public PointsParser(TaskLoadedCallback mContext, String directionMode) {
         this.taskCallback =  mContext;
@@ -28,8 +30,7 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
 
     // Parsing the data in non-ui thread
     @Override
-    protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
-
+    protected rutaDirections doInBackground(String... jsonData) {
         JSONObject jObject;
         List<List<HashMap<String, String>>> routes = null;
 
@@ -40,7 +41,8 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
             Log.d("mylog", parser.toString());
 
             // Starts parsing data
-            routes = parser.parse(jObject);
+            rutas = parser.parser(jObject);
+            routes = rutas.getRutasDirectionsJSON();
             Log.d("mylog", "Executing routes");
             Log.d("mylog", routes.toString());
 
@@ -48,15 +50,18 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
             Log.d("mylog", e.toString());
             e.printStackTrace();
         }
-        return routes;
+
+        rutas.setRutasDirectionsJSON(routes);
+        return rutas;
     }
 
     // Executes in UI thread, after the parsing process
     @Override
-    protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+    protected void onPostExecute(rutaDirections directionsResult) {
         ArrayList<LatLng> points;
         List<PolylineOptions> routes = new ArrayList<PolylineOptions>();
         PolylineOptions lineOptions = null;
+        List<List<HashMap<String, String>>> result = directionsResult.getRutasDirectionsJSON();
 
         // Traversing through all the routes
         for (int i = 0; i < result.size(); i++) {
@@ -89,8 +94,8 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
         // Drawing polyline in the Google Map for the i-th route
         if (routes != null) {
             //mMap.addPolyline(lineOptions);
-            taskCallback.onTaskDone(routes);
-
+            rutas.setRutasDirectionsPolylineOptions(routes);
+            taskCallback.onTaskDone(rutas);
         } else {
             Log.d("mylog", "without Polylines drawn");
         }

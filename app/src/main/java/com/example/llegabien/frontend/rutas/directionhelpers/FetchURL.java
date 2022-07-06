@@ -38,6 +38,7 @@ public class FetchURL extends AsyncTask<String, Void, String> {
     }
 
     @Override
+//    protected void onPostExecute(String s) {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         PointsParser parserTask = new PointsParser(mContext, directionMode);

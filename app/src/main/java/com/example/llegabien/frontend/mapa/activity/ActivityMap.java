@@ -17,6 +17,7 @@ import com.example.llegabien.backend.app.Permisos;
 import com.example.llegabien.backend.mapa.poligonos.Poligono;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.notificacion.Notificacion;
+import com.example.llegabien.backend.ruta.directions.rutaDirections;
 import com.example.llegabien.databinding.ActivityMapsBinding;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoBuscarLugar;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoLugarSeleccionado;
@@ -177,7 +178,6 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         }
     }
 
-
     //OTRAS FUNCIONES//
 
     private void actualizarUbicacionUI() {
@@ -336,12 +336,9 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onTaskDone(Object... values) {
-/*
-        PolylineOptions a = (PolylineOptions) values[0];
-        Log.v("QUICKSTART", "PRIMER PUNTO DEL POLILINE: "+ a.getPoints().get(0).toString());
-*/
-        List<PolylineOptions> rutasObtenidas = (List<PolylineOptions>) values[0];
+        rutaDirections directionsObtenidas =  (rutaDirections) values[0];
 
+        List<PolylineOptions> rutasObtenidas = directionsObtenidas.getRutasDirectionsPolylineOptions();
         List<PolylineOptions> ruta = new ArrayList<>();
         List<List<PolylineOptions>> rutas = new ArrayList<>();
 
@@ -354,8 +351,10 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         colores.add(Color.GREEN);
         int color=0;
 
+        // Recorre rutas
         for (int i=0; i<rutasObtenidas.size(); i++){
             List<LatLng> points = rutasObtenidas.get(i).getPoints();
+            // Recorre los puntos de una ruta
             for (int o=0; o<points.size(); o++) {
                 if(color>2)
                     color=0;
@@ -370,6 +369,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
                 color++;
             }
             rutas.add(ruta);
+            Log.v("QUICKSTART", "DISTANCIA, TIEMPO: " + directionsObtenidas.getDistancia().get(i) + " , " + directionsObtenidas.getDuracion().get(i));
             //mGoogleMap.addPolyline(routes.get(i)).setColor(Color.BLUE);
         }
     }
