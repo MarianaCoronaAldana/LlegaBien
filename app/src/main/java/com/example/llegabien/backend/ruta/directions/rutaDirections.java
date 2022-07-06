@@ -15,6 +15,7 @@ public class rutaDirections  {
     private List <String> distancia;
     private List<List<HashMap<String, String>>> rutasDirectionsJSON;
     private List<PolylineOptions> rutasDirectionsPolylineOptions;
+    private List<List<PolylineOptions>> rutas;
 
     public rutaDirections() {
         duracion = new ArrayList();
@@ -59,5 +60,13 @@ public class rutaDirections  {
 
     public void setRutasDirectionsPolylineOptions(List<PolylineOptions> rutasDirectionsPolylineOptions) {
         this.rutasDirectionsPolylineOptions = rutasDirectionsPolylineOptions;
+    }
+
+    public List<List<PolylineOptions>> getRutas() {
+        return rutas;
+    }
+
+    public void setRutas(List<List<PolylineOptions>> rutas) {
+        this.rutas = rutas;
     }
 }

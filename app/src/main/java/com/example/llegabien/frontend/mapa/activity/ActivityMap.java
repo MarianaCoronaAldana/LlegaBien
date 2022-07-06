@@ -131,12 +131,16 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
             //Para obtener la ubicación actual del dispositivo y ubicacion buscada (si existe)
             mostrarUbicacionDispositivo();
 
+
+        // TODO: UTILIZACION DE API DIRECTIONS
+// ->
         place1 = new MarkerOptions().position(new LatLng(20.6674235372583, -103.31179439549422)).title("Location 1");
         place2 = new MarkerOptions().position(new LatLng(20.67097726320246, -103.31441214692855)).title("Location 2");
         mGoogleMap.addMarker(place1);
         mGoogleMap.addMarker(place2);
 
         PRUEBA();
+// ->
     }
 
     @Override
@@ -304,6 +308,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     }
 
 
+    //TODO: MOVER FUNCIONES DE AQUI
     private void PRUEBA(){
         //27.658143,85.3199503
         //20.6674235372583, -103.31179439549422
@@ -372,5 +377,8 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
             Log.v("QUICKSTART", "DISTANCIA, TIEMPO: " + directionsObtenidas.getDistancia().get(i) + " , " + directionsObtenidas.getDuracion().get(i));
             //mGoogleMap.addPolyline(routes.get(i)).setColor(Color.BLUE);
         }
+        directionsObtenidas.setRutas(rutas);
     }
+
+    //TODO: HASTA AQUI
 }
