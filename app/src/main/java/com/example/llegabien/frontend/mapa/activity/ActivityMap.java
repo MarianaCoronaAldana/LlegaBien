@@ -1,6 +1,7 @@
 package com.example.llegabien.frontend.mapa.activity;
 
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import com.example.llegabien.backend.notificacion.Notificacion;
 import com.example.llegabien.databinding.ActivityMapsBinding;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoBuscarLugar;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoLugarSeleccionado;
+import com.example.llegabien.frontend.rutas.directionhelpers.FetchURL;
+import com.example.llegabien.frontend.rutas.directionhelpers.TaskLoadedCallback;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,10 +32,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.Places;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class ActivityMap extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnPolygonClickListener {
+
+public class ActivityMap extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnPolygonClickListener, TaskLoadedCallback {
 
     private static final int DEFAULT_ZOOM = 18;
     private GoogleMap mGoogleMap = null;
@@ -43,6 +51,9 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     private Marker mMarkerAnterior;
     private LatLng mLatLngMarkerFavorito = null;
     private int mColorAnterior;
+    private Polyline currentPolyline;
+
+    private MarkerOptions place1, place2;
 
     public void setLatLngMarkerFavorito(LatLng latLngMarkerFavorito) {
         mLatLngMarkerFavorito = latLngMarkerFavorito;
@@ -119,6 +130,12 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
             //Para obtener la ubicación actual del dispositivo y ubicacion buscada (si existe)
             mostrarUbicacionDispositivo();
 
+        place1 = new MarkerOptions().position(new LatLng(20.6674235372583, -103.31179439549422)).title("Location 1");
+        place2 = new MarkerOptions().position(new LatLng(20.67097726320246, -103.31441214692855)).title("Location 2");
+        mGoogleMap.addMarker(place1);
+        mGoogleMap.addMarker(place2);
+
+        PRUEBA();
     }
 
     @Override
@@ -284,5 +301,76 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     public void removerMarkerAnterior() {
         if (mMarkerAnterior != null)
             mMarkerAnterior.remove();
+    }
+
+
+    private void PRUEBA(){
+        //27.658143,85.3199503
+        //20.6674235372583, -103.31179439549422
+
+        //27.667491,85.3208583
+        //20.67097726320246, -103.31441214692855
+
+        new FetchURL(ActivityMap.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "walking"), "walking");
+    }
+
+    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        // Mode
+        String mode = "mode=" + directionMode;
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
+        // Output format
+        String output = "json";
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters +"&alternatives=true" +"&key=" + "AIzaSyA_1vA9ikwZ0Ju7s5s2-C1QLQ51BQmwSlM";
+        Log.v("QUICKSTART", "url: ");
+        Log.v("QUICKSTART", url);
+        //getString(R.string.api_key)
+        return url;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void onTaskDone(Object... values) {
+/*
+        PolylineOptions a = (PolylineOptions) values[0];
+        Log.v("QUICKSTART", "PRIMER PUNTO DEL POLILINE: "+ a.getPoints().get(0).toString());
+*/
+        List<PolylineOptions> rutasObtenidas = (List<PolylineOptions>) values[0];
+
+        List<PolylineOptions> ruta = new ArrayList<>();
+        List<List<PolylineOptions>> rutas = new ArrayList<>();
+
+        if (currentPolyline != null)
+            currentPolyline.remove();
+
+        List<Integer> colores = new ArrayList<>();
+        colores.add(Color.BLUE);
+        colores.add(Color.WHITE);
+        colores.add(Color.GREEN);
+        int color=0;
+
+        for (int i=0; i<rutasObtenidas.size(); i++){
+            List<LatLng> points = rutasObtenidas.get(i).getPoints();
+            for (int o=0; o<points.size(); o++) {
+                if(color>2)
+                    color=0;
+
+                PolylineOptions lineOptions = new PolylineOptions();
+                lineOptions.add(points.get(o));
+                if(o+1<points.size())
+                    lineOptions.add(points.get(o+1));
+                mGoogleMap.addPolyline(lineOptions).setColor(colores.get(color));
+
+                ruta.add(lineOptions);
+                color++;
+            }
+            rutas.add(ruta);
+            //mGoogleMap.addPolyline(routes.get(i)).setColor(Color.BLUE);
+        }
     }
 }

@@ -55,7 +55,9 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
     @Override
     protected void onPostExecute(List<List<HashMap<String, String>>> result) {
         ArrayList<LatLng> points;
+        List<PolylineOptions> routes = new ArrayList<PolylineOptions>();
         PolylineOptions lineOptions = null;
+
         // Traversing through all the routes
         for (int i = 0; i < result.size(); i++) {
             points = new ArrayList<>();
@@ -80,12 +82,14 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
                 lineOptions.color(Color.BLUE);
             }
             Log.d("mylog", "onPostExecute lineoptions decoded");
+
+            routes.add(lineOptions);
         }
 
         // Drawing polyline in the Google Map for the i-th route
-        if (lineOptions != null) {
+        if (routes != null) {
             //mMap.addPolyline(lineOptions);
-            taskCallback.onTaskDone(lineOptions);
+            taskCallback.onTaskDone(routes);
 
         } else {
             Log.d("mylog", "without Polylines drawn");

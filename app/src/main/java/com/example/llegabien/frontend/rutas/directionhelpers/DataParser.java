@@ -1,5 +1,7 @@
 package com.example.llegabien.frontend.rutas.directionhelpers;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -29,11 +31,22 @@ public class DataParser {
                 List path = new ArrayList<>();
                 /** Traversing all legs */
                 for (int j = 0; j < jLegs.length(); j++) {
-                    jSteps = ((JSONObject) jLegs.get(j)).getJSONArray("steps");
 
+                    String distancia = "", duracion = "";
+
+                    distancia = (String) ((JSONObject) ((JSONObject) jLegs.get(j)).get("distance")).get("text");
+                    duracion = (String) ((JSONObject) ((JSONObject) jLegs.get(j)).get("duration")).get("text");
+
+
+                    /*distancia = ((String) jLegs.get(j)).get("distance").get("text");
+                    duracion = ((String) jLegs.get(j)).get("duration").get("text");*/
+                    Log.v("QUICKSTART", "DISTANCIA, TIEMPO: " + distancia + " , " + duracion);
+
+                    jSteps = ((JSONObject) jLegs.get(j)).getJSONArray("steps");
                     /** Traversing all steps */
                     for (int k = 0; k < jSteps.length(); k++) {
                         String polyline = "";
+
                         polyline = (String) ((JSONObject) ((JSONObject) jSteps.get(k)).get("polyline")).get("points");
                         List<LatLng> list = decodePoly(polyline);
 
