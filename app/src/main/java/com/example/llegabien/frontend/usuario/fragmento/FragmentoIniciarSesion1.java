@@ -5,6 +5,7 @@ import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ES_ADMIN;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +20,18 @@ import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Encriptar;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
+import com.example.llegabien.backend.usuario.UsuarioDAO;
 import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
+import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.app.fragmento.FragmentoAuxiliar;
 import com.example.llegabien.frontend.app.Utilidades;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.backend.usuario.UsuarioBD_Validaciones;
 
 import java.util.Locale;
+
+import io.realm.RealmResults;
 
 public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickListener{
     private RadioButton mBtnRecordarSesion;
@@ -108,7 +113,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
             fragmentTransaction.replace(R.id.fragment_pagina_principal,fragmentoAuxiliar).commit();
             fragmentTransaction.remove(fragmentoAuxiliar);
         }
-        else if (view.getId() == R.id.button_inicia_inicia_sesion_1)
+        else if (view.getId() == R.id.button_mostrarContra_contraseña_inicia_sesion_1)
             Utilidades.mostrarContraseña(mEditTxtContrasena, mBtnMostrarContra, this.requireActivity());
     }
 

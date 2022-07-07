@@ -368,6 +368,9 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
                 lineOptions.add(points.get(o));
                 if(o+1<points.size())
                     lineOptions.add(points.get(o+1));
+
+                //AQUI SE DEBEN DE TOMAR LOS PUNTOS Y SABER SU SEGURIDAD, EN BASE A ESO PONERLE EL COLOR A LA POLYLINE
+
                 mGoogleMap.addPolyline(lineOptions).setColor(colores.get(color));
 
                 ruta.add(lineOptions);

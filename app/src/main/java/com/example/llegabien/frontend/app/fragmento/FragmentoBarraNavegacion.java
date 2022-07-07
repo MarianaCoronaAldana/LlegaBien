@@ -70,8 +70,7 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
         else if (view.getId() == R.id.button_contactos_barraNavegacion)
             startActivity(new Intent(requireActivity(), ActivityEditarLeerContactos.class));
         else if (view.getId() == R.id.button_favoritos_barraNavegacion){
-            ActivityRutas ruta = new ActivityRutas(this.mBtnContactos.getContext());
-            //startActivity(new Intent(requireActivity(), ActivityFavoritos.class));
+            startActivity(new Intent(requireActivity(), ActivityFavoritos.class));
         }
     }
 
