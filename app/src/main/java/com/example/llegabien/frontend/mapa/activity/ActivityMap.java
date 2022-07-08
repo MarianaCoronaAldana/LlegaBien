@@ -1,5 +1,7 @@
 package com.example.llegabien.frontend.mapa.activity;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
+
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -14,10 +16,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Permisos;
+import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.poligonos.Poligono;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
 import com.example.llegabien.backend.notificacion.Notificacion;
 import com.example.llegabien.backend.ruta.directions.rutaDirections;
+import com.example.llegabien.backend.usuario.UsuarioDAO;
+import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.databinding.ActivityMapsBinding;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoBuscarLugar;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoLugarSeleccionado;
@@ -30,6 +36,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
@@ -95,6 +102,9 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         //Para pedir permiso de ubicicación
         mPermisos = new Permisos();
         mPermisos.getPermisoUbicacion(this, true);
+
+        //Para actualizar los datos de usuario cuando se llegue a ésta actividad
+        actualizarPreferencesUsuario();
     }
 
     @Override
@@ -107,6 +117,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
             //Para activar My Location layer
             actualizarUbicacionUI();
         }
+        actualizarPreferencesUsuario();
 
     }
 
@@ -307,15 +318,17 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
             mMarkerAnterior.remove();
     }
 
+    // Para actualizar los datos de usuario cuando se llegue a ésta actividad
+    private void actualizarPreferencesUsuario() {
+        UsuarioDAO usuarioDAO = new UsuarioDAO(getApplicationContext());
+        usuario Usuario = Preferences.getSavedObjectFromPreference(getApplicationContext(), PREFERENCE_USUARIO, usuario.class);
+        Usuario = usuarioDAO.readUsuarioPorCorreo(Usuario.getCorreoElectronico());
+        Preferences.savePreferenceObjectRealm(getApplicationContext(), PREFERENCE_USUARIO, Usuario);
+    }
 
     //TODO: MOVER FUNCIONES DE AQUI
     private void PRUEBA(){
-        //27.658143,85.3199503
-        //20.6674235372583, -103.31179439549422
-
-        //27.667491,85.3208583
-        //20.67097726320246, -103.31441214692855
-
+        // AQUI SE DEBEN DE PONER LOS LatLng de punto d epartida y de destino, así como la menra en que se prefiere vijar (a pie o bici)
         new FetchURL(ActivityMap.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "walking"), "walking");
     }
 
@@ -331,21 +344,28 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         // Output format
         String output = "json";
         // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters +"&alternatives=true" +"&key=" + "AIzaSyA_1vA9ikwZ0Ju7s5s2-C1QLQ51BQmwSlM";
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters +"&alternatives=true" +"&key=" + getString(R.string.api_key);
         Log.v("QUICKSTART", "url: ");
         Log.v("QUICKSTART", url);
-        //getString(R.string.api_key)
         return url;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onTaskDone(Object... values) {
+        UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
+
         rutaDirections directionsObtenidas =  (rutaDirections) values[0];
 
         List<PolylineOptions> rutasObtenidas = directionsObtenidas.getRutasDirectionsPolylineOptions();
         List<PolylineOptions> ruta = new ArrayList<>();
         List<List<PolylineOptions>> rutas = new ArrayList<>();
+
+        // Para los puntos medios
+        List<LatLng> rutaPuntosMedios = new ArrayList<>();
+        List<List<LatLng>> rutasPorPuntosMedios = new ArrayList<>();
+        List<String> rutaPuntosMediosNombres = new ArrayList();
+        List<List<String>> rutasPorPuntosMediosNombres = new ArrayList();
 
         if (currentPolyline != null)
             currentPolyline.remove();
@@ -363,13 +383,20 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
             for (int o=0; o<points.size(); o++) {
                 if(color>2)
                     color=0;
-
+                rutaPuntosMediosNombres = new ArrayList();
                 PolylineOptions lineOptions = new PolylineOptions();
                 lineOptions.add(points.get(o));
-                if(o+1<points.size())
-                    lineOptions.add(points.get(o+1));
 
-                //AQUI SE DEBEN DE TOMAR LOS PUNTOS Y SABER SU SEGURIDAD, EN BASE A ESO PONERLE EL COLOR A LA POLYLINE
+                if(o+1<points.size()) {
+                    lineOptions.add(points.get(o + 1));
+
+                    //AQUI SE DEBEN DE TOMAR LOS PUNTOS Y SABER SU SEGURIDAD, EN BASE A ESO PONERLE EL COLOR A LA POLYLINE
+                    MarkerOptions center = new MarkerOptions().position(LatLngBounds.builder().include(points.get(o)).include(points.get(o+1)).build().getCenter()).title("Location center " + i+","+o);
+                    mGoogleMap.addMarker(center);
+                    rutaPuntosMedios.add(center.getPosition());
+                    rutaPuntosMediosNombres.add(ubicacionGeodicacion.degeocodificarUbiciacion(getApplicationContext(), center.getPosition().latitude, center.getPosition().longitude));
+                    Log.v("QUICKSTART", "Nombre calle: " + ubicacionGeodicacion.degeocodificarUbiciacion(getApplicationContext(), center.getPosition().latitude, center.getPosition().longitude));
+                }
 
                 mGoogleMap.addPolyline(lineOptions).setColor(colores.get(color));
 
@@ -377,6 +404,8 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
                 color++;
             }
             rutas.add(ruta);
+            rutasPorPuntosMedios.add(rutaPuntosMedios);
+            rutasPorPuntosMediosNombres.add(rutaPuntosMediosNombres);
             Log.v("QUICKSTART", "DISTANCIA, TIEMPO: " + directionsObtenidas.getDistancia().get(i) + " , " + directionsObtenidas.getDuracion().get(i));
             //mGoogleMap.addPolyline(routes.get(i)).setColor(Color.BLUE);
         }
