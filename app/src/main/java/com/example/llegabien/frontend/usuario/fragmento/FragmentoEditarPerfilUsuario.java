@@ -1,5 +1,7 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ADMIN;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_EDITANDO_USUARIO_CON_ADMIN;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ES_ADMIN;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
@@ -39,7 +41,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnClickListener {
-    private ConstraintLayout mBtnAceptar;
+    private ConstraintLayout mBtnAceptar,  mBtnCambiarContra;
     private EditText mEditTxtNombres, mEditTxtApellidos, mEditTxtFechaNacimiento, mEditTxtNumTelefonico, mEditTxtCorreo, mEditTxtCountryCode;
 
     usuario Usuario;
@@ -56,7 +58,7 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
 
         //wiring up
         mBtnAceptar = root.findViewById(R.id.button2_aceptar_editarPerfil);
-        ConstraintLayout mBtnCambiarContra = root.findViewById(R.id.button1_cambiarContra_editarPerfil);
+        mBtnCambiarContra = root.findViewById(R.id.button1_cambiarContra_editarPerfil);
         Button mBtnEliminarCuenta = root.findViewById(R.id.button_eliminarCuenta_editarPerfil);
         Button mBtnRegresar = root.findViewById(R.id.button_regresar_editarPerfil);
         mEditTxtNombres = root.findViewById(R.id.editText_nombres_editarPerfil);
@@ -94,19 +96,26 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
         }
         else if (view.getId() == R.id.button_eliminarCuenta_editarPerfil) {
             deleteUsuario();
-            Preferences.savePreferenceBoolean(requireActivity(), false, PREFERENCE_ESTADO_BUTTON_SESION);
-            Preferences.savePreferenceBoolean(requireActivity(), false, PREFERENCE_ES_ADMIN);
-
-            startActivity(new Intent(requireActivity(), ActivityPaginaPrincipalUsuario.class));
+            if(!Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_EDITANDO_USUARIO_CON_ADMIN)){
+                Preferences.savePreferenceBoolean(requireActivity(), false, PREFERENCE_ESTADO_BUTTON_SESION);
+                Preferences.savePreferenceBoolean(requireActivity(), false, PREFERENCE_ES_ADMIN);
+                startActivity(new Intent(requireActivity(), ActivityPaginaPrincipalUsuario.class));
+            }
+            else {
+                configuracionesFinalesPreferences();
+                requireActivity().getSupportFragmentManager().popBackStack();
+            }
         }
-        else if (view.getId() == R.id.button_eliminarCuenta_editarPerfil) {
+        else if (view.getId() == R.id.editText_fechaNacimiento_editarPerfil) {
             DialogDatePicker dialogDatePicker = new DialogDatePicker();
             dialogDatePicker.mostrarDatePickerDialog(mEditTxtFechaNacimiento, this);
             mEditTxtFechaNacimiento.setError(null);
         }
-        else if (view.getId() == R.id.editText_fechaNacimiento_editarPerfil)
+        else if (view.getId() == R.id.button_regresar_editarPerfil) {
+            if(Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_EDITANDO_USUARIO_CON_ADMIN))
+                configuracionesFinalesPreferences();
             requireActivity().getSupportFragmentManager().popBackStack();
-
+        }
     }
 
     //OTRAS FUNCIONES//
@@ -178,12 +187,22 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
         UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
         if (usuarioDAO.updateUser(Usuario)) {
             Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
-
             mBtnAceptar.setEnabled(false);
 
-            Usuario = usuarioDAO.readUsuarioPorCorreo(Usuario.getCorreoElectronico());
-            Preferences.savePreferenceObjectRealm(requireActivity(), PREFERENCE_USUARIO, Usuario);
+            configuracionesFinalesPreferences();
         }
+    }
+
+    private void configuracionesFinalesPreferences() {
+        UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
+
+        // En caso de haber modificado como admin, entonces se reestablece en preferences su usuario
+        if(Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_EDITANDO_USUARIO_CON_ADMIN))
+            Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_ADMIN, usuario.class);
+
+        Usuario = usuarioDAO.readUsuarioPorCorreo(Usuario.getCorreoElectronico());
+        Preferences.savePreferenceObjectRealm(requireActivity(), PREFERENCE_USUARIO, Usuario);
+        Preferences.savePreferenceBoolean(this.requireActivity(), false, PREFERENCE_EDITANDO_USUARIO_CON_ADMIN);
     }
 
     // Borrar al usuario en MongoDB

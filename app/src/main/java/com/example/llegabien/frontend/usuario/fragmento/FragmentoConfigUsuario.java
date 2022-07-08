@@ -1,5 +1,6 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_EDITANDO_USUARIO_CON_ADMIN;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ES_ADMIN;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
@@ -64,6 +65,8 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
     public void onClick(View view) {
         FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
         if (view.getId() == R.id.button_editarPerfil_configuracionUsuario){
+            Preferences.savePreferenceBoolean(this.requireActivity(), false, PREFERENCE_EDITANDO_USUARIO_CON_ADMIN);
+
             FragmentoEditarPerfilUsuario fragmentoEditarPerfilUsuario = new FragmentoEditarPerfilUsuario();
             fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
             fragmentTransaction.replace(R.id.fragment_configuracion, fragmentoEditarPerfilUsuario).commit();
@@ -73,21 +76,25 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
             // Se reinician los datos importantes guardados en Preferences
             Preferences.savePreferenceBoolean(this.requireActivity(),false, PREFERENCE_ESTADO_BUTTON_SESION);
             Preferences.savePreferenceBoolean(this.requireActivity(), false, PREFERENCE_ES_ADMIN);
+            Preferences.savePreferenceBoolean(this.requireActivity(), false, PREFERENCE_EDITANDO_USUARIO_CON_ADMIN);
 
             startActivity(new Intent(requireActivity(), ActivityPaginaPrincipalUsuario.class));
         }
 
         else if (view.getId() == R.id.button_historialReportes_configuracionUsuario){
-            FragmentoListaReportes fragmentoListaReportes = new FragmentoListaReportes();
-            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-            fragmentTransaction.replace(R.id.fragment_configuracion, fragmentoListaReportes).commit();
-            fragmentTransaction.addToBackStack(null);
+            if(!Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_ES_ADMIN)) {
+                FragmentoListaReportes fragmentoListaReportes = new FragmentoListaReportes();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+                fragmentTransaction.replace(R.id.fragment_configuracion, fragmentoListaReportes).commit();
+                fragmentTransaction.addToBackStack(null);
+            }
         }
         else if (view.getId() == R.id.button_regresar_configuracionUsuario)
             requireActivity().finish();
 
         else if (view.getId() == R.id.button_contactos_configuracionUsuario)
-            startActivity(new Intent(requireActivity(), ActivityEditarLeerContactos.class));
+            if(!Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_ES_ADMIN))
+                startActivity(new Intent(requireActivity(), ActivityEditarLeerContactos.class));
 
     }
 

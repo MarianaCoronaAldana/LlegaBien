@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.llegabien.R;
-import com.example.llegabien.frontend.botonEmergencia.dialog.DialogConfirmarEmergencia;
+import com.example.llegabien.backend.botonEmergencia.Emergencia;
 
 import java.util.concurrent.TimeUnit;
 
@@ -87,8 +87,11 @@ public class FragmentoBotonEmergencia extends Fragment {
                 if (fragment != null)
                     fragmentTransaction.remove(fragment).commit();
 
+                Emergencia emergencia = new Emergencia(FragmentoBotonEmergencia.this.getActivity());
+                emergencia.EmpezarProtocolo();
+                /*
                 DialogConfirmarEmergencia dialogConfirmarEmergencia = new DialogConfirmarEmergencia(requireActivity());
-                dialogConfirmarEmergencia.show();
+                dialogConfirmarEmergencia.show();*/
             }
         };
         mCountDownTimer.start();
