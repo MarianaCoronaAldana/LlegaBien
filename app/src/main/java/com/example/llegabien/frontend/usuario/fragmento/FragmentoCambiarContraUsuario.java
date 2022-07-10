@@ -1,5 +1,7 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ADMIN;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_EDITANDO_USUARIO_CON_ADMIN;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 import static io.realm.Realm.getApplicationContext;
 
@@ -35,7 +37,6 @@ public class FragmentoCambiarContraUsuario extends Fragment implements View.OnCl
     usuario Usuario;
 
     public FragmentoCambiarContraUsuario() {
-        // Required empty public constructor
     }
 
     @Override
@@ -72,9 +73,11 @@ public class FragmentoCambiarContraUsuario extends Fragment implements View.OnCl
                 actualizarContrasenaUsuario();
                 startActivity(new Intent(requireActivity(), ActivityPaginaPrincipalUsuario.class));
             }
-        } else if (view.getId() == R.id.button_regresar_cambiarContra)
+        } else if (view.getId() == R.id.button_regresar_cambiarContra) {
+            if(Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_EDITANDO_USUARIO_CON_ADMIN))
+                configuracionesFinalesPreferences();
             requireActivity().getSupportFragmentManager().popBackStack();
-
+        }
         else if (view.getId() == R.id.button_mostrarContra_contraActual_cambiarContra)
             Utilidades.mostrarContraseña(mEditTxtActualContrasena, mBtnMostrarContra1, this.getContext());
 
@@ -119,14 +122,25 @@ public class FragmentoCambiarContraUsuario extends Fragment implements View.OnCl
         Usuario.setContrasena(encriptarContrasena(mEditTxtNuevaContrasena.getText().toString()));
 
         UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
-        if (usuarioDAO.updateUser(Usuario)) {
+        if (usuarioDAO.updateUsuario(Usuario)) {
             Toast.makeText(getApplicationContext(), "Contraseña cambiada exitosamente", Toast.LENGTH_SHORT).show();
 
             mBtnAceptar.setEnabled(false);
-
-            Usuario = usuarioDAO.readUsuarioPorCorreo(Usuario.getCorreoElectronico());
-            Preferences.savePreferenceObjectRealm(requireActivity(), PREFERENCE_USUARIO, Usuario);
+            configuracionesFinalesPreferences();
         }
+    }
+
+    // Se encarga de guardar en preferences el usuario
+    private void configuracionesFinalesPreferences() {
+        UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
+
+        // En caso de haber modificado como admin, entonces se reestablece en preferences su usuario
+        if(Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_EDITANDO_USUARIO_CON_ADMIN))
+            Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_ADMIN, usuario.class);
+
+        Usuario = usuarioDAO.readUsuarioPorCorreo(Usuario.getCorreoElectronico());
+        Preferences.savePreferenceObjectRealm(requireActivity(), PREFERENCE_USUARIO, Usuario);
+        Preferences.savePreferenceBoolean(this.requireActivity(), false, PREFERENCE_EDITANDO_USUARIO_CON_ADMIN);
     }
 
     // Recibe la contraseña en texto plano y la regresa encriptada

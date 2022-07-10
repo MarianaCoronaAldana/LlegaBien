@@ -184,7 +184,7 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
             }
 
             String delitosSemana = mTxtDelitosSemana.getText().toString() + " " + ubicacion.getDelitos_semana();
-            String mediaHistorica = mTxtMediaHistorica.getText().toString() + " " + ubicacion.getMedia_historica_double();
+            String mediaHistorica = mTxtMediaHistorica.getText().toString() + " " + ubicacion.getSuma_delitos();
             mTxtDelitosSemana.setText(delitosSemana);
             mTxtMediaHistorica.setText(mediaHistorica);
 

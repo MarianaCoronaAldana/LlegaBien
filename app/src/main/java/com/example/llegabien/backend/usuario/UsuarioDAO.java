@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
+import com.example.llegabien.backend.reporte.reporte;
 
 import org.bson.types.ObjectId;
 
@@ -16,6 +17,7 @@ import java.util.Objects;
 
 import io.realm.ImportFlag;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class UsuarioDAO {
 
@@ -57,9 +59,7 @@ public class UsuarioDAO {
             errorConexion();
     }
 
-
-    public boolean updateUser(usuario Usuario) {
-        //realm = conectarBD.ConectarCorreoMongoDB(Usuario.getCorreoElectronico(), Usuario.getContrasena());
+    public boolean updateUsuario(usuario Usuario) {
         realm = conectarBD.conseguirUsuarioMongoDB();
         Log.v("QUICKSTART", "ESTOY EN UPDATE ");
         if(realm!=null){
@@ -67,7 +67,6 @@ public class UsuarioDAO {
                 transactionRealm.copyToRealmOrUpdate(Usuario, ImportFlag.CHECK_SAME_VALUES_BEFORE_SET);
                 Log.v("QUICKSTART", "SE HIZO UPDATE CON EXITOOOO ");
             });
-
             realm.close();
             return true;
         }
@@ -116,10 +115,20 @@ public class UsuarioDAO {
                 Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_USUARIO, task);
             }
         }
-
         else
             errorConexion();
+    }
 
+    public RealmResults<usuario> obtenerTodosUsuarios() {
+        realm = conectarBD.conseguirUsuarioMongoDB();
+        if(realm!=null){
+            return realm.where(usuario.class).isNull("status")
+            .and()
+            .isNotNull("contrasena").findAll();
+        }
+        else
+            errorConexion();
+        return null;
     }
 
     private void errorConexion(){

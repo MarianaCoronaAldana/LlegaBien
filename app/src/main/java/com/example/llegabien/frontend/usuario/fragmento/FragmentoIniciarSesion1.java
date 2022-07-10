@@ -108,7 +108,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
             fragmentTransaction.replace(R.id.fragment_pagina_principal,fragmentoAuxiliar).commit();
             fragmentTransaction.remove(fragmentoAuxiliar);
         }
-        else if (view.getId() == R.id.button_inicia_inicia_sesion_1)
+        else if (view.getId() == R.id.button_mostrarContra_contraseña_inicia_sesion_1)
             Utilidades.mostrarContraseña(mEditTxtContrasena, mBtnMostrarContra, this.requireActivity());
     }
 
@@ -136,8 +136,10 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
 
 
     private void verificarCorreoContrasena() {
-        if(mValidar.validarAdmin(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContrasena(mEditTxtContrasena.getText().toString())))
+        if(mValidar.validarAdmin(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContrasena(mEditTxtContrasena.getText().toString()))) {
             Preferences.savePreferenceBoolean(this.requireActivity(), true, PREFERENCE_ES_ADMIN);
+            startActivity(new Intent(requireActivity(), ActivityMap.class));
+        }
 
         else if(mValidar.verificarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContrasena(mEditTxtContrasena.getText().toString()), "El correo electronico o la contraseña son incorrectos")) {
             //REPONER//

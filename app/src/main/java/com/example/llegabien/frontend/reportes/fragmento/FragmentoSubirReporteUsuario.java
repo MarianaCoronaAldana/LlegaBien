@@ -185,11 +185,12 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
         Reporte.setComentarios(mEditTxtComentariosDelito.getText().toString());
         Reporte.setUbicacion(mBtnUbicacion.getText().toString());
         Reporte.setTipoDelito(mSpinnerCualDelito.getSelectedItem().toString());
-        Reporte.setFechaReporte(convertToDateViaInstant(LocalDateTime.now()));
+        Reporte.setCantidad(1);
+        Reporte.setFechaReporte(java.util.Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
 
         LocalDate localDate = LocalDate.parse(mEditTxtFechaDelito.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         LocalTime localTime = LocalTime.parse(mEditTxtHoraDelito.getText(), DateTimeFormatter.ofPattern("HH:mm"));
-        Reporte.setFecha(convertToDateViaInstant(localDate.atTime(localTime)));
+        Reporte.setFecha(java.util.Date.from(localDate.atTime(localTime).atZone(ZoneId.systemDefault()).toInstant()));
 
 
         Log.v("QUICKSTART", "Fecha y hora delito: " + Reporte.getFechaReporte());
@@ -205,19 +206,22 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
         int reportesAnteriores = 0;
 
         Duration diff;
-        long diffmINUTTES, diffHoras, diffDias;
+        long diffMinutos, diffHoras, diffDias;
 
         for (int i = 0; i < reportes.size(); i++) {
             if (reportesAnteriores > 9) {
                 Toast.makeText(this.getContext(), "Has subido demasiados reportes esta semana", Toast.LENGTH_LONG).show();
                 return false;
             }
-            diff = Duration.between(convertToLocalDateTimeViaInstant(reportes.get(i).getFechaReporte()), convertToLocalDateTimeViaInstant(Reporte.getFechaReporte()));
+            Date fechaReporte = reportes.get(i).getFechaReporte();
+            Date fechaReporteActual = Reporte.getFechaReporte();
+            diff = Duration.between(fechaReporte.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(),
+                                        fechaReporteActual.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
             diffHoras = diff.toHours();
             diffDias = diff.toDays();
 
-            diffmINUTTES = diff.toMinutes();
-            Log.v("QUICKSTART", "diferencia minutos: " + diffmINUTTES + ", REPORTESanteriores: " + reportesAnteriores);
+            diffMinutos = diff.toMinutes();
+            Log.v("QUICKSTART", "diferencia minutos: " + diffMinutos + ", REPORTESanteriores: " + reportesAnteriores);
 
             if (diffHoras < 2) {
                 Toast.makeText(this.getContext(), "Has subido un reporte muy recientemente", Toast.LENGTH_LONG).show();
@@ -227,20 +231,6 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
                 reportesAnteriores++;
         }
         return true;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    Date convertToDateViaInstant(LocalDateTime dateToConvert) {
-        return java.util.Date
-                .from(dateToConvert.atZone(ZoneId.systemDefault())
-                        .toInstant());
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
-        return dateToConvert.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
     }
 
     private void setSpinner() {

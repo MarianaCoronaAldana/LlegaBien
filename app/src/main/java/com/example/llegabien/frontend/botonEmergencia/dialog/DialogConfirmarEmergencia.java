@@ -2,16 +2,12 @@ package com.example.llegabien.frontend.botonEmergencia.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
-
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
 import com.example.llegabien.R;
-
-import com.example.llegabien.backend.botonEmergencia.Emergencia;
-import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 
 
 public class DialogConfirmarEmergencia extends Dialog implements View.OnClickListener{
@@ -36,8 +32,6 @@ public class DialogConfirmarEmergencia extends Dialog implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        Emergencia emergencia = new Emergencia(mActivity);
-        emergencia.EmpezarProtocolo();
         dismiss();
     }
 

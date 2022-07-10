@@ -81,7 +81,7 @@ public class FragmentoRestablecerContrasena3 extends Fragment implements View.On
         }
 
         UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
-        if (usuarioDAO.updateUser(Usuario)) {
+        if (usuarioDAO.updateUsuario(Usuario)) {
             Toast.makeText(requireContext(), "Contraseña cambiada exitosamente.", Toast.LENGTH_SHORT).show();
 
             mBtnAceptar.setEnabled(false);

@@ -34,7 +34,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
 
     private UsuarioSharedViewModel SharedViewModel;
     usuario Usuario = new usuario();
-    UsuarioBD_Validaciones validar = new UsuarioBD_Validaciones(requireActivity());
+    UsuarioBD_Validaciones validar;
 
     public FragmentoRegistrarUsuario2() {
 
@@ -175,6 +175,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
     }
 
     private boolean validarExistencia() {
+        validar = new UsuarioBD_Validaciones(requireActivity());
         return validar.validarExistenciaCorreoTelefono(mEditTxtCorreo.getText().toString(), mEditTxtNumTelefonico.getText().toString());
     }
 
