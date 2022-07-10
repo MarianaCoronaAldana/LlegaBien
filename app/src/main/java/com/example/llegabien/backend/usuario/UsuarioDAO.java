@@ -59,7 +59,8 @@ public class UsuarioDAO {
             errorConexion();
     }
 
-    public boolean updateUsuario(usuario Usuario) {
+    public boolean updateUser(usuario Usuario) {
+        //realm = conectarBD.ConectarCorreoMongoDB(Usuario.getCorreoElectronico(), Usuario.getContrasena());
         realm = conectarBD.conseguirUsuarioMongoDB();
         Log.v("QUICKSTART", "ESTOY EN UPDATE ");
         if(realm!=null){
@@ -67,6 +68,7 @@ public class UsuarioDAO {
                 transactionRealm.copyToRealmOrUpdate(Usuario, ImportFlag.CHECK_SAME_VALUES_BEFORE_SET);
                 Log.v("QUICKSTART", "SE HIZO UPDATE CON EXITOOOO ");
             });
+
             realm.close();
             return true;
         }

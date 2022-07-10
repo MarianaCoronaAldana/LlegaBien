@@ -2,6 +2,11 @@ package com.example.llegabien.frontend.botonEmergencia.fragmento;
 
 import android.graphics.Color;
 import android.os.Bundle;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +15,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.botonEmergencia.Emergencia;
@@ -88,6 +89,9 @@ public class FragmentoBotonEmergencia extends Fragment {
 
                 Emergencia emergencia = new Emergencia(FragmentoBotonEmergencia.this.getActivity());
                 emergencia.EmpezarProtocolo();
+                /*
+                DialogConfirmarEmergencia dialogConfirmarEmergencia = new DialogConfirmarEmergencia(requireActivity());
+                dialogConfirmarEmergencia.show();*/
             }
         };
         mCountDownTimer.start();

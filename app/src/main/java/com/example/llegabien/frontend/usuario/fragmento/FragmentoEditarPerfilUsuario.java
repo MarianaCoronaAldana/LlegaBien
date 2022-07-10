@@ -41,7 +41,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnClickListener {
-    private ConstraintLayout mBtnAceptar;
+    private ConstraintLayout mBtnAceptar,  mBtnCambiarContra;
     private EditText mEditTxtNombres, mEditTxtApellidos, mEditTxtFechaNacimiento, mEditTxtNumTelefonico, mEditTxtCorreo, mEditTxtCountryCode;
 
     private usuario Usuario;
@@ -58,7 +58,7 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
 
         //wiring up
         mBtnAceptar = root.findViewById(R.id.button2_aceptar_editarPerfil);
-        ConstraintLayout mBtnCambiarContra = root.findViewById(R.id.button1_cambiarContra_editarPerfil);
+        mBtnCambiarContra = root.findViewById(R.id.button1_cambiarContra_editarPerfil);
         Button mBtnEliminarCuenta = root.findViewById(R.id.button_eliminarCuenta_editarPerfil);
         Button mBtnRegresar = root.findViewById(R.id.button_regresar_editarPerfil);
         mEditTxtNombres = root.findViewById(R.id.editText_nombres_editarPerfil);

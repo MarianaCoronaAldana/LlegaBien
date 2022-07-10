@@ -8,14 +8,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -25,10 +17,26 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.ContextThemeWrapper;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.reporte.reporte;
 import com.example.llegabien.backend.usuario.UsuarioDAO;
 import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.frontend.contactos.fragmento.FragmentoEditarContacto;
+
+import android.widget.TextView;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import io.realm.RealmResults;
 
@@ -115,7 +123,7 @@ public class FragmentoBuscarUsuariosAdmin extends Fragment implements View.OnCli
 
             consLytPrincipalReporte.setClickable(true);
             consLytPrincipalReporte.setOnClickListener(this);
-            consLytPrincipalReporte.setContentDescription(usuarios.get(i).getCorreoElectronico());
+            consLytPrincipalReporte.setContentDescription(usuarios.get(i).getCorreoElectronico().toString());
 
             mConsLytScrollView.addView(consLytPrincipalReporte);
             constraintSet.connect(consLytPrincipalReporte.getId(), ConstraintSet.START, mGuideline10Porciento.getId(), ConstraintSet.START, 0);
@@ -217,43 +225,42 @@ public class FragmentoBuscarUsuariosAdmin extends Fragment implements View.OnCli
             constraintSet.setVerticalBias(viewSeparador.getId(), 0.5f);
             //Fin de Separador
 
-            // Textview "NombreUsuario"
-            TextView txtViewNombreUsuario = new TextView(new ContextThemeWrapper(this.requireActivity(), R.style.TxtViewTransparente));
-            txtViewNombreUsuario.setId(View.generateViewId());
+            // Textview "TipoDelito"
+            TextView txtViewTipoDelito = new TextView(new ContextThemeWrapper(this.requireActivity(), R.style.TxtViewTransparente));
+            txtViewTipoDelito.setId(View.generateViewId());
 
-            String nombreUsuario = usuarios.get(i).getNombre()+" "+usuarios.get(i).getApellidos();
-            txtViewNombreUsuario.setText(nombreUsuario);
-            txtViewNombreUsuario.setTypeface(Typeface.DEFAULT_BOLD);
-            txtViewNombreUsuario.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
-            txtViewNombreUsuario.setMaxLines(1);
+            txtViewTipoDelito.setText(usuarios.get(i).getNombre()+" "+usuarios.get(i).getApellidos());
+            txtViewTipoDelito.setTypeface(Typeface.DEFAULT_BOLD);
+            txtViewTipoDelito.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
+            txtViewTipoDelito.setMaxLines(1);
 
-            consLytPrincipalReporte.addView(txtViewNombreUsuario);
+            consLytPrincipalReporte.addView(txtViewTipoDelito);
 
-            constraintSet.constrainHeight(txtViewNombreUsuario.getId(), ConstraintSet.PARENT_ID);
+            constraintSet.constrainHeight(txtViewTipoDelito.getId(), ConstraintSet.PARENT_ID);
 
-            constraintSet.connect(txtViewNombreUsuario.getId(), ConstraintSet.START, guideline5Porciento.getId(), ConstraintSet.START, 0);
-            constraintSet.connect(txtViewNombreUsuario.getId(), ConstraintSet.END, guideline45Porciento.getId(), ConstraintSet.END, 0);
-            constraintSet.connect(txtViewNombreUsuario.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0);
-            constraintSet.connect(txtViewNombreUsuario.getId(), ConstraintSet.BOTTOM, viewSeparador.getId(), ConstraintSet.TOP, 0);
-            // Fin de Textview "NombreUsuario"
+            constraintSet.connect(txtViewTipoDelito.getId(), ConstraintSet.START, guideline5Porciento.getId(), ConstraintSet.START, 0);
+            constraintSet.connect(txtViewTipoDelito.getId(), ConstraintSet.END, guideline45Porciento.getId(), ConstraintSet.END, 0);
+            constraintSet.connect(txtViewTipoDelito.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0);
+            constraintSet.connect(txtViewTipoDelito.getId(), ConstraintSet.BOTTOM, viewSeparador.getId(), ConstraintSet.TOP, 0);
+            // Fin de Textview "TipoDelito"
 
-            // Textview "correoUsuario"
-            TextView txtViewCorreoUsuario = new TextView(new ContextThemeWrapper(this.requireActivity(), R.style.TxtViewTransparente));
-            txtViewCorreoUsuario.setId(View.generateViewId());
+            // Textview "UbicacionDelito"
+            TextView txtViewUbicacionDelito = new TextView(new ContextThemeWrapper(this.requireActivity(), R.style.TxtViewTransparente));
+            txtViewUbicacionDelito.setId(View.generateViewId());
 
-            txtViewCorreoUsuario.setText(usuarios.get(i).getCorreoElectronico());
-            txtViewCorreoUsuario.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
-            txtViewCorreoUsuario.setMaxLines(1);
+            txtViewUbicacionDelito.setText(usuarios.get(i).getCorreoElectronico());
+            txtViewUbicacionDelito.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
+            txtViewUbicacionDelito.setMaxLines(1);
 
-            consLytPrincipalReporte.addView(txtViewCorreoUsuario);
+            consLytPrincipalReporte.addView(txtViewUbicacionDelito);
 
-            constraintSet.constrainHeight(txtViewCorreoUsuario.getId(), ConstraintSet.PARENT_ID);
+            constraintSet.constrainHeight(txtViewUbicacionDelito.getId(), ConstraintSet.PARENT_ID);
 
-            constraintSet.connect(txtViewCorreoUsuario.getId(), ConstraintSet.START, guideline5Porciento.getId(), ConstraintSet.START, 0);
-            constraintSet.connect(txtViewCorreoUsuario.getId(), ConstraintSet.END, guideline95Porciento.getId(), ConstraintSet.END, 0);
-            constraintSet.connect(txtViewCorreoUsuario.getId(), ConstraintSet.TOP, viewSeparador.getId(), ConstraintSet.BOTTOM, 0);
-            constraintSet.connect(txtViewCorreoUsuario.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
-            // Fin de Textview "correoUsuario"
+            constraintSet.connect(txtViewUbicacionDelito.getId(), ConstraintSet.START, guideline5Porciento.getId(), ConstraintSet.START, 0);
+            constraintSet.connect(txtViewUbicacionDelito.getId(), ConstraintSet.END, guideline95Porciento.getId(), ConstraintSet.END, 0);
+            constraintSet.connect(txtViewUbicacionDelito.getId(), ConstraintSet.TOP, viewSeparador.getId(), ConstraintSet.BOTTOM, 0);
+            constraintSet.connect(txtViewUbicacionDelito.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
+            // Fin de Textview "UbicacionDelito"
 
             constraintSet.applyTo(consLytPrincipalReporte);
         }

@@ -25,6 +25,7 @@ import com.example.llegabien.frontend.contactos.activity.ActivityEditarLeerConta
 import com.example.llegabien.frontend.favoritos.activity.ActivityFavoritos;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.reportes.activity.ActivityReportes;
+import com.example.llegabien.frontend.rutas.ActivityRutas;
 
 public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchListener, View.OnClickListener {
 
@@ -68,8 +69,9 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
             startActivity(new Intent(requireActivity(), ActivityReportes.class));
         else if (view.getId() == R.id.button_contactos_barraNavegacion)
             startActivity(new Intent(requireActivity(), ActivityEditarLeerContactos.class));
-        else if (view.getId() == R.id.button_favoritos_barraNavegacion)
+        else if (view.getId() == R.id.button_favoritos_barraNavegacion){
             startActivity(new Intent(requireActivity(), ActivityFavoritos.class));
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
