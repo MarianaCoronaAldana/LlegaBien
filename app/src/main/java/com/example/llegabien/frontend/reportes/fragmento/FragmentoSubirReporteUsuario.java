@@ -121,6 +121,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
                 if (verificarHistorialReportes(reporteDAO)) {
                     reporteDAO.anadirReporte(Reporte);
                     Toast.makeText(this.getContext(), "Tu reporte será verificado el siguiente fin de semana", Toast.LENGTH_LONG).show();
+                    requireActivity().finish();
                 }
             }
         } else if (view.getId() == R.id.editText_fechaDelito_subirReporteUsuario){

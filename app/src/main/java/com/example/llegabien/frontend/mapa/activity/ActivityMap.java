@@ -21,7 +21,10 @@ import com.example.llegabien.backend.mapa.poligonos.Poligono;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
 import com.example.llegabien.backend.notificacion.Notificacion;
+import com.example.llegabien.backend.reporte.ReporteDAO;
 import com.example.llegabien.backend.ruta.directions.rutaDirections;
+import com.example.llegabien.backend.ruta.realm.ruta;
+import com.example.llegabien.backend.ruta.realm.rutaDAO;
 import com.example.llegabien.backend.usuario.UsuarioDAO;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.databinding.ActivityMapsBinding;
@@ -44,6 +47,8 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.Places;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,7 +128,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
 
     //FUNCIONES LISTENERS//
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mGoogleMap = googleMap;
@@ -145,13 +150,38 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
 
         // TODO: UTILIZACION DE API DIRECTIONS
 // ->
-        place1 = new MarkerOptions().position(new LatLng(20.6674235372583, -103.31179439549422)).title("Location 1");
-        place2 = new MarkerOptions().position(new LatLng(20.67097726320246, -103.31441214692855)).title("Location 2");
+        // JAVIER MINA
+        //20.6674235372583, -103.31179439549422
+        //20.67097726320246, -103.31441214692855
+
+        //LAS AGUILAS
+        //20.624252804065094, -103.40912012122419
+        //20.622204544200045, -103.41392667663345
+
+        place1 = new MarkerOptions().position(new LatLng(20.624252804065094, -103.40912012122419)).title("Location 1");
+        place2 = new MarkerOptions().position(new LatLng(20.622204544200045, -103.41392667663345)).title("Location 2");
         mGoogleMap.addMarker(place1);
         mGoogleMap.addMarker(place2);
 
-        PRUEBA();
+        //PARA AÑADIR RUTA A FAVORITOS
+        //añadirRuta();
+
+      //PRUEBA();
 // ->
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void añadirRuta() {
+        usuario Usuario = Preferences.getSavedObjectFromPreference(getApplicationContext(), PREFERENCE_USUARIO, usuario.class);
+        ruta Ruta = new ruta();
+        Ruta.setIdUsuario(Usuario.get_id());
+        Ruta.setFUsoRuta(java.util.Date
+                .from(LocalDateTime.now().atZone(ZoneId.systemDefault())
+                        .toInstant()));
+        Ruta.setPuntoInicio(place1.getPosition());
+        Ruta.setPuntoDestino(place2.getPosition());
+        rutaDAO rutaDAO = new rutaDAO(getApplicationContext());
+        rutaDAO.anadirRuta(Ruta);
     }
 
     @Override
@@ -383,7 +413,9 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
             for (int o=0; o<points.size(); o++) {
                 if(color>2)
                     color=0;
-                rutaPuntosMediosNombres = new ArrayList();
+
+                rutaPuntosMedios = new ArrayList<>();
+                rutaPuntosMediosNombres = new ArrayList<>();
                 PolylineOptions lineOptions = new PolylineOptions();
                 lineOptions.add(points.get(o));
 
@@ -409,7 +441,9 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
             Log.v("QUICKSTART", "DISTANCIA, TIEMPO: " + directionsObtenidas.getDistancia().get(i) + " , " + directionsObtenidas.getDuracion().get(i));
             //mGoogleMap.addPolyline(routes.get(i)).setColor(Color.BLUE);
         }
-        directionsObtenidas.setRutas(rutas);
+        directionsObtenidas.setRutasEnPolylines(rutas);
+        directionsObtenidas.setRutasPuntosMedios(rutasPorPuntosMedios);
+        directionsObtenidas.setRutasNombresPuntosMedios(rutasPorPuntosMediosNombres);
     }
 
     //TODO: HASTA AQUI

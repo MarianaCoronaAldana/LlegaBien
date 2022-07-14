@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/azul_claro"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".frontend.rutas.ActivityMostrarRutas">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_barraNavegacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.89" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/consLyt_parentPrincipal_mostrar_rutas"
+        android:background="@color/morado_oscuro"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_barraNavegacion"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_fondo_mostrar_rutas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.16" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1_textView_editView_mostrar_rutas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.10" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2_textView_editView_mostrar_rutas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.90" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/consLyt_titulo_mostrar_rutas"
+            style="@style/ConsLytTituloBlanco"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_mostrar_rutas"
+            app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_mostrar_rutas"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.03">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_textView_titulo_mostrar_rutas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.20" />
+
+            <Button
+                android:id="@+id/button_regresar_mostrar_rutas"
+                style="@style/BkgdIcon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline_textView_titulo_mostrar_rutas"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView_titulo_mostrar_rutas"
+                style="@style/TxtViewBlanco"
+                android:background="@android:color/transparent"
+                android:text="@string/titulo_mostrar_rutas"
+                android:textSize="@dimen/text_size_titulo_medium"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="4:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline_textView_titulo_mostrar_rutas"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:id="@+id/scrollView_mostrar_rutas"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/bkgd_esquinas_superiores_redondeadas"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guideline_fondo_mostrar_rutas">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/consLyt_scrollView_mostrar_rutas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline1_textView_editView_scrollView_mostrar_rutas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.10" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2_textView_editView_scrollView_mostrar_rutas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.90" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline1_button_scrollView_mostrar_rutas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.2" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2_button_scrollView_mostrar_rutas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.8" />
+
+                <View
+                    android:id="@+id/view1_mostrar_rutas"
+                    style="@style/ViewSeparadorAuxiliar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="10:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_mostrar_rutas"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_mostrar_rutas"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView_instrucciones1_mostrar_rutas"
+                    style="@style/TxtViewAzulOscuro"
+                    android:text="@string/descripcion_mostrar_rutas"
+                    android:textSize="@dimen/text_size_subtitulo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="10:2"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_mostrar_rutas"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_mostrar_rutas"
+                    app:layout_constraintTop_toBottomOf="@+id/view1_mostrar_rutas"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <View
+                    android:id="@+id/view2_mostrar_rutas"
+                    style="@style/ViewSeparadorAuxiliar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="15:1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2_textView_editView_scrollView_mostrar_rutas"
+                    app:layout_constraintStart_toStartOf="@id/guideline1_textView_editView_scrollView_mostrar_rutas"
+                    app:layout_constraintTop_toBottomOf="@+id/textView_instrucciones1_mostrar_rutas" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/view_elevation"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/bkgd_esquinas_superiores_redondeadas"
+        android:backgroundTint="@color/morado_oscuro"
+        android:elevation="20dp"
+        android:name="com.example.llegabien.frontend.app.fragmento.FragmentoBarraNavegacion"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_barraNavegacion" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView_barraNavegacion"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:elevation="30dp"
+        android:name="com.example.llegabien.frontend.app.fragmento.FragmentoBarraNavegacion"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_barraNavegacion"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

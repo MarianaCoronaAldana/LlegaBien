@@ -87,7 +87,6 @@ public class Emergencia extends AppCompatActivity  {
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) {
                     runOnUiThread(() -> {
-                        Toast.makeText(mActivity,response.message(),Toast.LENGTH_SHORT).show();
                         Log.v("QUICKSTART", response.message());
 
                         if(!response.isSuccessful())

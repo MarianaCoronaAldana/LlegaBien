@@ -36,7 +36,7 @@ public class UsuarioDAO {
 
         if(realm!=null){
             realm.executeTransactionAsync(transactionRealm -> transactionRealm.insert(Usuario));
-
+            Toast.makeText(getApplicationContext(), "Usuario añadido", Toast.LENGTH_LONG).show();
             realm.close();
         }
         else
@@ -52,7 +52,7 @@ public class UsuarioDAO {
                 usuario task = transactionRealm.where(usuario.class).equalTo("_id",Usuario.get_id()).findFirst();
                 Objects.requireNonNull(task).deleteFromRealm();
             });
-            Toast.makeText(getApplicationContext(), "Cuenta eliminada con exito", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Cuenta eliminada con exito", Toast.LENGTH_LONG).show();
             realm.close();
         }
         else

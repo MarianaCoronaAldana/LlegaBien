@@ -50,6 +50,11 @@
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
+        android:name=".frontend.rutas.ActivityMostrarRutas"
+        android:configChanges="orientation"
+        android:exported="false"
+        android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".frontend.app.activity.ActivitySplashScreen"
             android:exported="true"
             android:theme="@style/SplashTheme"

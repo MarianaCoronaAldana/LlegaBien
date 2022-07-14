@@ -22,6 +22,7 @@ import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.contactos.activity.ActivityEditarLeerContactos;
 import com.example.llegabien.frontend.reportes.fragmento.FragmentoListaReportes;
+import com.example.llegabien.frontend.rutas.ActivityMostrarRutas;
 import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUsuario;
 
 public class FragmentoConfigUsuario extends Fragment implements View.OnClickListener{
@@ -43,6 +44,7 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
         ConstraintLayout mBtnEditarPerfil = root.findViewById(R.id.button_editarPerfil_configuracionUsuario);
         Button mBtnCerrarSesion = root.findViewById(R.id.button_cerrarSesion_configuracionUsuario);
         Button mBtnRegresar = root.findViewById(R.id.button_regresar_configuracionUsuario);
+        mBtnHistorialRutas = root.findViewById(R.id.button_historialRutas_configuracionUsuario);
         ConstraintLayout mBtnHistorialReportes = root.findViewById(R.id.button_historialReportes_configuracionUsuario);
         ConstraintLayout mBtnContactos = root.findViewById(R.id.button_contactos_configuracionUsuario);
         mTxtViewCorreo = root.findViewById(R.id.textView_correoUsuario_configuracionUsuario);
@@ -53,6 +55,7 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
         mBtnCerrarSesion.setOnClickListener(this);
         mBtnRegresar.setOnClickListener(this);
         mBtnHistorialReportes.setOnClickListener(this);
+        mBtnHistorialRutas.setOnClickListener(this);
         mBtnContactos.setOnClickListener(this);
 
         setDatosUsuario();
@@ -89,6 +92,9 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
                 fragmentTransaction.addToBackStack(null);
             }
         }
+        else if (view.getId() == R.id.button_historialRutas_configuracionUsuario)
+            startActivity(new Intent(requireActivity(), ActivityMostrarRutas.class));
+
         else if (view.getId() == R.id.button_regresar_configuracionUsuario)
             requireActivity().finish();
 

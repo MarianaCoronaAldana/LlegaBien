@@ -2,6 +2,7 @@ package com.example.llegabien.frontend.usuario.fragmento;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ES_ADMIN;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -139,18 +140,20 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
         }, mEditTxtCorreo.getText().toString(), mEditTxtContrasena.getText().toString());
     }
 
-
     private void verificarCorreoContrasena() {
-        if(mValidar.validarAdmin(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContrasena(mEditTxtContrasena.getText().toString()))) {
-            Preferences.savePreferenceBoolean(this.requireActivity(), true, PREFERENCE_ES_ADMIN);
-            startActivity(new Intent(requireActivity(), ActivityMap.class));
-        }
-
-        else if(mValidar.verificarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContrasena(mEditTxtContrasena.getText().toString()), "El correo electronico o la contraseña son incorrectos")) {
-            //REPONER//
-            //para verificar que el usuario haya validado su cuenta de correo
-            //verificarCorreoVerificado();
-            startActivity(new Intent(requireActivity(), ActivityMap.class));
+        if(mValidar.verificarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContrasena(mEditTxtContrasena.getText().toString()), "El correo electronico o la contraseña son incorrectos")) {
+            usuario Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_USUARIO, usuario.class);
+            if(mValidar.validarAdmin(Usuario.getCorreoElectronico(), Usuario.getContrasena())) {
+                Preferences.savePreferenceBoolean(this.requireActivity(), true, PREFERENCE_ES_ADMIN);
+                startActivity(new Intent(requireActivity(), ActivityMap.class));
+            }
+            else {
+                Preferences.savePreferenceBoolean(this.requireActivity(), false, PREFERENCE_ES_ADMIN);
+                //REPONER//
+                //para verificar que el usuario haya validado su cuenta de correo
+                //verificarCorreoVerificado();
+                startActivity(new Intent(requireActivity(), ActivityMap.class));
+            }
         }
     }
 
