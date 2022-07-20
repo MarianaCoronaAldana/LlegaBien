@@ -33,18 +33,14 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
 
             return task != null;
         }
-
         else
             errorConexion();
-
         return false;
     }
 
     // Se verifica que los datos para iniciar sesion coincidan con un usuario ADMINISTRADOR
     public boolean validarAdmin( String correo, String contrasena){
-       // realm = conectarBD.ConectarAnonimoMongoDB();
         realm = conectarBD.conseguirUsuarioMongoDB();
-
         if(realm!=null){
             usuario task = realm.where(usuario.class).equalTo("correoElectronico", correo)
                     .and()
@@ -52,51 +48,40 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
                     .and()
                     .isNotNull("status")
                     .findFirst();
-
             if (task != null) {
                 Log.v("QUICKSTART", "OMG SI SE PUDO ADMIN");
                 // Se guarda al usuario en una clase accesible para muchas clases
                 Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_USUARIO, task);
-
                 // Se abre una cuenta con el correo y contraseña del usuario
                 conectarBD.ConectarCorreoMongoDB(correo, contrasena);
                 return true;
             }
         }
-
         else
             errorConexion();
-
         return false;
     }
-
 
     // Se verifica que los datos para iniciar sesion coincidan con un usuario real
     public boolean verificarCorreoContrasena(String correo, String contrasena, String error) {
         realm = conectarBD.conseguirUsuarioMongoDB();
-
         if(realm!=null){
             usuario task = realm.where(usuario.class).equalTo("correoElectronico", correo)
                     .and()
                     .equalTo("contrasena", contrasena)
                     .findFirst();
-
             if (task != null) {
                 Log.v("AVERW", "NOMBRE DE TASK: " + task.getNombre());
                 // Se guarda al usuario en una clase accesible para muchas clases
                 Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_USUARIO, task);
-                // Se abre una cuenta con el correo y contraseña del usuario
-                //conectarBD.ConectarCorreoMongoDB(correo, contrasena);
                 conectarBD.conseguirUsuarioMongoDB();
                 return true;
             }
             else
                 Toast.makeText(mContext,error,Toast.LENGTH_LONG).show();
         }
-
         else
             errorConexion();
-
         return false;
     }
 

@@ -26,11 +26,10 @@ public class ReporteDAO {
         Reporte.set_id(new ObjectId());
         Reporte.set_partition("LlegaBien");
         realm = conectarBD.conseguirUsuarioMongoDB();
-
         if(realm!=null){
             realm.executeTransactionAsync(transactionRealm -> transactionRealm.insert(Reporte));
-
             realm.close();
+            Toast.makeText(mContext, "Tu reporte será verificado el siguiente fin de semana", Toast.LENGTH_LONG).show();
         }
         else
             errorConexion();
@@ -38,30 +37,24 @@ public class ReporteDAO {
 
     public RealmResults<reporte> obtenerReportesPorUsuario(reporte Reporte) {
         realm = conectarBD.conseguirUsuarioMongoDB();
-
         if(realm!=null){
             return realm.where(reporte.class).equalTo("IdUsuario",Reporte.getIdUsuario()).findAll();
         }
-
         else
             errorConexion();
-
         return null;
     }
 
 
     public RealmResults<reporte> obtenerReportesPorUsuario(usuario Usuario) {
         realm = conectarBD.conseguirUsuarioMongoDB();
-
         if(realm!=null){
             RealmResults<reporte> realmResults = realm.where(reporte.class).equalTo("IdUsuario",Usuario.get_id()).findAll();
             Log.v("QUICKSTART", "Estoy en REPORTE DAO, size: " + realmResults.size());
             return realmResults;
         }
-
         else
             errorConexion();
-
         return null;
     }
 

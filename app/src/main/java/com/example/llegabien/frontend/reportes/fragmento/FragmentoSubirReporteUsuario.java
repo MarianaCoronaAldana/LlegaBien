@@ -55,6 +55,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
     private EditText mEditTxtNombre, mEditTxtFechaDelito, mEditTxtHoraDelito, mEditTxtComentariosDelito;
     private reporte Reporte;
     private UbicacionBusquedaAutocompletada ubicacionBusquedaAutocompletada;
+
     private final ActivityResultLauncher<Intent> activityResultLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
@@ -120,7 +121,6 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
                 inicializarReporte();
                 if (verificarHistorialReportes(reporteDAO)) {
                     reporteDAO.anadirReporte(Reporte);
-                    Toast.makeText(this.getContext(), "Tu reporte será verificado el siguiente fin de semana", Toast.LENGTH_LONG).show();
                     requireActivity().finish();
                 }
             }
@@ -163,7 +163,6 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
         permisos.getPermisoUbicacion(requireActivity(), false);
         if (permisos.getLocationPermissionGranted()) {
             FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
-
             UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
             mUbicacionDispositivo.getUbicacionDelDispositivo((isUbicacionObtenida, ubicacionObtenida) -> {
                 if (isUbicacionObtenida) {
@@ -204,7 +203,6 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
     private boolean verificarHistorialReportes(ReporteDAO reporte_DAO) {
         RealmResults<reporte> reportes = reporte_DAO.obtenerReportesPorUsuario(Reporte);
         int reportesAnteriores = 0;
-
         Duration diff;
         long diffmINUTTES, diffHoras, diffDias;
 

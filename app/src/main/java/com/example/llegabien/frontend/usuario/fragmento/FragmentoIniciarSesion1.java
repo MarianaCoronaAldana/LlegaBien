@@ -85,16 +85,14 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
         FragmentoAuxiliar fragmentoAuxiliar = new FragmentoAuxiliar();
         FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
         if (view.getId() == R.id.radioBtn_recordar_inicia_sesion_1){
-            if (isActivateRadioButton) {
+            if (isActivateRadioButton)
                 mBtnRecordarSesion.setChecked(false);
-            }
+
             isActivateRadioButton = mBtnRecordarSesion.isChecked();
         }
         else if (view.getId() == R.id.button_inicia_inicia_sesion_1){
             Preferences.savePreferenceBoolean(this.requireActivity(),mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
-
             if (validarAllInputs()) {
-                //QUITAR DESPUES DE HACER PRUEBAS//
                 verificarCorreoContrasena();
             }
         }

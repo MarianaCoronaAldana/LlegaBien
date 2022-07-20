@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class UbicacionGeodicacion {
-
     private Geocoder mGeocoder;
 
     public Address geocodificarUbiciacion(Context c, String stringAddress){
@@ -19,7 +18,6 @@ public class UbicacionGeodicacion {
             if(addressList.size()>0) {
                 return addressList.get(0);
             }
-
         }catch (IOException e) {
             e.printStackTrace();
         }
@@ -33,11 +31,9 @@ public class UbicacionGeodicacion {
             if(addressList.size()>0) {
                 return addressList.get(0).getAddressLine(0);
             }
-
         }catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
-
 }

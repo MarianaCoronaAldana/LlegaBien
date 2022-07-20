@@ -75,7 +75,7 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         if (view.getId() == R.id.button_regresar_editarContacto)
             requireActivity().getSupportFragmentManager().popBackStack();
-        else if (view.getId() == R.id.button_enviarReporte_subirReporteUsuario){
+        else if (view.getId() == R.id.button_aceptar_editarContacto){
             if(validarAllInputs()){
                 actualizarContacto();
                 requireActivity().getSupportFragmentManager().popBackStack();
@@ -90,7 +90,6 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
             mEditTxtNombreContacto.setText(mUsuario.getContacto().get(mIdContacto).getNombre());
             mEditTxtCountryCode.setText(countryCode);
             mEditTxtTelefonoContacto.setText(numTel);
-
     }
 
     private boolean validarAllInputs() {
@@ -112,10 +111,8 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
     private void actualizarContacto(){
         usuario_contacto contacto = new usuario_contacto();
         contacto.setNombre(mEditTxtNombreContacto.getText().toString().trim());
-        contacto.setTelCelular(mEditTxtCountryCode.getText().toString()+mEditTxtTelefonoContacto.getText().toString().trim());
-
+        contacto.setTelCelular(mEditTxtCountryCode.getText().toString() + mEditTxtTelefonoContacto.getText().toString().trim());
         mUsuario.getContacto().set(mIdContacto, contacto);
-
         UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
         if (usuarioDAO.updateUser(mUsuario)) {
             Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();

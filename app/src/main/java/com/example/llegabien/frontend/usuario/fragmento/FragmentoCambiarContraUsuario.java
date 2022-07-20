@@ -120,7 +120,6 @@ public class FragmentoCambiarContraUsuario extends Fragment implements View.OnCl
     // Actualizar contraseña del usuario en MongoDB
     private void actualizarContrasenaUsuario() {
         Usuario.setContrasena(encriptarContrasena(mEditTxtNuevaContrasena.getText().toString()));
-
         UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
         if (usuarioDAO.updateUser(Usuario)) {
             Toast.makeText(getApplicationContext(), "Contraseña cambiada exitosamente", Toast.LENGTH_SHORT).show();
@@ -133,11 +132,9 @@ public class FragmentoCambiarContraUsuario extends Fragment implements View.OnCl
     // Se encarga de guardar en preferences el usuario
     private void configuracionesFinalesPreferences() {
         UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
-
         // En caso de haber modificado como admin, entonces se reestablece en preferences su usuario
         if(Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_EDITANDO_USUARIO_CON_ADMIN))
             Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_ADMIN, usuario.class);
-
         Usuario = usuarioDAO.readUsuarioPorCorreo(Usuario.getCorreoElectronico());
         Preferences.savePreferenceObjectRealm(requireActivity(), PREFERENCE_USUARIO, Usuario);
         Preferences.savePreferenceBoolean(this.requireActivity(), false, PREFERENCE_EDITANDO_USUARIO_CON_ADMIN);

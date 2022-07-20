@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,15 +27,10 @@ import android.widget.Button;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.reporte.reporte;
 import com.example.llegabien.backend.usuario.UsuarioDAO;
 import com.example.llegabien.backend.usuario.usuario;
-import com.example.llegabien.frontend.contactos.fragmento.FragmentoEditarContacto;
 
 import android.widget.TextView;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import io.realm.RealmResults;
 
@@ -72,7 +66,7 @@ public class FragmentoBuscarUsuariosAdmin extends Fragment implements View.OnCli
         UsuarioAdmin = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_USUARIO, usuario.class);
         UsuarioDAO usuario_DAO = new UsuarioDAO(this.getContext());
         usuarios = usuario_DAO.obtenerTodosUsuarios();
-        crearVistalistaUsuarios_admin();
+        crearVistaListaUsuarios_admin();
 
         return root;
     }
@@ -89,15 +83,11 @@ public class FragmentoBuscarUsuariosAdmin extends Fragment implements View.OnCli
 
     private void editarUsuario(View view) {
         UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
-
         Preferences.savePreferenceBoolean(this.requireActivity(), true, PREFERENCE_EDITANDO_USUARIO_CON_ADMIN);
-
         UsuarioAdmin = usuarioDAO.readUsuarioPorCorreo(UsuarioAdmin.getCorreoElectronico());
         Preferences.savePreferenceObjectRealm(requireActivity(), PREFERENCE_ADMIN, UsuarioAdmin);
-
         usuario Usuario = usuarioDAO.readUsuarioPorCorreo(view.getContentDescription().toString());
         Preferences.savePreferenceObjectRealm(requireActivity(), PREFERENCE_USUARIO, Usuario);
-
         // Pasar al gragmento donde se puede editar
         FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
         FragmentoEditarPerfilUsuario fragmentoEditarPerfilUsuario = new FragmentoEditarPerfilUsuario();
@@ -110,7 +100,7 @@ public class FragmentoBuscarUsuariosAdmin extends Fragment implements View.OnCli
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void crearVistalistaUsuarios_admin() {
+    private void crearVistaListaUsuarios_admin() {
         ConstraintSet constraintSet = new ConstraintSet();
 
         for (int i = 0; i < usuarios.size(); i++) {

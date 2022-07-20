@@ -35,7 +35,6 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
     UsuarioBD_Validaciones validar = new UsuarioBD_Validaciones(getActivity());
 
     public FragmentoRegistrarUsuario2() {
-
     }
 
     @Override
@@ -87,7 +86,6 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
         if (view.getId() == R.id.button_siguiente_registro_2){
             if (validarAllInputs()){
                 if(!validarExistencia()) {
-
                     //para obtener los datos del fragmento y añadirlos a la clase usuario
                     usuarioConDatos();
 

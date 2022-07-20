@@ -50,10 +50,8 @@ public class FragmentoRestablecerContrasena1 extends Fragment implements View.On
         if(view.getId() == R.id.button_siguiente_restablecer_contraseña_1){
             if (validarAllInputs()) {
                 UsuarioBD_Validaciones mValidar = new UsuarioBD_Validaciones(this.getContext());
-
                 String numTelefonico = mEditTxtCountryCode.getText().toString() +
                         mEditTxtNumTelefonico.getText().toString();
-
                 if (mValidar.validarExistenciaCorreoTelefono(null, numTelefonico))
                     enviarCodigoRestablecerContrasena(numTelefonico);
             }

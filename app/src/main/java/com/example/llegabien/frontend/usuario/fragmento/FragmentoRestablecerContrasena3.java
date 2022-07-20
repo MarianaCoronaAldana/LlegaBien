@@ -103,14 +103,12 @@ public class FragmentoRestablecerContrasena3 extends Fragment implements View.On
     private boolean validarAllInputs() {
         UsuarioInputValidaciones usuarioInputValidaciones = new UsuarioInputValidaciones();
         boolean esInputValido = true;
-
         if (usuarioInputValidaciones.validarContrasena(requireActivity(), mEditTxtContrasena)){
             if (usuarioInputValidaciones.validarConfirmarContrasena(mEditTxtContrasena.getText().toString(), requireActivity(), mEditTxtConfirmarContrasena))
                 esInputValido = false;
         }
         else
             esInputValido = false;
-
         return esInputValido;
     }
 

@@ -92,15 +92,17 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
                 fragmentTransaction.addToBackStack(null);
             }
         }
+
+        else if (view.getId() == R.id.button_contactos_configuracionUsuario)
+            if(!Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_ES_ADMIN))
+                startActivity(new Intent(requireActivity(), ActivityEditarLeerContactos.class));
+
         else if (view.getId() == R.id.button_historialRutas_configuracionUsuario)
             startActivity(new Intent(requireActivity(), ActivityMostrarRutas.class));
 
         else if (view.getId() == R.id.button_regresar_configuracionUsuario)
             requireActivity().finish();
 
-        else if (view.getId() == R.id.button_contactos_configuracionUsuario)
-            if(!Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_ES_ADMIN))
-                startActivity(new Intent(requireActivity(), ActivityEditarLeerContactos.class));
 
     }
 

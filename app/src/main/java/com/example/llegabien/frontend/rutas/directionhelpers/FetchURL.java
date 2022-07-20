@@ -10,10 +10,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by Vishal on 10/20/2018.
- */
-
 public class FetchURL extends AsyncTask<String, Void, String> {
     TaskLoadedCallback mContext;
     String directionMode = "driving";
@@ -24,56 +20,54 @@ public class FetchURL extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... strings) {
-        // For storing data from web service
+        // Aqui se guardará lo recibido de Directions
         String data = "";
         directionMode = strings[1];
         try {
-            // Fetching the data from web service
+            // Obteniendo info de Directions
             data = downloadUrl(strings[0]);
-            Log.d("mylog", "Background task data " + data.toString());
+            Log.v("QUICKSTART", "Background: " + data.toString());
         } catch (Exception e) {
-            Log.d("Background Task", e.toString());
+            Log.d("Background: ", e.toString());
         }
         return data;
     }
 
     @Override
-//    protected void onPostExecute(String s) {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         PointsParser parserTask = new PointsParser(mContext, directionMode);
-        // Invokes the thread for parsing the JSON data
+        // Para parsear la info de JSON
         parserTask.execute(s);
     }
 
     private String downloadUrl(String strUrl) throws IOException {
-        String data = "";
+        String datos = "";
         InputStream iStream = null;
-        HttpURLConnection urlConnection = null;
+        HttpURLConnection urlConexion = null;
         try {
             URL url = new URL(strUrl);
-            // Creating an http connection to communicate with url
-            urlConnection = (HttpURLConnection) url.openConnection();
-            // Connecting to url
-            urlConnection.connect();
-            // Reading data from url
-            iStream = urlConnection.getInputStream();
+            // Creando conexión http para conectarse con la url
+            urlConexion = (HttpURLConnection) url.openConnection();
+            // Conectando a url
+            urlConexion.connect();
+            // Obteniendo datos url
+            iStream = urlConexion.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
             StringBuffer sb = new StringBuffer();
-            String line = "";
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
+            String linea = "";
+            while ((linea = br.readLine()) != null) {
+                sb.append(linea);
             }
-            data = sb.toString();
-            Log.d("mylog", "Downloaded URL: " + data.toString());
+            datos = sb.toString();
+            Log.v("QUICKSTART", "URL descargada: " + datos.toString());
             br.close();
         } catch (Exception e) {
-            Log.d("mylog", "Exception downloading URL: " + e.toString());
+            Log.v("QUICKSTART", "Exception mientras se decaragaba URL: " + e.toString());
         } finally {
             iStream.close();
-            urlConnection.disconnect();
+            urlConexion.disconnect();
         }
-        return data;
+        return datos;
     }
 }
-

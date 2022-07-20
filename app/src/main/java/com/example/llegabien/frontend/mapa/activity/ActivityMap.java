@@ -21,7 +21,6 @@ import com.example.llegabien.backend.mapa.poligonos.Poligono;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
 import com.example.llegabien.backend.notificacion.Notificacion;
-import com.example.llegabien.backend.reporte.ReporteDAO;
 import com.example.llegabien.backend.ruta.directions.rutaDirections;
 import com.example.llegabien.backend.ruta.realm.ruta;
 import com.example.llegabien.backend.ruta.realm.rutaDAO;
@@ -158,15 +157,15 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         //20.624252804065094, -103.40912012122419
         //20.622204544200045, -103.41392667663345
 
-        place1 = new MarkerOptions().position(new LatLng(20.624252804065094, -103.40912012122419)).title("Location 1");
-        place2 = new MarkerOptions().position(new LatLng(20.622204544200045, -103.41392667663345)).title("Location 2");
+        place1 = new MarkerOptions().position(new LatLng(20.6674235372583, -103.31179439549422)).title("Location 1");
+        place2 = new MarkerOptions().position(new LatLng(20.67097726320246, -103.31441214692855)).title("Location 2");
         mGoogleMap.addMarker(place1);
         mGoogleMap.addMarker(place2);
 
         //PARA AÑADIR RUTA A FAVORITOS
         //añadirRuta();
 
-      //PRUEBA();
+        PRUEBA();
 // ->
     }
 
@@ -290,7 +289,6 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         // Para mostrar la ubicacion del objecto favorito en el mapa con un marcador.
         mMarkerAnterior = mGoogleMap.addMarker((new MarkerOptions().position(ubicacionFavorito)));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionFavorito, DEFAULT_ZOOM));
-
     }
 
     // Para mostrar los poligonos de todas las colonias al momento que se inicia el mapa.
@@ -359,21 +357,21 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     //TODO: MOVER FUNCIONES DE AQUI
     private void PRUEBA(){
         // AQUI SE DEBEN DE PONER LOS LatLng de punto d epartida y de destino, así como la menra en que se prefiere vijar (a pie o bici)
-        new FetchURL(ActivityMap.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "walking"), "walking");
+        new FetchURL(ActivityMap.this).execute(generarUrlRuta(place1.getPosition(), place2.getPosition(), "walking"), "walking");
     }
 
-    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
-        // Origin of route
-        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-        // Destination of route
+    private String generarUrlRuta(LatLng origen, LatLng dest, String directionMode) {
+        // Origen de la ruta
+        String str_origen = "origin=" + origen.latitude + "," + origen.longitude;
+        // Destino de la ruta
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-        // Mode
+        // Modo de viaje
         String mode = "mode=" + directionMode;
-        // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + mode;
-        // Output format
+        // Construyendo string
+        String parameters = str_origen + "&" + str_dest + "&" + mode;
+        // Formato de salida
         String output = "json";
-        // Building the url to the web service
+        // Construyendo url final
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters +"&alternatives=true" +"&key=" + getString(R.string.api_key);
         Log.v("QUICKSTART", "url: ");
         Log.v("QUICKSTART", url);

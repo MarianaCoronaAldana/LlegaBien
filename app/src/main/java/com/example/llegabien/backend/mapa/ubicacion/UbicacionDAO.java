@@ -23,72 +23,54 @@ public class UbicacionDAO {
 
     public RealmResults<ubicacion> obetenerColonias() {
         realm = conectarBD.conseguirUsuarioMongoDB();
-
         if(realm!=null){
-
             return realm.where(ubicacion.class).equalTo("tipo","colonia").findAll();
         }
-
         else
             errorConexion();
-
         return null;
     }
 
     public RealmResults<ubicacion> obetenerMunicipios() {
         realm = conectarBD.conseguirUsuarioMongoDB();
-
         if(realm!=null){
             return realm.where(ubicacion.class).equalTo("tipo","municipio").findAll();
         }
-
         else
             errorConexion();
-
         return null;
     }
 
     public RealmResults<ubicacion> obetenerCalles() {
         realm = conectarBD.conseguirUsuarioMongoDB();
-
         if(realm!=null){
-
             return realm.where(ubicacion.class).equalTo("tipo","calle").findAll();
         }
-
         else
             errorConexion();
-
         return null;
     }
 
 
     public void obetenerUbicacionConPoligono(String coordenadasPoligono, Context c) {
         realm = conectarBD.conseguirUsuarioMongoDB();
-
         if(realm!=null){
-
             ubicacion task = realm.where(ubicacion.class).equalTo("coordenadas_string", coordenadasPoligono).findFirst();
-
             if (task != null) {
                 // Se guarda la ubicacion en Shared Preferences
                 Preferences.savePreferenceObjectRealm(c, PREFERENCE_UBICACION, task);
             } 
         }
-
         else
             errorConexion();
-
     }
 
     public boolean obtenerUbicacionBuscada(double latitude, double longitude){
         Poligono poligono = new Poligono();
         RealmResults<ubicacion> resultadosUbicaciones;
         ubicacion ubicacion;
-
         resultadosUbicaciones = obetenerCalles();
         if(resultadosUbicaciones != null){ }
-
         resultadosUbicaciones = obetenerColonias();
         if(resultadosUbicaciones != null){
             ubicacion = poligono.isUbicacionEnPoligono(resultadosUbicaciones,latitude, longitude);
@@ -97,7 +79,6 @@ public class UbicacionDAO {
                 return true;
             }
         }
-
         resultadosUbicaciones = obetenerMunicipios();
         if(resultadosUbicaciones != null){
             ubicacion = poligono.isUbicacionEnPoligono(resultadosUbicaciones,latitude, longitude);
@@ -106,7 +87,6 @@ public class UbicacionDAO {
                 return true;
             }
         }
-
         return false;
     }
 

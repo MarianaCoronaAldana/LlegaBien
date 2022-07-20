@@ -15,9 +15,7 @@ import jxl.Sheet;
 import jxl.Workbook;
 
 public class UsuarioSubirReporte {
-
     private Intent mIntent;
-
     public Intent getmIntent(){ return mIntent; }
 
     public void inicializarIntent(){
