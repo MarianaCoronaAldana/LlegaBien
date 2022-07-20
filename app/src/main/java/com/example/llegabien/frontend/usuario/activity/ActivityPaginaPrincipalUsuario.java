@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.UsuarioDAO;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionDAO;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.usuario.fragmento.FragmentoIniciarSesion1;
@@ -52,7 +53,9 @@ public class ActivityPaginaPrincipalUsuario extends AppCompatActivity implements
 
         //wiring up
         Button mBtnIniciarSesion = (Button) findViewById(R.id.button_inicia_sesion_pagina_principal);
+        //Button
         Button mBtnCrearCuenta = (Button) findViewById(R.id.button_crea_cuenta_pagina_principal);
+        //ImageView
         ImageView mImgViewGif = (ImageView) findViewById(R.id.imageView2_gif_pagina_principal);
 
         //listeners

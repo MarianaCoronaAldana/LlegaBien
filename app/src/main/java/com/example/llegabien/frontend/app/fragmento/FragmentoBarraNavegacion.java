@@ -31,7 +31,7 @@ import com.example.llegabien.frontend.rutas.ActivityRutas;
 public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchListener, View.OnClickListener {
 
     private Button mBtnEmergencia;
-    private ConstraintLayout mBtnFavoritos, mBtnSubirReporte, mBtnHistorialRutas,mBtnContactos, mFondoBlanco;
+    private ConstraintLayout mBtnFavoritos, mBtnSubirReporte, mBtnHistorialRutas, mBtnContactos, mFondoBlanco;
     private ObjectAnimator mScaleDown;
 
     public FragmentoBarraNavegacion() {
@@ -51,8 +51,6 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
         mBtnContactos = root.findViewById(R.id.button_contactos_barraNavegacion);
         mFondoBlanco = root.findViewById(R.id.consLyt_parentPrincipal_barraNavegacion);
 
-        startAnimacionBtnEmergencia();
-
         //listeners
         mBtnEmergencia.setOnTouchListener(this);
         mBtnSubirReporte.setOnClickListener(this);
@@ -60,13 +58,20 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
         mBtnFavoritos.setOnClickListener(this);
         mBtnHistorialRutas.setOnClickListener(this);
 
+        startAnimacionBtnEmergencia();
+
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mScaleDown.start();
     }
 
     //FUNCIONES LISTENER//
     @Override
-    public void onClick(View view)
-    {
+    public void onClick(View view) {
         if (view.getId() == R.id.button_subirReporte_barraNavegacion)
             startActivity(new Intent(requireActivity(), ActivityReportes.class));
         else if (view.getId() == R.id.button_contactos_barraNavegacion)
@@ -81,13 +86,12 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
-        FragmentoBotonEmergencia fragmentoBotonEmergencia = new FragmentoBotonEmergencia(mFondoBlanco);
-        FragmentoPermisos fragmentoPermisos = new FragmentoPermisos();
-        //when button is pressed
+
+        // Cuando el boton es presionado.
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             Permisos mPermisos = new Permisos();
             mPermisos.getPermisoUbicacion(requireActivity(), false);
-            if(mPermisos.getLocationPermissionGranted()){
+            if (mPermisos.getLocationPermissionGranted()) {
                 mBtnFavoritos.setVisibility(View.INVISIBLE);
                 mBtnSubirReporte.setVisibility(View.INVISIBLE);
                 mBtnHistorialRutas.setVisibility(View.INVISIBLE);
@@ -95,15 +99,19 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
                 mScaleDown.end();
                 mFondoBlanco.setBackgroundColor(requireActivity().getResources().getColor(R.color.blanco));
 
-                if(this.requireActivity() instanceof ActivityMap){
-                    //show the progressCircle
-                    fragmentTransaction.add(R.id.fragmentContainerView_botonEmergencia, fragmentoBotonEmergencia, "FragmentoBotonEmergencia").commit();
-                }
-            }
-            else
-                fragmentTransaction.add(R.id.fragmentContainerView1_fragemntoBuscarLugar_activityMaps, fragmentoPermisos).commit();
+                // Para mostrar el ProgressCircle.
+                FragmentoBotonEmergencia fragmentoBotonEmergencia = new FragmentoBotonEmergencia(mFondoBlanco, mBtnFavoritos, mBtnSubirReporte,
+                        mBtnHistorialRutas, mBtnContactos);
+                fragmentTransaction.add(R.id.fragmentContainerView_botonEmergencia, fragmentoBotonEmergencia, "FragmentoBotonEmergencia").commit();
 
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            } else {
+                FragmentoPermisos fragmentoPermisos = new FragmentoPermisos();
+                fragmentTransaction.add(R.id.fragmentContainerView_reportes, fragmentoPermisos).commit();
+            }
+        }
+
+        // Cuando el boton no está presionado.
+        else if (event.getAction() == MotionEvent.ACTION_UP) {
             mFondoBlanco.setBackgroundColor(Color.TRANSPARENT);
             mBtnFavoritos.setVisibility(View.VISIBLE);
             mBtnSubirReporte.setVisibility(View.VISIBLE);
@@ -111,7 +119,7 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
             mBtnContactos.setVisibility(View.VISIBLE);
             mScaleDown.start();
 
-            //hide the progressCircle
+            // Para esconder el ProgressCircle.
             Fragment fragment = requireActivity().getSupportFragmentManager().findFragmentByTag("FragmentoBotonEmergencia");
             if (fragment != null)
                 fragmentTransaction.remove(fragment).commit();

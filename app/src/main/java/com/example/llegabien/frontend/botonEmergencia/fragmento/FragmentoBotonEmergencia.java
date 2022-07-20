@@ -27,15 +27,22 @@ public class FragmentoBotonEmergencia extends Fragment {
     private ProgressBar mProgressCircle;
     private TextView mTxtSegundosFaltantes;
     private Window mWindow;
-    private ConstraintLayout mFondoBlancoBarraNavegacion;
+    private ConstraintLayout mFondoBlancoBarraNavegacion, mBtnFavoritosBarraNavegacion,
+            mBtnSubirReporteBarraNavegacion, mBtnHistorialRutasBarraNavegacion, mBtnContactosBarraNavegacion;
     private int mColorActivityAnterior;
 
     public FragmentoBotonEmergencia() {
         // Required empty public constructor
     }
 
-    public FragmentoBotonEmergencia(ConstraintLayout fondoBlancoBarraNavegacion) {
+    public FragmentoBotonEmergencia(ConstraintLayout fondoBlancoBarraNavegacion, ConstraintLayout btnFavoritosBarraNavegacion,
+                                    ConstraintLayout btnSubirReporteBarraNavegacion, ConstraintLayout btnHistorialRutasBarraNavegacion,
+                                    ConstraintLayout btnContactosBarraNavegacion) {
         mFondoBlancoBarraNavegacion = fondoBlancoBarraNavegacion;
+        mBtnFavoritosBarraNavegacion = btnFavoritosBarraNavegacion;
+        mBtnSubirReporteBarraNavegacion = btnSubirReporteBarraNavegacion;
+        mBtnHistorialRutasBarraNavegacion = btnHistorialRutasBarraNavegacion;
+        mBtnContactosBarraNavegacion = btnContactosBarraNavegacion;
     }
 
     @Override
@@ -46,7 +53,7 @@ public class FragmentoBotonEmergencia extends Fragment {
 
         //wiring up
         mTxtSegundosFaltantes = root.findViewById(R.id.textView_segundosFaltantes_activityMaps);
-        mProgressCircle= root.findViewById(R.id.progressCircle_btnEmergencia_activityMaps);
+        mProgressCircle = root.findViewById(R.id.progressCircle_btnEmergencia_activityMaps);
 
         //empezar contador
         startTimer();
@@ -55,7 +62,7 @@ public class FragmentoBotonEmergencia extends Fragment {
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         cancelTimer();
     }
@@ -80,6 +87,10 @@ public class FragmentoBotonEmergencia extends Fragment {
                 mWindow.setStatusBarColor(mColorActivityAnterior);
                 mWindow.setNavigationBarColor(mColorActivityAnterior);
                 mFondoBlancoBarraNavegacion.setBackgroundColor(Color.TRANSPARENT);
+                mBtnContactosBarraNavegacion.setVisibility(View.VISIBLE);
+                mBtnHistorialRutasBarraNavegacion.setVisibility(View.VISIBLE);
+                mBtnFavoritosBarraNavegacion.setVisibility(View.VISIBLE);
+                mBtnSubirReporteBarraNavegacion.setVisibility(View.VISIBLE);
                 mProgressCircle.setProgress(0);
 
                 FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
@@ -89,9 +100,6 @@ public class FragmentoBotonEmergencia extends Fragment {
 
                 Emergencia emergencia = new Emergencia(FragmentoBotonEmergencia.this.getActivity());
                 emergencia.EmpezarProtocolo();
-                /*
-                DialogConfirmarEmergencia dialogConfirmarEmergencia = new DialogConfirmarEmergencia(requireActivity());
-                dialogConfirmarEmergencia.show();*/
             }
         };
         mCountDownTimer.start();

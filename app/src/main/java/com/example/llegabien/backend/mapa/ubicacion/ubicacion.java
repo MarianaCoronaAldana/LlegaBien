@@ -10,10 +10,16 @@ public class ubicacion extends RealmObject {
     @PrimaryKey
     private ObjectId _id;
 
+    private ObjectId IdColonia;
+
+    private ObjectId IdMunicipio;
+
     @Required
     private String _partition;
 
     private String coordenadas_string;
+
+    private String delito_mas_frecuente;
 
     private Integer delitos_semana;
 
@@ -33,11 +39,20 @@ public class ubicacion extends RealmObject {
     public ObjectId get_id() { return _id; }
     public void set_id(ObjectId _id) { this._id = _id; }
 
+    public ObjectId getIdColonia() { return IdColonia; }
+    public void setIdColonia(ObjectId IdColonia) { this.IdColonia = IdColonia; }
+
+    public ObjectId getIdMunicipio() { return IdMunicipio; }
+    public void setIdMunicipio(ObjectId IdMunicipio) { this.IdMunicipio = IdMunicipio; }
+
     public String get_partition() { return _partition; }
     public void set_partition(String _partition) { this._partition = _partition; }
 
     public String getCoordenadas_string() { return coordenadas_string; }
     public void setCoordenadas_string(String coordenadas) { this.coordenadas_string = coordenadas; }
+
+    public String getDelito_mas_frecuente() { return delito_mas_frecuente; }
+    public void setDelito_mas_frecuente(String delito_mas_frecuente) { this.delito_mas_frecuente = delito_mas_frecuente; }
 
     public Integer getDelitos_semana() { return delitos_semana; }
     public void setDelitos_semana(Integer delitos_semana) { this.delitos_semana = delitos_semana; }

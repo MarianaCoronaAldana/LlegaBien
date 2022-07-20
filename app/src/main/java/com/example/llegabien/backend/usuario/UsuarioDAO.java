@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
-import com.example.llegabien.backend.reporte.reporte;
 
 import org.bson.types.ObjectId;
 
@@ -45,7 +44,6 @@ public class UsuarioDAO {
     }
 
     public void deleteUser(usuario Usuario) {
-        //realm = conectarBD.ConectarCorreoMongoDB(Usuario.getCorreoElectronico(), Usuario.getContrasena());
         realm = conectarBD.conseguirUsuarioMongoDB();
         if(realm!=null){
             realm.executeTransactionAsync(transactionRealm -> {
@@ -60,7 +58,6 @@ public class UsuarioDAO {
     }
 
     public boolean updateUser(usuario Usuario) {
-        //realm = conectarBD.ConectarCorreoMongoDB(Usuario.getCorreoElectronico(), Usuario.getContrasena());
         realm = conectarBD.conseguirUsuarioMongoDB();
         Log.v("QUICKSTART", "ESTOY EN UPDATE ");
         if(realm!=null){
@@ -68,20 +65,17 @@ public class UsuarioDAO {
                 transactionRealm.copyToRealmOrUpdate(Usuario, ImportFlag.CHECK_SAME_VALUES_BEFORE_SET);
                 Log.v("QUICKSTART", "SE HIZO UPDATE CON EXITOOOO ");
             });
-
             realm.close();
             return true;
         }
         else
             errorConexion();
-
         return false;
     }
 
     // Devuelve un objeto usuario basado en el correo electronico
     public usuario readUsuarioPorCorreo(String correo) {
         realm = conectarBD.conseguirUsuarioMongoDB();
-        //realm = conectarBD.ConectarCorreoMongoDB(correo, contrasena);
 
         if(realm!=null){
             usuario task = realm.where(usuario.class).equalTo("correoElectronico", correo)

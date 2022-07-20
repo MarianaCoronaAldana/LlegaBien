@@ -126,12 +126,12 @@
     <string name="indicacionesBtn_detallesNombre">Indicaciones</string>
 
     <!-- Indicaciones -->
-    <string name="puntoPartida_indicaciones">Tu ubicación</string>
-    <string name="puntoDestino_indicaciones">Calle Paseo de los Abetos 3...</string>
+    <string name="puntoPartida_indicaciones">Escribe tu punto de partida…</string>
+    <string name="puntoDestino_indicaciones">Escribe tu punto de destino…</string>
     <string name="tiempoBiciBtn_indicaciones">38 min</string>
     <string name="tiempoCaminandoBtn_indicaciones">1hr 30 min</string>
     <string name="tiempo_indicaciones">18 min</string>
-    <string name="km_indicaciones">(2.1km)</string>
+    <string name="km_indicaciones">(2.1km).</string>
     <string name="descripcionRuta_indicaciones">Rutas más segura debido a la inicidencia delictiva.</string>
     <string name="comenzarBtn_indicaciones">Comenzar</string>
 
@@ -148,7 +148,7 @@
 
     <!-- Notificacion bateria baja. -->
     <string name="advertencia_dialogNotificarBateria">ADVERTENCIA</string>
-    <string name="contenido_dialogNotificarBateria">Su dispositivo móvil tiene menos del 20% de bateria. Se notificará sus contactos de emergencia.</string>
+    <string name="contenido_dialogNotificarBateria">Su dispositivo móvil tiene menos del 20% de bateria. La app notificará a sus contactos de emergencia.</string>
     <string name="enterado_dialogNotificarBateria">Enterado</string>
 
     <!-- Permisos. -->

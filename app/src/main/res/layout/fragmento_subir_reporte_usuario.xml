@@ -58,6 +58,11 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.8" />
 
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView_permisos"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/consLyt_titulo_subirReporteUsuario"
             style="@style/ConsLytTituloBlanco"

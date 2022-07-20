@@ -3,10 +3,10 @@ package com.example.llegabien.frontend.usuario.fragmento;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ES_ADMIN;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,6 @@ import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Encriptar;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
-import com.example.llegabien.backend.usuario.UsuarioDAO;
 import com.example.llegabien.backend.usuario.UsuarioFirebaseVerificaciones;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
@@ -31,8 +30,6 @@ import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.backend.usuario.UsuarioBD_Validaciones;
 
 import java.util.Locale;
-
-import io.realm.RealmResults;
 
 public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickListener{
     private RadioButton mBtnRecordarSesion;
@@ -74,7 +71,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
 
         isActivateRadioButton = mBtnRecordarSesion.isChecked(); //DESACTIVADO
 
-        mConectarBD.ConectarAnonimoMongoDB();
+        mConectarBD.conectarAnonimoMongoDB();
 
         return root;
     }
@@ -138,18 +135,12 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
         }, mEditTxtCorreo.getText().toString(), mEditTxtContrasena.getText().toString());
     }
 
+
     private void verificarCorreoContrasena() {
-        if(mValidar.verificarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContrasena(mEditTxtContrasena.getText().toString()), "El correo electronico o la contraseña son incorrectos")) {
-            usuario Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_USUARIO, usuario.class);
-            if(mValidar.validarAdmin(Usuario.getCorreoElectronico(), Usuario.getContrasena())) {
-                Preferences.savePreferenceBoolean(this.requireActivity(), true, PREFERENCE_ES_ADMIN);
-                startActivity(new Intent(requireActivity(), ActivityMap.class));
-            }
-            else {
-                Preferences.savePreferenceBoolean(this.requireActivity(), false, PREFERENCE_ES_ADMIN);
-                //REPONER//
-                //para verificar que el usuario haya validado su cuenta de correo
-                //verificarCorreoVerificado();
+        if(mValidar.verificarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContrasena(mEditTxtContrasena.getText().toString()), "El correo electronico o la contraseña son incorrectos. ")){
+            usuario usuario = Preferences.getSavedObjectFromPreference(this.requireContext(), PREFERENCE_USUARIO, com.example.llegabien.backend.usuario.usuario.class);
+            if (usuario!= null) {
+                mValidar.validarAdmin(usuario);
                 startActivity(new Intent(requireActivity(), ActivityMap.class));
             }
         }

@@ -44,7 +44,7 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
     private ConstraintLayout mBtnAceptar,  mBtnCambiarContra;
     private EditText mEditTxtNombres, mEditTxtApellidos, mEditTxtFechaNacimiento, mEditTxtNumTelefonico, mEditTxtCorreo, mEditTxtCountryCode;
 
-    usuario Usuario;
+    private usuario Usuario;
 
     public FragmentoEditarPerfilUsuario() {
         // Required empty public constructor
@@ -74,7 +74,7 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
         mBtnEliminarCuenta.setOnClickListener(this);
         mBtnRegresar.setOnClickListener(this);
 
-        setDatosUsuario();
+        setDatosDelUsuario();
         return root;
     }
 
@@ -92,7 +92,7 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
         }
         else if (view.getId() == R.id.button2_aceptar_editarPerfil) {
             if (validarAllInputs())
-                updateUser();
+                actualizarInfoUsuario();
         }
         else if (view.getId() == R.id.button_eliminarCuenta_editarPerfil) {
             deleteUsuario();
@@ -146,7 +146,7 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
     }
 
     // Escribir dentro de las EditText los datos previos del usuario
-    private void setDatosUsuario() {
+    private void setDatosDelUsuario() {
         String countryCode, numTel = null;
         Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_USUARIO, usuario.class);
         if (Usuario != null) {
@@ -166,7 +166,7 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
 
     // Actualizar al objeto user dentro de Android Studio con lo nuevos datos
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void updateUser() {
+    private void actualizarInfoUsuario() {
         Usuario.setNombre(mEditTxtNombres.getText().toString());
         Usuario.setApellidos(mEditTxtApellidos.getText().toString());
         Usuario.setCorreoElectronico(mEditTxtCorreo.getText().toString());

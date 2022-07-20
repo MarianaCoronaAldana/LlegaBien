@@ -8,7 +8,7 @@
     tools:context=".frontend.favoritos.activity.ActivityFavoritos">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_barraNavegacion"
+        android:id="@+id/guideline_barraNavegacion_favoritos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -19,7 +19,7 @@
         android:background="@color/morado_oscuro"
         android:layout_height="0dp"
         android:layout_width="match_parent"
-        app:layout_constraintBottom_toBottomOf="@id/guideline_barraNavegacion"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_barraNavegacion_favoritos"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.Guideline
@@ -159,6 +159,18 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView_permisos"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView_botonEmergencia"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_barraNavegacion_favoritos"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <View
         android:id="@+id/view_elevation"
         android:layout_height="0dp"
@@ -168,7 +180,7 @@
         android:elevation="20dp"
         android:name="com.example.llegabien.frontend.app.fragmento.FragmentoBarraNavegacion"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline_barraNavegacion" />
+        app:layout_constraintTop_toTopOf="@id/guideline_barraNavegacion_favoritos" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView_barraNavegacion"
@@ -177,7 +189,7 @@
         android:elevation="30dp"
         android:name="com.example.llegabien.frontend.app.fragmento.FragmentoBarraNavegacion"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline_barraNavegacion"/>
+        app:layout_constraintTop_toTopOf="@id/guideline_barraNavegacion_favoritos"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,6 +27,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView_permisos"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView_botonEmergencia"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_barraNavegacion_editarLeerContactos"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <View
         android:id="@+id/view_elevation"
         android:layout_height="0dp"

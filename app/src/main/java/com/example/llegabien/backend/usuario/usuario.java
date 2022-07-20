@@ -37,17 +37,6 @@ public class usuario extends RealmObject {
     public usuario() {
     }
 
-    public usuario(ObjectId _id, String apellidos, RealmList<usuario_contacto> contacto, String contrasena, String correoElectronico, Date fNacimiento, String nombre, String telCelular) {
-        this._id = _id;
-        this.apellidos = apellidos;
-        this.contacto = contacto;
-        this.contrasena = contrasena;
-        this.correoElectronico = correoElectronico;
-        this.fNacimiento = fNacimiento;
-        this.nombre = nombre;
-        this.telCelular = telCelular;
-    }
-
     // Standard getters & setters
     public ObjectId get_id() { return _id; }
     public void set_id(ObjectId _id) { this._id = _id; }
@@ -75,5 +64,8 @@ public class usuario extends RealmObject {
 
     public String getTelCelular() { return telCelular; }
     public void setTelCelular(String telCelular) { this.telCelular = telCelular; }
+
+    public Boolean getStatus() { return status; }
+    public void setStatus(Boolean status) { this.status = status; }
 
 }

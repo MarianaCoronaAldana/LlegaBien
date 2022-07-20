@@ -34,11 +34,11 @@ public class Poligono {
 
     public void getColonias(GoogleMap googleMap){
         String coordenadasPoligono, seguridad;
-        RealmResults<ubicacion> mResultadosColonias = mUbicacionDAO.obetenerColonias();
-        if (mResultadosColonias != null) {
-            for (int i = 0; i < mResultadosColonias.size(); i++) {
-                coordenadasPoligono = mResultadosColonias.get(i).getCoordenadas_string();
-                seguridad = mResultadosColonias.get(i).getSeguridad();
+        List<ubicacion> listaColonias = mUbicacionDAO.obtenerColonias();
+        if (listaColonias != null) {
+            for (int i = 0; i < listaColonias.size(); i++) {
+                coordenadasPoligono = listaColonias.get(i).getCoordenadas_string();
+                seguridad = listaColonias.get(i).getSeguridad();
                 if (coordenadasPoligono != null) {
                     mostrarPoligono(getCoordenadasFromString(coordenadasPoligono), googleMap, seguridad);
                 }
@@ -141,6 +141,19 @@ public class Poligono {
 
     public ubicacion isUbicacionEnPoligono (RealmResults<ubicacion> resultadosUbicaciones, double latitude, double longitude){
         String coordenadas;
+
+        for (int i = 0; i < resultadosUbicaciones.size(); i++) {
+            coordenadas = resultadosUbicaciones.get(i).getCoordenadas_string();
+            if(PolyUtil.containsLocation(new LatLng(latitude, longitude), getCoordenadasFromString(coordenadas), true))
+                return resultadosUbicaciones.get(i);
+        }
+
+        return null;
+    }
+
+    public ubicacion isUbicacionEnPoligono(List<ubicacion> resultadosUbicaciones, double latitude, double longitude){
+        String coordenadas;
+
         for (int i = 0; i < resultadosUbicaciones.size(); i++) {
             coordenadas = resultadosUbicaciones.get(i).getCoordenadas_string();
             if(PolyUtil.containsLocation(new LatLng(latitude, longitude), getCoordenadasFromString(coordenadas), true))

@@ -3,6 +3,7 @@ package com.example.llegabien.frontend.mapa.activity;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +21,6 @@ import com.example.llegabien.backend.mapa.poligonos.Poligono;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDAO;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
-import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
 import com.example.llegabien.backend.notificacion.Notificacion;
 import com.example.llegabien.backend.ruta.directions.rutaDirections;
 import com.example.llegabien.backend.ruta.realm.ruta;
@@ -30,6 +30,7 @@ import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.databinding.ActivityMapsBinding;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoBuscarLugar;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoLugarSeleccionado;
+import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.rutas.directionhelpers.FetchURL;
 import com.example.llegabien.frontend.rutas.directionhelpers.TaskLoadedCallback;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -68,10 +69,35 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     private Polygon mPolygonAnterior;
     private Marker mMarkerAnterior;
     private LatLng mLatLngMarkerFavorito = null;
+    private Mapa mMapa;
+
+    public int getColorAnterior() {
+        return mColorAnterior;
+    }
+
     private int mColorAnterior;
-    private Polyline currentPolyline;
 
     private MarkerOptions place1, place2;
+
+    public GoogleMap getGoogleMap() {
+        return mGoogleMap;
+    }
+
+    public Location getLastKnownLocation() {
+        return mLastKnownLocation;
+    }
+
+    public Polygon getPolygonAnterior() {
+        return mPolygonAnterior;
+    }
+
+    public Marker getMarkerAnterior() {
+        return mMarkerAnterior;
+    }
+
+    public void setMarkerAnterior(Marker mMarkerAnterior) {
+        this.mMarkerAnterior = mMarkerAnterior;
+    }
 
     public void setLatLngMarkerFavorito(LatLng latLngMarkerFavorito) {
         mLatLngMarkerFavorito = latLngMarkerFavorito;
@@ -80,6 +106,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mMapa = new Mapa(this);
 
         // Para saber si la actividad anterior es la de favoritos y abrir el correspondiente fragmento.
         String activityAnterior = getIntent().getStringExtra("ACTIVITY_ANTERIOR");
@@ -87,11 +114,11 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
             if (activityAnterior.equals("FAVORITOS")) {
                 FragmentoLugarSeleccionado fragmentoLugarSeleccionado = new FragmentoLugarSeleccionado(activityAnterior);
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.add(R.id.fragmentContainerView1_fragemntoBuscarLugar_activityMaps, fragmentoLugarSeleccionado).commit();
+                fragmentTransaction.add(R.id.fragmentContainerView_fragmentoLugares_activityMaps, fragmentoLugarSeleccionado).commit();
             } else
-                abrirFragmentoBuscarLugar();
+                mMapa.abrirFragmentoBuscarLugar();
         } else
-            abrirFragmentoBuscarLugar();
+            mMapa.abrirFragmentoBuscarLugar();
 
         //wiring up
         com.example.llegabien.databinding.ActivityMapsBinding binding = ActivityMapsBinding.inflate(getLayoutInflater());
@@ -133,7 +160,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
 
     //FUNCIONES LISTENERS//
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mGoogleMap = googleMap;
@@ -206,8 +233,8 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onPolygonClick(@NonNull Polygon polygon) {
-        removerPolygonAnterior();
-        removerMarkerAnterior();
+        mMapa.removerPolygonAnterior();
+        mMapa.removerMarkerAnterior();
 
         mPolygonAnterior = polygon;
         mColorAnterior = mPolygonAnterior.getFillColor();
@@ -217,14 +244,14 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         LatLng centroPoligono = poligono.getCentroPoligono(polygon);
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(centroPoligono, 16));
 
-        abrirFragmentoLugarSeleccionado(false, null, centroPoligono);
+        mMapa.abrirFragmentoLugarSeleccionado(false, null, centroPoligono);
     }
 
     @Override
     public void onBackPressed() {
-        FragmentoLugarSeleccionado fragmentoLugarSeleccionado = (FragmentoLugarSeleccionado) getSupportFragmentManager().findFragmentByTag("FragmentoLugarSeleccionado");
-        if (fragmentoLugarSeleccionado != null && fragmentoLugarSeleccionado.isVisible()) {
-            abrirFragmentoBuscarLugar();
+        FragmentoBuscarLugar fragmentoBuscarLugar = (FragmentoBuscarLugar) getSupportFragmentManager().findFragmentByTag("FragmentoBuscarLugar");
+        if (fragmentoBuscarLugar == null) {
+            mMapa.abrirFragmentoBuscarLugar();
         }
     }
 
@@ -253,7 +280,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         mUbicacionDispositivo.getUbicacionDelDispositivo((isUbicacionObtenida, ubicacionObtenida) -> {
             if (isUbicacionObtenida) {
                 mLastKnownLocation = ubicacionObtenida;
-                centrarMapa();
+                mMapa.centrarMapa();
             } else {
                 LatLng defaultLocation = new LatLng(20.703027011977582, -103.3884804);
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
@@ -262,39 +289,14 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         }, mPermisos.getLocationPermissionGranted(), fusedLocationProviderClient, this);
     }
 
-    // Para mostrar la ubicación que se buscó en el fragmento "BuscarLugar" o "LugarSeleccionado"
-    public void mostrarUbicacionBuscada(boolean isUbicacionBuscadaEnBD, boolean isFragmentoBuscarLugar, LatLng ubicacionBuscada, String ubicacionBuscadaString) {
-        removerPolygonAnterior();
-        removerMarkerAnterior();
-
-        // Para mostrar la ubicacion buscada en el mapa con un marcador.
-        mMarkerAnterior = mGoogleMap.addMarker((new MarkerOptions().position(ubicacionBuscada)));
-
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionBuscada, DEFAULT_ZOOM));
-
-        // Para verificar que si se encontró la ubicación buscada en la BD.
-        if (isUbicacionBuscadaEnBD) {
-            // Para abrir el fragmento "LugarSeleccionado" cuando se obtenga un resultado.
-            abrirFragmentoLugarSeleccionado(true, ubicacionBuscadaString, ubicacionBuscada);
-        } else {
-            // Si no se encuentra la ubicacion el BD, se muestra el fragmento "BuscarLugar".
-            // Se verifica que el fragmento mostrado no sea "BuscarLugar".
-            if (!isFragmentoBuscarLugar) {
-                FragmentoBuscarLugar fragmentoBuscarLugar = new FragmentoBuscarLugar();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragmentContainerView1_fragemntoBuscarLugar_activityMaps, fragmentoBuscarLugar).commit();
-            }
-
-        }
-    }
-
     public void mostrarFavorito(LatLng ubicacionFavorito) {
-        removerPolygonAnterior();
-        removerMarkerAnterior();
+        mMapa.removerPolygonAnterior();
+        mMapa.removerMarkerAnterior();
 
         // Para mostrar la ubicacion del objecto favorito en el mapa con un marcador.
         mMarkerAnterior = mGoogleMap.addMarker((new MarkerOptions().position(ubicacionFavorito)));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionFavorito, DEFAULT_ZOOM));
+
     }
 
     // Para mostrar los poligonos de todas las colonias al momento que se inicia el mapa.
@@ -306,50 +308,6 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
 
         // listeners
         mGoogleMap.setOnPolygonClickListener(this);
-    }
-
-    // Para abrir el fragmento "LugarSeleccionado".
-    private void abrirFragmentoLugarSeleccionado(boolean hasUbicacionBuscada, String address, LatLng coordenadasParaFavorito) {
-        FragmentoLugarSeleccionado fragmentoLugarSeleccionado = new FragmentoLugarSeleccionado(null);
-
-        // Para pasar al fragmento "LugarSeleccionado" las coordenadas que serviran para guardar el lugar en favoritos.
-        fragmentoLugarSeleccionado.setCoordenadasParaFavorito(coordenadasParaFavorito);
-
-        // Para verificar que si se buscó un lugar o si se hizo click en un poligono.
-        if (hasUbicacionBuscada) {
-            fragmentoLugarSeleccionado.setUbicacionBuscada(address);
-        }
-
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContainerView1_fragemntoBuscarLugar_activityMaps, fragmentoLugarSeleccionado, "FragmentoLugarSeleccionado").commit();
-    }
-
-    // Para abrir fragmento "BuscarLugar".
-    public void abrirFragmentoBuscarLugar() {
-        FragmentoBuscarLugar fragmentoBuscarLugar = new FragmentoBuscarLugar();
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContainerView1_fragemntoBuscarLugar_activityMaps, fragmentoBuscarLugar).commit();
-        removerPolygonAnterior();
-        removerMarkerAnterior();
-    }
-
-    // Para centrar en mapa la ubicación actual del disposistivo.
-    public void centrarMapa() {
-        if (mLastKnownLocation != null)
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
-
-    }
-
-    // Para cambiar el color del poligono anterior que se seleccionó.
-    public void removerPolygonAnterior() {
-        if (mPolygonAnterior != null)
-            mPolygonAnterior.setFillColor(mColorAnterior);
-    }
-
-    // Para remover el marcador anterior que se seleccionó.
-    public void removerMarkerAnterior() {
-        if (mMarkerAnterior != null)
-            mMarkerAnterior.remove();
     }
 
     // Para actualizar los datos de usuario cuando se llegue a ésta actividad
@@ -387,7 +345,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onTaskDone(Object... values) {
-        UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
+        UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(this);
 
         rutaDirections directionsObtenidas =  (rutaDirections) values[0];
 

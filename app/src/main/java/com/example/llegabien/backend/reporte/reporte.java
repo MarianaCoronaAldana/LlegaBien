@@ -1,12 +1,11 @@
 package com.example.llegabien.backend.reporte;
 
-import org.bson.types.ObjectId;
-
-import java.util.Date;
-
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
+
+import java.util.Date;
+import org.bson.types.ObjectId;
 
 public class reporte extends RealmObject {
     @PrimaryKey
@@ -21,6 +20,8 @@ public class reporte extends RealmObject {
 
     private String autor;
 
+    private Integer cantidad;
+
     private String comentarios;
 
     private Date fecha;
@@ -30,6 +31,9 @@ public class reporte extends RealmObject {
     private String tipoDelito;
 
     private String ubicacion;
+
+    public reporte(){}
+
 
     // Standard getters & setters
     public ObjectId get_id() { return _id; }
@@ -46,6 +50,9 @@ public class reporte extends RealmObject {
 
     public String getAutor() { return autor; }
     public void setAutor(String autor) { this.autor = autor; }
+
+    public Integer getCantidad() { return cantidad; }
+    public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }
 
     public String getComentarios() { return comentarios; }
     public void setComentarios(String comentarios) { this.comentarios = comentarios; }

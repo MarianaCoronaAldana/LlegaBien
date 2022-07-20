@@ -95,9 +95,6 @@ public class FragmentoRestablecerContrasena3 extends Fragment implements View.On
                     .addToBackStack(null);
             fragmentTransaction.add(R.id.fragment_pagina_principal, fragmentoIniciarSesion1).commit();
         }
-
-
-
     }
 
     private boolean validarAllInputs() {

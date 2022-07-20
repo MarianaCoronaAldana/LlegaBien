@@ -37,6 +37,7 @@ import com.example.llegabien.frontend.usuario.dialog.DialogTimePicker;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.text.Normalizer;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,6 +45,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 
 import io.realm.RealmResults;
 
@@ -103,7 +105,8 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
         inicializarDatos();
 
         // Para obtener ubicacion actual.
-        obtenerUbicacionActual();
+        UbicacionDispositivo ubicacionDispositivo = new UbicacionDispositivo();
+        ubicacionDispositivo.mostrarStringUbicacionActual(requireActivity(),mBtnUbicacion, this);
 
         // Para inicializar valores del spinner.
         setSpinner();
@@ -158,24 +161,6 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
         mEditTxtNombre.setClickable(false);
     }
 
-    private void obtenerUbicacionActual() {
-        Permisos permisos = new Permisos();
-        permisos.getPermisoUbicacion(requireActivity(), false);
-        if (permisos.getLocationPermissionGranted()) {
-            FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
-            UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
-            mUbicacionDispositivo.getUbicacionDelDispositivo((isUbicacionObtenida, ubicacionObtenida) -> {
-                if (isUbicacionObtenida) {
-                    UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
-                    String Ubicacion = ubicacionGeodicacion.degeocodificarUbiciacion(requireActivity(),
-                            ubicacionObtenida.getLatitude(), ubicacionObtenida.getLongitude());
-
-                    mBtnUbicacion.setText(Ubicacion);
-                }
-            }, true, fusedLocationProviderClient, requireActivity());
-        }
-    }
-
     //Funcion para crear objeto reporte e inicializarlo con los datos obtenidos
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void inicializarReporte() {
@@ -184,12 +169,15 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
         Reporte.setIdUsuario(Usuario.get_id());
         Reporte.setComentarios(mEditTxtComentariosDelito.getText().toString());
         Reporte.setUbicacion(mBtnUbicacion.getText().toString());
-        Reporte.setTipoDelito(mSpinnerCualDelito.getSelectedItem().toString());
-        Reporte.setFechaReporte(convertToDateViaInstant(LocalDateTime.now()));
+        String delitoNormalizado = Normalizer.normalize(mSpinnerCualDelito.getSelectedItem().toString(), Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toUpperCase(Locale.ROOT);
+        Reporte.setTipoDelito(delitoNormalizado);
+        Reporte.setCantidad(1);
+        Reporte.setFechaReporte(java.util.Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
 
         LocalDate localDate = LocalDate.parse(mEditTxtFechaDelito.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         LocalTime localTime = LocalTime.parse(mEditTxtHoraDelito.getText(), DateTimeFormatter.ofPattern("HH:mm"));
-        Reporte.setFecha(convertToDateViaInstant(localDate.atTime(localTime)));
+        Reporte.setFecha(java.util.Date.from(localDate.atTime(localTime).atZone(ZoneId.systemDefault()).toInstant()));
 
 
         Log.v("QUICKSTART", "Fecha y hora delito: " + Reporte.getFechaReporte());
@@ -204,19 +192,22 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
         RealmResults<reporte> reportes = reporte_DAO.obtenerReportesPorUsuario(Reporte);
         int reportesAnteriores = 0;
         Duration diff;
-        long diffmINUTTES, diffHoras, diffDias;
+        long diffMinutos, diffHoras, diffDias;
 
         for (int i = 0; i < reportes.size(); i++) {
             if (reportesAnteriores > 9) {
                 Toast.makeText(this.getContext(), "Has subido demasiados reportes esta semana", Toast.LENGTH_LONG).show();
                 return false;
             }
-            diff = Duration.between(convertToLocalDateTimeViaInstant(reportes.get(i).getFechaReporte()), convertToLocalDateTimeViaInstant(Reporte.getFechaReporte()));
+            Date fechaReporte = reportes.get(i).getFechaReporte();
+            Date fechaReporteActual = Reporte.getFechaReporte();
+            diff = Duration.between(fechaReporte.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(),
+                                        fechaReporteActual.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
             diffHoras = diff.toHours();
             diffDias = diff.toDays();
 
-            diffmINUTTES = diff.toMinutes();
-            Log.v("QUICKSTART", "diferencia minutos: " + diffmINUTTES + ", REPORTESanteriores: " + reportesAnteriores);
+            diffMinutos = diff.toMinutes();
+            Log.v("QUICKSTART", "diferencia minutos: " + diffMinutos + ", REPORTESanteriores: " + reportesAnteriores);
 
             if (diffHoras < 2) {
                 Toast.makeText(this.getContext(), "Has subido un reporte muy recientemente", Toast.LENGTH_LONG).show();
@@ -228,26 +219,12 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
         return true;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    Date convertToDateViaInstant(LocalDateTime dateToConvert) {
-        return java.util.Date
-                .from(dateToConvert.atZone(ZoneId.systemDefault())
-                        .toInstant());
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
-        return dateToConvert.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
-    }
-
     private void setSpinner() {
-        String[] delitos = {"Homicidio", "Secuestro",
+        String[] delitos = {"Homicidio doloso", "Secuestro",
                 "Extorsión", "Acoso sexual",
-                "Robo", "Lesiones",
+                "Robo", "Lesiones dolosas",
                 "Abuso sexual", "Abuso de autoridad",
-                "Vandalismo", "Tiroteo"};
+                "Vandalismo", "Tiroteo", "Violencia familiar","Feminicidio","Fraude","Portación de arma u objeto prohibido"};
 
         // Create the instance of ArrayAdapter having the list of courses
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(requireActivity(), R.layout.spinner_item, delitos);

@@ -1,12 +1,20 @@
 package com.example.llegabien.backend.mapa.ubicacion;
 
 import android.app.Activity;
+import android.content.Context;
 import android.location.Location;
 import android.util.Log;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.llegabien.R;
+import com.example.llegabien.backend.app.Permisos;
+import com.example.llegabien.frontend.app.fragmento.FragmentoPermisos;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -41,6 +49,28 @@ public class UbicacionDispositivo{
 
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage(), e);
+        }
+    }
+
+    public void mostrarStringUbicacionActual(Activity activity, Button button, Fragment fragment) {
+        Permisos permisos = new Permisos();
+        permisos.getPermisoUbicacion(activity, false);
+        if (permisos.getLocationPermissionGranted()) {
+            FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity);
+
+            UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
+            mUbicacionDispositivo.getUbicacionDelDispositivo((isUbicacionObtenida, ubicacionObtenida) -> {
+                if (isUbicacionObtenida) {
+                    UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(activity);
+                    String Ubicacion = ubicacionGeodicacion.degeocodificarUbiciacion(ubicacionObtenida.getLatitude(),
+                            ubicacionObtenida.getLongitude());
+                    button.setText(Ubicacion);
+                }
+            }, true, fusedLocationProviderClient, activity);
+        }else {
+            FragmentTransaction fragmentTransaction = fragment.requireActivity().getSupportFragmentManager().beginTransaction();
+            FragmentoPermisos fragmentoPermisos = new FragmentoPermisos();
+            fragmentTransaction.add(R.id.fragmentContainerView_reportes, fragmentoPermisos).commit();
         }
     }
 }
