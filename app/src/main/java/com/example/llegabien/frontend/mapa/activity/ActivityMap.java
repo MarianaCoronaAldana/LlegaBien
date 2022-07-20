@@ -20,7 +20,6 @@ import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.poligonos.Poligono;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
-import com.example.llegabien.backend.notificacion.Notificacion;
 import com.example.llegabien.backend.ruta.directions.rutaDirections;
 import com.example.llegabien.backend.usuario.UsuarioDAO;
 import com.example.llegabien.backend.usuario.usuario;
@@ -64,10 +63,6 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         return mColorAnterior;
     }
 
-    public void setColorAnterior(int mColorAnterior) {
-        this.mColorAnterior = mColorAnterior;
-    }
-
     private int mColorAnterior;
 
     private MarkerOptions place1, place2;
@@ -76,32 +71,12 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         return mGoogleMap;
     }
 
-    public void setGoogleMap(GoogleMap mGoogleMap) {
-        this.mGoogleMap = mGoogleMap;
-    }
-
-    public Permisos getPermisos() {
-        return mPermisos;
-    }
-
-    public void setPermisos(Permisos mPermisos) {
-        this.mPermisos = mPermisos;
-    }
-
     public Location getLastKnownLocation() {
         return mLastKnownLocation;
     }
 
-    public void setLastKnownLocation(Location mLastKnownLocation) {
-        this.mLastKnownLocation = mLastKnownLocation;
-    }
-
     public Polygon getPolygonAnterior() {
         return mPolygonAnterior;
-    }
-
-    public void setPolygonAnterior(Polygon mPolygonAnterior) {
-        this.mPolygonAnterior = mPolygonAnterior;
     }
 
     public Marker getMarkerAnterior() {
@@ -160,8 +135,6 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     @Override
     public void onResume() {
         super.onResume();
-        //Se verifica el nivel de bateria del telefono celular
-        Notificacion bateria = new Notificacion(getApplicationContext(), this);
 
         if (mGoogleMap != null) {
             //Para activar My Location layer

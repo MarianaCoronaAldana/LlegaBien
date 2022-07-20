@@ -10,9 +10,9 @@
     <color name="rojo_poligono">#7FFF0000</color>
     <color name="amarillo_poligono">#7FF5EC0D</color>
     <color name="verde_poligono">#9F85BB78</color>
-    <color name="rojo_oscuro_poligono">#7FFF0000</color>
-    <color name="amarillo_oscuro_poligono">#7FF5EC0D</color>
-    <color name="verde_oscuro_poligono">#CF85BB78</color>
+    <color name="rojo_oscuro_poligono">#AFFF0000</color>
+    <color name="amarillo_oscuro_poligono">#EFF5EC0D</color>
+    <color name="verde_oscuro_poligono">#CF4E8A40</color>
     <color name="rojo_icon">#CFFF0000</color>
     <color name="amarillo_icon">#FFEB3B</color>
     <color name="verde_icon">#379422</color>
