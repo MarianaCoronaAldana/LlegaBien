@@ -3,7 +3,6 @@ package com.example.llegabien.frontend.mapa.activity;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,8 +17,10 @@ import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Permisos;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.poligonos.Poligono;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionDAO;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
+import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
 import com.example.llegabien.backend.notificacion.Notificacion;
 import com.example.llegabien.backend.ruta.directions.rutaDirections;
 import com.example.llegabien.backend.ruta.realm.ruta;
@@ -45,11 +46,16 @@ import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.Places;
+import com.google.maps.android.SphericalUtil;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import io.realm.RealmResults;
 
 
 public class ActivityMap extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnPolygonClickListener, TaskLoadedCallback {
@@ -157,8 +163,8 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         //20.624252804065094, -103.40912012122419
         //20.622204544200045, -103.41392667663345
 
-        place1 = new MarkerOptions().position(new LatLng(20.6674235372583, -103.31179439549422)).title("Location 1");
-        place2 = new MarkerOptions().position(new LatLng(20.67097726320246, -103.31441214692855)).title("Location 2");
+        place1 = new MarkerOptions().position(new LatLng(20.624252804065094, -103.40912012122419)).title("Location 1");
+        place2 = new MarkerOptions().position(new LatLng(20.622204544200045, -103.41392667663345)).title("Location 2");
         mGoogleMap.addMarker(place1);
         mGoogleMap.addMarker(place2);
 
@@ -395,53 +401,91 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         List<String> rutaPuntosMediosNombres = new ArrayList();
         List<List<String>> rutasPorPuntosMediosNombres = new ArrayList();
 
-        if (currentPolyline != null)
-            currentPolyline.remove();
+        // PARA OBTENER LOS PUNTOS MEDIOS Y LAS DISTANCIAS
+        HashMap<String, Integer> rutaDistancias = new HashMap<>();
+        List<HashMap<String, Integer>> rutasDistancias = new ArrayList<>();
+        int distance = 0;
 
-        List<Integer> colores = new ArrayList<>();
-        colores.add(Color.BLUE);
-        colores.add(Color.WHITE);
-        colores.add(Color.GREEN);
-        int color=0;
-
+        // PARA OBTENER PUNTOS MEDIO Y SUS DISTANCIAS
         // Recorre rutas
         for (int i=0; i<rutasObtenidas.size(); i++){
             List<LatLng> points = rutasObtenidas.get(i).getPoints();
+            rutaDistancias.clear();
             // Recorre los puntos de una ruta
             for (int o=0; o<points.size(); o++) {
-                if(color>2)
-                    color=0;
-
                 rutaPuntosMedios = new ArrayList<>();
                 rutaPuntosMediosNombres = new ArrayList<>();
                 PolylineOptions lineOptions = new PolylineOptions();
                 lineOptions.add(points.get(o));
-
                 if(o+1<points.size()) {
                     lineOptions.add(points.get(o + 1));
-
-                    //AQUI SE DEBEN DE TOMAR LOS PUNTOS Y SABER SU SEGURIDAD, EN BASE A ESO PONERLE EL COLOR A LA POLYLINE
-                    MarkerOptions center = new MarkerOptions().position(LatLngBounds.builder().include(points.get(o)).include(points.get(o+1)).build().getCenter()).title("Location center " + i+","+o);
-                    mGoogleMap.addMarker(center);
-                    rutaPuntosMedios.add(center.getPosition());
-                    rutaPuntosMediosNombres.add(ubicacionGeodicacion.degeocodificarUbiciacion(getApplicationContext(), center.getPosition().latitude, center.getPosition().longitude));
-                    Log.v("QUICKSTART", "Nombre calle: " + ubicacionGeodicacion.degeocodificarUbiciacion(getApplicationContext(), center.getPosition().latitude, center.getPosition().longitude));
+                    LatLng centro = LatLngBounds.builder().include(points.get(o)).include(points.get(o+1)).build().getCenter();
+                    String nombreCalle = ubicacionGeodicacion.degeocodificarUbiciacionSinNumero(getApplicationContext(),  centro.latitude, centro.longitude);
+                    //Log.v("QUICKSTART", "Nombre calle: " + ubicacionGeodicacion.degeocodificarUbiciacion(getApplicationContext(), centro.latitude, centro.longitude));
+                    Log.v("QUICKSTART", "Nombre calle 2: " + nombreCalle);
+                    distance = (int) SphericalUtil.computeDistanceBetween(points.get(o), points.get(o+1));
+                    if (!rutaDistancias.containsKey(nombreCalle))
+                        rutaDistancias.put(nombreCalle, distance);
+                     else
+                        rutaDistancias.replace(nombreCalle, distance+rutaDistancias.get(nombreCalle));
+                    //Log.v("QUICKSTART", "Distancia " + distance);
                 }
-
-                mGoogleMap.addPolyline(lineOptions).setColor(colores.get(color));
-
+                mGoogleMap.addPolyline(lineOptions);
                 ruta.add(lineOptions);
-                color++;
             }
+            rutaDistancias.containsValue(0);
+
+            for (Map.Entry<String, Integer> hashMap : rutaDistancias.entrySet()) {
+                System.out.println("Key: " + hashMap.getKey()
+                        + " Value: " + hashMap.getValue());
+
+                if(hashMap.getValue().equals(0))
+                    rutaDistancias.remove(hashMap.getKey());
+            }
+
             rutas.add(ruta);
             rutasPorPuntosMedios.add(rutaPuntosMedios);
             rutasPorPuntosMediosNombres.add(rutaPuntosMediosNombres);
+            rutasDistancias.add(rutaDistancias);
             Log.v("QUICKSTART", "DISTANCIA, TIEMPO: " + directionsObtenidas.getDistancia().get(i) + " , " + directionsObtenidas.getDuracion().get(i));
-            //mGoogleMap.addPolyline(routes.get(i)).setColor(Color.BLUE);
+           // Log.v("QUICKSTART", "HASHMAP " + rutaDistancias);
+            Log.v("QUICKSTART", "HASHMAP " + rutasDistancias.get(i));
         }
         directionsObtenidas.setRutasEnPolylines(rutas);
         directionsObtenidas.setRutasPuntosMedios(rutasPorPuntosMedios);
         directionsObtenidas.setRutasNombresPuntosMedios(rutasPorPuntosMediosNombres);
+
+        // PARA VERIFICAR QUE EXISTAN LAS COLONIAS DE CADA RUTA
+        // Recorre rutas
+        for (int y=0; y<rutasDistancias.size(); y++){
+            /*List<String> aBorrar = new ArrayList();
+            for (Map.Entry<String, Integer> hashMap : rutasDistancias.get(i).entrySet()) {
+                System.out.println("Key: " + hashMap.getKey()
+                        + " Value: " + hashMap.getValue());
+
+                if(hashMap.getValue().equals(0))
+                    aBorrar.add(hashMap.getKey());
+            }
+
+            for (int o = 0; o<aBorrar.size(); o++){
+                rutasDistancias.get(i).remove(aBorrar.get(o));
+            }*/
+
+            Log.v("QUICKSTART", "HASHMAP " + rutasDistancias.get(y));
+/*
+            UbicacionDAO mUbicacionDAO = new UbicacionDAO(this);
+            RealmResults<ubicacion> mResultadosColonias = mUbicacionDAO.obetenerColonias();
+            if (mResultadosColonias != null) {
+                for (int o = 0; o < mResultadosColonias.size(); o++) {
+                    coordenadasPoligono = mResultadosColonias.get(o).getCoordenadas_string();
+                    seguridad = mResultadosColonias.get(o).getSeguridad();
+                    if (coordenadasPoligono != null) {
+                        mostrarPoligono(getCoordenadasFromString(coordenadasPoligono), googleMap, seguridad);
+                    }
+                }
+            }*/
+        }
+
     }
 
     //TODO: HASTA AQUI
