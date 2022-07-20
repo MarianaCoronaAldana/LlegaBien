@@ -81,7 +81,7 @@ public class FragmentoRestablecerContrasena3 extends Fragment implements View.On
         }
 
         UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
-        if (usuarioDAO.updateUsuario(Usuario)) {
+        if (usuarioDAO.updateUser(Usuario)) {
             Toast.makeText(requireContext(), "Contraseña cambiada exitosamente.", Toast.LENGTH_SHORT).show();
 
             mBtnAceptar.setEnabled(false);
@@ -95,9 +95,6 @@ public class FragmentoRestablecerContrasena3 extends Fragment implements View.On
                     .addToBackStack(null);
             fragmentTransaction.add(R.id.fragment_pagina_principal, fragmentoIniciarSesion1).commit();
         }
-
-
-
     }
 
     private boolean validarAllInputs() {

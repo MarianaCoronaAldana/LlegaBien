@@ -21,8 +21,6 @@ public class Preferences extends AppCompatActivity {
     public static final String PREFERENCE_ADMIN = "administrador";
     public static final String PREFERENCE_UBICACION = "ubicacion";
     public static final String PREFERENCE_CALLE = "calle";
-    public static final String PREFERENCE_COLONIA = "colonia";
-    public static final String PREFERENCE_MUNICIPIO = "municipio";
     public static final String PREFERENCE_FAVORITO = "favorito";
     public static final String PREFERENCE_EDITANDO_USUARIO_CON_ADMIN = "editando.usuario.admin";
 

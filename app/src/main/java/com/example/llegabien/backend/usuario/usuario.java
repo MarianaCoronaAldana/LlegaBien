@@ -65,4 +65,7 @@ public class usuario extends RealmObject {
     public String getTelCelular() { return telCelular; }
     public void setTelCelular(String telCelular) { this.telCelular = telCelular; }
 
+    public Boolean getStatus() { return status; }
+    public void setStatus(Boolean status) { this.status = status; }
+
 }

@@ -17,106 +17,32 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class UbicacionSeguridad {
 
-    private int mSumaCantidadDelitosMunicipio = 0, mSumaCantidadDelitosSemanalesMunicipio = 0, mSumaCantidadDelitosColonia = 0;
     private final Context mContext;
-    private UbicacionDAO ubicacionDAO;
-    private String calleString, coloniaString;
-    private List<ubicacion> mColonias;
-    private final List<reporte> reportesParaAnadir = new ArrayList<>();
-
+    private UbicacionDAO mUbicacionDAO;
+    private List<ubicacion> mUbicaciones;
 
     public UbicacionSeguridad(Context context) {
         mContext = context;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private List<reporte> sumarDelitosColoniaIIEG(List<reporte> reportes) {
-        coloniaString = reportes.get(0).getUbicacion();
-
-        // Para buscar y obtener la colonia y municpio de la ubicacion en la BD.
-        ubicacion colonia = ubicacionDAO.obetenerColoniaDeLista(coloniaString, this.mColonias);
-        if (colonia != null) {
-            // Para obtener todas las ubicaciones repetidas en la lista de reportes.
-            List<reporte> reportesConUbicacionRepetida = reportes.stream()
-                    .filter(reporte -> reporte.getUbicacion().equals(coloniaString))
-                    .collect(Collectors.toList());
-
-            // Para asignarles a todos los reportes con la misma ubicacion el id del objeto "ubicacion".
-            reportesConUbicacionRepetida.forEach((reporte) -> reporte.setIdUbicacion(colonia.get_id()));
-            this.reportesParaAnadir.addAll(reportesConUbicacionRepetida);
-
-            // Para sumar la cantidad de delitos de cada objeto "reporte" de la lista "reportesConUbicacionRepetida" (lista filtarada).
-            int sumaCantidadDelitos = reportesConUbicacionRepetida.stream().mapToInt(reporte::getCantidad).sum();
-            this.mSumaCantidadDelitosMunicipio += sumaCantidadDelitos;
-
-            Log.v("QUICKSTART", ("UBICACION BUSCADA: " + coloniaString));
-            Log.v("QUICKSTART", "NOMBRE UBICACION: " + colonia.getNombre());
-            Log.v("QUICKSTART", "SUMA DELITOS: " + sumaCantidadDelitos);
-
-            // Para obtener el index de la colonia que se modificará en la lista de ubicaciones "colonias".
-            int index = this.mColonias.indexOf(colonia);
-
-            // Para sumar los delitos a la colonia y municipio de la ubicación.
-            colonia.setSuma_delitos(colonia.getSuma_delitos() + sumaCantidadDelitos);
-
-            //Para actulizar la colonia dentro de la misma lista.
-            this.mColonias.set(index, colonia);
-        }
-
-        // Para remover todos los reportes que contengan la ubicacion que se acaba de buscar.
-        reportes.removeIf(reporte -> reporte.getUbicacion().equals(coloniaString));
-        Log.v("QUICKSTART", String.valueOf(reportes.size()));
-
-        if (reportes.size() != 0)
-            return sumarDelitosColoniaIIEG(reportes);
-        else {
-            // Para actualizar todas las ubicaciones una vez que ya no haya reportes.
-            ubicacionDAO.updateUbicaciones(this.mColonias);
-            return null;
-        }
-    }
-
-    private void sumarDelitosMunicipio() {
-        Log.v("QUICKSTART", String.valueOf(this.mSumaCantidadDelitosMunicipio));
-        String municipioString = "GUADALAJARA, JALISCO, MEXICO";
-        ubicacion municipio = ubicacionDAO.obtenerMunicipio(municipioString);
-        municipio.setSuma_delitos(municipio.getSuma_delitos() + mSumaCantidadDelitosMunicipio);
-        ubicacionDAO.updateUbicacion(municipio);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public List<reporte> sumarDelitosReportes(List<reporte> reportes) {
-        ubicacionDAO = new UbicacionDAO(mContext);
-        this.mColonias = ubicacionDAO.obetenerColonias();
-        sumarDelitosColoniaIIEG(reportes);
-        if (this.mSumaCantidadDelitosMunicipio != 0)
-            sumarDelitosMunicipio();
-
-        return this.reportesParaAnadir;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void actualizarSeguridad(){
-        this.mColonias = ubicacionDAO.obetenerColonias();
-        sumarDelitosSemales();
-        for (ubicacion ubicacion : this.mColonias){
-            calcularMediaHistorica(ubicacion);
-            calcularMetaReduccion(ubicacion);
-            calcularNivelSeguridad(ubicacion);
-        }
-        ubicacionDAO.updateUbicaciones(this.mColonias);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void sumarDelitosSemales() {
+    public void actualizarUbicaciones() {
         ReporteDAO reporteDAO = new ReporteDAO(mContext);
+        mUbicacionDAO = new UbicacionDAO(mContext);
+        this.mUbicaciones = mUbicacionDAO.obtenerUbicaciones();
+
+        this.mUbicaciones.forEach(ubicacion -> ubicacion.setDelitos_semana(0));
+        this.mUbicaciones.forEach(ubicacion -> ubicacion.setDelito_mas_frecuente("GENERAL"));
+
         Date fechaInicio = java.util.Date.from(LocalDate.parse("25/10/2021", DateTimeFormatter.ofPattern("dd/MM/yyyy"))
                 .atTime(LocalTime.parse("00:00", DateTimeFormatter.ofPattern("HH:mm")))
                 .atZone(ZoneId.systemDefault()).toInstant());
@@ -124,78 +50,177 @@ public class UbicacionSeguridad {
                 .atTime(LocalTime.parse("23:59", DateTimeFormatter.ofPattern("HH:mm")))
                 .atZone(ZoneId.systemDefault()).toInstant());
 
-        actualizarDelitosSemanales(reporteDAO.obtenerReportesPorFecha(fechaInicio, fechaTermino));
-        actualizarDelitosSemanalesMunicipio();
+        calcularDelitosSemanales(reporteDAO.obtenerReportesPorFecha(fechaInicio, fechaTermino));
+
+        for (ubicacion ubicacion : this.mUbicaciones) {
+            calcularMediaHistorica(ubicacion);
+            calcularMetaReduccion(ubicacion);
+            calcularNivelSeguridad(ubicacion);
+            calcularDelitoMasFrecuente(ubicacion);
+        }
+        mUbicacionDAO.updateUbicaciones(this.mUbicaciones);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private List<reporte> actualizarDelitosSemanales(List<reporte> reportesSemanales) {
+    private List<reporte> calcularDelitosSemanales(List<reporte> reportesSemanales) {
         ObjectId IdUbicacion = reportesSemanales.get(0).getIdUbicacion();
+        ubicacion colonia, municipio;
 
-        List<reporte> reportesConMismoIdUbicadcion = reportesSemanales.stream()
-                .filter(reporte -> reporte.getIdUbicacion().equals(IdUbicacion))
-                .collect(Collectors.toList());
+        ubicacion ubicacion = mUbicacionDAO.obtenerUbicacionConIdDeLista(IdUbicacion, this.mUbicaciones);
 
-        int sumaCantidadDelitosSemanles = reportesConMismoIdUbicadcion.stream().mapToInt(reporte::getCantidad).sum();
-        this.mSumaCantidadDelitosSemanalesMunicipio += sumaCantidadDelitosSemanles;
+        if (ubicacion != null) {
 
-        ubicacion colonia = ubicacionDAO.obetenerUbicacionConId(IdUbicacion);
+            List<reporte> reportesConMismoIdUbicadcion = reportesSemanales.stream()
+                    .filter(reporte -> reporte.getIdUbicacion().equals(IdUbicacion))
+                    .collect(Collectors.toList());
 
-        // Para obtener el index de la colonia que se modificará en la lista de ubicaciones "colonias".
-        int index = this.mColonias.indexOf(colonia);
+            int sumaCantidadDelitosSemanales = reportesConMismoIdUbicadcion.stream().mapToInt(reporte::getCantidad).sum();
+            String delitos = reportesConMismoIdUbicadcion.stream()
+                    .map(reporte -> reporte.getTipoDelito().trim())
+                    .collect(Collectors.joining(","));
 
-        // Para modificar el numero de delitos semanales de la colonia.
-        colonia.setDelitos_semana(sumaCantidadDelitosSemanles);
+            if (ubicacion.getTipo().equals("calle")) {
+                colonia = mUbicacionDAO.obtenerUbicacionConIdDeLista(ubicacion.getIdColonia(), this.mUbicaciones);
+                municipio = mUbicacionDAO.obtenerUbicacionConIdDeLista(ubicacion.getIdMunicipio(), this.mUbicaciones);
 
-        // Para actulizar la colonia dentro de la misma lista.
-        this.mColonias.set(index, colonia);
+                actualizarDelitosSemana(ubicacion, sumaCantidadDelitosSemanales);
+                actualizarDelitosSemana(colonia, sumaCantidadDelitosSemanales);
+                actualizarDelitosSemana(municipio, sumaCantidadDelitosSemanales);
+
+                actualizarDelitoMasFrecuente(ubicacion, delitos);
+                actualizarDelitoMasFrecuente(colonia, delitos);
+                actualizarDelitoMasFrecuente(municipio, delitos);
+
+            } else if (ubicacion.getTipo().equals("colonia")) {
+                municipio = mUbicacionDAO.obtenerUbicacionConIdDeLista(ubicacion.getIdMunicipio(), this.mUbicaciones);
+                actualizarDelitosSemana(ubicacion, sumaCantidadDelitosSemanales);
+                actualizarDelitosSemana(municipio, sumaCantidadDelitosSemanales);
+
+                actualizarDelitoMasFrecuente(ubicacion, delitos);
+                actualizarDelitoMasFrecuente(municipio, delitos);
+            } else {
+                actualizarDelitosSemana(ubicacion, sumaCantidadDelitosSemanales);
+                actualizarDelitoMasFrecuente(ubicacion, delitos);
+            }
+
+        }
 
         // Para remover todos los reportes que contengan la ubicacion que se acaba de buscar.
-        reportesSemanales.removeIf(reporte -> reporte.getUbicacion().equals(coloniaString));
+        reportesSemanales.removeIf(reporte -> reporte.getIdUbicacion().equals(IdUbicacion));
         Log.v("QUICKSTART", String.valueOf(reportesSemanales.size()));
 
         if (reportesSemanales.size() != 0)
-            return actualizarDelitosSemanales(reportesSemanales);
+            return calcularDelitosSemanales(reportesSemanales);
         else {
             return null;
         }
     }
 
-    private void actualizarDelitosSemanalesMunicipio() {
-        Log.v("QUICKSTART", String.valueOf(this.mSumaCantidadDelitosMunicipio));
-        String municipioString = "ZAPOPAN, JALISCO, MEXICO";
-        ubicacion municipio = ubicacionDAO.obtenerMunicipio(municipioString);
-        municipio.setDelitos_semana(municipio.getSuma_delitos() + mSumaCantidadDelitosSemanalesMunicipio);
-        this.mColonias.add(municipio);
+    private void calcularDelitoMasFrecuente(ubicacion ubicacion) {
+        if (!ubicacion.getDelito_mas_frecuente().equals("GENERAL")) {
+            String[] delitos = ubicacion.getDelito_mas_frecuente().split(",");
+            ubicacion.setDelito_mas_frecuente("");
+
+            // Se crea un HashMap para guardar el tipo de delito y su frecuencia.
+            HashMap<String, Integer> delitosHashMap = new HashMap<>();
+
+            // Se itera sobre el arreglo de delitos.
+            for (String delito : delitos) {
+                // Si el delito ya existe en el HahMap se incrementa su contador con 1.
+                if (delitosHashMap.containsKey(delito)) {
+                    delitosHashMap.put(delito, delitosHashMap.get(delito) + 1);
+                }
+                // Si no existe, se agrega al HashMap.
+                else {
+                    delitosHashMap.put(delito, 1);
+                }
+            }
+
+            //Para obtener la fecuencia mayor.
+            int valorMaximo = Collections.max(delitosHashMap.values());
+            for (Map.Entry<String, Integer> entry : delitosHashMap.entrySet()) {
+                if (entry.getValue() == valorMaximo) {
+                    // Se añaden los delitos que tengan esa frecuencia.
+                    if (ubicacion.getDelito_mas_frecuente().equals(""))
+                        ubicacion.setDelito_mas_frecuente(entry.getKey());
+                    else
+                        ubicacion.setDelito_mas_frecuente(ubicacion.getDelito_mas_frecuente() + "," + entry.getKey());
+                }
+            }
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private long calcularnUmeroSemanas() {
-        LocalDateTime fechaInicio = LocalDate.parse("01/01/2016", DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay();
-        LocalDateTime fechaTermino = LocalDate.parse("01/11/2021", DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay();
+    private long calcularNumeroSemanas(ubicacion ubicacion) {
+        LocalDateTime fechaInicio = null, fechaTermino = null;
+        if (ubicacion.getTipo().equals("calle")) {
+            ubicacion municipio = mUbicacionDAO.obtenerUbicacionConIdDeLista(ubicacion.getIdMunicipio(), this.mUbicaciones);
+            if (municipio != null) {
+                if (municipio.getNombre().equals("TLAJOMULCO DE ZUÑIGA, JALISCO, MEXICO")) {
+                    fechaInicio = LocalDate.parse("01/01/2021", DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay();
+                } else {
+                    fechaInicio = LocalDate.parse("01/03/2021", DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay();
+                }
+                fechaTermino = LocalDate.parse("01/11/2021", DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay();
+            }
+        } else {
+            fechaInicio = LocalDate.parse("01/01/2016", DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay();
+            fechaTermino = LocalDate.parse("01/11/2021", DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay();
+        }
 
-        return ChronoUnit.WEEKS.between(fechaInicio, fechaTermino);
+        long semanas = ChronoUnit.WEEKS.between(fechaInicio, fechaTermino);
+        Log.v("QUICKSTART", "NUMERO DE SEMANAS TRANSCURRIDAS: " + semanas);
+
+        return semanas;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void calcularMediaHistorica(ubicacion ubicacion) {
-        ubicacion.setMedia_historica_double(ubicacion.getSuma_delitos().doubleValue() / calcularnUmeroSemanas());
+        ubicacion.setMedia_historica_double(ubicacion.getSuma_delitos().doubleValue() / calcularNumeroSemanas(ubicacion));
     }
 
     private void calcularMetaReduccion(ubicacion ubicacion) {
         ubicacion.setMeta_reduccion_double(ubicacion.getMedia_historica_double() * 0.75);
     }
 
-    private void calcularNivelSeguridad(ubicacion ubicacion){
+    private void calcularNivelSeguridad(ubicacion ubicacion) {
         long mediaHistorica = Math.round(ubicacion.getMedia_historica_double());
         long metaReduccion = Math.round(ubicacion.getMeta_reduccion_double());
         int delitosSemanales = ubicacion.getDelitos_semana();
 
-        if(delitosSemanales > mediaHistorica)
+        if (delitosSemanales > mediaHistorica)
             ubicacion.setSeguridad("Seguridad baja");
         else if (delitosSemanales < metaReduccion)
             ubicacion.setSeguridad("Seguridad alta");
-        else if (delitosSemanales > metaReduccion && delitosSemanales < mediaHistorica)
+        else if (delitosSemanales >= metaReduccion && delitosSemanales <= mediaHistorica)
             ubicacion.setSeguridad("Seguridad media");
+    }
+
+    private void actualizarDelitosSemana(ubicacion ubicacion, int sumaCantidadDelitosSemanales) {
+        // Para obtener el index de la ubicacion.
+        int index = this.mUbicaciones.indexOf(ubicacion);
+
+        // Para modificar el numero de delitos semanales de la ubicacion.
+        ubicacion.setDelitos_semana(ubicacion.getDelitos_semana() + sumaCantidadDelitosSemanales);
+
+        // Para actulizar la colonia dentro de la ubicacion.
+        this.mUbicaciones.set(index, ubicacion);
+    }
+
+    private void actualizarDelitoMasFrecuente(ubicacion ubicacion, String delitos) {
+        if (ubicacion.getDelito_mas_frecuente().equals("GENERAL"))
+            ubicacion.setDelito_mas_frecuente("");
+
+        // Para obtener el index de la ubicacion.
+        int index = this.mUbicaciones.indexOf(ubicacion);
+
+        // Para modificar el numero de delitos semanales de la ubicacion.
+        if (ubicacion.getDelito_mas_frecuente().equals(""))
+            ubicacion.setDelito_mas_frecuente(delitos);
+        else
+            ubicacion.setDelito_mas_frecuente(ubicacion.getDelito_mas_frecuente() + "," + delitos);
+
+        // Para actulizar la colonia dentro de la ubicacion.
+        this.mUbicaciones.set(index, ubicacion);
     }
 }

@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
@@ -206,6 +207,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             txtViewTipoDelito.setTypeface(Typeface.DEFAULT_BOLD);
             txtViewTipoDelito.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
             txtViewTipoDelito.setMaxLines(1);
+            txtViewTipoDelito.setEllipsize(TextUtils.TruncateAt.END);
 
             consLytPrincipalReporte.addView(txtViewTipoDelito);
 
@@ -244,6 +246,7 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             txtViewUbicacionDelito.setText(reportes.get(i).getUbicacion());
             txtViewUbicacionDelito.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
             txtViewUbicacionDelito.setMaxLines(1);
+            txtViewUbicacionDelito.setEllipsize(TextUtils.TruncateAt.END);
 
             consLytPrincipalReporte.addView(txtViewUbicacionDelito);
 

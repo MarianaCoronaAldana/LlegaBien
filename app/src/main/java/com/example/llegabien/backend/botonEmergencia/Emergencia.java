@@ -47,10 +47,9 @@ public class Emergencia extends AppCompatActivity  {
         UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
         mUbicacionDispositivo.getUbicacionDelDispositivo((isUbicacionObtenida, ubicacionObtenida) -> {
             if (isUbicacionObtenida) {
-                UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
-                inicializarDatos(ubicacionGeodicacion.degeocodificarUbiciacion(mActivity, ubicacionObtenida.getLatitude(),ubicacionObtenida.getLongitude()));
+                UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(mActivity);
+                inicializarDatos(ubicacionGeodicacion.degeocodificarUbiciacion(ubicacionObtenida.getLatitude(),ubicacionObtenida.getLongitude()));
                 hacerLlamada();
-                //Toast.makeText(mActivity, mUbicacion,Toast.LENGTH_LONG).show();
             }
             else {
                 Toast.makeText(mActivity, "ERROR, CONTACTE A EMERGENCIAS DIRECTAMENTE!",Toast.LENGTH_LONG).show();

@@ -117,7 +117,7 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
         mUsuario.getContacto().set(mIdContacto, contacto);
 
         UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
-        if (usuarioDAO.updateUsuario(mUsuario)) {
+        if (usuarioDAO.updateUser(mUsuario)) {
             Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
             mUsuario = usuarioDAO.readUsuarioPorCorreo(mUsuario.getCorreoElectronico());
             Preferences.savePreferenceObjectRealm(requireActivity(), PREFERENCE_USUARIO, mUsuario);

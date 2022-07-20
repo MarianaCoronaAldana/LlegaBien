@@ -4,39 +4,57 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_borde_azul_oscuro.xml" value="0.1" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_button_regresar_1.xml" value="0.1824074074074074" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_button_regresar_2.xml" value="0.1824074074074074" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_button_regresar_3.xml" value="0.1824074074074074" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_esquinas_redondeadas.xml" value="0.1" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_icon_bicicleta.xml" value="0.19212962962962962" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_icon_caminar.xml" value="0.23657407407407408" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_icon_down_arrow.xml" value="0.13879598662207357" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_icon_editar_perfil.xml" value="0.2" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_icon_intercambiardireccion.xml" value="0.19212962962962962" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_icon_ojo_abierto.xml" value="0.14322916666666666" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_icon_ojo_cerrado.xml" value="0.14322916666666666" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_icon_partida_destino.xml" value="0.19212962962962962" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_icon_ubicacion.xml" value="0.26614583333333336" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/bkgd_spinner.xml" value="0.1" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/ic_bkgd_button_advertencia.xml" value="0.23657407407407408" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/ic_bkgd_icon_intecambiar.xml" value="0.1824074074074074" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/kgd_icon_comenzar.xml" value="0.23333333333333334" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/spinner_dropdown_item.xml" value="0.14020270270270271" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/drawable/untitled.xml" value="0.13879598662207357" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout-v28/activity_reportes.xml" value="0.2" />
-        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/activity_editar_leer_contactos.xml" value="0.1" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/activity_editar_leer_contactos.xml" value="0.2" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/activity_favoritos.xml" value="0.25" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/activity_maps.xml" value="0.152" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/activity_pagina_principal_usuario.xml" value="0.12972972972972974" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/activity_reportes.xml" value="0.174565560821485" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/dialog_confirmar_emergencia.xml" value="0.1" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/dialog_notificar_bateria.xml" value="0.264" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/dialog_tipo_configuracion.xml" value="0.2" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_barra_navegacion.xml" value="0.2" />
-        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_buscar_lugar.xml" value="0.4" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_boton_emergencia.xml" value="0.2" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_buscar_lugar.xml" value="0.5878136200716846" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_buscar_usuarios_admin.xml" value="0.2" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_cambiar_contra_usuario.xml" value="0.1" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_config_avan_admin.xml" value="0.2" />
-        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_detalles_lugar.xml" value="0.234375" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_configuracion_usuario.xml" value="0.4" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_detalles_lugar.xml" value="0.4" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_editar_contacto.xml" value="0.13903985507246377" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_editar_perfil_usuario.xml" value="0.1" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_indicaciones.xml" value="0.4" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_iniciar_sesion1.xml" value="0.264" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_iniciar_sesion2.xml" value="0.2961672473867596" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_leer_contactos.xml" value="0.2" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_lista_reportes.xml" value="0.1" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_lugar_seleccionado.xml" value="0.17777777777777778" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_navegacion.xml" value="0.536" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_registrar_usuario1.xml" value="0.1" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_restablecer_contrasena1.xml" value="0.12158054711246201" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_restablecer_contrasena2.xml" value="0.12158054711246201" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_restablecer_contrasena3.xml" value="0.12158054711246201" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_subir_reporte_admin.xml" value="0.1" />
-        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_subir_reporte_usuario.xml" value="0.536" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_subir_reporte_usuario.xml" value="0.27448177269478197" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/spinner_dropdown_item.xml" value="0.264" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/spinner_item.xml" value="0.12972972972972974" />
         <entry key="..\:/Downloads/CETI/Proyecto/LlegaBien/app/src/main/res/layout/activity_configuracion_admin.xml" value="0.28940217391304346" />

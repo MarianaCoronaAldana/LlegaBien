@@ -23,20 +23,17 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.llegabien.R;
-import com.example.llegabien.backend.app.Permisos;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
 import com.example.llegabien.backend.reporte.ReporteDAO;
 import com.example.llegabien.backend.reporte.reporte;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.usuario.dialog.DialogDatePicker;
 import com.example.llegabien.frontend.usuario.dialog.DialogTimePicker;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 
+import java.text.Normalizer;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,6 +41,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 
 import io.realm.RealmResults;
 
@@ -102,7 +100,8 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
         inicializarDatos();
 
         // Para obtener ubicacion actual.
-        obtenerUbicacionActual();
+        UbicacionDispositivo ubicacionDispositivo = new UbicacionDispositivo();
+        ubicacionDispositivo.mostrarStringUbicacionActual(requireActivity(),mBtnUbicacion, this);
 
         // Para inicializar valores del spinner.
         setSpinner();
@@ -115,7 +114,6 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
     public void onClick(View view) {
         if (view.getId() == R.id.button_enviarReporte_subirReporteUsuario) {
             if (validarAllInputs()) {
-                Log.v("QUICKSTART", "Estoy en enviar reporte");
                 ReporteDAO reporteDAO = new ReporteDAO(this.getContext());
                 inicializarReporte();
                 if (verificarHistorialReportes(reporteDAO)) {
@@ -124,13 +122,11 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
                 }
             }
         } else if (view.getId() == R.id.editText_fechaDelito_subirReporteUsuario){
-            Log.v("QUICKSTART", "Estoy en poner fecha delito");
             DialogDatePicker dialogDatePicker = new DialogDatePicker();
             dialogDatePicker.mostrarDatePickerDialog(mEditTxtFechaDelito, this);
             mEditTxtFechaDelito.setError(null);
         }
         else if (view.getId() == R.id.editText_horaDelito_subirReporteUsuario){
-            Log.v("QUICKSTART", "Estoy en poner HORA delito");
             DialogTimePicker dialogTimePicker = new DialogTimePicker();
             dialogTimePicker.mostrarTimePickerDialog(mEditTxtHoraDelito, this);
             mEditTxtHoraDelito.setError(null);
@@ -157,25 +153,6 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
         mEditTxtNombre.setClickable(false);
     }
 
-    private void obtenerUbicacionActual() {
-        Permisos permisos = new Permisos();
-        permisos.getPermisoUbicacion(requireActivity(), false);
-        if (permisos.getLocationPermissionGranted()) {
-            FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
-
-            UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
-            mUbicacionDispositivo.getUbicacionDelDispositivo((isUbicacionObtenida, ubicacionObtenida) -> {
-                if (isUbicacionObtenida) {
-                    UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
-                    String Ubicacion = ubicacionGeodicacion.degeocodificarUbiciacion(requireActivity(),
-                            ubicacionObtenida.getLatitude(), ubicacionObtenida.getLongitude());
-
-                    mBtnUbicacion.setText(Ubicacion);
-                }
-            }, true, fusedLocationProviderClient, requireActivity());
-        }
-    }
-
     //Funcion para crear objeto reporte e inicializarlo con los datos obtenidos
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void inicializarReporte() {
@@ -184,7 +161,9 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
         Reporte.setIdUsuario(Usuario.get_id());
         Reporte.setComentarios(mEditTxtComentariosDelito.getText().toString());
         Reporte.setUbicacion(mBtnUbicacion.getText().toString());
-        Reporte.setTipoDelito(mSpinnerCualDelito.getSelectedItem().toString());
+        String delitoNormalizado = Normalizer.normalize(mSpinnerCualDelito.getSelectedItem().toString(), Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toUpperCase(Locale.ROOT);
+        Reporte.setTipoDelito(delitoNormalizado);
         Reporte.setCantidad(1);
         Reporte.setFechaReporte(java.util.Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
 
@@ -234,11 +213,11 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
     }
 
     private void setSpinner() {
-        String[] delitos = {"Homicidio", "Secuestro",
+        String[] delitos = {"Homicidio doloso", "Secuestro",
                 "Extorsión", "Acoso sexual",
-                "Robo", "Lesiones",
+                "Robo", "Lesiones dolosas",
                 "Abuso sexual", "Abuso de autoridad",
-                "Vandalismo", "Tiroteo"};
+                "Vandalismo", "Tiroteo", "Violencia familiar","Feminicidio","Fraude","Portación de arma u objeto prohibido"};
 
         // Create the instance of ArrayAdapter having the list of courses
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(requireActivity(), R.layout.spinner_item, delitos);

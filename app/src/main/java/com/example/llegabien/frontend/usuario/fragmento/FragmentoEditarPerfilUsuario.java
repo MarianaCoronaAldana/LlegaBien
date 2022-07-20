@@ -185,7 +185,7 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
     // Actualizar al usuario en MongoDB
     public void updateUsuario() {
         UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
-        if (usuarioDAO.updateUsuario(Usuario)) {
+        if (usuarioDAO.updateUser(Usuario)) {
             Toast.makeText(getApplicationContext(), "Datos actualizados con exito", Toast.LENGTH_SHORT).show();
             mBtnAceptar.setEnabled(false);
 

@@ -1,5 +1,6 @@
 package com.example.llegabien.backend.usuario;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ES_ADMIN;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.content.Context;
@@ -41,33 +42,11 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
     }
 
     // Se verifica que los datos para iniciar sesion coincidan con un usuario ADMINISTRADOR
-    public boolean validarAdmin( String correo, String contrasena){
-       // realm = conectarBD.ConectarAnonimoMongoDB();
-        realm = conectarBD.conseguirUsuarioMongoDB();
-
-        if(realm!=null){
-            usuario task = realm.where(usuario.class).equalTo("correoElectronico", correo)
-                    .and()
-                    .equalTo("contrasena", contrasena)
-                    .and()
-                    .isNotNull("status")
-                    .findFirst();
-
-            if (task != null) {
-                Log.v("QUICKSTART", "OMG SI SE PUDO ADMIN");
-                // Se guarda al usuario en una clase accesible para muchas clases
-                Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_USUARIO, task);
-
-                // Se abre una cuenta con el correo y contraseña del usuario
-                conectarBD.ConectarCorreoMongoDB(correo, contrasena);
-                return true;
-            }
-        }
-
+    public void validarAdmin(usuario usuario){
+        if (usuario.getStatus() != null)
+            Preferences.savePreferenceBoolean(mContext, true, PREFERENCE_ES_ADMIN);
         else
-            errorConexion();
-
-        return false;
+            Preferences.savePreferenceBoolean(mContext, false, PREFERENCE_ES_ADMIN);
     }
 
 
@@ -82,11 +61,9 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
                     .findFirst();
 
             if (task != null) {
-                Log.v("AVERW", "NOMBRE DE TASK: " + task.getNombre());
+                Log.v("AVER", "NOMBRE DE TASK: " + task.getNombre());
                 // Se guarda al usuario en una clase accesible para muchas clases
                 Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_USUARIO, task);
-                // Se abre una cuenta con el correo y contraseña del usuario
-                //conectarBD.ConectarCorreoMongoDB(correo, contrasena);
                 conectarBD.conseguirUsuarioMongoDB();
                 return true;
             }

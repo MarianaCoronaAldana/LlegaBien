@@ -5,6 +5,7 @@ import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ESTADO_BU
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ES_ADMIN;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -99,11 +100,12 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
     }
 
     // Escribir dentro de las EditText los datos previos del usuario
+    @SuppressLint("SetTextI18n")
     private void setDatosUsuario() {
         usuario Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_USUARIO, usuario.class);
         if (Usuario != null) {
             mTxtViewCorreo.setText(Usuario.getCorreoElectronico());
-            mTxtViewNombre.setText(Usuario.getNombre());
+            mTxtViewNombre.setText(Usuario.getNombre() + " " + Usuario.getApellidos());
         }
 
     }

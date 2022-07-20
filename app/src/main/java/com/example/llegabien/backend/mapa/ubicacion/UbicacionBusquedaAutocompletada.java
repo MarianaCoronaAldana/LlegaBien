@@ -43,16 +43,16 @@ public class UbicacionBusquedaAutocompletada {
 
     }
     
-    public void verificarResultadoBusqueda (OnUbicacionBuscadaObtenida onUbicacionBuscadaObtenida, int resultCode, Intent data, Context c){
+    public void verificarResultadoBusqueda (OnUbicacionBuscadaObtenida onUbicacionBuscadaObtenida, int resultCode, Intent data, Context context){
         if (resultCode == RESULT_OK) {
             Place place = Autocomplete.getPlaceFromIntent(data);
             Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getAddress());
             String address = place.getAddress();
 
-            UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
-            Address ubicacionGeocodificada = ubicacionGeodicacion.geocodificarUbiciacion(c, address);
+            UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(context);
+            Address ubicacionGeocodificada = ubicacionGeodicacion.geocodificarUbiciacion(address);
             LatLng ubicacionBuscada = new LatLng(ubicacionGeocodificada.getLatitude(), ubicacionGeocodificada.getLongitude());
-            UbicacionDAO ubicacionDAO = new UbicacionDAO(c);
+            UbicacionDAO ubicacionDAO = new UbicacionDAO(context);
 
             boolean isUbicacionBuscadaEnBD = ubicacionDAO.obtenerUbicacionBuscada(ubicacionBuscada.latitude,ubicacionBuscada.longitude);
             onUbicacionBuscadaObtenida.isUbicacionBuscadaObtenida(true, isUbicacionBuscadaEnBD,ubicacionBuscada, address);

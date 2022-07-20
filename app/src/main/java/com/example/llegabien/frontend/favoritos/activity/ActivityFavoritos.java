@@ -2,17 +2,11 @@ package com.example.llegabien.frontend.favoritos.activity;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.constraintlayout.widget.Guideline;
-import androidx.core.content.ContextCompat;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -20,12 +14,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.constraintlayout.widget.Guideline;
+import androidx.core.content.ContextCompat;
+
 import com.example.llegabien.R;
+import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.favoritos.Favorito_DAO;
 import com.example.llegabien.backend.mapa.favoritos.favorito;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDAO;
-
-import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 
@@ -145,49 +145,62 @@ public class ActivityFavoritos extends AppCompatActivity implements View.OnClick
             // Se cambia de ConstraintLayout
             constraintSet.clone(consLytPrincipalFavorito);
 
-            // Guideline "5 porciento"
-            Guideline guideline5Porciento = new Guideline(this);
-            guideline5Porciento.setId(View.generateViewId());
+            // Guideline "4 porciento"
+            Guideline guideline4Porciento = new Guideline(this);
+            guideline4Porciento.setId(View.generateViewId());
 
-            constraintSet.constrainWidth(guideline5Porciento.getId(), ConstraintSet.PARENT_ID);
-            constraintSet.constrainHeight(guideline5Porciento.getId(), ConstraintSet.PARENT_ID);
-            constraintSet.setGuidelinePercent(guideline5Porciento.getId(), 0.05f);
+            constraintSet.constrainWidth(guideline4Porciento.getId(), ConstraintSet.PARENT_ID);
+            constraintSet.constrainHeight(guideline4Porciento.getId(), ConstraintSet.PARENT_ID);
+            constraintSet.setGuidelinePercent(guideline4Porciento.getId(), 0.04f);
 
-            constraintSet.create(guideline5Porciento.getId(), ConstraintSet.VERTICAL_GUIDELINE);
-            // Fin de guideline "5 porciento"
+            constraintSet.create(guideline4Porciento.getId(), ConstraintSet.VERTICAL_GUIDELINE);
+            // Fin de guideline "4 porciento"
 
-            // Guideline "95 porciento"
-            Guideline guideline95Porciento = new Guideline(this);
-            guideline95Porciento.setId(View.generateViewId());
+            // Guideline "9 porciento"
+            Guideline guideline9Porciento = new Guideline(this);
+            guideline9Porciento.setId(View.generateViewId());
 
-            constraintSet.constrainWidth(guideline95Porciento.getId(), ConstraintSet.PARENT_ID);
-            constraintSet.constrainHeight(guideline95Porciento.getId(), ConstraintSet.PARENT_ID);
-            constraintSet.setGuidelinePercent(guideline95Porciento.getId(), 0.95f);
+            constraintSet.constrainWidth(guideline9Porciento.getId(), ConstraintSet.PARENT_ID);
+            constraintSet.constrainHeight(guideline9Porciento.getId(), ConstraintSet.PARENT_ID);
+            constraintSet.setGuidelinePercent(guideline9Porciento.getId(), 0.09f);
 
-            constraintSet.create(guideline95Porciento.getId(), ConstraintSet.VERTICAL_GUIDELINE);
-            // Fin de guideline "95 porciento"
+            constraintSet.create(guideline9Porciento.getId(), ConstraintSet.VERTICAL_GUIDELINE);
+            // Fin de guideline "9 porciento"
 
-            // Guideline "10 porciento"
-            Guideline guideline10Porciento = new Guideline(this);
-            guideline10Porciento.setId(View.generateViewId());
+            // Guideline "11 porciento"
+            Guideline guideline11Porciento = new Guideline(this);
+            guideline11Porciento.setId(View.generateViewId());
 
-            constraintSet.constrainWidth(guideline10Porciento.getId(), ConstraintSet.PARENT_ID);
-            constraintSet.constrainHeight(guideline10Porciento.getId(), ConstraintSet.PARENT_ID);
-            constraintSet.setGuidelinePercent(guideline10Porciento.getId(), 0.10f);
+            constraintSet.constrainWidth(guideline11Porciento.getId(), ConstraintSet.PARENT_ID);
+            constraintSet.constrainHeight(guideline11Porciento.getId(), ConstraintSet.PARENT_ID);
+            constraintSet.setGuidelinePercent(guideline11Porciento.getId(), 0.11f);
 
-            constraintSet.create(guideline10Porciento.getId(), ConstraintSet.VERTICAL_GUIDELINE);
-            // Fin de guideline "10 porciento"
+            constraintSet.create(guideline11Porciento.getId(), ConstraintSet.VERTICAL_GUIDELINE);
+            // Fin de guideline "11 porciento"
+            
+            // Guideline "92 porciento"
+            Guideline guideline92Porciento = new Guideline(this);
+            guideline92Porciento.setId(View.generateViewId());
 
-            // Guideline "12 porciento"
-            Guideline guideline12Porciento = new Guideline(this);
-            guideline12Porciento.setId(View.generateViewId());
+            constraintSet.constrainWidth(guideline92Porciento.getId(), ConstraintSet.PARENT_ID);
+            constraintSet.constrainHeight(guideline92Porciento.getId(), ConstraintSet.PARENT_ID);
+            constraintSet.setGuidelinePercent(guideline92Porciento.getId(), 0.92f);
 
-            constraintSet.constrainWidth(guideline12Porciento.getId(), ConstraintSet.PARENT_ID);
-            constraintSet.constrainHeight(guideline12Porciento.getId(), ConstraintSet.PARENT_ID);
-            constraintSet.setGuidelinePercent(guideline12Porciento.getId(), 0.12f);
+            constraintSet.create(guideline92Porciento.getId(), ConstraintSet.VERTICAL_GUIDELINE);
+            // Fin de guideline "92 porciento"
 
-            constraintSet.create(guideline12Porciento.getId(), ConstraintSet.VERTICAL_GUIDELINE);
-            // Fin de guideline "12 porciento"
+
+            // Guideline "97 porciento"
+            Guideline guideline97Porciento = new Guideline(this);
+            guideline97Porciento.setId(View.generateViewId());
+
+            constraintSet.constrainWidth(guideline97Porciento.getId(), ConstraintSet.PARENT_ID);
+            constraintSet.constrainHeight(guideline97Porciento.getId(), ConstraintSet.PARENT_ID);
+            constraintSet.setGuidelinePercent(guideline97Porciento.getId(), 0.97f);
+
+            constraintSet.create(guideline97Porciento.getId(), ConstraintSet.VERTICAL_GUIDELINE);
+            // Fin de guideline "97 porciento"
+            
 
             // View "Icon ubicación"
             View iconUbicacion = new TextView(new ContextThemeWrapper(this, R.style.BkgdIcon));
@@ -197,8 +210,8 @@ public class ActivityFavoritos extends AppCompatActivity implements View.OnClick
 
             consLytPrincipalFavorito.addView(iconUbicacion);
 
-            constraintSet.connect(iconUbicacion.getId(), ConstraintSet.START, guideline5Porciento.getId(), ConstraintSet.START, 0);
-            constraintSet.connect(iconUbicacion.getId(), ConstraintSet.END, guideline10Porciento.getId(), ConstraintSet.END, 0);
+            constraintSet.connect(iconUbicacion.getId(), ConstraintSet.START, guideline4Porciento.getId(), ConstraintSet.START, 0);
+            constraintSet.connect(iconUbicacion.getId(), ConstraintSet.END, guideline9Porciento.getId(), ConstraintSet.END, 0);
             constraintSet.connect(iconUbicacion.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0);
             constraintSet.connect(iconUbicacion.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
 
@@ -213,16 +226,33 @@ public class ActivityFavoritos extends AppCompatActivity implements View.OnClick
             txtViewUbicacion.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_size_parrafo));
             txtViewUbicacion.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
             txtViewUbicacion.setMaxLines(1);
+            txtViewUbicacion.setEllipsize(TextUtils.TruncateAt.END);
 
             consLytPrincipalFavorito.addView(txtViewUbicacion);
 
             constraintSet.constrainHeight(txtViewUbicacion.getId(), ConstraintSet.PARENT_ID);
 
-            constraintSet.connect(txtViewUbicacion.getId(), ConstraintSet.START, guideline12Porciento.getId(), ConstraintSet.START, 0);
-            constraintSet.connect(txtViewUbicacion.getId(), ConstraintSet.END, guideline95Porciento.getId(), ConstraintSet.END, 0);
+            constraintSet.connect(txtViewUbicacion.getId(), ConstraintSet.START, guideline11Porciento.getId(), ConstraintSet.START, 0);
+            constraintSet.connect(txtViewUbicacion.getId(), ConstraintSet.END, guideline92Porciento.getId(), ConstraintSet.END, 0);
             constraintSet.connect(txtViewUbicacion.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0);
             constraintSet.connect(txtViewUbicacion.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
             // Fin de Textview "Ubicacion"
+
+            // View "Icon arrow"
+            View iconArrow = new TextView(new ContextThemeWrapper(this, R.style.BkgdIcon));
+            iconArrow.setId(View.generateViewId());
+
+            iconArrow.setBackground(getResources().getDrawable(R.drawable.bkgd_icon_right_arrow));
+
+            consLytPrincipalFavorito.addView(iconArrow);
+
+            constraintSet.connect(iconArrow.getId(), ConstraintSet.START, guideline92Porciento.getId(), ConstraintSet.START, 0);
+            constraintSet.connect(iconArrow.getId(), ConstraintSet.END, guideline97Porciento.getId(), ConstraintSet.END, 0);
+            constraintSet.connect(iconArrow.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0);
+            constraintSet.connect(iconArrow.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
+
+            constraintSet.setDimensionRatio(iconArrow.getId(),"1:1");
+            // View "Icon arrow"
 
             constraintSet.applyTo(consLytPrincipalFavorito);
 

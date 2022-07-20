@@ -58,7 +58,7 @@ public class FragmentoRegistrarUsuario1 extends Fragment implements View.OnClick
         //para usar el mismo ViewModel que los otros fragmentos y compartir informacion
         SharedViewModel = new ViewModelProvider(requireActivity()).get(UsuarioSharedViewModel.class);
 
-        conectarBD.ConectarAnonimoMongoDB();
+        conectarBD.conectarAnonimoMongoDB();
         return root;
     }
 

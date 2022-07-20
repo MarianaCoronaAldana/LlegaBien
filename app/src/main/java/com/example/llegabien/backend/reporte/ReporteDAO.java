@@ -1,19 +1,28 @@
 package com.example.llegabien.backend.reporte;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
+import androidx.annotation.RequiresApi;
+
 import com.example.llegabien.backend.mongoDB.ConectarBD;
 import com.example.llegabien.backend.usuario.usuario;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 
 import org.bson.types.ObjectId;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import io.realm.ImportFlag;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -30,7 +39,8 @@ public class ReporteDAO {
     public void anadirReporte(reporte Reporte) {
         Reporte.set_id(new ObjectId());
         Reporte.set_partition("LlegaBien");
-        realm = conectarBD.conseguirUsuarioMongoDB();
+        if (realm == null)
+            realm = conectarBD.conseguirUsuarioMongoDB();
 
         if (realm != null) {
             realm.executeTransactionAsync(transactionRealm -> transactionRealm.insert(Reporte));
@@ -40,33 +50,99 @@ public class ReporteDAO {
     }
 
     public void anadirReportes(List<reporte> reportes) {
-        realm = conectarBD.conseguirUsuarioMongoDB();
-        Log.v("QUICKSTART", "TAMAÑO LISTA REPORTES: " + reportes.size());
+        List<reporte> reportesTemp = new ArrayList<>();
+
+        if(reportes.size() <= 10000)
+            anadirReportesPorPartes(reportes);
+
+        else {
+            for (int i = 0; i < reportes.size(); i++) {
+                // Para a{adir reporets a la lista temporal mientras no se completen 10,000 reportes.
+                reportesTemp.add(reportes.get(i));
+
+                if (i % 10000 == 0) {
+                    // Para subir los primeros 10000 reportes.
+                    anadirReportesPorPartes(reportesTemp);
+
+                    // Para esperar 10 min a que la BD se actualice.
+                    try {
+                        Thread.sleep(600000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Para limpiar la lista e iniciar de nuevo la cuenta.
+                    reportesTemp.clear();
+                }
+            }
+        }
+
+    }
+
+    public void anadirReportesPorPartes(List<reporte> reportes) {
+        if (realm == null)
+            realm = conectarBD.conseguirUsuarioMongoDB();
 
         if (realm != null) {
-            realm.executeTransactionAsync(realm -> {
-                for (reporte reporte : reportes) {
-                    reporte.set_id(new ObjectId());
-                    reporte.set_partition("LlegaBien");
-                    realm.insert(reporte);
-                }
-            }, new Realm.Transaction.OnSuccess() {
-                @Override
-                public void onSuccess() {
-                    Log.v("QUICKSTART", "SÍ SE SUBIERON REPORTES, POR FIN PTM.");
-                }
-            }, new Realm.Transaction.OnError() {
-                @Override
-                public void onError(Throwable error) {
-                    Log.v("QUICKSTART", error.toString() + "NO SE SEUBIERON REPORTES, PTM PTM PTM PTM PTM PTM.");
-                }
-            });
+            realm.executeTransactionAsync(transactionRealm -> {
+                        for (int i = 0; i < reportes.size(); i++) {
+                            reportes.get(i).set_id(new ObjectId());
+                            reportes.get(i).set_partition("LlegaBien");
+                            transactionRealm.insert(reportes.get(i));
+                        }
+                    },
+                    () -> Log.v("QUICKSTART", "SÍ SE SUBIERON REPORTES, POR FIN PTM."),
+                    error -> Log.v("QUICKSTART", error.toString() + "NO SE SEUBIERON REPORTES, PTM PTM PTM PTM PTM PTM."));
         } else
             errorConexion();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void anadirReportesIIEG(Intent data, Context context) {
+        if (data != null) {
+            if (realm == null)
+                realm = conectarBD.conseguirUsuarioMongoDB();
+
+            if (realm != null) {
+                realm.executeTransactionAsync(realm -> {
+                            try {
+                                InputStreamReader inputStreamReader = new InputStreamReader(context.getContentResolver().openInputStream(data.getData()));
+                                CSVReader csvReader = new CSVReader(inputStreamReader);
+                                String[] nextLine = csvReader.readNext();
+
+                                reporte reporte = new reporte();
+
+                                while ((nextLine = csvReader.readNext()) != null) {
+                                    reporte.set_id(new ObjectId());
+                                    if (!nextLine[0].equals(""))
+                                        reporte.setIdUbicacion(new ObjectId(nextLine[0].trim()));
+                                    if (!nextLine[1].equals(""))
+                                        reporte.setIdUsuario(new ObjectId(nextLine[1].trim()));
+                                    reporte.set_partition("LlegaBien");
+                                    reporte.setAutor(nextLine[3]);
+                                    reporte.setCantidad(Integer.valueOf(nextLine[4]));
+                                    reporte.setComentarios(nextLine[5]);
+                                    reporte.setFecha(Date.from(Instant.from(DateTimeFormatter.ISO_INSTANT.parse(nextLine[6]))));
+                                    reporte.setFechaReporte(Date.from(Instant.from(DateTimeFormatter.ISO_INSTANT.parse(nextLine[7]))));
+                                    reporte.setTipoDelito(nextLine[8]);
+                                    reporte.setUbicacion(nextLine[9]);
+                                    realm.insert(reporte);
+                                }
+
+                            } catch (IOException | CsvException e) {
+                                Toast.makeText(context, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+                            }
+                        },
+                        () -> Log.v("QUICKSTART", "SÍ SE SUBIERON REPORTES, POR FIN PTM."),
+                        error -> Log.v("QUICKSTART", error.toString() + "NO SE SEUBIERON REPORTES, PTM PTM PTM PTM PTM PTM."));
+            } else
+                errorConexion();
+        }
+    }
+
     public RealmResults<reporte> obtenerReportesPorUsuario(reporte Reporte) {
-        realm = conectarBD.conseguirUsuarioMongoDB();
+        if (realm == null)
+            realm = conectarBD.conseguirUsuarioMongoDB();
 
         if (realm != null)
             return realm.where(reporte.class).equalTo("IdUsuario", Reporte.getIdUsuario()).findAll();
@@ -77,7 +153,8 @@ public class ReporteDAO {
     }
 
     public List<reporte> obtenerReportesPorFecha(Date fechaInicio, Date fechaTermino) {
-        realm = conectarBD.conseguirUsuarioMongoDB();
+        if (realm == null)
+            realm = conectarBD.conseguirUsuarioMongoDB();
 
         if (realm != null)
             return realm.copyFromRealm(realm.where(reporte.class).between("fecha", fechaInicio, fechaTermino).findAll());
@@ -89,7 +166,8 @@ public class ReporteDAO {
 
 
     public RealmResults<reporte> obtenerReportesPorUsuario(usuario Usuario) {
-        realm = conectarBD.conseguirUsuarioMongoDB();
+        if (realm == null)
+            realm = conectarBD.conseguirUsuarioMongoDB();
 
         if (realm != null) {
             RealmResults<reporte> realmResults = realm.where(reporte.class).equalTo("IdUsuario", Usuario.get_id()).findAll();
@@ -99,33 +177,6 @@ public class ReporteDAO {
             errorConexion();
 
         return null;
-    }
-
-    public void elimarReportes(){
-        realm = conectarBD.conseguirUsuarioMongoDB();
-        if (realm != null) {
-            realm.executeTransactionAsync(realm -> {
-                if (realm.where(reporte.class).findAll().deleteAllFromRealm())
-                    Log.v("QUICKSTART", "Sí se borraron todas los reportes.");
-                else
-                    Log.v("QUICKSTART", "No se borraron todas lops reportes.");
-            });
-            realm.close();
-        } else
-            errorConexion();
-    }
-
-    public void mostrarReportesLog(){
-        realm = conectarBD.conseguirUsuarioMongoDB();
-        if (realm != null) {
-            List <reporte> reportes = realm.copyFromRealm(realm.where(reporte.class).findAll());
-            for (reporte reporte : reportes){
-                Log.v("QUICKSTART", reporte.getAutor());
-            }
-            realm.close();
-        } else
-            errorConexion();
-
     }
 
     private void errorConexion() {

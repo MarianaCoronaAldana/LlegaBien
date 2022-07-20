@@ -34,7 +34,7 @@ public class Poligono {
 
     public void getColonias(GoogleMap googleMap){
         String coordenadasPoligono, seguridad;
-        List<ubicacion> listaColonias = mUbicacionDAO.obetenerColonias();
+        List<ubicacion> listaColonias = mUbicacionDAO.obtenerColonias();
         if (listaColonias != null) {
             for (int i = 0; i < listaColonias.size(); i++) {
                 coordenadasPoligono = listaColonias.get(i).getCoordenadas_string();

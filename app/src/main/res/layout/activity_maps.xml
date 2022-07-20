@@ -20,7 +20,12 @@
         android:layout_height="match_parent" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView1_fragemntoBuscarLugar_activityMaps"
+        android:id="@+id/fragmentContainerView_fragmentoLugares_activityMaps"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView_permisos"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

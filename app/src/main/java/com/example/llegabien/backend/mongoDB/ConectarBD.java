@@ -5,8 +5,6 @@ import static io.realm.Realm.getApplicationContext;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.llegabien.backend.app.aplicacionLlegaBien;
-
 import java.util.Objects;
 
 import io.realm.Realm;
@@ -18,14 +16,14 @@ import io.realm.mongodb.sync.SyncConfiguration;
 
 public class ConectarBD {
 
-    private Realm realm=null;
+    private Realm realm = null;
     User user;
     String partitionValue = "LlegaBien";
     SyncConfiguration config = null;
 
     //PARA LOGING ANONIMO
-    public void ConectarAnonimoMongoDB(){
-        App app = aplicacionLlegaBien.getApp();
+    public void conectarAnonimoMongoDB(){
+        App app = AplicacionLlegaBien.getApp();
         Credentials credentials = Credentials.anonymous();
         Log.v("QUICKSTART", "hola");
 
@@ -50,15 +48,15 @@ public class ConectarBD {
 
     }
 
-    public void ConectarCorreoMongoDB(String email, String password){
-        App app = aplicacionLlegaBien.getApp();
+    public void conectarCorreoMongoDB(String email, String password){
+        App app = AplicacionLlegaBien.getApp();
         Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
 
         app.loginAsync(emailPasswordCredentials, it -> {
             if (it.isSuccess()) {
                 Log.v("QUICKSTART", "Successfully authenticated using an email and password.");
             } else {
-                ConectarAnonimoMongoDB();
+                conectarAnonimoMongoDB();
             }
         });
 
@@ -75,7 +73,7 @@ public class ConectarBD {
 
     // Para conseguir el usuario actual de la app
     public Realm conseguirUsuarioMongoDB(){
-        App app = aplicacionLlegaBien.getApp();
+        App app = AplicacionLlegaBien.getApp();
 
         user = app.currentUser();
         if(user!=null) {
@@ -87,7 +85,7 @@ public class ConectarBD {
         }
 
         else {
-            ConectarAnonimoMongoDB();
+            conectarAnonimoMongoDB();
             conseguirUsuarioMongoDB();
         }
         return realm;
@@ -95,7 +93,7 @@ public class ConectarBD {
 
 
     public static void registrarCuentaCorreo(String email, String password){
-        App app = aplicacionLlegaBien.getApp();
+        App app = AplicacionLlegaBien.getApp();
 
         app.getEmailPassword().registerUserAsync(email, password, it -> {
             if (it.isSuccess()) {
@@ -109,13 +107,13 @@ public class ConectarBD {
     }
 
     public static void borrarCuentaCorreo(){
-        App app = aplicacionLlegaBien.getApp();
+        App app = AplicacionLlegaBien.getApp();
         app.removeUser(app.currentUser());
     }
 
 
     public void cerrarMongoDB(){
-        App app = aplicacionLlegaBien.getApp();
+        App app = AplicacionLlegaBien.getApp();
         Objects.requireNonNull(app.currentUser()).logOutAsync(result -> {
             if (result.isSuccess()) {
                 Log.v("QUICKSTART", "Successfully logged out.");

@@ -122,7 +122,7 @@ public class FragmentoCambiarContraUsuario extends Fragment implements View.OnCl
         Usuario.setContrasena(encriptarContrasena(mEditTxtNuevaContrasena.getText().toString()));
 
         UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
-        if (usuarioDAO.updateUsuario(Usuario)) {
+        if (usuarioDAO.updateUser(Usuario)) {
             Toast.makeText(getApplicationContext(), "Contraseña cambiada exitosamente", Toast.LENGTH_SHORT).show();
 
             mBtnAceptar.setEnabled(false);
