@@ -3,7 +3,7 @@ package com.example.llegabien.frontend.mapa.activity;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.content.pm.PackageManager;
-import android.graphics.Color;
+import android.location.Address;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,7 +18,6 @@ import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Permisos;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.poligonos.Poligono;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionDAO;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
 import com.example.llegabien.backend.notificacion.Notificacion;
@@ -28,9 +27,9 @@ import com.example.llegabien.backend.ruta.realm.rutaDAO;
 import com.example.llegabien.backend.usuario.UsuarioDAO;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.databinding.ActivityMapsBinding;
+import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoBuscarLugar;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoLugarSeleccionado;
-import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.rutas.directionhelpers.FetchURL;
 import com.example.llegabien.frontend.rutas.directionhelpers.TaskLoadedCallback;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -44,7 +43,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.maps.android.SphericalUtil;
@@ -55,8 +53,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import io.realm.RealmResults;
 
 
 public class ActivityMap extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnPolygonClickListener, TaskLoadedCallback {
@@ -198,7 +194,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         //PARA AÑADIR RUTA A FAVORITOS
         //añadirRuta();
 
-        PRUEBA();
+        //PRUEBA();
 // ->
     }
 
@@ -368,7 +364,8 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         // Recorre rutas
         for (int i=0; i<rutasObtenidas.size(); i++){
             List<LatLng> points = rutasObtenidas.get(i).getPoints();
-            rutaDistancias.clear();
+            //rutaDistancias.clear();
+            rutaDistancias = new HashMap<>();
             // Recorre los puntos de una ruta
             for (int o=0; o<points.size(); o++) {
                 rutaPuntosMedios = new ArrayList<>();
@@ -378,7 +375,12 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
                 if(o+1<points.size()) {
                     lineOptions.add(points.get(o + 1));
                     LatLng centro = LatLngBounds.builder().include(points.get(o)).include(points.get(o+1)).build().getCenter();
-                    String nombreCalle = ubicacionGeodicacion.degeocodificarUbiciacionSinNumero(getApplicationContext(),  centro.latitude, centro.longitude);
+                    Address adress = ubicacionGeodicacion.degeocodificarUbiciacionSinNumero(getApplicationContext(),  centro.latitude, centro.longitude);
+                    String nombreCalle = adress.getThoroughfare()
+                            + ", " + adress.getSubLocality()
+                            + ", " + adress.getLocality()
+                            + ", " + adress.getAdminArea()
+                            + ", " + adress.getCountryName();
                     //Log.v("QUICKSTART", "Nombre calle: " + ubicacionGeodicacion.degeocodificarUbiciacion(getApplicationContext(), centro.latitude, centro.longitude));
                     Log.v("QUICKSTART", "Nombre calle 2: " + nombreCalle);
                     distance = (int) SphericalUtil.computeDistanceBetween(points.get(o), points.get(o+1));
@@ -443,7 +445,6 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
                 }
             }*/
         }
-
     }
 
     //TODO: HASTA AQUI

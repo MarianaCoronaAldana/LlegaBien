@@ -88,5 +88,7 @@ public class PointsParser extends AsyncTask<String, Integer, rutaDirections> {
         } else {
             Log.v("QUICKSTART", "no hay rutas");
         }
+
+
     }
 }

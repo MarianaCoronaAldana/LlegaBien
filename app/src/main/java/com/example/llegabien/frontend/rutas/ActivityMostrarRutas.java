@@ -105,7 +105,7 @@ public class ActivityMostrarRutas extends AppCompatActivity implements View.OnCl
         int size = rutas.size();
         if(size > 0 ) {
             for (int i = 0; i < size; i++) {
-                UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion();
+                UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(this);
 
                 // ConstraintLayout principal
                 constraintSet.clone(mConsLytScrollView);
@@ -265,7 +265,7 @@ public class ActivityMostrarRutas extends AppCompatActivity implements View.OnCl
                 // Textview "PuntoOrigen"
                 TextView txtViewPuntoOrigen = new TextView(new ContextThemeWrapper(this, R.style.TxtViewTransparente));
                 txtViewPuntoOrigen.setId(View.generateViewId());
-                txtViewPuntoOrigen.setText("De: " + ubicacionGeodicacion.degeocodificarUbiciacion(getApplicationContext(), Double.valueOf(rutas.get(i).getPuntoInicio().get(0)), Double.valueOf(rutas.get(i).getPuntoInicio().get(1).toString())));
+                txtViewPuntoOrigen.setText("De: " + ubicacionGeodicacion.degeocodificarUbiciacion(Double.valueOf(rutas.get(i).getPuntoInicio().get(0)), Double.valueOf(rutas.get(i).getPuntoInicio().get(1).toString())));
                 txtViewPuntoOrigen.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
                 txtViewPuntoOrigen.setMaxLines(1);
 
@@ -285,7 +285,7 @@ public class ActivityMostrarRutas extends AppCompatActivity implements View.OnCl
                 TextView txtViewPuntoDestino = new TextView(new ContextThemeWrapper(this, R.style.TxtViewTransparente));
                 txtViewPuntoDestino.setId(View.generateViewId());
 
-                txtViewPuntoDestino.setText("A:  " + ubicacionGeodicacion.degeocodificarUbiciacion(getApplicationContext(), Double.valueOf(rutas.get(i).getPuntoDestino().get(0)), Double.valueOf(rutas.get(i).getPuntoDestino().get(1).toString())));
+                txtViewPuntoDestino.setText("A:  " + ubicacionGeodicacion.degeocodificarUbiciacion(Double.valueOf(rutas.get(i).getPuntoDestino().get(0)), Double.valueOf(rutas.get(i).getPuntoDestino().get(1).toString())));
                 txtViewPuntoDestino.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
                 txtViewPuntoDestino.setMaxLines(1);
 

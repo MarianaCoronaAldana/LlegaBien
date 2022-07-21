@@ -52,7 +52,7 @@ public class UbicacionGeodicacion {
         return null;
     }
 
-    public String degeocodificarUbiciacionSinNumero(Context c, double latitude, double longitude){
+    public Address degeocodificarUbiciacionSinNumero(Context c, double latitude, double longitude){
         mGeocoder = new Geocoder(c, Locale.getDefault());
         try{
             List<Address> addressList = mGeocoder.getFromLocation(latitude, longitude, 1);
@@ -67,7 +67,36 @@ public class UbicacionGeodicacion {
                     direccion.setThoroughfare(calle);
                     direccion.setSubLocality(addressList.get(0).getSubLocality());
                     direccion.setLocality(addressList.get(0).getLocality());
-                    return calle
+                    direccion.setAdminArea(addressList.get(0).getAdminArea());
+                    direccion.setCountryName(addressList.get(0).getCountryName());
+                    direccion.setLatitude(latitude);
+                    direccion.setLongitude(longitude);
+                    String A =        calle
+                            + ", " + addressList.get(0).getSubLocality()
+                            + ", " + addressList.get(0).getLocality();
+                    return direccion;
+
+                }
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+/*
+    public String degeocodificarUbiciacionSinNumero(Context c, double latitude, double longitude){
+        mGeocoder = new Geocoder(c, Locale.getDefault());
+        try{
+            List<Address> addressList = mGeocoder.getFromLocation(latitude, longitude, 1);
+            if(addressList.size()>0) {
+                String calle;
+                if(addressList.get(0).getThoroughfare()==null)
+                    calle = addressList.get(0).getFeatureName();
+                else
+                    calle = addressList.get(0).getThoroughfare();
+                if(addressList.get(0).getSubLocality()!=null) {
+                    return  calle
                             + ", " + addressList.get(0).getSubLocality()
                             + ", " + addressList.get(0).getLocality();
                 }
@@ -76,5 +105,5 @@ public class UbicacionGeodicacion {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 }
