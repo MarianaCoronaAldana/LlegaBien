@@ -2,7 +2,6 @@ package com.example.llegabien.frontend.mapa.fragmento;
 
 import android.content.Intent;
 import android.location.Address;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -25,22 +23,13 @@ import com.example.llegabien.R;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
-import com.example.llegabien.backend.ruta.directions.rutaDirections;
 import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.rutas.directionhelpers.FetchURL;
 import com.example.llegabien.frontend.rutas.directionhelpers.TaskLoadedCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.maps.android.SphericalUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-public class FragmentoIndicaciones extends Fragment implements View.OnClickListener, TaskLoadedCallback {
+public class FragmentoIndicaciones extends Fragment implements View.OnClickListener {
 
     Button mBtnPuntoPartida, mBtnPuntoDestino, mBtnPresionado;
     ConstraintLayout mBtnTiempoBici, mBtnTiempoCaminando;
@@ -171,6 +160,11 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
             new FetchURL((TaskLoadedCallback) requireActivity()).execute(generarUrlRuta(origen, destino), mDirectionMode);
         else
             Log.v("QUICKSTART", "wey es nulo");
+/*
+        MarkerOptions place1, place2;
+        place1 = new MarkerOptions().position(new LatLng(20.6674235372583, -103.31179439549422)).title("Location 1");
+        place2 = new MarkerOptions().position(new LatLng(20.67097726320246, -103.31441214692855)).title("Location 2");
+        new FetchURL((TaskLoadedCallback) requireActivity()).execute(generarUrlRuta(place1.getPosition(), place2.getPosition()), "walking", "walking");*/
     }
 
     private LatLng obtenerCoordenadas(String adress){
@@ -199,7 +193,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         return url;
     }
 
-
+/*
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onTaskDone(Object... values) {
@@ -293,7 +287,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
                 rutasDistancias.get(i).remove(aBorrar.get(o));
             }*/
 
-            Log.v("QUICKSTART", "HASHMAP " + rutasDistancias.get(y));
+    //        Log.v("QUICKSTART", "HASHMAP " + rutasDistancias.get(y));
 /*
             UbicacionDAO mUbicacionDAO = new UbicacionDAO(this);
             RealmResults<ubicacion> mResultadosColonias = mUbicacionDAO.obetenerColonias();
@@ -306,7 +300,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
                     }
                 }
             }*/
-        }
-    }
+       // }
+  //  }
 
 }

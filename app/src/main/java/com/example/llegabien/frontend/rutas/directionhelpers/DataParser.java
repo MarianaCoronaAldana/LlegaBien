@@ -1,7 +1,6 @@
 package com.example.llegabien.frontend.rutas.directionhelpers;
 
 import com.example.llegabien.backend.ruta.directions.rutaDirections;
-import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +26,6 @@ public class DataParser {
                 List path = new ArrayList<>();
                 // Recorriendo todas las legs
                 for (int j = 0; j < jLegs.length(); j++) {
-
                     distancias.add ((String) ((JSONObject) ((JSONObject) jLegs.get(j)).get("distance")).get("text"));
                     duraciones.add ((String) ((JSONObject) ((JSONObject) jLegs.get(j)).get("duration")).get("text"));
 
@@ -35,17 +33,18 @@ public class DataParser {
                     // Recorriendo todos los steps
                     for (int k = 0; k < jSteps.length(); k++) {
                         String polyline = "";
-                        polyline = (String) ((JSONObject) ((JSONObject) jSteps.get(k)).get("polyline")).get("points");
-                        List<LatLng> list = decodificarPolyLine(polyline);
-                        // Recorriendo todos los puntos
-                        for (int l = 0; l < list.size(); l++) {
-                            HashMap<String, String> hm = new HashMap<>();
-                            hm.put("lat", Double.toString((list.get(l)).latitude));
-                            hm.put("lng", Double.toString((list.get(l)).longitude));
-                            path.add(hm);
-                        }
+                        HashMap<String, String> hm = new HashMap<>();
+                        String lat = Double.toString((Double) ((JSONObject) ((JSONObject) jSteps.get(k)).get("start_location")).get("lat"));
+                        String lng = Double.toString((Double) ((JSONObject) ((JSONObject) jSteps.get(k)).get("start_location")).get("lng"));
+                        hm.put("lat", lat);
+                        hm.put("lng", lng);
+                        path.add(hm);
+                        //Log.v("QUICKSTART", "HAsh punto inicial " + hm);
+                        //Log.v("QUICKSTART", "Paso "+ k + " de ruta " + i);
                     }
                     routes.add(path);
+                    //Log.v("QUICKSTART", "path size: " + path.size());
+                    //Log.v("QUICKSTART", "ruta size: " + routes.size());
                 }
             }
         } catch (JSONException e) {
@@ -56,35 +55,5 @@ public class DataParser {
         directions.setDuracion(duraciones);
         directions.setRutasDirectionsJSON(routes);
         return directions;
-    }
-
-    private List<LatLng> decodificarPolyLine(String encoded) {
-        List<LatLng> polyLine = new ArrayList<>();
-        int index = 0, len = encoded.length();
-        int lat = 0, lng = 0;
-        while (index < len) {
-            int b, shift = 0, result = 0;
-            do {
-                b = encoded.charAt(index++) - 63;
-                result |= (b & 0x1f) << shift;
-                shift += 5;
-            } while (b >= 0x20);
-            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-            lat += dlat;
-            shift = 0;
-            result = 0;
-            do {
-                b = encoded.charAt(index++) - 63;
-                result |= (b & 0x1f) << shift;
-                shift += 5;
-            } while (b >= 0x20);
-            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-            lng += dlng;
-
-            LatLng p = new LatLng((((double) lat / 1E5)),
-                    (((double) lng / 1E5)));
-            polyLine.add(p);
-        }
-        return polyLine;
     }
 }

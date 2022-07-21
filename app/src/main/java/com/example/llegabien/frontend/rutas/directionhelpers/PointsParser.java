@@ -67,6 +67,7 @@ public class PointsParser extends AsyncTask<String, Integer, rutaDirections> {
                 double lng = Double.parseDouble(point.get("lng"));
                 LatLng position = new LatLng(lat, lng);
                 puntos.add(position);
+                Log.v("QUICKSTART", "Punto "+ j + " de ruta " + i + " valor: " + position);
             }
             // los puntos se agregan a la ruta
             ruta.addAll(puntos);

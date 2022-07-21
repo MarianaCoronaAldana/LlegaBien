@@ -57,26 +57,27 @@ public class UbicacionGeodicacion {
         try{
             List<Address> addressList = mGeocoder.getFromLocation(latitude, longitude, 1);
             if(addressList.size()>0) {
-                String calle;
-                if(addressList.get(0).getThoroughfare()==null)
-                    calle = addressList.get(0).getFeatureName();
-                else
+                String calle = addressList.get(0).getThoroughfare();
+                if(calle == null)
                     calle = addressList.get(0).getThoroughfare();
-                if(addressList.get(0).getSubLocality()!=null) {
-                    Address direccion = new Address(Locale.getDefault());
-                    direccion.setThoroughfare(calle);
-                    direccion.setSubLocality(addressList.get(0).getSubLocality());
-                    direccion.setLocality(addressList.get(0).getLocality());
-                    direccion.setAdminArea(addressList.get(0).getAdminArea());
-                    direccion.setCountryName(addressList.get(0).getCountryName());
-                    direccion.setLatitude(latitude);
-                    direccion.setLongitude(longitude);
-                    String A =        calle
-                            + ", " + addressList.get(0).getSubLocality()
-                            + ", " + addressList.get(0).getLocality();
-                    return direccion;
 
+                String colonia = addressList.get(0).getSubLocality();
+                if (colonia == null) {
+                    colonia =  addressList.get(0).getAddressLine(0).split(",", 3)[1].trim();
                 }
+                Address direccion = new Address(Locale.getDefault());
+                direccion.setThoroughfare(calle);
+                direccion.setSubLocality(colonia);
+                direccion.setLocality(addressList.get(0).getLocality());
+                direccion.setAdminArea(addressList.get(0).getAdminArea());
+                direccion.setCountryName(addressList.get(0).getCountryName());
+                direccion.setLatitude(latitude);
+                direccion.setLongitude(longitude);
+
+                String A =        calle
+                        + ", " + addressList.get(0).getSubLocality()
+                        + ", " + addressList.get(0).getLocality();
+                return direccion;
             }
         }catch (IOException e) {
             e.printStackTrace();

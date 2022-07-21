@@ -56,7 +56,6 @@ public class UbicacionBusquedaAutocompletada {
 
             boolean isUbicacionBuscadaEnBD = ubicacionDAO.obtenerUbicacionBuscada(ubicacionBuscada.latitude,ubicacionBuscada.longitude);
             onUbicacionBuscadaObtenida.isUbicacionBuscadaObtenida(true, isUbicacionBuscadaEnBD,ubicacionBuscada, address);
-
         }
 
         else if (resultCode == AutocompleteActivity.RESULT_ERROR) {

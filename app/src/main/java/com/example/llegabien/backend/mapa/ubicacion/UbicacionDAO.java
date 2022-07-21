@@ -72,6 +72,17 @@ public class UbicacionDAO {
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public ubicacion obtenerColonia(String nombreColonia, List<ubicacion> colonias, LatLng ubicacionColonia) {
+        ubicacion colonia = obtenerUbicacionConNombre(nombreColonia);
+        if (colonia != null)
+            return colonia;
+
+        Poligono poligono = new Poligono();
+        colonia = poligono.isUbicacionEnPoligono(colonias, ubicacionColonia.latitude, ubicacionColonia.longitude);
+        return colonia;
+    }
+
     public List<ubicacion> obtenerColonias() {
         if (realm == null)
             realm = conectarBD.conseguirUsuarioMongoDB();
@@ -82,17 +93,6 @@ public class UbicacionDAO {
             errorConexion();
 
         return null;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public ubicacion obtenerColonia(String nombreColonia, List<ubicacion> colonias, LatLng ubicacionColonia) {
-        ubicacion colonia = obtenerUbicacionConNombre(nombreColonia);
-        if (colonia != null)
-            return colonia;
-
-        Poligono poligono = new Poligono();
-        colonia = poligono.isUbicacionEnPoligono(colonias, ubicacionColonia.latitude, ubicacionColonia.longitude);
-        return colonia;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
