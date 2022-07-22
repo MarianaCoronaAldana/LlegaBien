@@ -163,7 +163,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         LatLng origen = obtenerCoordenadas(mBtnPuntoPartida.getText().toString());
         LatLng destino = obtenerCoordenadas(mBtnPuntoDestino.getText().toString());
         if (origen!=null && destino != null)
-            new FetchURL((TaskLoadedCallback) requireActivity()).execute(generarUrlRuta(origen, destino), mDirectionMode);
+            new FetchURL((TaskLoadedCallback) requireActivity(), this.requireActivity().getApplicationContext()).execute(generarUrlRuta(origen, destino), mDirectionMode);
         else
             Log.v("QUICKSTART", "wey es nulo");
 /*

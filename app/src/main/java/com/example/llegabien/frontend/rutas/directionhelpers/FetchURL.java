@@ -1,5 +1,6 @@
 package com.example.llegabien.frontend.rutas.directionhelpers;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -11,11 +12,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class FetchURL extends AsyncTask<String, Void, String> {
-    TaskLoadedCallback mContext;
+    TaskLoadedCallback taskLoader;
     String directionMode = "driving";
+    Context context;
 
     public FetchURL(TaskLoadedCallback Context) {
-        this.mContext = Context;
+        this.taskLoader = Context;
+    }
+
+    public FetchURL(TaskLoadedCallback task, Context context) {
+        this.taskLoader = task;
+        this.context = context;
     }
 
     @Override
@@ -36,7 +43,7 @@ public class FetchURL extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        PointsParser parserTask = new PointsParser(mContext, directionMode);
+        PointsParser parserTask = new PointsParser(taskLoader, directionMode, context);
         // Para parsear la info de JSON
         parserTask.execute(s);
     }

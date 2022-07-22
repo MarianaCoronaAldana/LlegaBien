@@ -1,9 +1,14 @@
 package com.example.llegabien.frontend.rutas.directionhelpers;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
+
+import com.example.llegabien.backend.ruta.EvaluacionRuta;
 import com.example.llegabien.backend.ruta.directions.RutaDirections;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -18,6 +23,13 @@ public class PointsParser extends AsyncTask<String, Integer, RutaDirections> {
     TaskLoadedCallback taskCallback;
     String directionMode = "driving";
     RutaDirections rutasDirections = new RutaDirections();
+    Context context;
+
+    public PointsParser(TaskLoadedCallback mContext, String directionMode, Context c) {
+        this.taskCallback =  mContext;
+        this.directionMode = directionMode;
+        this.context = c;
+    }
 
     public PointsParser(TaskLoadedCallback mContext, String directionMode) {
         this.taskCallback =  mContext;
@@ -48,6 +60,7 @@ public class PointsParser extends AsyncTask<String, Integer, RutaDirections> {
     }
 
     // Se ejecuta una vez el doInBackground termina, 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onPostExecute(RutaDirections directionsResult) {
         ArrayList<LatLng> puntos;
@@ -85,7 +98,10 @@ public class PointsParser extends AsyncTask<String, Integer, RutaDirections> {
         // Devolviendo las rutas encontradas
         if (rutas != null) {
             rutasDirections.setRutasDirectionsPolylineOptions(rutas);
-            taskCallback.onTaskDone(rutasDirections);
+            EvaluacionRuta evaluacionRuta = new EvaluacionRuta(context);
+            evaluacionRuta.obtenerRuta(rutasDirections);
+            evaluacionRuta.execute();
+            //taskCallback.onTaskDone(rutasDirections);
         } else {
             Log.v("QUICKSTART", "no hay rutas");
         }

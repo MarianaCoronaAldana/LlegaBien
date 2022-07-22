@@ -19,8 +19,6 @@ import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.poligonos.Poligono;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.notificacion.Notificacion;
-import com.example.llegabien.backend.ruta.EvaluacionRuta;
-import com.example.llegabien.backend.ruta.directions.RutaDirections;
 import com.example.llegabien.backend.ruta.directions.UbicacionRuta;
 import com.example.llegabien.backend.ruta.realm.ruta;
 import com.example.llegabien.backend.ruta.realm.rutaDAO;
@@ -335,8 +333,8 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onTaskDone(Object... values) {
-        EvaluacionRuta evaluacionRuta = new EvaluacionRuta(mGoogleMap,this);
-        evaluacionRuta.obtenerRuta((RutaDirections) values[0]);
+        //EvaluacionRuta evaluacionRuta = new EvaluacionRuta(mGoogleMap,this);
+        //evaluacionRuta.obtenerRuta((RutaDirections) values[0]);
     }
 
     /*
