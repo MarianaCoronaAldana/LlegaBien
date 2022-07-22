@@ -16,6 +16,11 @@ public class Ruta {
     private double mPorcentajeZonasSeguras;
     private double mPorcentajeDistanciaSegura;
     private List<PolylineOptions> mPolyline;
+    private int numeroDeRuta;
+
+    private boolean hasMenorMediaHistorica;
+    private boolean hasMayorPorcentajeZonasSeguras;
+    private boolean hasMayorPorcentajeDistanciaSegura;
 
     public Ruta() {
         mPolyline = new ArrayList<>();
@@ -91,5 +96,37 @@ public class Ruta {
 
     public void setmPolyline(List<PolylineOptions> mPolyline) {
         this.mPolyline = mPolyline;
+    }
+
+    public int getNumeroDeRuta() {
+        return numeroDeRuta;
+    }
+
+    public void setNumeroDeRuta(int numeroDeRuta) {
+        this.numeroDeRuta = numeroDeRuta;
+    }
+
+    public boolean isHasMenorMediaHistorica() {
+        return hasMenorMediaHistorica;
+    }
+
+    public void setHasMenorMediaHistorica(boolean hasMenorMediaHistorica) {
+        this.hasMenorMediaHistorica = hasMenorMediaHistorica;
+    }
+
+    public boolean isHasMayorPorcentajeZonasSeguras() {
+        return hasMayorPorcentajeZonasSeguras;
+    }
+
+    public void setHasMayorPorcentajeZonasSeguras(boolean hasMayorPorcentajeZonasSeguras) {
+        this.hasMayorPorcentajeZonasSeguras = hasMayorPorcentajeZonasSeguras;
+    }
+
+    public boolean isHasMayorPorcentajeDistanciaSegura() {
+        return hasMayorPorcentajeDistanciaSegura;
+    }
+
+    public void setHasMayorPorcentajeDistanciaSegura(boolean hasMayorPorcentajeDistanciaSegura) {
+        this.hasMayorPorcentajeDistanciaSegura = hasMayorPorcentajeDistanciaSegura;
     }
 }

@@ -51,6 +51,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
                                     mBtnPresionado.setText(ubicacionBuscadaString);
                             }, result, data, requireActivity());
                         }
+
                     }
             );
 
@@ -93,12 +94,13 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         UbicacionDispositivo ubicacionDispositivo = new UbicacionDispositivo();
         ubicacionDispositivo.mostrarStringUbicacionActual(requireActivity(), mBtnPuntoPartida, this);
 
-        // Para
+        // Para mostrar la informacion del lugar seleccionado en Boton
         if(mUbicacionBuscada != null){
             mBtnPuntoDestino.setText(mUbicacionBuscada);
+            tomarDatosRuta();
         }
 
-        tomarDatosRuta();
+        mDirectionMode = "bicycling";
         return root;
     }
 

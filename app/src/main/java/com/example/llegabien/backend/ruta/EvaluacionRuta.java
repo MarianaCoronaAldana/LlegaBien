@@ -1,9 +1,12 @@
 package com.example.llegabien.backend.ruta;
 
+import static io.realm.Realm.getApplicationContext;
+
 import android.content.Context;
 import android.location.Address;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -21,6 +24,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -30,11 +34,13 @@ public class EvaluacionRuta {
 
     private final Context mContext;
     private UbicacionDAO ubicacionDAO;
+    private final GoogleMap mGoogleMap;
     //private List<List<UbicacionRuta>> rutasDistancias;
     private List<Ruta> rutas;
     private List<String> tipoUbicacion;
 
     public EvaluacionRuta(GoogleMap mGoogleMap, Context mContext) {
+        this.mGoogleMap = mGoogleMap;
         this.mContext = mContext;
     }
 
@@ -45,8 +51,15 @@ public class EvaluacionRuta {
         this.rutas = new ArrayList<>();
 
         obtenerPuntosRutas(directionsObtenidas);
-        verificarExistenciaColonias();
-        Log.v("QUICKSTART", "tipo Ubicacion.size " + this.tipoUbicacion.size());
+        verificarExistenciaColoniasCalles();
+        if (!this.rutas.isEmpty()) {
+            calcularMediaHistorica(this.rutas.size(), this.rutas.get(this.rutas.size() - 1).getmCallesRuta().size(), false);
+            compararMediaHistorica();
+
+        } else {
+            Toast.makeText(getApplicationContext(), "No hay rutas disponibles!", Toast.LENGTH_LONG).show();
+            Log.v("QUICKSTART", "No hay rutas disponibles!");
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -54,9 +67,15 @@ public class EvaluacionRuta {
         UbicacionGeocodificacion ubicacionGeodicacion = new UbicacionGeocodificacion(mContext);
         UbicacionRutaDAO ubicacionRutaDAO = new UbicacionRutaDAO();
         List<PolylineOptions> rutasObtenidas = directionsObtenidas.getRutasDirectionsPolylineOptions();
+
         List<PolylineOptions> rutaDirectionsPolyline = new ArrayList<>();
         List<List<PolylineOptions>> rutasDirectionsPolyline = new ArrayList<>();
         int distance;
+
+        if (rutasObtenidas.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "No hay rutas disponibles!", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         // PARA OBTENER PUNTOS MEDIO Y SUS DISTANCIAS
         // Recorre rutas
@@ -88,6 +107,7 @@ public class EvaluacionRuta {
                         ruta.getmCallesRuta().set(index, ubicacionRuta);
                         Log.v("QUICKSTART", "");
                     }
+                    mGoogleMap.addPolyline(lineOptions);
                     Log.v("QUICKSTART", "Calle: " + calle + " Distancia " + ubicacionRuta.getmDistancia());
                 }
                 ruta.setmNumeroCalles(ruta.getmCallesRuta().size());
@@ -113,7 +133,7 @@ public class EvaluacionRuta {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void verificarExistenciaColonias() {
+    private void verificarExistenciaColoniasCalles() {
         // PARA VERIFICAR QUE EXISTAN LAS COLONIAS DE CADA RUTA
         UbicacionDAO mUbicacionDAO = new UbicacionDAO(mContext);
         List<ubicacion> colonias = mUbicacionDAO.obtenerColonias();
@@ -123,6 +143,7 @@ public class EvaluacionRuta {
         ubicacion ubicacionCalle;
 
         for (int y = 0; y < this.rutas.size(); y++) {
+            this.rutas.get(y).setNumeroDeRuta(y+1);
             for (int i = 0; i < this.rutas.get(y).getmCallesRuta().size(); i++) {
                 coloniaNombre = this.rutas.get(y).getmCallesRuta().get(i).getmDireccion().split(",", 2)[1].trim();
                 if (!coloniasEncontradas.containsKey(coloniaNombre)) {
@@ -148,11 +169,6 @@ public class EvaluacionRuta {
                 }
             }
         }
-        if (rutas.isEmpty()) {
-            Log.v("QUICKSTART", "No hay rutas disponibles!");
-        }
-
-        //inicializarObtenerUbicacionesRutas(rutasDistancias, coloniasEncontradas, rutaMasLarga);
     }
 
     private ubicacion obtenerUbicacionCalle(String calleNombre) {
@@ -177,35 +193,45 @@ public class EvaluacionRuta {
                 this.tipoUbicacion.set(i, "colonia");
         }
     }
-/*
-    private void calcularMediaHistorica() {
-        int numCallesRutaUno=0, numCallesRutaDos = 0, numCallesRutaTres = 0 ;
 
-        for (int y = this.rutas.size()-1; y >= 0; y--) {
-            if(y==2)
-                numCallesRutaUno = this.rutas.get(y).getmNumeroCalles();
-            else if(y==1)
-                numCallesRutaDos = this.rutas.get(y).getmNumeroCalles();
-            else if(y==0)
-                numCallesRutaTres = this.rutas.get(y).getmNumeroCalles();
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void calcularMediaHistorica(int numeroRutas, int numeroCalles, boolean hasToSortByNumeroCalles) {
+        if(hasToSortByNumeroCalles)
+            this.rutas.sort(Comparator.comparing(Ruta::getmNumeroCalles).reversed());
 
-            for (int i = 0; i < this.rutas.get(y).getmCallesRuta().size(); i++) {
-                if(this.tipoUbicacion.get(i).equals("calle"))
+        for (int y = numeroRutas-1; y >= 0; y--) {
+            for (int i = 0; i < numeroCalles; i++) {
+                if (this.tipoUbicacion.get(i).equals("calle"))
                     this.rutas.get(y).setmMediaHistorica(this.rutas.get(y).getmMediaHistorica()
                             + this.rutas.get(y).getmCallesRuta().get(i).getmUbicacionCalle().getMedia_historica_double());
 
-                else if(this.tipoUbicacion.get(i).equals("colonia"))
+                else if (this.tipoUbicacion.get(i).equals("colonia"))
                     this.rutas.get(y).setmMediaHistorica(this.rutas.get(y).getmMediaHistorica()
                             + this.rutas.get(y).getmCallesRuta().get(i).getmUbicacionColonia().getMedia_historica_double());
-
-                if(y==2 && i == numCallesRutaUno){
-                    if(this.rutas.get(y-1).getmMediaHistorica() > this.rutas.get(y).getmMediaHistorica())
-
-                }
             }
-
+            Log.v("QUICKSTART", "Media historica: " + this.rutas.get(y).getmMediaHistorica());
         }
-    }*/
+        this.rutas.sort(Comparator.comparing(Ruta::getmMediaHistorica));
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void compararMediaHistorica() {
+
+        if (this.rutas.get(this.rutas.size() - 1).getNumeroDeRuta() == 1) {
+            Collections.replaceAll(this.tipoUbicacion, "colonia", "calle");
+            if(this.rutas.get(0).getNumeroDeRuta() == 3)
+                calcularMediaHistorica(this.rutas.size(), this.rutas.get(0).getmCallesRuta().size(), true);
+            else
+                calcularMediaHistorica(2, this.rutas.get(0).getmCallesRuta().size(), true);
+        }
+
+        else if (this.rutas.get(1).getNumeroDeRuta() == 1) {
+            Collections.replaceAll(this.tipoUbicacion, "colonia", "calle");
+            Log.v("QUICKSTART", " mira mira esta cambiadoo " + this.tipoUbicacion.get(0));
+            calcularMediaHistorica(2, this.rutas.get(0).getmCallesRuta().size(), false);
+        }
+
+        this.rutas.get(0).setHasMenorMediaHistorica(true);
+    }
 
 }

@@ -24,7 +24,6 @@ import com.example.llegabien.backend.ruta.directions.RutaDirections;
 import com.example.llegabien.backend.ruta.directions.UbicacionRuta;
 import com.example.llegabien.backend.ruta.realm.ruta;
 import com.example.llegabien.backend.ruta.realm.rutaDAO;
-import com.example.llegabien.backend.usuario.UsuarioDAO;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.databinding.ActivityMapsBinding;
 import com.example.llegabien.frontend.mapa.Mapa;
@@ -131,7 +130,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         mPermisos.getPermisoUbicacion(this, true);
 
         //Para actualizar los datos de usuario cuando se llegue a ésta actividad
-        actualizarPreferencesUsuario();
+//        actualizarPreferencesUsuario();
     }
 
     @Override
@@ -144,7 +143,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
             //Para activar My Location layer
             actualizarUbicacionUI();
         }
-        actualizarPreferencesUsuario();
+//        actualizarPreferencesUsuario();
 
     }
 
@@ -297,14 +296,14 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         // listeners
         mGoogleMap.setOnPolygonClickListener(this);
     }
-
+/*
     // Para actualizar los datos de usuario cuando se llegue a ésta actividad
     private void actualizarPreferencesUsuario() {
         UsuarioDAO usuarioDAO = new UsuarioDAO(getApplicationContext());
         usuario Usuario = Preferences.getSavedObjectFromPreference(getApplicationContext(), PREFERENCE_USUARIO, usuario.class);
         Usuario = usuarioDAO.readUsuarioPorCorreo(Usuario.getCorreoElectronico());
         Preferences.savePreferenceObjectRealm(getApplicationContext(), PREFERENCE_USUARIO, Usuario);
-    }
+    }*/
 
     //TODO: MOVER FUNCIONES DE AQUI
     private void PRUEBA() {
