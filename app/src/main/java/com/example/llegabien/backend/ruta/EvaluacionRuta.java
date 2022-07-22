@@ -55,7 +55,6 @@ public class EvaluacionRuta {
         if (!this.rutas.isEmpty()) {
             calcularMediaHistorica(this.rutas.size(), this.rutas.get(this.rutas.size() - 1).getmCallesRuta().size(), false);
             compararMediaHistorica();
-
         } else {
             Toast.makeText(getApplicationContext(), "No hay rutas disponibles!", Toast.LENGTH_LONG).show();
             Log.v("QUICKSTART", "No hay rutas disponibles!");
@@ -143,7 +142,8 @@ public class EvaluacionRuta {
         ubicacion ubicacionCalle;
 
         for (int y = 0; y < this.rutas.size(); y++) {
-            this.rutas.get(y).setNumeroDeRuta(y+1);
+            this.rutas.get(y).setNumeroDeRuta(this.rutas.size()-y);
+            Log.v("QUICKSTART", "Ruta numero: " + this.rutas.get(y).getNumeroDeRuta() + " size: " + this.rutas.get(y).getmNumeroCalles());
             for (int i = 0; i < this.rutas.get(y).getmCallesRuta().size(); i++) {
                 coloniaNombre = this.rutas.get(y).getmCallesRuta().get(i).getmDireccion().split(",", 2)[1].trim();
                 if (!coloniasEncontradas.containsKey(coloniaNombre)) {
@@ -199,7 +199,14 @@ public class EvaluacionRuta {
         if(hasToSortByNumeroCalles)
             this.rutas.sort(Comparator.comparing(Ruta::getmNumeroCalles).reversed());
 
+        int inicioCiclo=0;
+        boolean continuarCalculoMH=false;
+        if(continuarCalculoMH)
+            inicioCiclo = this.rutas.stream().filter(r -> r.getNumeroDeRuta() == 1)
+                    .findAny().orElse(null).getmCallesRuta().size();
+
         for (int y = numeroRutas-1; y >= 0; y--) {
+            this.rutas.get(y).setmMediaHistorica(0);
             for (int i = 0; i < numeroCalles; i++) {
                 if (this.tipoUbicacion.get(i).equals("calle"))
                     this.rutas.get(y).setmMediaHistorica(this.rutas.get(y).getmMediaHistorica()
@@ -218,7 +225,11 @@ public class EvaluacionRuta {
     public void compararMediaHistorica() {
 
         if (this.rutas.get(this.rutas.size() - 1).getNumeroDeRuta() == 1) {
-            Collections.replaceAll(this.tipoUbicacion, "colonia", "calle");
+            calcularMediaHistorica(2,  this.rutas.stream().filter(r -> r.getNumeroDeRuta() == 2)
+                    .findAny().orElse(null).getmCallesRuta().size(), false);
+
+            Collections.replaceAll(this.tipoUbicacion, "calle", "colonia");
+
             if(this.rutas.get(0).getNumeroDeRuta() == 3)
                 calcularMediaHistorica(this.rutas.size(), this.rutas.get(0).getmCallesRuta().size(), true);
             else
@@ -226,8 +237,9 @@ public class EvaluacionRuta {
         }
 
         else if (this.rutas.get(1).getNumeroDeRuta() == 1) {
-            Collections.replaceAll(this.tipoUbicacion, "colonia", "calle");
+            Collections.replaceAll(this.tipoUbicacion, "calle", "colonia");
             Log.v("QUICKSTART", " mira mira esta cambiadoo " + this.tipoUbicacion.get(0));
+            //PONER UN SORT AL REVES?
             calcularMediaHistorica(2, this.rutas.get(0).getmCallesRuta().size(), false);
         }
 
