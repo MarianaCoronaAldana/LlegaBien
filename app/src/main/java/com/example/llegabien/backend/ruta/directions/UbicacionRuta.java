@@ -6,7 +6,7 @@ import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
 
 import java.util.Locale;
 
-public class ubicacionRuta {
+public class UbicacionRuta {
     int mDistancia;
     Address mAddress;
     String mDireccion;
@@ -14,10 +14,10 @@ public class ubicacionRuta {
     ubicacion mUbicacionColonia;
     ubicacion mUbicacionCalle;
 
-    public ubicacionRuta() {
+    public UbicacionRuta() {
     }
 
-    public ubicacionRuta(int Distancia, Address Address, String Direccion) {
+    public UbicacionRuta(int Distancia, Address Address, String Direccion) {
         this.mDistancia = Distancia;
         this.mAddress = Address;
         this.mDireccion = Direccion;
@@ -75,6 +75,7 @@ public class ubicacionRuta {
     public void setmUbicacionCalle(ubicacion mUbicacionCalle) {
         this.mUbicacionCalle = mUbicacionCalle;
     }
+
 }
 
 

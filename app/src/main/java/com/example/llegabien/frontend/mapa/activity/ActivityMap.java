@@ -20,8 +20,8 @@ import com.example.llegabien.backend.mapa.poligonos.Poligono;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.notificacion.Notificacion;
 import com.example.llegabien.backend.ruta.EvaluacionRuta;
-import com.example.llegabien.backend.ruta.directions.rutaDirections;
-import com.example.llegabien.backend.ruta.directions.ubicacionRuta;
+import com.example.llegabien.backend.ruta.directions.RutaDirections;
+import com.example.llegabien.backend.ruta.directions.UbicacionRuta;
 import com.example.llegabien.backend.ruta.realm.ruta;
 import com.example.llegabien.backend.ruta.realm.rutaDAO;
 import com.example.llegabien.backend.usuario.UsuarioDAO;
@@ -312,8 +312,8 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         new FetchURL(ActivityMap.this).execute(generarUrlRuta(place1.getPosition(), place2.getPosition(), "walking"), "walking");
     }
 
-    List<ubicacionRuta> rutaDistancias;
-    List<List<ubicacionRuta>> rutasDistancias;
+    List<UbicacionRuta> rutaDistancias;
+    List<List<UbicacionRuta>> rutasDistancias;
 
     private String generarUrlRuta(LatLng origen, LatLng dest, String directionMode) {
         // Origen de la ruta
@@ -337,7 +337,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     @Override
     public void onTaskDone(Object... values) {
         EvaluacionRuta evaluacionRuta = new EvaluacionRuta(mGoogleMap,this);
-        evaluacionRuta.obtenerRuta((rutaDirections) values[0]);
+        evaluacionRuta.obtenerRuta((RutaDirections) values[0]);
     }
 
     /*

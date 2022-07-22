@@ -54,6 +54,9 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
                     }
             );
 
+    public FragmentoIndicaciones(){
+    }
+
     public FragmentoIndicaciones(String ubicacionBuscada){
         mUbicacionBuscada = ubicacionBuscada;
     }
@@ -93,9 +96,9 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         // Para
         if(mUbicacionBuscada != null){
             mBtnPuntoDestino.setText(mUbicacionBuscada);
-            tomarDatosRuta();
         }
 
+        tomarDatosRuta();
         return root;
     }
 
@@ -193,115 +196,5 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         Log.v("QUICKSTART", url);
         return url;
     }
-
-/*
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    public void onTaskDone(Object... values) {
-        UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(this.requireActivity().getApplicationContext());
-
-        rutaDirections directionsObtenidas =  (rutaDirections) values[0];
-
-        List<PolylineOptions> rutasObtenidas = directionsObtenidas.getRutasDirectionsPolylineOptions();
-        List<PolylineOptions> ruta = new ArrayList<>();
-        List<List<PolylineOptions>> rutas = new ArrayList<>();
-
-        // Para los puntos medios
-        List<LatLng> rutaPuntosMedios = new ArrayList<>();
-        List<List<LatLng>> rutasPorPuntosMedios = new ArrayList<>();
-        List<String> rutaPuntosMediosNombres = new ArrayList();
-        List<List<String>> rutasPorPuntosMediosNombres = new ArrayList();
-
-        // PARA OBTENER LOS PUNTOS MEDIOS Y LAS DISTANCIAS
-        HashMap<String, Integer> rutaDistancias = new HashMap<>();
-        List<HashMap<String, Integer>> rutasDistancias = new ArrayList<>();
-        int distance = 0;
-
-        // PARA OBTENER PUNTOS MEDIO Y SUS DISTANCIAS
-        // Recorre rutas
-        for (int i=0; i<rutasObtenidas.size(); i++){
-            List<LatLng> points = rutasObtenidas.get(i).getPoints();
-            //rutaDistancias.clear();
-            rutaDistancias = new HashMap<>();
-            // Recorre los puntos de una ruta
-            for (int o=0; o<points.size(); o++) {
-                rutaPuntosMedios = new ArrayList<>();
-                rutaPuntosMediosNombres = new ArrayList<>();
-                PolylineOptions lineOptions = new PolylineOptions();
-                lineOptions.add(points.get(o));
-                if(o+1<points.size()) {
-                    lineOptions.add(points.get(o + 1));
-                    LatLng centro = LatLngBounds.builder().include(points.get(o)).include(points.get(o+1)).build().getCenter();
-                    Address adress = ubicacionGeodicacion.degeocodificarUbiciacionSinNumero(this.requireActivity().getApplicationContext(),  centro.latitude, centro.longitude);
-                    String nombreCalle = adress.getThoroughfare()
-                            + ", " + adress.getSubLocality()
-                            + ", " + adress.getLocality()
-                            + ", " + adress.getAdminArea()
-                            + ", " + adress.getCountryName();
-                    //Log.v("QUICKSTART", "Nombre calle: " + ubicacionGeodicacion.degeocodificarUbiciacion(getApplicationContext(), centro.latitude, centro.longitude));
-                    Log.v("QUICKSTART", "Nombre calle 2: " + nombreCalle);
-                    distance = (int) SphericalUtil.computeDistanceBetween(points.get(o), points.get(o+1));
-                    if (!rutaDistancias.containsKey(nombreCalle))
-                        rutaDistancias.put(nombreCalle, distance);
-                    else
-                        rutaDistancias.replace(nombreCalle, distance+rutaDistancias.get(nombreCalle));
-                    //Log.v("QUICKSTART", "Distancia " + distance);
-                }
-                //mGoogleMap.addPolyline(lineOptions);
-                ruta.add(lineOptions);
-            }
-            rutaDistancias.containsValue(0);
-
-            for (Map.Entry<String, Integer> hashMap : rutaDistancias.entrySet()) {
-                System.out.println("Key: " + hashMap.getKey()
-                        + " Value: " + hashMap.getValue());
-
-                if(hashMap.getValue().equals(0))
-                    rutaDistancias.remove(hashMap.getKey());
-            }
-
-            rutas.add(ruta);
-            rutasPorPuntosMedios.add(rutaPuntosMedios);
-            rutasPorPuntosMediosNombres.add(rutaPuntosMediosNombres);
-            rutasDistancias.add(rutaDistancias);
-            Log.v("QUICKSTART", "DISTANCIA, TIEMPO: " + directionsObtenidas.getDistancia().get(i) + " , " + directionsObtenidas.getDuracion().get(i));
-            // Log.v("QUICKSTART", "HASHMAP " + rutaDistancias);
-            Log.v("QUICKSTART", "HASHMAP " + rutasDistancias.get(i));
-        }
-        directionsObtenidas.setRutasEnPolylines(rutas);
-        directionsObtenidas.setRutasPuntosMedios(rutasPorPuntosMedios);
-        directionsObtenidas.setRutasNombresPuntosMedios(rutasPorPuntosMediosNombres);
-
-        // PARA VERIFICAR QUE EXISTAN LAS COLONIAS DE CADA RUTA
-        // Recorre rutas
-        for (int y=0; y<rutasDistancias.size(); y++){
-            /*List<String> aBorrar = new ArrayList();
-            for (Map.Entry<String, Integer> hashMap : rutasDistancias.get(i).entrySet()) {
-                System.out.println("Key: " + hashMap.getKey()
-                        + " Value: " + hashMap.getValue());
-
-                if(hashMap.getValue().equals(0))
-                    aBorrar.add(hashMap.getKey());
-            }
-
-            for (int o = 0; o<aBorrar.size(); o++){
-                rutasDistancias.get(i).remove(aBorrar.get(o));
-            }*/
-
-    //        Log.v("QUICKSTART", "HASHMAP " + rutasDistancias.get(y));
-/*
-            UbicacionDAO mUbicacionDAO = new UbicacionDAO(this);
-            RealmResults<ubicacion> mResultadosColonias = mUbicacionDAO.obetenerColonias();
-            if (mResultadosColonias != null) {
-                for (int o = 0; o < mResultadosColonias.size(); o++) {
-                    coordenadasPoligono = mResultadosColonias.get(o).getCoordenadas_string();
-                    seguridad = mResultadosColonias.get(o).getSeguridad();
-                    if (coordenadasPoligono != null) {
-                        mostrarPoligono(getCoordenadasFromString(coordenadasPoligono), googleMap, seguridad);
-                    }
-                }
-            }*/
-       // }
-  //  }
 
 }

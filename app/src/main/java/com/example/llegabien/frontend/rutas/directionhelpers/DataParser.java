@@ -1,6 +1,6 @@
 package com.example.llegabien.frontend.rutas.directionhelpers;
 
-import com.example.llegabien.backend.ruta.directions.rutaDirections;
+import com.example.llegabien.backend.ruta.directions.RutaDirections;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,12 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DataParser {
-    public rutaDirections parser(JSONObject jObject) {
+    public RutaDirections parser(JSONObject jObject) {
         List<List<HashMap<String, String>>> routes = new ArrayList<>();
         JSONArray jRoutes;
         JSONArray jLegs;
         JSONArray jSteps;
-        rutaDirections directions = new rutaDirections();
+        RutaDirections directions = new RutaDirections();
         List <String> distancias = new ArrayList(), duraciones = new ArrayList();
         try {
             jRoutes = jObject.getJSONArray("routes");

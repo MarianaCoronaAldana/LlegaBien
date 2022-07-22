@@ -4,7 +4,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.llegabien.backend.ruta.directions.rutaDirections;
+import com.example.llegabien.backend.ruta.directions.RutaDirections;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class PointsParser extends AsyncTask<String, Integer, rutaDirections> {
+public class PointsParser extends AsyncTask<String, Integer, RutaDirections> {
     TaskLoadedCallback taskCallback;
     String directionMode = "driving";
-    rutaDirections rutasDirections = new rutaDirections();
+    RutaDirections rutasDirections = new RutaDirections();
 
     public PointsParser(TaskLoadedCallback mContext, String directionMode) {
         this.taskCallback =  mContext;
@@ -26,7 +26,7 @@ public class PointsParser extends AsyncTask<String, Integer, rutaDirections> {
 
     // Se encarga de parsear la info
     @Override
-    protected rutaDirections doInBackground(String... jsonData) {
+    protected RutaDirections doInBackground(String... jsonData) {
         JSONObject jObject;
         List<List<HashMap<String, String>>> rutas = null;
         try {
@@ -49,7 +49,7 @@ public class PointsParser extends AsyncTask<String, Integer, rutaDirections> {
 
     // Se ejecuta una vez el doInBackground termina, 
     @Override
-    protected void onPostExecute(rutaDirections directionsResult) {
+    protected void onPostExecute(RutaDirections directionsResult) {
         ArrayList<LatLng> puntos;
         List<PolylineOptions> rutas = new ArrayList<PolylineOptions>();
         PolylineOptions ruta = null;

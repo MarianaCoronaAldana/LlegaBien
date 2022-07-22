@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class rutaDirections  {
+public class RutaDirections {
 
     private ObjectId idUsuario;
     private List <String> duracion;
@@ -20,7 +20,7 @@ public class rutaDirections  {
     private List<List<LatLng>> rutasPuntosMedios;
     private List<List<String>> rutasNombresPuntosMedios;
 
-    public rutaDirections() {
+    public RutaDirections() {
         duracion = new ArrayList<>();
         distancia = new ArrayList<>();
     }
