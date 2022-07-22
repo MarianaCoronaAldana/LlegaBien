@@ -28,7 +28,6 @@ import java.util.Locale;
 
 public class EvaluacionRuta {
 
-    private final GoogleMap mGoogleMap;
     private final Context mContext;
     private UbicacionDAO ubicacionDAO;
     //private List<List<UbicacionRuta>> rutasDistancias;
@@ -36,13 +35,11 @@ public class EvaluacionRuta {
     private List<String> tipoUbicacion;
 
     public EvaluacionRuta(GoogleMap mGoogleMap, Context mContext) {
-        this.mGoogleMap = mGoogleMap;
         this.mContext = mContext;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void obtenerRuta(RutaDirections directionsObtenidas) {
-        //  this.rutasDistancias = new ArrayList<>();
         this.ubicacionDAO = new UbicacionDAO(mContext);
         this.tipoUbicacion = new ArrayList<>();
         this.rutas = new ArrayList<>();
@@ -93,16 +90,17 @@ public class EvaluacionRuta {
                     }
                     Log.v("QUICKSTART", "Calle: " + calle + " Distancia " + ubicacionRuta.getmDistancia());
                 }
-                ruta.setmPolyline(lineOptions);
-                mGoogleMap.addPolyline(ruta.getmPolyline());
-                rutaDirectionsPolyline.add(lineOptions);
-
                 ruta.setmNumeroCalles(ruta.getmCallesRuta().size());
-                ruta.setmDistanciaTotalDirections(directionsObtenidas.getDistancia().get(i));
-                ruta.setmTiempoTotal(directionsObtenidas.getDuracion().get(i));
+                rutaDirectionsPolyline = ruta.getmPolyline();
+                rutaDirectionsPolyline.add(lineOptions);
+                ruta.setmPolyline(rutaDirectionsPolyline);
             }
             rutasDirectionsPolyline.add(rutaDirectionsPolyline);
+
+            ruta.setmDistanciaTotalDirections(directionsObtenidas.getDistancia().get(i));
+            ruta.setmTiempoTotal(directionsObtenidas.getDuracion().get(i));
             this.rutas.add(ruta);
+
             Log.v("QUICKSTART", "DISTANCIA, TIEMPO: " + directionsObtenidas.getDistancia().get(i) + " , " + directionsObtenidas.getDuracion().get(i));
         }
         directionsObtenidas.setRutasEnPolylines(rutasDirectionsPolyline);
@@ -111,10 +109,7 @@ public class EvaluacionRuta {
     }
 
     private int obtenerNumeroRutas(int size) {
-        if (size > 3)
-            return 3;
-        else
-            return size;
+        return Math.min(size, 3);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -143,18 +138,15 @@ public class EvaluacionRuta {
                         Log.v("QUICKSTART", "SE ENCONTRO ");
                         ubicacionCalle = obtenerUbicacionCalle(UbicacionGeocodificacion.establecerNombreUbicacion(rutas.get(y).getmCallesRuta().get(i).getmAddress(), colonia));
                         this.rutas.get(y).getmCallesRuta().get(i).setmUbicacionCalle(ubicacionCalle);
-                        establecerListatipoUbicacion(ubicacionCalle, i);
+                        establecerListaTipoUbicacion(ubicacionCalle, i);
                     }
                 } else {
                     ubicacionCalle = obtenerUbicacionCalle(UbicacionGeocodificacion.establecerNombreUbicacion(rutas.get(y).getmCallesRuta().get(i).getmAddress(), coloniasEncontradas.get(coloniaNombre)));
                     this.rutas.get(y).getmCallesRuta().get(i).setmUbicacionColonia(coloniasEncontradas.get(coloniaNombre));
                     this.rutas.get(y).getmCallesRuta().get(i).setmUbicacionCalle(ubicacionCalle);
-                    establecerListatipoUbicacion(ubicacionCalle, i);
+                    establecerListaTipoUbicacion(ubicacionCalle, i);
                 }
-                Log.v("QUICKSTART", "ubicacion Tipo en ruta " + y + " en punto " + i + " " + this.tipoUbicacion.get(i));
             }
-            Log.v("QUICKSTART", " " + rutas.get(y).getmCallesRuta().size());
-            Log.v("QUICKSTART", "ruta " + y + " size: " + rutas.get(y).getmCallesRuta().size());
         }
         if (rutas.isEmpty()) {
             Log.v("QUICKSTART", "No hay rutas disponibles!");
@@ -163,7 +155,6 @@ public class EvaluacionRuta {
         //inicializarObtenerUbicacionesRutas(rutasDistancias, coloniasEncontradas, rutaMasLarga);
     }
 
-
     private ubicacion obtenerUbicacionCalle(String calleNombre) {
         if (calleNombre != null) {
             return ubicacionDAO.obtenerUbicacionConNombre(calleNombre);
@@ -171,7 +162,7 @@ public class EvaluacionRuta {
         return null;
     }
 
-    private void establecerListatipoUbicacion(ubicacion ubicacionCalle, int i) {
+    private void establecerListaTipoUbicacion(ubicacion ubicacionCalle, int i) {
         if (ubicacionCalle != null) {
             if (i >= this.tipoUbicacion.size())
                 this.tipoUbicacion.add("calle");
@@ -215,28 +206,6 @@ public class EvaluacionRuta {
 
         }
     }*/
-
-    private void inicializarObtenerUbicacionesRutas(List<List<UbicacionRuta>> rutasDistancias, HashMap<String, ubicacion> coloniasEncontradas, int rutaMasLarga) {
-        List<String> tipoUbicacion = new ArrayList<>();
-        ubicacion calle;
-
-        // Para inicializar la forma en cómo se tomarán las rutas
-        for (int i = 0; i < rutasDistancias.get(rutaMasLarga).size(); i++) {
-            UbicacionRuta ubicacionRuta = rutasDistancias.get(rutaMasLarga).get(i);
-            // AQUI VA LO DE INICIALIZAR CALLE
-            calle = null;
-            if (calle != null) {
-                ubicacionRuta.setmUbicacionCalle(calle);
-                this.tipoUbicacion.add("calle");
-            } else {
-                //ubicacionRuta.setmUbicacionColonia(coloniasEncontradas.get(ubicacionRuta.getmAddress().getSubLocality()));
-                this.tipoUbicacion.add("colonia");
-            }
-            rutasDistancias.get(rutaMasLarga).set(i, ubicacionRuta);
-        }
-
-        //  obtenerUbicacionesRutas(rutasDistancias, coloniasEncontradas, this.tipoUbicacion, rutaMasLarga, true);
-    }
 
 
 }

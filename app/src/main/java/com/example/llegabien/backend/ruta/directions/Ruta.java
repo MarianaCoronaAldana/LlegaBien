@@ -2,6 +2,7 @@ package com.example.llegabien.backend.ruta.directions;
 
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Ruta {
@@ -14,9 +15,10 @@ public class Ruta {
     private double mMediaHistorica;
     private double mPorcentajeZonasSeguras;
     private double mPorcentajeDistanciaSegura;
-    private PolylineOptions mPolyline;
+    private List<PolylineOptions> mPolyline;
 
     public Ruta() {
+        mPolyline = new ArrayList<>();
     }
 
     public List<UbicacionRuta> getmCallesRuta() {
@@ -83,11 +85,11 @@ public class Ruta {
         this.mPorcentajeDistanciaSegura = mPorcentajeDistanciaSegura;
     }
 
-    public PolylineOptions getmPolyline() {
+    public List<PolylineOptions> getmPolyline() {
         return mPolyline;
     }
 
-    public void setmPolyline(PolylineOptions mPolyline) {
+    public void setmPolyline(List<PolylineOptions> mPolyline) {
         this.mPolyline = mPolyline;
     }
 }
