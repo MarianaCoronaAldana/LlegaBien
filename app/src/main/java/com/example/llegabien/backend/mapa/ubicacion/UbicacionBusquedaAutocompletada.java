@@ -49,7 +49,7 @@ public class UbicacionBusquedaAutocompletada {
             Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getAddress());
             String address = place.getAddress();
 
-            UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(context);
+            UbicacionGeocodificacion ubicacionGeodicacion = new UbicacionGeocodificacion(context);
             Address ubicacionGeocodificada = ubicacionGeodicacion.geocodificarUbiciacion(address);
             LatLng ubicacionBuscada = new LatLng(ubicacionGeocodificada.getLatitude(), ubicacionGeocodificada.getLongitude());
             UbicacionDAO ubicacionDAO = new UbicacionDAO(context);

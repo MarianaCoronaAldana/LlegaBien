@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class UbicacionGeodicacion {
+public class UbicacionGeocodificacion {
     private Geocoder mGeocoder;
 
-    public UbicacionGeodicacion (Context context){
+    public UbicacionGeocodificacion(Context context){
         mGeocoder = new Geocoder(context, Locale.getDefault());
     }
 
@@ -27,9 +27,9 @@ public class UbicacionGeodicacion {
         return null;
     }
 
-    public Address geocodificarUbiciacionPrueba(String stringAddress){
+    public Address geocodificarUbiciacion(double latitude, double longitude){
         try{
-            List<Address> addressList = mGeocoder.getFromLocationName(stringAddress,5);
+            List<Address> addressList = mGeocoder.getFromLocation(latitude, longitude,1);
             if(addressList.size()>0) {
                 return addressList.get(0);
             }
@@ -73,10 +73,6 @@ public class UbicacionGeodicacion {
                 direccion.setCountryName(addressList.get(0).getCountryName());
                 direccion.setLatitude(latitude);
                 direccion.setLongitude(longitude);
-
-                String A =        calle
-                        + ", " + addressList.get(0).getSubLocality()
-                        + ", " + addressList.get(0).getLocality();
                 return direccion;
             }
         }catch (IOException e) {
@@ -85,26 +81,26 @@ public class UbicacionGeodicacion {
         return null;
     }
 
-/*
-    public String degeocodificarUbiciacionSinNumero(Context c, double latitude, double longitude){
-        mGeocoder = new Geocoder(c, Locale.getDefault());
-        try{
-            List<Address> addressList = mGeocoder.getFromLocation(latitude, longitude, 1);
-            if(addressList.size()>0) {
-                String calle;
-                if(addressList.get(0).getThoroughfare()==null)
-                    calle = addressList.get(0).getFeatureName();
-                else
-                    calle = addressList.get(0).getThoroughfare();
-                if(addressList.get(0).getSubLocality()!=null) {
-                    return  calle
-                            + ", " + addressList.get(0).getSubLocality()
-                            + ", " + addressList.get(0).getLocality();
-                }
+    public static String establecerNombreUbicacion(Address addressGoogle, ubicacion colonia) {
+        // Para establecer el nombre de la calle se establece con Thoroughfare o FeatureName.
+        // En caso de que Thoroughfare o FeatureName sean nulos, quiere decir que la ubicacion no se encontró como calle o vía pública.
+        String calleNombreGoogle = addressGoogle.getThoroughfare();
+        if (calleNombreGoogle == null)
+            calleNombreGoogle = addressGoogle.getFeatureName();
+
+        if (calleNombreGoogle != null) {
+            // Para establecer el nombre de la colonia se establece con SubLocality.
+            // En caso de que SubLocality sea nulo, se tomara el nombre del objeto ubicacion que corresponde a la colonia de la calle.
+            String coloniaNombreGoogle = addressGoogle.getSubLocality();
+            if (coloniaNombreGoogle == null) {
+                coloniaNombreGoogle = colonia.getNombre().split(",", 2)[0].trim();
             }
-        }catch (IOException e) {
-            e.printStackTrace();
+
+            // Se retorna el nombre completo de la calle.
+            return (calleNombreGoogle + ", " + coloniaNombreGoogle + ", " + addressGoogle.getLocality() + ", " + addressGoogle.getAdminArea()
+                    + ", " + addressGoogle.getCountryName()).toUpperCase(Locale.ROOT);
         }
         return null;
-    }*/
+    }
+
 }

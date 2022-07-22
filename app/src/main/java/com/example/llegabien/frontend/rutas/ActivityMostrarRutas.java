@@ -25,7 +25,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeocodificacion;
 import com.example.llegabien.backend.ruta.realm.ruta;
 import com.example.llegabien.backend.ruta.realm.rutaDAO;
 import com.example.llegabien.backend.usuario.usuario;
@@ -105,7 +105,7 @@ public class ActivityMostrarRutas extends AppCompatActivity implements View.OnCl
         int size = rutas.size();
         if(size > 0 ) {
             for (int i = 0; i < size; i++) {
-                UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(this);
+                UbicacionGeocodificacion ubicacionGeodicacion = new UbicacionGeocodificacion(this);
 
                 // ConstraintLayout principal
                 constraintSet.clone(mConsLytScrollView);

@@ -22,7 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeocodificacion;
 import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.rutas.directionhelpers.FetchURL;
@@ -93,6 +93,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         // Para
         if(mUbicacionBuscada != null){
             mBtnPuntoDestino.setText(mUbicacionBuscada);
+            tomarDatosRuta();
         }
 
         return root;
@@ -168,7 +169,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
     }
 
     private LatLng obtenerCoordenadas(String adress){
-        UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(this.requireActivity().getApplicationContext());
+        UbicacionGeocodificacion ubicacionGeodicacion = new UbicacionGeocodificacion(this.requireActivity().getApplicationContext());
         Address ubicacionGeocodificada = ubicacionGeodicacion.geocodificarUbiciacion(adress);
         if(ubicacionGeocodificada!=null)
             return new LatLng(ubicacionGeocodificada.getLatitude(), ubicacionGeocodificada.getLongitude());

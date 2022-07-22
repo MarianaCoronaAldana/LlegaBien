@@ -3,12 +3,10 @@ package com.example.llegabien.frontend.mapa.activity;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.content.pm.PackageManager;
-import android.location.Address;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -19,11 +17,9 @@ import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Permisos;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.poligonos.Poligono;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionDAO;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
-import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
 import com.example.llegabien.backend.notificacion.Notificacion;
+import com.example.llegabien.backend.ruta.EvaluacionRuta;
 import com.example.llegabien.backend.ruta.directions.rutaDirections;
 import com.example.llegabien.backend.ruta.directions.ubicacionRuta;
 import com.example.llegabien.backend.ruta.realm.ruta;
@@ -43,20 +39,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.Places;
-import com.google.maps.android.SphericalUtil;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class ActivityMap extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnPolygonClickListener, TaskLoadedCallback {
@@ -322,6 +312,9 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         new FetchURL(ActivityMap.this).execute(generarUrlRuta(place1.getPosition(), place2.getPosition(), "walking"), "walking");
     }
 
+    List<ubicacionRuta> rutaDistancias;
+    List<List<ubicacionRuta>> rutasDistancias;
+
     private String generarUrlRuta(LatLng origen, LatLng dest, String directionMode) {
         // Origen de la ruta
         String str_origen = "origin=" + origen.latitude + "," + origen.longitude;
@@ -343,149 +336,82 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onTaskDone(Object... values) {
-        obtenerPuntosRutas((rutaDirections) values[0]);
-        //TODO: HASTA AQUI
+        EvaluacionRuta evaluacionRuta = new EvaluacionRuta(mGoogleMap,this);
+        evaluacionRuta.obtenerRuta((rutaDirections) values[0]);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void obtenerPuntosRutas(rutaDirections directionsObtenidas) {
-        UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(this);
+    /*
+    private void obtenerUbicacionesRutas(List<List<ubicacionRuta>> rutasDistancias, HashMap<String, ubicacion> coloniasEncontradas, List<String> tipoUbicacion, int rutaMasLarga, boolean seSaltaRutaLarga) {
 
-        List<PolylineOptions> rutasObtenidas = directionsObtenidas.getRutasDirectionsPolylineOptions();
-        List<PolylineOptions> ruta = new ArrayList<>();
-        List<List<PolylineOptions>> rutas = new ArrayList<>();
+        List<Integer> cambiarTipo = new ArrayList<>();
+        ubicacionRuta ubicacionRutaActual = new ubicacionRuta();
 
-        // Para los puntos medios
-        List<LatLng> rutaPuntosMedios = new ArrayList<>();
-        List<List<LatLng>> rutasPorPuntosMedios = new ArrayList<>();
-        List<String> rutaPuntosMediosNombres = new ArrayList();
-        List<List<String>> rutasPorPuntosMediosNombres = new ArrayList();
-
-        // PARA OBTENER LOS PUNTOS MEDIOS Y LAS DISTANCIAS
-        HashMap<String, ubicacionRuta> rutaDistancias = new HashMap<>();
-        List<HashMap<String, ubicacionRuta>> rutasDistancias = new ArrayList<>();
-        int distance = 0;
-
-        // PARA OBTENER PUNTOS MEDIO Y SUS DISTANCIAS
-        // Recorre rutas
-        for (int i = 0; i < rutasObtenidas.size(); i++) {
-            List<LatLng> points = rutasObtenidas.get(i).getPoints();
-            rutaDistancias = new HashMap<>();
-            // Recorre los puntos de una ruta
-            for (int o = 0; o < points.size(); o++) {
-                rutaPuntosMedios = new ArrayList<>();
-                rutaPuntosMediosNombres = new ArrayList<>();
-                PolylineOptions lineOptions = new PolylineOptions();
-                lineOptions.add(points.get(o));
-                if (o + 1 < points.size()) {
-                    lineOptions.add(points.get(o + 1));
-                    LatLng centro = LatLngBounds.builder().include(points.get(o)).include(points.get(o + 1)).build().getCenter();
-                    Address adress = ubicacionGeodicacion.degeocodificarUbiciacionSinNumero(getApplicationContext(), centro.latitude, centro.longitude);
-                    String nombreCalle = adress.getThoroughfare()
-                            + ", " + adress.getSubLocality()
-                            + ", " + adress.getLocality()
-                            + ", " + adress.getAdminArea()
-                            + ", " + adress.getCountryName();
-                    distance = (int) SphericalUtil.computeDistanceBetween(points.get(o), points.get(o + 1));
-                    ubicacionRuta ubicacionRuta = new ubicacionRuta(distance, adress);
-                    Log.v("QUICKSTART", "Nombre calle 2: " + nombreCalle);
-                    if (!rutaDistancias.containsKey(nombreCalle))
-                        rutaDistancias.put(nombreCalle, ubicacionRuta);
-                    else
-                        rutaDistancias.replace(nombreCalle, new ubicacionRuta(distance + rutaDistancias.get(nombreCalle).getmDistancia(), ubicacionRuta.getmAddress()));
-                    Log.v("QUICKSTART", "Distancia " + distance);
+        int u = 0;
+        ubicacion calle;
+        for (int y = 0; y < rutasDistancias.size(); y++) {
+            if (y != rutaMasLarga || seSaltaRutaLarga) {
+                for (Map.Entry<String, ubicacionRuta> hashMap : rutasDistancias.get(y).entrySet()) {
+                    ubicacionRutaActual = hashMap.getValue();
+                    if (tipoUbicacion.get(u).equals("calle")) {
+                        // LO DE LA CALLE ALLÁ
+                        calle = null;
+                        if (calle != null) {
+                            ubicacionRutaActual.setmUbicacion(calle);
+                        } else {
+                            tipoUbicacion.set(u, "colonia");
+                            cambiarTipo.add(u);
+                            cambiarTipo(rutasDistancias, coloniasEncontradas, tipoUbicacion, rutaMasLarga, true);
+                            //obtenerUbicacionesRutas(rutasDistancias, coloniasEncontradas, tipoUbicacion, rutaMasLarga, true);
+                        }
+                    }
+                    if (tipoUbicacion.get(u).equals("colonia")) {
+                        ubicacionRutaActual.setmUbicacion(coloniasEncontradas.get(ubicacionRutaActual.getmAddress().getSubLocality()));
+                    }
+                    hashMap.setValue(ubicacionRutaActual);
+                    u++;
                 }
-                else
-                    Log.v("QUICKSTART", "salta ranita");
-                mGoogleMap.addPolyline(lineOptions);
-                ruta.add(lineOptions);
             }
-            rutas.add(ruta);
-            rutasPorPuntosMedios.add(rutaPuntosMedios);
-            rutasPorPuntosMediosNombres.add(rutaPuntosMediosNombres);
-            rutasDistancias.add(rutaDistancias);
-            Log.v("QUICKSTART", "DISTANCIA, TIEMPO: " + directionsObtenidas.getDistancia().get(i) + " , " + directionsObtenidas.getDuracion().get(i));
-            // Log.v("QUICKSTART", "HASHMAP " + rutaDistancias);
-            Log.v("QUICKSTART", "HASHMAP " + rutasDistancias.get(i));
         }
-        directionsObtenidas.setRutasEnPolylines(rutas);
-        directionsObtenidas.setRutasPuntosMedios(rutasPorPuntosMedios);
-        directionsObtenidas.setRutasNombresPuntosMedios(rutasPorPuntosMediosNombres);
-
-        verificarExistenciaColonias(rutasDistancias);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void verificarExistenciaColonias( List<HashMap<String, ubicacionRuta>>  rutasDistancias) {
-        // PARA VERIFICAR QUE EXISTAN LAS COLONIAS DE CADA RUTA
+    private void cambiarTipo(List<List<ubicacionRuta>> rutasDistancias, HashMap<String, ubicacion> coloniasEncontradas, List<String> tipoUbicacion, int rutaMasLarga, boolean seSaltaRutaLarga) {
+
         UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(this);
         UbicacionDAO mUbicacionDAO = new UbicacionDAO(this);
         List<ubicacion> colonias = mUbicacionDAO.obtenerColonias();
         ubicacion colonia;
         List<Integer> rutasInservibles = new ArrayList<>();
-        //List<String> ubicacionesInservibles = new ArrayList<>();
-        HashMap<String, ubicacion> coloniasEncontradas = new HashMap<>();
         HashMap<String, Integer> ubicacionesInservibles = new HashMap<>();
 
+        List<Integer> cambiarTipo = new ArrayList<>();
+        ubicacionRuta ubicacionRutaActual = new ubicacionRuta();
+
+        ubicacion calle;
         for (int y = 0; y < rutasDistancias.size(); y++) {
-            ubicacionesInservibles = new HashMap<>();
-            for (Map.Entry<String, ubicacionRuta> hashMap : rutasDistancias.get(y).entrySet()) {
-                String coloniaNombre = hashMap.getValue().getmAddress().getSubLocality();
-                if(!coloniasEncontradas.containsKey(coloniaNombre)){
-                    colonia = mUbicacionDAO.obtenerColonia(coloniaNombre, colonias, new LatLng(hashMap.getValue().getmAddress().getLatitude(), hashMap.getValue().getmAddress().getLongitude()));
-                    if (colonia == null) {
-                        Log.v("QUICKSTART", "Colonia no encontrada ");
-                        rutasInservibles.add(y);
-                        break;
-                    } else {
-                        coloniasEncontradas.put(coloniaNombre, colonia);
-                        Log.v("QUICKSTART", "SE ENCONTRO ");
-                    }
-                }
-                if(hashMap.getValue().getmDistancia() == 0)
-                    ubicacionesInservibles.put(hashMap.getKey(), y);
-            }
+            for (int o = 0; o < cambiarTipo.size(); o++) {
 
-            // Para borrar las calles que tienen 0 de Distancia
-            for (Map.Entry<String, Integer> hashMap : ubicacionesInservibles.entrySet()) {
-                rutasDistancias.get(hashMap.getValue()).remove(hashMap.getKey());
+                ubicacionRutaActual = rutasDistancias.get(y).get().getValue();
+
+                for (Map.Entry<String, ubicacionRuta> hashMap : rutasDistancias.get(y).entrySet()) {
+                    ubicacionRutaActual = hashMap.getValue();
+                    if (tipoUbicacion.get(o).equals("calle")) {
+                        // LO DE LA CALLE ALLÁ
+                        calle = null;
+                        if (calle != null) {
+                            ubicacionRutaActual.setmUbicacion(calle);
+                        } else {
+                            tipoUbicacion.set(o, "colonia");
+                            cambiarTipo.add(o);
+                            cambiarTipo();
+                            //obtenerUbicacionesRutas(rutasDistancias, coloniasEncontradas, tipoUbicacion, rutaMasLarga, true);
+                        }
+                    }
+                    if (tipoUbicacion.get(o).equals("colonia")) {
+                        ubicacionRutaActual.setmUbicacion(coloniasEncontradas.get(ubicacionRutaActual.getmAddress().getSubLocality()));
+                    }
+                    hashMap.setValue(ubicacionRutaActual);
+                }
             }
         }
-
-        // Para borrar las rutas con colonias de las que no se tenga informacion
-        for (int o = 0; o<rutasInservibles.size(); o++){
-            rutasDistancias.remove(rutasInservibles.get(o)-o);
-            Log.v("QUICKSTART", "a borrar " + rutasInservibles.get(o));
-        }
-        if(rutasDistancias.isEmpty())
-            Toast.makeText(getApplicationContext(), "No hay rutas disponibles!", Toast.LENGTH_LONG).show();
-
-        analizarCalles(rutasDistancias, coloniasEncontradas);
-    }
-
-    private void analizarCalles(List<HashMap<String, ubicacionRuta>> rutasDistancias, HashMap<String, ubicacion> coloniasEncontradas) {
-        UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(this);
-
-     /*   for (int y = 0; y < rutasDistancias.size(); y++) {
-            for (Map.Entry<String, ubicacionRuta> hashMap : rutasDistancias.get(y).entrySet()) {
-                UbicacionDAO mUbicacionDAO = new UbicacionDAO(this);
-                List<ubicacion> colonias = mUbicacionDAO.obtenerColonias();
-                String coloniaNombre = hashMap.getKey().split(",", 2)[1].trim();
-                Address addressColonia = ubicacionGeodicacion.geocodificarUbiciacion(hashMap.getKey());
-                colonia = mUbicacionDAO.obtenerColonia(coloniaNombre, colonias, new LatLng(addressColonia.getLatitude(), addressColonia.getLongitude()));
-                if(!encontradas.contains(coloniaNombre)){
-                    if (colonia == null) {
-                        Log.v("QUICKSTART", "Colonia no encontrada ");
-                        aBorrar.add(y);
-                        break;
-                    } else {
-                        encontradas.add(coloniaNombre);
-                        Log.v("QUICKSTART", "SE ENCONTRO ");
-                    }
-                }
-                else
-                    Log.v("QUICKSTART", "YA SE HABIA ENCONTRADO ");
-            }
-        }*/
-    }
+    }*/
 }

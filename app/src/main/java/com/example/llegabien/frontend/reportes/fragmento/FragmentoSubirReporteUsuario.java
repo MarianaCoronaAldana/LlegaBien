@@ -23,19 +23,15 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.llegabien.R;
-import com.example.llegabien.backend.app.Permisos;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
 import com.example.llegabien.backend.reporte.ReporteDAO;
 import com.example.llegabien.backend.reporte.reporte;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.usuario.dialog.DialogDatePicker;
 import com.example.llegabien.frontend.usuario.dialog.DialogTimePicker;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 
 import java.text.Normalizer;
 import java.time.Duration;

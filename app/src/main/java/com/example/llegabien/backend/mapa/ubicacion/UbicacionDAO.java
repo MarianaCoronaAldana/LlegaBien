@@ -61,7 +61,7 @@ public class UbicacionDAO {
         if (colonia != null)
             return colonia;
 
-        UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(mContext);
+        UbicacionGeocodificacion ubicacionGeodicacion = new UbicacionGeocodificacion(mContext);
         Address addressColonia = ubicacionGeodicacion.geocodificarUbiciacion(nombreColonia);
         if (addressColonia != null) {
             Poligono poligono = new Poligono();

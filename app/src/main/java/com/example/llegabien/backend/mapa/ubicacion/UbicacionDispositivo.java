@@ -1,7 +1,6 @@
 package com.example.llegabien.backend.mapa.ubicacion;
 
 import android.app.Activity;
-import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 import android.widget.Button;
@@ -61,7 +60,7 @@ public class UbicacionDispositivo{
             UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
             mUbicacionDispositivo.getUbicacionDelDispositivo((isUbicacionObtenida, ubicacionObtenida) -> {
                 if (isUbicacionObtenida) {
-                    UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(activity);
+                    UbicacionGeocodificacion ubicacionGeodicacion = new UbicacionGeocodificacion(activity);
                     String Ubicacion = ubicacionGeodicacion.degeocodificarUbiciacion(ubicacionObtenida.getLatitude(),
                             ubicacionObtenida.getLongitude());
                     button.setText(Ubicacion);

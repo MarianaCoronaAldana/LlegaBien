@@ -11,10 +11,16 @@ public class ubicacionRuta {
     Address mAddress;
     String mDireccion;
     ubicacion mUbicacion;
+    ubicacion mUbicacionColonia;
+    ubicacion mUbicacionCalle;
 
-    public ubicacionRuta(int Distancia, Address Address) {
+    public ubicacionRuta() {
+    }
+
+    public ubicacionRuta(int Distancia, Address Address, String Direccion) {
         this.mDistancia = Distancia;
         this.mAddress = Address;
+        this.mDireccion = Direccion;
     }
 
     public int getmDistancia() {
@@ -54,6 +60,21 @@ public class ubicacionRuta {
                 + ", " + mAddress.getCountryName()).toUpperCase(Locale.ROOT);
     }
 
+    public ubicacion getmUbicacionColonia() {
+        return mUbicacionColonia;
+    }
+
+    public void setmUbicacionColonia(ubicacion mUbicacionColonia) {
+        this.mUbicacionColonia = mUbicacionColonia;
+    }
+
+    public ubicacion getmUbicacionCalle() {
+        return mUbicacionCalle;
+    }
+
+    public void setmUbicacionCalle(ubicacion mUbicacionCalle) {
+        this.mUbicacionCalle = mUbicacionCalle;
+    }
 }
 
 
