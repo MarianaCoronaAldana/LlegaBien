@@ -1,5 +1,7 @@
 package com.example.llegabien.frontend.mapa.fragmento;
 
+import static io.realm.Realm.getApplicationContext;
+
 import android.content.Intent;
 import android.location.Address;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -47,8 +50,10 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
                             int result = activityResult.getResultCode();
                             Intent data = activityResult.getData();
                             ubicacionBusquedaAutocompletada.verificarResultadoBusqueda((isUbicacionBuscadaObtenida, isUbicacionBuscadaenBD, ubicacionBuscada, ubicacionBuscadaString) -> {
-                                if (isUbicacionBuscadaObtenida)
+                                if (isUbicacionBuscadaObtenida) {
                                     mBtnPresionado.setText(ubicacionBuscadaString);
+                                    tomarDatosRuta();
+                                }
                             }, result, data, requireActivity());
                         }
 
@@ -164,8 +169,10 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         LatLng destino = obtenerCoordenadas(mBtnPuntoDestino.getText().toString());
         if (origen!=null && destino != null)
             new FetchURL((TaskLoadedCallback) requireActivity(), this.requireActivity().getApplicationContext()).execute(generarUrlRuta(origen, destino), mDirectionMode);
-        else
+        else {
+            Toast.makeText(getApplicationContext(), "Ingresa punto de irigen y destino", Toast.LENGTH_LONG).show();
             Log.v("QUICKSTART", "wey es nulo");
+        }
 /*
         MarkerOptions place1, place2;
         place1 = new MarkerOptions().position(new LatLng(20.6674235372583, -103.31179439549422)).title("Location 1");

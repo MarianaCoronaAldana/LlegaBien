@@ -34,7 +34,6 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
     private ObjectAnimator mScaleDown = null;
 
     public FragmentoBarraNavegacion() {
-        // Required empty public constructor
     }
 
     @SuppressLint("ClickableViewAccessibility")

@@ -8,6 +8,7 @@ import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUs
 
 public class FragmentoConfigUsuario extends Fragment implements View.OnClickListener{
 
-    private ConstraintLayout mBtnHistorialRutas;
+   // private ConstraintLayout mBtnHistorialRutas;
     private TextView mTxtViewCorreo, mTxtViewNombre;
 
     public FragmentoConfigUsuario() {
@@ -42,10 +43,10 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
         View root = inflater.inflate(R.layout.fragmento_configuracion_usuario, container, false);
 
         //wiring up
-        ConstraintLayout mBtnEditarPerfil = root.findViewById(R.id.button_editarPerfil_configuracionUsuario);
         Button mBtnCerrarSesion = root.findViewById(R.id.button_cerrarSesion_configuracionUsuario);
         Button mBtnRegresar = root.findViewById(R.id.button_regresar_configuracionUsuario);
-        mBtnHistorialRutas = root.findViewById(R.id.button_historialRutas_configuracionUsuario);
+        ConstraintLayout mBtnEditarPerfil = root.findViewById(R.id.button_editarPerfil_configuracionUsuario);
+        ConstraintLayout mBtnHistorialRutas = root.findViewById(R.id.button_historialRutas_configuracionUsuario);
         ConstraintLayout mBtnHistorialReportes = root.findViewById(R.id.button_historialReportes_configuracionUsuario);
         ConstraintLayout mBtnContactos = root.findViewById(R.id.button_contactos_configuracionUsuario);
         mTxtViewCorreo = root.findViewById(R.id.textView_correoUsuario_configuracionUsuario);
@@ -60,7 +61,6 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
         mBtnContactos.setOnClickListener(this);
 
         setDatosUsuario();
-
         return root;
     }
 
@@ -98,12 +98,12 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
             if(!Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_ES_ADMIN))
                 startActivity(new Intent(requireActivity(), ActivityEditarLeerContactos.class));
 
-        else if (view.getId() == R.id.button_historialRutas_configuracionUsuario)
-            startActivity(new Intent(requireActivity(), ActivityMostrarRutas.class));
-
+        else if (view.getId() == R.id.button_historialRutas_configuracionUsuario) {
+                Log.v("QUICKSTART", "HISTORIAL RUTas");
+                startActivity(new Intent(requireActivity(), ActivityMostrarRutas.class));
+            }
         else if (view.getId() == R.id.button_regresar_configuracionUsuario)
             requireActivity().finish();
-
 
     }
 

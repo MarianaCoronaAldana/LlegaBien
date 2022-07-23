@@ -2,21 +2,24 @@ package com.example.llegabien.backend.ruta;
 
 import static io.realm.Realm.getApplicationContext;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Address;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.llegabien.backend.ubicacion.UbicacionDAO;
-import com.example.llegabien.backend.ubicacion.UbicacionGeocodificacion;
-import com.example.llegabien.backend.ubicacion.ubicacion;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionDAO;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeocodificacion;
+import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
 import com.example.llegabien.backend.ruta.directions.Ruta;
 import com.example.llegabien.backend.ruta.directions.RutaDirections;
 import com.example.llegabien.backend.ruta.directions.UbicacionRuta;
 import com.example.llegabien.backend.ruta.directions.UbicacionRutaDAO;
+import com.example.llegabien.frontend.rutas.directionhelpers.TaskLoadedCallback;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -31,40 +34,34 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-public class EvaluacionRuta {
+public class EvaluacionRuta extends AsyncTask<String, Void, List<Ruta>> {
 
+    @SuppressLint("StaticFieldLeak")
     private final Context mContext;
     private UbicacionDAO ubicacionDAO;
-    private final GoogleMap mGoogleMap;
+    private GoogleMap mGoogleMap;
     private List<Ruta> rutas;
     private List<String> tipoUbicacion;
     private boolean mIsCalleEnRutas = false;
+    private RutaDirections directionsObtenidas;
+    private TaskLoadedCallback taskCallback;
 
     public EvaluacionRuta(GoogleMap mGoogleMap, Context mContext) {
         this.mGoogleMap = mGoogleMap;
         this.mContext = mContext;
     }
 
+    public EvaluacionRuta(Context mContext, TaskLoadedCallback Task) {
+        this.mContext = mContext;
+        this.taskCallback = Task;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void obtenerRuta(RutaDirections directionsObtenidas) {
+    public void obtenerRuta(RutaDirections DirectionsObtenidas) {
         this.ubicacionDAO = new UbicacionDAO(mContext);
         this.tipoUbicacion = new ArrayList<>();
         this.rutas = new ArrayList<>();
-
-        obtenerPuntosRutas(directionsObtenidas);
-        verificarExistenciaColonias();
-        if (!this.rutas.isEmpty()) {
-            if (!this.mIsCalleEnRutas)
-                calcularMediaHistoricaSoloColonias(this.rutas.size(), false);
-            else {
-                calcularMediaHistorica(this.rutas.size(), this.rutas.get(this.rutas.size() - 1).getmNumeroCalles(), false);
-                compararMediaHistorica();
-            }
-            comparacionFinalMediaHistorica();
-        } else {
-            Toast.makeText(getApplicationContext(), "¡No hay rutas disponibles!", Toast.LENGTH_LONG).show();
-            Log.v("QUICKSTART", "¡No hay rutas disponibles!");
-        }
+        directionsObtenidas = DirectionsObtenidas;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -111,7 +108,7 @@ public class EvaluacionRuta {
                         ruta.getmCallesRuta().set(index, ubicacionRuta);
                         Log.v("QUICKSTART", "");
                     }
-                    mGoogleMap.addPolyline(lineOptions);
+//                    mGoogleMap.addPolyline(lineOptions);
                     Log.v("QUICKSTART", "Calle: " + calle + " Distancia " + ubicacionRuta.getmDistancia());
                 }
                 ruta.setmNumeroCalles(ruta.getmCallesRuta().size());
@@ -216,7 +213,7 @@ public class EvaluacionRuta {
             inicioCiclo = this.rutas.stream().filter(r -> r.getNumeroDeRuta() == 1)
                     .findAny().orElse(null).getmNumeroCalles();
 
-        for (int y = 0 ; y < numeroRutas; y++) {
+        for (int y = 0; y < numeroRutas; y++) {
             if (!continuarCalculoMH)
                 this.rutas.get(y).setmMediaHistorica(0);
 
@@ -278,9 +275,9 @@ public class EvaluacionRuta {
                 if (rutasSinRuta1.get(0).getNumeroDeRuta() == 3 || (rutasSinRuta1.get(0).getmMediaHistorica() == rutasSinRuta1.get(1).getmMediaHistorica()))
                     calcularMediaHistoricaSoloColonias(this.rutas.size(), false);
 
-                // Para MH de Ruta 2 < MH de Ruta 3.
+                    // Para MH de Ruta 2 < MH de Ruta 3.
                 else
-                    calcularMediaHistoricaSoloColonias(2,true);
+                    calcularMediaHistoricaSoloColonias(2, true);
             }
         }
 
@@ -304,9 +301,29 @@ public class EvaluacionRuta {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected List<Ruta> doInBackground(String... strings) {
+        obtenerPuntosRutas(directionsObtenidas);
+        verificarExistenciaColonias();
+        if (!this.rutas.isEmpty()) {
+            if (!this.mIsCalleEnRutas)
+                calcularMediaHistoricaSoloColonias(this.rutas.size(), false);
+            else {
+                calcularMediaHistorica(this.rutas.size(), this.rutas.get(this.rutas.size() - 1).getmNumeroCalles(), false);
+                compararMediaHistorica();
+            }
+            comparacionFinalMediaHistorica();
+        } else {
+            Toast.makeText(getApplicationContext(), "¡No hay rutas disponibles!", Toast.LENGTH_LONG).show();
+            Log.v("QUICKSTART", "¡No hay rutas disponibles!");
+        }
+
+        return rutas;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void calcularPorcentajeZonasSeguras() {
         for (int y = 0 ; y < this.rutas.size(); y++) {
-            int numZonasSeguras;
             for (int i = 0; i < this.rutas.get(y).getmNumeroCalles(); i++) {
                 // Se verifica que la seguridad de la calle o colonia de la actual calle de la ruta sea ALTA.
                 // Si es ALTA, el contador de numero de zonas seguras aumentará.
@@ -325,5 +342,10 @@ public class EvaluacionRuta {
         this.rutas.sort(Comparator.comparing(Ruta::getmMediaHistorica));
     }
 
-
+    // Se ejecuta una vez el doInBackground termina,
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected void onPostExecute(List<Ruta> rutas) {
+        taskCallback.onTaskDone(rutas);
+    }
 }
