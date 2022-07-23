@@ -38,7 +38,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
     ConstraintLayout mBtnTiempoBici, mBtnTiempoCaminando;
     TextView mTxtViewTiempoBici, mTxtViewTiempoCaminando;
     View mViewBici, mViewCaminar;
-    String mUbicacionBuscada, mDirectionMode = "walking";
+    String mPuntoPartida, mPuntoDestino, mUbicacionBuscada, mDirectionMode = "walking";
 
     private UbicacionBusquedaAutocompletada ubicacionBusquedaAutocompletada;
     private final ActivityResultLauncher<Intent> activityResultLauncher =
@@ -65,6 +65,11 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
 
     public FragmentoIndicaciones(String ubicacionBuscada){
         mUbicacionBuscada = ubicacionBuscada;
+    }
+
+    public FragmentoIndicaciones(String puntoPartida, String puntoDestino){
+        mPuntoPartida = puntoPartida;
+        mPuntoDestino = puntoDestino;
     }
 
     @Override
@@ -103,6 +108,11 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         if(mUbicacionBuscada != null){
             mBtnPuntoDestino.setText(mUbicacionBuscada);
             tomarDatosRuta();
+        }
+
+        if(mPuntoPartida != null && mPuntoDestino != null){
+            mBtnPuntoDestino.setText(mPuntoDestino);
+            mBtnPuntoDestino.setText(mPuntoDestino);
         }
 
         mDirectionMode = "bicycling";

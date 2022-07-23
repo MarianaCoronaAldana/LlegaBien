@@ -2,8 +2,8 @@ package com.example.llegabien.frontend.rutas;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
-
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +22,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
@@ -29,11 +30,13 @@ import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeocodificacion;
 import com.example.llegabien.backend.ruta.realm.ruta;
 import com.example.llegabien.backend.ruta.realm.rutaDAO;
 import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.frontend.mapa.fragmento.FragmentoIndicaciones;
 
 import org.bson.types.ObjectId;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Objects;
 
 import io.realm.RealmResults;
 
@@ -42,7 +45,7 @@ public class ActivityMostrarRutas extends AppCompatActivity implements View.OnCl
     private View mViewAuxiliar;
     private Guideline mGuideline10Porciento, mGuideline90Porciente;
     private RealmResults<ruta> rutas;
-    private rutaDAO RutaDAO;
+   // private final UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(getApplicationContext());
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -61,8 +64,8 @@ public class ActivityMostrarRutas extends AppCompatActivity implements View.OnCl
         mBtnRegresar.setOnClickListener(this);
 
         usuario usuario = Preferences.getSavedObjectFromPreference(this, PREFERENCE_USUARIO, com.example.llegabien.backend.usuario.usuario.class);
-        RutaDAO = new rutaDAO(this);
-        rutas = RutaDAO.obtenerRutasPorUsuario(usuario.get_id());
+        rutaDAO rutaDAO = new rutaDAO(this);
+        rutas = rutaDAO.obtenerRutasPorUsuario(usuario.get_id());
 
         // Para crear la vista de las rutas creadas por el usuario
         crearVistaRutas();
@@ -70,6 +73,7 @@ public class ActivityMostrarRutas extends AppCompatActivity implements View.OnCl
 
     // FUNCIONES LISTENER //
 
+    @SuppressLint("ResourceType")
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.button_regresar_mostrar_rutas){
@@ -82,16 +86,26 @@ public class ActivityMostrarRutas extends AppCompatActivity implements View.OnCl
             rutaDAO RutaDao =  new rutaDAO(this);
             ObjectId idRuta = new ObjectId(String.valueOf(view.getContentDescription()));
             ruta RutaElegida = RutaDao.obtenerRutaPorId(idRuta);
-            /*
-            UbicacionDAO ubicacionDAO = new UbicacionDAO(this);
-            favorito Favorito = favoritoDAO.obtenerFavoritoPorId(idFavorito);
-            ubicacionDAO.obtenerUbicacionBuscada(Favorito.getUbicacion().getCoordinates().get(0),Favorito.getUbicacion().getCoordinates().get(1));
+            UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(this);
+
+            String puntoPartida = ubicacionGeocodificacion.degeocodificarUbiciacion(
+                    Double.parseDouble(RutaElegida.getPuntoInicio().get(0).toString()),
+                    Double.parseDouble(RutaElegida.getPuntoInicio().get(1).toString()));
+
+            String puntoDestino = ubicacionGeocodificacion.degeocodificarUbiciacion(
+                    Double.parseDouble(RutaElegida.getPuntoDestino().get(0).toString()),
+                    Double.parseDouble(RutaElegida.getPuntoDestino().get(1).toString()));
+
+            Log.v("QUICKSTART", "pUNTO PARTIDA: " + puntoPartida);
+            Log.v("QUICKSTART", "PUNTO DESTINO: " + puntoDestino);
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            FragmentoIndicaciones fragmentoIndicaciones = new FragmentoIndicaciones(puntoPartida, puntoDestino);
+            fragmentTransaction.add(R.id.fragmentContainerView_fragmentoLugares_activityMaps, fragmentoIndicaciones).commit();
 
             // Para abrir fragmento "Lugar seleccionado".
-            Intent intent = new Intent(this, ActivityMap.class);
-            intent.putExtra("ACTIVITY_ANTERIOR","FAVORITOS");
+            Intent intent = new Intent(this, FragmentoIndicaciones.class);
             startActivity(intent);
-            */
         }
 
     }
@@ -103,10 +117,9 @@ public class ActivityMostrarRutas extends AppCompatActivity implements View.OnCl
     private void crearVistaRutas() {
         ConstraintSet constraintSet = new ConstraintSet();
         int size = rutas.size();
+        UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(this);
         if(size > 0 ) {
             for (int i = 0; i < size; i++) {
-                UbicacionGeocodificacion ubicacionGeodicacion = new UbicacionGeocodificacion(this);
-
                 // ConstraintLayout principal
                 constraintSet.clone(mConsLytScrollView);
                 ConstraintLayout consLytPrincipalReporte = new ConstraintLayout(this);
@@ -116,7 +129,7 @@ public class ActivityMostrarRutas extends AppCompatActivity implements View.OnCl
 
                 consLytPrincipalReporte.setClickable(true);
                 consLytPrincipalReporte.setOnClickListener(this);
-                consLytPrincipalReporte.setContentDescription(rutas.get(i).get_id().toString());
+                consLytPrincipalReporte.setContentDescription(Objects.requireNonNull(rutas.get(i)).get_id().toString());
 
                 mConsLytScrollView.addView(consLytPrincipalReporte);
                 constraintSet.connect(consLytPrincipalReporte.getId(), ConstraintSet.START, mGuideline10Porciento.getId(), ConstraintSet.START, 0);
@@ -125,7 +138,7 @@ public class ActivityMostrarRutas extends AppCompatActivity implements View.OnCl
                 constraintSet.connect(consLytPrincipalReporte.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
 
                 constraintSet.constrainWidth(consLytPrincipalReporte.getId(), ConstraintSet.PARENT_ID);
-                constraintSet.constrainHeight(consLytPrincipalReporte.getId(), 0);
+                constraintSet.constrainHeight(consLytPrincipalReporte.getId(), ConstraintSet.PARENT_ID);
 
                 constraintSet.setDimensionRatio(consLytPrincipalReporte.getId(), "7:2");
 
@@ -265,7 +278,7 @@ public class ActivityMostrarRutas extends AppCompatActivity implements View.OnCl
                 // Textview "PuntoOrigen"
                 TextView txtViewPuntoOrigen = new TextView(new ContextThemeWrapper(this, R.style.TxtViewTransparente));
                 txtViewPuntoOrigen.setId(View.generateViewId());
-                txtViewPuntoOrigen.setText("De: " + ubicacionGeodicacion.degeocodificarUbiciacion(Double.valueOf(rutas.get(i).getPuntoInicio().get(0)), Double.valueOf(rutas.get(i).getPuntoInicio().get(1).toString())));
+                txtViewPuntoOrigen.setText(new StringBuilder().append("De: ").append(ubicacionGeocodificacion.degeocodificarUbiciacion(Double.parseDouble(rutas.get(i).getPuntoInicio().get(0)), Double.parseDouble(rutas.get(i).getPuntoInicio().get(1).toString()))).toString());
                 txtViewPuntoOrigen.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
                 txtViewPuntoOrigen.setMaxLines(1);
 
@@ -285,7 +298,7 @@ public class ActivityMostrarRutas extends AppCompatActivity implements View.OnCl
                 TextView txtViewPuntoDestino = new TextView(new ContextThemeWrapper(this, R.style.TxtViewTransparente));
                 txtViewPuntoDestino.setId(View.generateViewId());
 
-                txtViewPuntoDestino.setText("A:  " + ubicacionGeodicacion.degeocodificarUbiciacion(Double.valueOf(rutas.get(i).getPuntoDestino().get(0)), Double.valueOf(rutas.get(i).getPuntoDestino().get(1).toString())));
+                txtViewPuntoDestino.setText(new StringBuilder().append("A:  ").append(ubicacionGeocodificacion.degeocodificarUbiciacion(Double.valueOf(rutas.get(i).getPuntoDestino().get(0)), Double.parseDouble(rutas.get(i).getPuntoDestino().get(1).toString()))).toString());
                 txtViewPuntoDestino.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
                 txtViewPuntoDestino.setMaxLines(1);
 
@@ -298,7 +311,7 @@ public class ActivityMostrarRutas extends AppCompatActivity implements View.OnCl
                 constraintSet.connect(txtViewPuntoDestino.getId(), ConstraintSet.START, guideline5Porciento.getId(), ConstraintSet.START, 0);
                 constraintSet.connect(txtViewPuntoDestino.getId(), ConstraintSet.END, guideline95Porciento.getId(), ConstraintSet.END, 0);
                 constraintSet.connect(txtViewPuntoDestino.getId(), ConstraintSet.TOP, viewSeparador_2.getId(), ConstraintSet.BOTTOM, 10);
-                constraintSet.connect(txtViewPuntoDestino.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
+                constraintSet.connect(txtViewPuntoDestino.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 10);
                 // Fin de Textview "PuntoDestino"
 
                 constraintSet.applyTo(consLytPrincipalReporte);
