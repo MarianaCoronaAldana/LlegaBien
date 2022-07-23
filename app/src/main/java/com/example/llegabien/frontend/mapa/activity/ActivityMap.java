@@ -19,8 +19,7 @@ import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.poligonos.Poligono;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.notificacion.Notificacion;
-import com.example.llegabien.backend.ruta.EvaluacionRuta;
-import com.example.llegabien.backend.ruta.directions.RutaDirections;
+import com.example.llegabien.backend.ruta.directions.Ruta;
 import com.example.llegabien.backend.ruta.directions.UbicacionRuta;
 import com.example.llegabien.backend.ruta.realm.ruta;
 import com.example.llegabien.backend.ruta.realm.rutaDAO;
@@ -45,6 +44,7 @@ import com.google.android.libraries.places.api.Places;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -335,8 +335,16 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onTaskDone(Object... values) {
-        EvaluacionRuta evaluacionRuta = new EvaluacionRuta(mGoogleMap,this);
-        evaluacionRuta.obtenerRuta((RutaDirections) values[0]);
+        List<Ruta> rutas = new ArrayList<>();
+        rutas = (List<Ruta>) values[0];
+
+        for (int y = 0; y < rutas.size(); y++) {
+            for (int i = 0; i < rutas.get(y).getmNumeroCalles(); i++) {
+                mGoogleMap.addPolyline(rutas.get(y).getmPolyline().get(i));
+            }
+        }
+       /* EvaluacionRuta evaluacionRuta = new EvaluacionRuta(mGoogleMap,this);
+        evaluacionRuta.obtenerRuta((RutaDirections) values[0]);*/
     }
 
     /*

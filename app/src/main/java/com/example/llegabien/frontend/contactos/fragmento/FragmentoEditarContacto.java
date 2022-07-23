@@ -1,14 +1,10 @@
 package com.example.llegabien.frontend.contactos.fragmento;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
-
 import static io.realm.Realm.getApplicationContext;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
@@ -50,7 +48,7 @@ public class FragmentoEditarContacto extends Fragment implements View.OnClickLis
 
         //wiring up
         Button mBtnRegresar = root.findViewById(R.id.button_regresar_editarContacto);
-        Button mBtnEditarContacto = root.findViewById(R.id.button_enviarReporte_subirReporteUsuario);
+        Button mBtnEditarContacto = root.findViewById(R.id.button_aceptar_editarContacto);
         mEditTxtNombreContacto = root.findViewById(R.id.editText1_nombre_editarContacto);
         mEditTxtCountryCode = root.findViewById(R.id.editText_celularCountryCode_editarContacto);
         mEditTxtTelefonoContacto = root.findViewById(R.id.editText_celular_editarContacto);
