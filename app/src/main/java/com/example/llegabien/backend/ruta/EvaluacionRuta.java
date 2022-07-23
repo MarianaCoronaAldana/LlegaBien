@@ -4,7 +4,6 @@ import static io.realm.Realm.getApplicationContext;
 
 import android.content.Context;
 import android.location.Address;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
@@ -25,47 +24,47 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
-public class EvaluacionRuta extends AsyncTask<String, Void, String> {
+public class EvaluacionRuta {
 
     private final Context mContext;
     private UbicacionDAO ubicacionDAO;
-    private GoogleMap mGoogleMap;
+    private final GoogleMap mGoogleMap;
     private List<Ruta> rutas;
     private List<String> tipoUbicacion;
-    private RutaDirections directionsObtenidas;
+    private boolean mIsCalleEnRutas = false;
+
     public EvaluacionRuta(GoogleMap mGoogleMap, Context mContext) {
         this.mGoogleMap = mGoogleMap;
         this.mContext = mContext;
     }
 
-    public EvaluacionRuta(Context mContext) {
-        this.mContext = mContext;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void obtenerRuta(RutaDirections DirectionsObtenidas) {
+    public void obtenerRuta(RutaDirections directionsObtenidas) {
         this.ubicacionDAO = new UbicacionDAO(mContext);
         this.tipoUbicacion = new ArrayList<>();
         this.rutas = new ArrayList<>();
-        directionsObtenidas = DirectionsObtenidas;
 
-/*
         obtenerPuntosRutas(directionsObtenidas);
         verificarExistenciaColonias();
         if (!this.rutas.isEmpty()) {
-            calcularMediaHistorica(this.rutas.size(), this.rutas.get(this.rutas.size() - 1).getmCallesRuta().size(), false);
-            compararMediaHistorica();
+            if (!this.mIsCalleEnRutas)
+                calcularMediaHistoricaSoloColonias(this.rutas.size(), false);
+            else {
+                calcularMediaHistorica(this.rutas.size(), this.rutas.get(this.rutas.size() - 1).getmNumeroCalles(), false);
+                compararMediaHistorica();
+            }
+            comparacionFinalMediaHistorica();
         } else {
-            Toast.makeText(getApplicationContext(), "No hay rutas disponibles!", Toast.LENGTH_LONG).show();
-            Log.v("QUICKSTART", "No hay rutas disponibles!");
+            Toast.makeText(getApplicationContext(), "¡No hay rutas disponibles!", Toast.LENGTH_LONG).show();
+            Log.v("QUICKSTART", "¡No hay rutas disponibles!");
         }
-  */  }
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void obtenerPuntosRutas(RutaDirections directionsObtenidas) {
@@ -78,7 +77,7 @@ public class EvaluacionRuta extends AsyncTask<String, Void, String> {
         int distance;
 
         if (rutasObtenidas.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "No hay rutas disponibles!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "¡No hay rutas disponibles!", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -111,7 +110,7 @@ public class EvaluacionRuta extends AsyncTask<String, Void, String> {
                         ruta.getmCallesRuta().set(index, ubicacionRuta);
                         Log.v("QUICKSTART", "");
                     }
-//                    mGoogleMap.addPolyline(lineOptions);
+                    mGoogleMap.addPolyline(lineOptions);
                     Log.v("QUICKSTART", "Calle: " + calle + " Distancia " + ubicacionRuta.getmDistancia());
                 }
                 ruta.setmNumeroCalles(ruta.getmCallesRuta().size());
@@ -147,9 +146,9 @@ public class EvaluacionRuta extends AsyncTask<String, Void, String> {
         String coloniaNombre;
 
         for (int y = 0; y < this.rutas.size(); y++) {
-            this.rutas.get(y).setNumeroDeRuta(y+1);
+            this.rutas.get(y).setNumeroDeRuta(this.rutas.size() - y);
             Log.v("QUICKSTART", "Ruta número: " + this.rutas.get(y).getNumeroDeRuta() + ". Ruta tamaño: " + this.rutas.get(y).getmNumeroCalles());
-            for (int i = 0; i < this.rutas.get(y).getmCallesRuta().size(); i++) {
+            for (int i = 0; i < this.rutas.get(y).getmNumeroCalles(); i++) {
                 coloniaNombre = this.rutas.get(y).getmCallesRuta().get(i).getmDireccion().split(",", 2)[1].trim();
                 if (!coloniasEncontradas.containsKey(coloniaNombre)) {
                     colonia = mUbicacionDAO.obtenerColonia(coloniaNombre, colonias, new LatLng(this.rutas.get(y).getmCallesRuta().get(i).getmAddress().getLatitude(), rutas.get(y).getmCallesRuta().get(i).getmAddress().getLongitude()));
@@ -174,8 +173,8 @@ public class EvaluacionRuta extends AsyncTask<String, Void, String> {
                         establecerListaTipoUbicacion(calle, i);
                     }
                 } else {
-                    calle = obtenerUbicacionCalle(UbicacionGeocodificacion.establecerNombreUbicacion(rutas.get(y).getmCallesRuta().get(i).getmAddress(), coloniasEncontradas.get(coloniaNombre)));
                     this.rutas.get(y).getmCallesRuta().get(i).setmUbicacionColonia(coloniasEncontradas.get(coloniaNombre));
+                    calle = obtenerUbicacionCalle(UbicacionGeocodificacion.establecerNombreUbicacion(rutas.get(y).getmCallesRuta().get(i).getmAddress(), coloniasEncontradas.get(coloniaNombre)));
                     this.rutas.get(y).getmCallesRuta().get(i).setmUbicacionCalle(calle);
                     establecerListaTipoUbicacion(calle, i);
                 }
@@ -192,12 +191,14 @@ public class EvaluacionRuta extends AsyncTask<String, Void, String> {
 
     private void establecerListaTipoUbicacion(ubicacion ubicacionCalle, int i) {
         if (ubicacionCalle != null) {
+            this.mIsCalleEnRutas = true;
             if (i >= this.tipoUbicacion.size())
                 this.tipoUbicacion.add("calle");
             else {
                 if (!this.tipoUbicacion.get(i).equals("colonia"))
                     this.tipoUbicacion.set(i, "calle");
             }
+
         } else {
             if (i >= this.tipoUbicacion.size())
                 this.tipoUbicacion.add("colonia");
@@ -207,19 +208,18 @@ public class EvaluacionRuta extends AsyncTask<String, Void, String> {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void calcularMediaHistorica(int numeroRutas, int numeroCalles, boolean hasToSortByNumeroCalles) {
-        if(hasToSortByNumeroCalles)
-            this.rutas.sort(Comparator.comparing(Ruta::getmNumeroCalles).reversed());
+    private void calcularMediaHistorica(int numeroRutas, int numeroCalles, boolean continuarCalculoMH) {
+        int inicioCiclo = 0;
 
-        int inicioCiclo=0;
-        boolean continuarCalculoMH=false;
-        if(continuarCalculoMH)
+        if (continuarCalculoMH)
             inicioCiclo = this.rutas.stream().filter(r -> r.getNumeroDeRuta() == 1)
-                    .findAny().orElse(null).getmCallesRuta().size();
+                    .findAny().orElse(null).getmNumeroCalles();
 
-        for (int y = numeroRutas-1; y >= 0; y--) {
-            this.rutas.get(y).setmMediaHistorica(0);
-            for (int i = 0; i < numeroCalles; i++) {
+        for (int y = 0 ; y < numeroRutas; y++) {
+            if (!continuarCalculoMH)
+                this.rutas.get(y).setmMediaHistorica(0);
+
+            for (int i = inicioCiclo; i < numeroCalles; i++) {
                 if (this.tipoUbicacion.get(i).equals("calle"))
                     this.rutas.get(y).setmMediaHistorica(this.rutas.get(y).getmMediaHistorica()
                             + this.rutas.get(y).getmCallesRuta().get(i).getmUbicacionCalle().getMedia_historica_double());
@@ -234,41 +234,70 @@ public class EvaluacionRuta extends AsyncTask<String, Void, String> {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void compararMediaHistorica() {
+    private void calcularMediaHistoricaSoloColonias(int numeroRutas, boolean hasToSortByNumeroCalles) {
+        if (hasToSortByNumeroCalles)
+            this.rutas.sort(Comparator.comparing(Ruta::getmNumeroCalles));
 
-        if (this.rutas.get(this.rutas.size() - 1).getNumeroDeRuta() == 1) {
-            calcularMediaHistorica(2,  this.rutas.stream().filter(r -> r.getNumeroDeRuta() == 2)
-                    .findAny().orElse(null).getmCallesRuta().size(), false);
-
-            Collections.replaceAll(this.tipoUbicacion, "calle", "colonia");
-
-            if(this.rutas.get(0).getNumeroDeRuta() == 3)
-                calcularMediaHistorica(this.rutas.size(), this.rutas.get(0).getmCallesRuta().size(), true);
-            else
-                calcularMediaHistorica(2, this.rutas.get(0).getmCallesRuta().size(), true);
+        for (int y = 0; y < numeroRutas; y++) {
+            for (int i = 0; i < this.rutas.get(y).getmNumeroCalles(); i++) {
+                this.rutas.get(y).setmMediaHistorica(this.rutas.get(y).getmMediaHistorica()
+                        + this.rutas.get(y).getmCallesRuta().get(i).getmUbicacionColonia().getMedia_historica_double());
+            }
+            Log.v("QUICKSTART", "Media historica: " + this.rutas.get(y).getmMediaHistorica());
         }
-
-        else if (this.rutas.get(1).getNumeroDeRuta() == 1) {
-            Collections.replaceAll(this.tipoUbicacion, "calle", "colonia");
-            Log.v("QUICKSTART", " mira mira esta cambiadoo " + this.tipoUbicacion.get(0));
-            //PONER UN SORT AL REVES?
-            calcularMediaHistorica(2, this.rutas.get(0).getmCallesRuta().size(), false);
-        }
-        this.rutas.get(0).setHasMenorMediaHistorica(true);
+        this.rutas.sort(Comparator.comparing(Ruta::getmMediaHistorica));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    protected String doInBackground(String... strings) {
-        obtenerPuntosRutas(directionsObtenidas);
-        verificarExistenciaColonias();
-        if (!this.rutas.isEmpty()) {
-            calcularMediaHistorica(this.rutas.size(), this.rutas.get(this.rutas.size() - 1).getmCallesRuta().size(), false);
-            compararMediaHistorica();
-        } else {
-            Toast.makeText(getApplicationContext(), "No hay rutas disponibles!", Toast.LENGTH_LONG).show();
-            Log.v("QUICKSTART", "No hay rutas disponibles!");
+    public void compararMediaHistorica() {
+        // Para MH de Ruta 1 > MH de Ruta 2  && MH de Ruta 1 > MH de Ruta 3.
+        if (this.rutas.get(this.rutas.size() - 1).getNumeroDeRuta() == 1
+                || this.rutas.stream().allMatch(r -> r.getmMediaHistorica() == this.rutas.get(0).getmMediaHistorica())
+                || this.rutas.stream().filter(r -> r.getNumeroDeRuta() == 1).findAny().orElse(null).getmMediaHistorica()
+                == this.rutas.stream().filter(r -> r.getNumeroDeRuta() == 2).findAny().orElse(null).getmMediaHistorica()
+                || this.rutas.stream().filter(r -> r.getNumeroDeRuta() == 1).findAny().orElse(null).getmMediaHistorica()
+                == this.rutas.stream().filter(r -> r.getNumeroDeRuta() == 3).findAny().orElse(null).getmMediaHistorica()) {
+
+            // Para verificar que no sea una lista de dos rutas.
+            if (this.rutas.size() == 2) {
+                calcularMediaHistoricaSoloColonias(2, false);
+            } else {
+                // Se tendrá que calcular cuál ruta entre la 2 y la 3 tiene menor MH.
+                // Se sigue sumando la MH de la Ruta 2 y Ruta 3 hasta el número de calles de la Ruta 2.
+                calcularMediaHistorica(2, this.rutas.stream().filter(r -> r.getNumeroDeRuta() == 2)
+                        .findAny().orElse(null).getmNumeroCalles(), true);
+
+                // Se excluye la Ruta 1 para poder hacer comparaciones y obtener la ruta con menor MH.
+                List<Ruta> rutasSinRuta1 = rutas.stream()
+                        .filter(r -> r.getNumeroDeRuta() > 1).sorted(Comparator.comparing(Ruta::getmMediaHistorica)).collect(Collectors.toList());
+
+                // Para MH de Ruta 2  > MH de Ruta 3 o MH de Ruta 2  = MH de Ruta 3
+                if (rutasSinRuta1.get(0).getNumeroDeRuta() == 3 || (rutasSinRuta1.get(0).getmMediaHistorica() == rutasSinRuta1.get(1).getmMediaHistorica()))
+                    calcularMediaHistoricaSoloColonias(this.rutas.size(), false);
+
+                    // Para MH de Ruta 2 < MH de Ruta 3.
+                else
+                    calcularMediaHistoricaSoloColonias(2,true);
+            }
         }
-        return null;
+
+        // Para MH de Ruta 1 > MH de Ruta 2  && MH de Ruta 1 < MH de Ruta 3.
+        // Para MH de Ruta 1 <  MH de Ruta 2 && MH de Ruta 1 > MH de Ruta 3.
+        else if (this.rutas.get(1).getNumeroDeRuta() == 1) {
+            calcularMediaHistoricaSoloColonias(2, false);
+        }
+
+        comparacionFinalMediaHistorica();
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void comparacionFinalMediaHistorica() {
+        // Para verificar si al final de todas las comparaciones la MH es igual en todas las rutas.
+        if (this.rutas.stream().allMatch(r -> r.getmMediaHistorica() == this.rutas.get(0).getmMediaHistorica()))
+            // Si es igual, en todas se establce que la condicion "HasMenorMediaHistorica" es false y se tendrá que evaluar las rutas con las otras condiciones (clase Ruta).
+            this.rutas.forEach(ruta -> ruta.setHasMenorMediaHistorica(false));
+        else
+            this.rutas.get(0).setHasMenorMediaHistorica(true);
+    }
+
 }

@@ -8,7 +8,6 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.llegabien.backend.ruta.EvaluacionRuta;
 import com.example.llegabien.backend.ruta.directions.RutaDirections;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -98,10 +97,10 @@ public class PointsParser extends AsyncTask<String, Integer, RutaDirections> {
         // Devolviendo las rutas encontradas
         if (rutas != null) {
             rutasDirections.setRutasDirectionsPolylineOptions(rutas);
-            EvaluacionRuta evaluacionRuta = new EvaluacionRuta(context);
+            /*EvaluacionRuta evaluacionRuta = new EvaluacionRuta(context);
             evaluacionRuta.obtenerRuta(rutasDirections);
-            evaluacionRuta.execute();
-            //taskCallback.onTaskDone(rutasDirections);
+            evaluacionRuta.execute();*/
+            taskCallback.onTaskDone(rutasDirections);
         } else {
             Log.v("QUICKSTART", "no hay rutas");
         }
