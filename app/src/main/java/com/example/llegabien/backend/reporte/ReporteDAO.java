@@ -45,6 +45,7 @@ public class ReporteDAO {
         if (realm != null) {
             realm.executeTransactionAsync(transactionRealm -> transactionRealm.insert(Reporte));
             realm.close();
+            Toast.makeText(mContext, "Tu reporte será verificado el siguiente fin de semana", Toast.LENGTH_LONG).show();
         } else
             errorConexion();
     }
@@ -98,7 +99,7 @@ public class ReporteDAO {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void anadirReportesIIEG(Intent data, Context context) {
+    public void anadirReportesIIEG(Intent data) {
         if (data != null) {
             if (realm == null)
                 realm = conectarBD.conseguirUsuarioMongoDB();
@@ -106,7 +107,7 @@ public class ReporteDAO {
             if (realm != null) {
                 realm.executeTransactionAsync(realm -> {
                             try {
-                                InputStreamReader inputStreamReader = new InputStreamReader(context.getContentResolver().openInputStream(data.getData()));
+                                InputStreamReader inputStreamReader = new InputStreamReader(mContext.getContentResolver().openInputStream(data.getData()));
                                 CSVReader csvReader = new CSVReader(inputStreamReader);
                                 String[] nextLine = csvReader.readNext();
 
@@ -130,7 +131,7 @@ public class ReporteDAO {
                                 }
 
                             } catch (IOException | CsvException e) {
-                                Toast.makeText(context, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
                             }
                         },
                         () -> Log.v("QUICKSTART", "SÍ SE SUBIERON REPORTES, POR FIN PTM."),

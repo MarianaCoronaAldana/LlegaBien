@@ -14,7 +14,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDAO;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeocodificacion;
 import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
 import com.example.llegabien.backend.usuario.usuario;
 import com.opencsv.CSVReader;
@@ -61,10 +61,14 @@ public class UsuarioSubirReporteAdmin {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void subirReportesAdmin(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            obtenerReportesDeArchivo(data);
-            actualizarUbicaciones(this.mReportesDeArchivo);
+            //obtenerReportesDeArchivo(data);
+            //actualizarUbicaciones(this.mReportesDeArchivo);
             ReporteDAO reporteDAO = new ReporteDAO(mContext);
-            reporteDAO.anadirReportes(this.mReportesParaAnadir);
+            //reporteDAO.anadirReportes(this.mReportesParaAnadir);
+            reporteDAO.anadirReportesIIEG(data);
+            //UbicacionDAO ubicacionDAO = new UbicacionDAO(mContext);
+            //ubicacionDAO.anadirUbicacionesBD(data);
+
         }
     }
 
@@ -205,8 +209,8 @@ public class UsuarioSubirReporteAdmin {
         String calleNombreReporte = reportes.get(0).getUbicacion();
 
         // Para geocodificar la calle del reporte y obtener la direccion como la tiene Google Maps.
-        UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(mContext);
-        Address addressCalle = ubicacionGeodicacion.geocodificarUbiciacionPrueba(calleNombreReporte.split(",", 2)[0].trim()
+        UbicacionGeocodificacion ubicacionGeodicacion = new UbicacionGeocodificacion(mContext);
+        Address addressCalle = ubicacionGeodicacion.geocodificarUbiciacion(calleNombreReporte.split(",", 2)[0].trim()
                 + ", " + colonia.getNombre());
 
         // Para establecer el nombre de la calle que se va a utilizar en el objeto ubicacion.

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeocodificacion;
 import com.example.llegabien.backend.usuario.usuario;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -47,8 +47,8 @@ public class Emergencia extends AppCompatActivity  {
         UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
         mUbicacionDispositivo.getUbicacionDelDispositivo((isUbicacionObtenida, ubicacionObtenida) -> {
             if (isUbicacionObtenida) {
-                UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(mActivity);
-                inicializarDatos(ubicacionGeodicacion.degeocodificarUbiciacion(ubicacionObtenida.getLatitude(),ubicacionObtenida.getLongitude()));
+                UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(mActivity);
+                inicializarDatos(ubicacionGeocodificacion.degeocodificarUbiciacion(ubicacionObtenida.getLatitude(),ubicacionObtenida.getLongitude()));
                 hacerLlamada();
             }
             else {

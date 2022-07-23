@@ -19,7 +19,7 @@ import com.example.llegabien.backend.app.Permisos;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.poligonos.Poligono;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeocodificacion;
 import com.example.llegabien.backend.ruta.directions.rutaDirections;
 import com.example.llegabien.backend.usuario.UsuarioDAO;
 import com.example.llegabien.backend.usuario.usuario;
@@ -307,7 +307,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onTaskDone(Object... values) {
-        UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(this);
+        UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(this);
 
         rutaDirections directionsObtenidas =  (rutaDirections) values[0];
 
@@ -345,7 +345,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
                     MarkerOptions center = new MarkerOptions().position(LatLngBounds.builder().include(points.get(o)).include(points.get(o+1)).build().getCenter()).title("Location center " + i+","+o);
                     mGoogleMap.addMarker(center);
                     rutaPuntosMedios.add(center.getPosition());
-                    String nombreCalle = ubicacionGeodicacion.degeocodificarUbiciacion(center.getPosition().latitude, center.getPosition().longitude);
+                    String nombreCalle = ubicacionGeocodificacion.degeocodificarUbiciacion(center.getPosition().latitude, center.getPosition().longitude);
                     rutaPuntosMediosNombres.add(nombreCalle);
                     Log.v("QUICKSTART", "Nombre calle: " + nombreCalle);
                 }

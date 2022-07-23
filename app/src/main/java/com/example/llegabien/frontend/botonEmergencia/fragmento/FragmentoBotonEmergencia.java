@@ -28,11 +28,18 @@ public class FragmentoBotonEmergencia extends Fragment {
     private TextView mTxtSegundosFaltantes;
     private Window mWindow;
     private ConstraintLayout mFondoBlancoBarraNavegacion, mBtnFavoritosBarraNavegacion,
-            mBtnSubirReporteBarraNavegacion, mBtnHistorialRutasBarraNavegacion, mBtnContactosBarraNavegacion;
+            mBtnSubirReporte, mBtnHistorialRutasBarraNavegacion, mBtnContactosBarraNavegacion,
+            mBtnCentrarMapaNavegacion, mBtnAdvertenciaNavegacion;
     private int mColorActivityAnterior;
 
     public FragmentoBotonEmergencia() {
         // Required empty public constructor
+    }
+
+    public FragmentoBotonEmergencia(ConstraintLayout btnSubirReporte, ConstraintLayout btnCentrarNavegacion, ConstraintLayout btnAdvertenciaNavegacion) {
+        mBtnSubirReporte = btnSubirReporte;
+        mBtnAdvertenciaNavegacion = btnAdvertenciaNavegacion;
+        mBtnCentrarMapaNavegacion = btnCentrarNavegacion;
     }
 
     public FragmentoBotonEmergencia(ConstraintLayout fondoBlancoBarraNavegacion, ConstraintLayout btnFavoritosBarraNavegacion,
@@ -40,7 +47,7 @@ public class FragmentoBotonEmergencia extends Fragment {
                                     ConstraintLayout btnContactosBarraNavegacion) {
         mFondoBlancoBarraNavegacion = fondoBlancoBarraNavegacion;
         mBtnFavoritosBarraNavegacion = btnFavoritosBarraNavegacion;
-        mBtnSubirReporteBarraNavegacion = btnSubirReporteBarraNavegacion;
+        mBtnSubirReporte = btnSubirReporteBarraNavegacion;
         mBtnHistorialRutasBarraNavegacion = btnHistorialRutasBarraNavegacion;
         mBtnContactosBarraNavegacion = btnContactosBarraNavegacion;
     }
@@ -86,11 +93,20 @@ public class FragmentoBotonEmergencia extends Fragment {
             public void onFinish() {
                 mWindow.setStatusBarColor(mColorActivityAnterior);
                 mWindow.setNavigationBarColor(mColorActivityAnterior);
-                mFondoBlancoBarraNavegacion.setBackgroundColor(Color.TRANSPARENT);
-                mBtnContactosBarraNavegacion.setVisibility(View.VISIBLE);
-                mBtnHistorialRutasBarraNavegacion.setVisibility(View.VISIBLE);
-                mBtnFavoritosBarraNavegacion.setVisibility(View.VISIBLE);
-                mBtnSubirReporteBarraNavegacion.setVisibility(View.VISIBLE);
+                if (mFondoBlancoBarraNavegacion != null) {
+                    mFondoBlancoBarraNavegacion.setBackgroundColor(Color.TRANSPARENT);
+                    mBtnContactosBarraNavegacion.setVisibility(View.VISIBLE);
+                    mBtnHistorialRutasBarraNavegacion.setVisibility(View.VISIBLE);
+                    mBtnFavoritosBarraNavegacion.setVisibility(View.VISIBLE);
+                    mBtnSubirReporte.setVisibility(View.VISIBLE);
+                }
+
+                else{
+                   mBtnCentrarMapaNavegacion.setClickable(true);
+                   mBtnAdvertenciaNavegacion.setClickable(true);
+                   mBtnSubirReporte.setClickable(true);
+                }
+
                 mProgressCircle.setProgress(0);
 
                 FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();

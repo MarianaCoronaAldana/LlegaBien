@@ -135,6 +135,10 @@
     <string name="seguridad_navegacion">Seguridad media</string>
     <string name="kmRestantes_horaDeLlegada_navegacion">0.3 km ・ 10.44 a.m</string>
 
+    <!-- Consejos -->
+    <string name="titulo_consejos">!ADVERTENCIA!</string>
+    <string name="descripcion_consejos">Te ofrecemos una serie de consejos para prevenir ser víctima de los delitos más frecuentes de las zonas inseguras por las que pase esta ruta. </string>
+
     <!-- Bóton de emergencia. -->
     <string name="segundos_progressCircle">SEGUNDOS</string>
 

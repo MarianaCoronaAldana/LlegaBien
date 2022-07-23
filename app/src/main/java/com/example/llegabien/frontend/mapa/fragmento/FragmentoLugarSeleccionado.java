@@ -34,7 +34,7 @@ import com.example.llegabien.backend.mapa.favoritos.Favorito_DAO;
 import com.example.llegabien.backend.mapa.favoritos.favorito;
 import com.example.llegabien.backend.mapa.favoritos.favorito_ubicacion;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeodicacion;
+import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeocodificacion;
 import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
@@ -156,8 +156,8 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
 
         else if (view.getId() == R.id.button_añadirFavorito_detallesLugar) {
             if (mCoordenadasParaFavorito != null) {
-                UbicacionGeodicacion ubicacionGeodicacion = new UbicacionGeodicacion(getActivity());
-                String nombreLugar = ubicacionGeodicacion.degeocodificarUbiciacion(mCoordenadasParaFavorito.latitude,
+                UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(getActivity());
+                String nombreLugar = ubicacionGeocodificacion.degeocodificarUbiciacion(mCoordenadasParaFavorito.latitude,
                                                                                     mCoordenadasParaFavorito.longitude);
                 anadirFavoritoaBD(nombreLugar);
             }
