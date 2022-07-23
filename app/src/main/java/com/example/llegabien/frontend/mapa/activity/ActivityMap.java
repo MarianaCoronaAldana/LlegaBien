@@ -1,7 +1,5 @@
 package com.example.llegabien.frontend.mapa.activity;
 
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
-
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -15,14 +13,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Permisos;
-import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.poligonos.Poligono;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.notificacion.Notificacion;
 import com.example.llegabien.backend.ruta.directions.Ruta;
-import com.example.llegabien.backend.ruta.realm.ruta;
-import com.example.llegabien.backend.ruta.realm.rutaDAO;
-import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.databinding.ActivityMapsBinding;
 import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoBuscarLugar;
@@ -40,8 +34,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.libraries.places.api.Places;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,8 +55,6 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     }
 
     private int mColorAnterior;
-
-    private MarkerOptions place1, place2;
 
     public GoogleMap getGoogleMap() {
         return mGoogleMap;
@@ -174,13 +164,13 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         //LAS AGUILAS
         //20.624252804065094, -103.40912012122419
         //20.622204544200045, -103.41392667663345
-
+/*
         //PARA AÑADIR RUTA A FAVORITOS
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             añadirRuta();
-        }
+        }*/
     }
-
+/*
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void añadirRuta() {
         usuario Usuario = Preferences.getSavedObjectFromPreference(getApplicationContext(), PREFERENCE_USUARIO, usuario.class);
@@ -193,7 +183,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         Ruta.setPuntoDestino(place2.getPosition());
         rutaDAO rutaDAO = new rutaDAO(getApplicationContext());
         rutaDAO.anadirRuta(Ruta);
-    }
+    }*/
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
