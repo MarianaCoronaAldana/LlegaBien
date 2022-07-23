@@ -1,4 +1,4 @@
-package com.example.llegabien.backend.mapa.ubicacion;
+package com.example.llegabien.backend.ubicacion;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_UBICACION;
 
@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.poligonos.Poligono;
+import com.example.llegabien.backend.poligonos.Poligono;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
 import com.google.android.gms.maps.model.LatLng;
 import com.opencsv.CSVReader;
@@ -176,6 +176,7 @@ public class UbicacionDAO {
         } else
             errorConexion();
 
+        Toast.makeText(mContext, "Esta ubicación no está dentro del Área Metropolitana de Guadalajara", Toast.LENGTH_SHORT);
         return false;
     }
 
@@ -211,9 +212,9 @@ public class UbicacionDAO {
                                 ubicacion ubicacion = new ubicacion();
 
                                 while ((nextLine = csvReader.readNext()) != null) {
-                                    if (!nextLine[0].equals(""))
+                                    if (!nextLine[0].equals("") && !nextLine[0].equals("null"))
                                         ubicacion.setIdColonia(new ObjectId(nextLine[0].trim()));
-                                    if (!nextLine[1].equals(""))
+                                    if (!nextLine[1].equals("") && !nextLine[1].equals("null"))
                                         ubicacion.setIdMunicipio(new ObjectId(nextLine[1].trim()));
                                     if (!nextLine[2].equals(""))
                                         ubicacion.set_id(new ObjectId(nextLine[2].trim()));
@@ -234,8 +235,8 @@ public class UbicacionDAO {
                                 Toast.makeText(mContext, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
                             }
                         },
-                        () -> Log.v("QUICKSTART", "SÍ SE SUBIERON REPORTES, POR FIN PTM."),
-                        error -> Log.v("QUICKSTART", error.toString() + "NO SE SEUBIERON REPORTES, PTM PTM PTM PTM PTM PTM."));
+                        () -> Log.v("QUICKSTART", "SÍ SE SUBIERON UBICACIONES, POR FIN PTM."),
+                        error -> Log.v("QUICKSTART", error.toString() + "NO SE SEUBIERON UBICACIONES, PTM PTM PTM PTM PTM PTM."));
             } else
                 errorConexion();
         }

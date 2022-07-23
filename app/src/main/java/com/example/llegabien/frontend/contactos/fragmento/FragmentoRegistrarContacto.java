@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -49,7 +50,6 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
         mNumContacto = numContacto;
         mSiguienteCount = siguienteCount;
     }
-
 
     //para obtener los parametros que se guardan en el bundle
     @Override
@@ -173,16 +173,13 @@ public class FragmentoRegistrarContacto extends Fragment implements View.OnClick
     private void tomarDatosContacto(){
         Contacto.setNombre(mEditTxtNombre.getText().toString().trim());
         Contacto.setTelCelular(mEditTxtCountryCode.getText().toString().trim() + mEditTxtNumTelefonico.getText().toString().trim());
-
         if(mNumContacto==1) {
             RealmList<usuario_contacto> Contactos = new RealmList<>();
             Contactos.add(Contacto);
             Usuario.setContacto(Contactos);
         }
-
         else
             Usuario.getContacto().add(Usuario.getContacto().size(),Contacto);
-
         SharedViewModel.setUsuario(Usuario);
     }
 

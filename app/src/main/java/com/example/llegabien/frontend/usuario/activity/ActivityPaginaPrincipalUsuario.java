@@ -1,5 +1,7 @@
 package com.example.llegabien.frontend.usuario.activity;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ADMIN;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_EDITANDO_USUARIO_CON_ADMIN;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_MENSAJE_PORBATERIA_ENVIADO;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
@@ -18,7 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionDAO;
+import com.example.llegabien.backend.usuario.UsuarioDAO;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.usuario.fragmento.FragmentoIniciarSesion1;
@@ -31,13 +33,22 @@ public class ActivityPaginaPrincipalUsuario extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pagina_principal_usuario);
 
-        Preferences.savePreferenceBoolean(this,false, PREFERENCE_MENSAJE_PORBATERIA_ENVIADO);
-
         //para verificar si el boton de recordar sesion fue presionado y saber si ya se inicio sesion
         if(Preferences.getSavedBooleanFromPreference(this,PREFERENCE_ESTADO_BUTTON_SESION)
             && Preferences.getSavedObjectFromPreference(this, PREFERENCE_USUARIO, usuario.class) != null) {
+
+            if(Preferences.getSavedBooleanFromPreference(this, PREFERENCE_EDITANDO_USUARIO_CON_ADMIN)) {
+                UsuarioDAO usuarioDAO = new UsuarioDAO(this);
+                usuario Usuario = usuarioDAO.readUsuarioPorCorreo(Preferences.getSavedObjectFromPreference(this, PREFERENCE_ADMIN, usuario.class).getCorreoElectronico());
+                Preferences.savePreferenceObjectRealm(this, PREFERENCE_USUARIO, Usuario);
+                Preferences.savePreferenceBoolean(this, false, PREFERENCE_EDITANDO_USUARIO_CON_ADMIN);
+            }
+
             startActivity(new Intent(this, ActivityMap.class));
         }
+
+        else
+            Preferences.savePreferenceBoolean(this,false, PREFERENCE_MENSAJE_PORBATERIA_ENVIADO);
 
         //wiring up
         Button mBtnIniciarSesion = (Button) findViewById(R.id.button_inicia_sesion_pagina_principal);

@@ -21,7 +21,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.example.llegabien.R;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
+import com.example.llegabien.backend.ubicacion.UbicacionBusquedaAutocompletada;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.mapa.Mapa;

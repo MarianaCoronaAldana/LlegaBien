@@ -1,6 +1,8 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ES_ADMIN;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.content.Intent;
@@ -80,14 +82,13 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
         FragmentoAuxiliar fragmentoAuxiliar = new FragmentoAuxiliar();
         FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
         if (view.getId() == R.id.radioBtn_recordar_inicia_sesion_1){
-            if (isActivateRadioButton) {
+            if (isActivateRadioButton)
                 mBtnRecordarSesion.setChecked(false);
-            }
+
             isActivateRadioButton = mBtnRecordarSesion.isChecked();
         }
         else if (view.getId() == R.id.button_inicia_inicia_sesion_1){
             Preferences.savePreferenceBoolean(this.requireActivity(),mBtnRecordarSesion.isChecked(), PREFERENCE_ESTADO_BUTTON_SESION);
-
             if (validarAllInputs()) {
                 verificarCorreoContrasena();
             }
@@ -133,6 +134,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
                 startActivity(new Intent(requireActivity(), ActivityMap.class));
         }, mEditTxtCorreo.getText().toString(), mEditTxtContrasena.getText().toString());
     }
+
 
     private void verificarCorreoContrasena() {
         if(mValidar.verificarCorreoContrasena(mEditTxtCorreo.getText().toString().toLowerCase(Locale.ROOT), encriptarContrasena(mEditTxtContrasena.getText().toString()), "El correo electronico o la contraseña son incorrectos. ")){

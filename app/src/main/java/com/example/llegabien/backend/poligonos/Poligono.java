@@ -1,4 +1,4 @@
-package com.example.llegabien.backend.mapa.poligonos;
+package com.example.llegabien.backend.poligonos;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_UBICACION;
 
@@ -7,8 +7,8 @@ import android.graphics.Color;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionDAO;
-import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
+import com.example.llegabien.backend.ubicacion.UbicacionDAO;
+import com.example.llegabien.backend.ubicacion.ubicacion;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -49,7 +49,6 @@ public class Poligono {
     private void mostrarPoligono(List<LatLng> listLatLong, GoogleMap googleMap, String seguridad){
         //boolean isInside = PolyUtil.containsLocation(20.750693880142634, -103.38741952291363,listLatLong,true);
         LatLng[] points = listLatLong.toArray(new LatLng[0]);
-
         switch (seguridad){
             case "Seguridad baja":
                 crearPoligono(googleMap, points, mContext.getResources().getColor(R.color.rojo_poligono));
@@ -63,7 +62,6 @@ public class Poligono {
             default:
                 crearPoligono(googleMap, points, Color.BLUE);
                 break;
-
         }
     }
 
@@ -106,7 +104,6 @@ public class Poligono {
         StringBuilder latLongString = new StringBuilder();
         String [] latLongArray;
         List<LatLng> points = new ArrayList<>();
-
         for(int i = 0; i < linea.length(); i++){
             char charAux = linea.charAt(i);
             if(charAux == ',') {
@@ -131,7 +128,6 @@ public class Poligono {
 
     public String getCoordenadasFromList(List<LatLng> points){
         StringBuilder coordenadasPoligono = new StringBuilder();
-
         for(int i = 0; i < points.size(); i++){
             double latitude = points.get(i).latitude;
             double longitude = points.get(i).longitude;
@@ -140,7 +136,6 @@ public class Poligono {
             else
                 coordenadasPoligono.append(",").append(longitude).append(",").append(latitude);
         }
-
         return coordenadasPoligono.toString();
     }
 
@@ -164,8 +159,6 @@ public class Poligono {
             if(PolyUtil.containsLocation(new LatLng(latitude, longitude), getCoordenadasFromString(coordenadas), true))
                 return resultadosUbicaciones.get(i);
         }
-
         return null;
     }
-
 }

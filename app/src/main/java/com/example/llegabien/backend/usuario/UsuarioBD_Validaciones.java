@@ -64,6 +64,8 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
                 Log.v("AVER", "NOMBRE DE TASK: " + task.getNombre());
                 // Se guarda al usuario en una clase accesible para muchas clases
                 Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_USUARIO, task);
+                // Se abre una cuenta con el correo y contraseña del usuario
+                //conectarBD.ConectarCorreoMongoDB(correo, contrasena);
                 conectarBD.conseguirUsuarioMongoDB();
                 return true;
             }

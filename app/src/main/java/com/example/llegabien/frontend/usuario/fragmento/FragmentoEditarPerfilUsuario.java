@@ -151,18 +151,15 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
         Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_USUARIO, usuario.class);
         if (Usuario != null) {
             countryCode = Utilidades.obtenerCountryCode(Usuario.getTelCelular());
-
             if (countryCode != null) {
                 numTel = Usuario.getTelCelular().replace(countryCode, "");
             }
-
             mEditTxtNombres.setText(Usuario.getNombre());
             mEditTxtApellidos.setText(Usuario.getApellidos());
             mEditTxtCorreo.setText(Usuario.getCorreoElectronico());
             mEditTxtNumTelefonico.setText(numTel);
             mEditTxtCountryCode.setText(countryCode);
         }
-
         @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         mEditTxtFechaNacimiento.setText(dateFormat.format(Usuario.getFNacimiento()));
     }
@@ -195,11 +192,9 @@ public class FragmentoEditarPerfilUsuario extends Fragment implements View.OnCli
 
     private void configuracionesFinalesPreferences() {
         UsuarioDAO usuarioDAO = new UsuarioDAO(this.getContext());
-
         // En caso de haber modificado como admin, entonces se reestablece en preferences su usuario
         if(Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_EDITANDO_USUARIO_CON_ADMIN))
             Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_ADMIN, usuario.class);
-
         Usuario = usuarioDAO.readUsuarioPorCorreo(Usuario.getCorreoElectronico());
         Preferences.savePreferenceObjectRealm(requireActivity(), PREFERENCE_USUARIO, Usuario);
         Preferences.savePreferenceBoolean(this.requireActivity(), false, PREFERENCE_EDITANDO_USUARIO_CON_ADMIN);

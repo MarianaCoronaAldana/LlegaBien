@@ -26,7 +26,6 @@ public class UsuarioInputValidaciones {
 
     public boolean validarStringVacia(Context context, EditText editText) {
         mStringParaValidar = editText.getText().toString().trim();
-
         if (mStringParaValidar.isEmpty()) {
             editText.setError(context.getResources().getString(R.string.errorStringVacia));
             return true;
@@ -37,7 +36,6 @@ public class UsuarioInputValidaciones {
     public boolean validarNombre(Context context, EditText editText) {
         mStringPattern = "(^|\\s)([A-Za-zÑñÁáÉéÍíÓóÚú]+['\\-]?[A-Za-zÑñÁáÉéÍíÓóÚú]+)(\\s+([A-Za-zÑñÁáÉéÍíÓóÚú]+['\\-]?[A-Za-zÑñÁáÉéÍíÓóÚú]+))*($|\\s)";
         mStringParaValidar = editText.getText().toString().trim();
-
         if (validarStringVacia(context, editText))
             return true;
         else {
@@ -73,7 +71,6 @@ public class UsuarioInputValidaciones {
     public boolean validarCorreoElectronico(Context context, EditText editText) {
         mStringPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
         mStringParaValidar = editText.getText().toString().trim();
-
         if (validarStringVacia(context, editText))
             return true;
         else {
@@ -90,14 +87,11 @@ public class UsuarioInputValidaciones {
     public boolean validarNumTelefonico(Context context, EditText editText) {
         mStringPattern = "\\d+";
         mStringParaValidar = editText.getText().toString().trim();
-
         mPattern = Pattern.compile(mStringPattern);
         mMatcher = mPattern.matcher(mStringParaValidar);
-
         if (validarStringVacia(context, editText))
             return false;
         else {
-
             if (!mMatcher.matches()) {
                 editText.setError(context.getResources().getString(R.string.errorNumeroTelefonico));
                 return false;
@@ -115,7 +109,6 @@ public class UsuarioInputValidaciones {
         PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
         countryCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(countryCode));
         Phonenumber.PhoneNumber phoneNumber;
-
         try {
             phoneNumber = phoneNumberUtil.parse(numeroTelefonico, countryCode);
         } catch (NumberParseException e) {
@@ -123,19 +116,16 @@ public class UsuarioInputValidaciones {
             editTxtPhoneNumber.setError(context.getResources().getString(R.string.errorNumeroTelefonico));
             return true;
         }
-
         if (!phoneNumberUtil.isValidNumber(phoneNumber)){
             editTxtPhoneNumber.setError(context.getResources().getString(R.string.errorNumeroTelefonico));
             return true;
         }
-
         return false;
     }
 
     public boolean validarContrasena(Context context, EditText editText) {
         mStringPattern = "(^|\\s)(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&+-])[A-Za-z\\d@$!%*?&+-]{8,}($|\\s)";
         mStringParaValidar = editText.getText().toString().trim();
-
         if (validarStringVacia(context, editText))
             return false;
         else {
@@ -152,7 +142,6 @@ public class UsuarioInputValidaciones {
     public boolean validarConfirmarContrasena(String contrasena, Context context, EditText editText) {
         if (validarStringVacia(context, editText))
             return true;
-
         else if (!contrasena.trim().equals(editText.getText().toString())) {
             editText.setError(context.getResources().getString(R.string.errorConfirmarContraseña));
             return true;

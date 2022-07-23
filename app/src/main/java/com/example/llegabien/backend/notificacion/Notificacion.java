@@ -36,7 +36,7 @@ public class Notificacion extends AppCompatActivity {
     private String mNombre;
     private Context mContext = null;
     private usuario Usuario;
-    private final float mBateria;
+    private float mBateria;
     private Activity mActivity;
 
     public Notificacion(float Bateria, Context c){
@@ -48,7 +48,10 @@ public class Notificacion extends AppCompatActivity {
     public Notificacion(Context context, Activity activity){
         mContext = context;
         mActivity = activity;
+        monitorearBateria();
+    }
 
+    private void monitorearBateria() {
         // Se verifica el nivel de bateria del celular, si es menor a 21%, se hace un protocolo
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = mContext.registerReceiver(null, ifilter);
@@ -71,11 +74,9 @@ public class Notificacion extends AppCompatActivity {
 
     public void EmpezarProtocolo(){
         InicializarDatos();
-
         try {
             //TODO Cambiar link de ngrok aqui
             post(new  Callback(){
-//            post("https://c0af-200-68-166-53.ngrok.io/bateria", new  Callback(){
                 @Override
                 public void onFailure(@NonNull Call call, @NonNull IOException e) {
                    // Toast.makeText(mContext, "ERROR, NO SE PUDO CONTACTAR A CONTACTOS", Toast.LENGTH_LONG).show();

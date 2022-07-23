@@ -281,7 +281,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <Button
-                    android:id="@+id/button_enviarReporte_subirReporteUsuario"
+                    android:id="@+id/button_aceptar_editarContacto"
                     style="@style/BtnMoradoOscuro"
                     android:text="@string/aceptarBtn"
                     app:layout_constraintBottom_toBottomOf="parent"

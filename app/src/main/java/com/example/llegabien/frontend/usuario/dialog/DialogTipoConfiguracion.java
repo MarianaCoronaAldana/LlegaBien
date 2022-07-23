@@ -32,7 +32,6 @@ public class DialogTipoConfiguracion extends Dialog implements View.OnClickListe
         mBtnConfigAdmin = findViewById(R.id.button_configAdmin_tipoConfig);
         mBtnConfigUsuario.setOnClickListener(this);
         mBtnConfigAdmin.setOnClickListener(this);
-
     }
 
     @Override

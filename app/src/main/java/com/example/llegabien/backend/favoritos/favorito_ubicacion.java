@@ -1,4 +1,4 @@
-package com.example.llegabien.backend.mapa.favoritos;
+package com.example.llegabien.backend.favoritos;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;

@@ -23,9 +23,9 @@ import androidx.core.content.ContextCompat;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.favoritos.Favorito_DAO;
-import com.example.llegabien.backend.mapa.favoritos.favorito;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionDAO;
+import com.example.llegabien.backend.favoritos.Favorito_DAO;
+import com.example.llegabien.backend.favoritos.favorito;
+import com.example.llegabien.backend.ubicacion.UbicacionDAO;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 

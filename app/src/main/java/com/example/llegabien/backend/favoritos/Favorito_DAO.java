@@ -1,4 +1,4 @@
-package com.example.llegabien.backend.mapa.favoritos;
+package com.example.llegabien.backend.favoritos;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_FAVORITO;
 

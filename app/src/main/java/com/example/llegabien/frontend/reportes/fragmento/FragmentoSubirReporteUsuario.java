@@ -24,8 +24,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
+import com.example.llegabien.backend.ubicacion.UbicacionBusquedaAutocompletada;
+import com.example.llegabien.backend.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.reporte.ReporteDAO;
 import com.example.llegabien.backend.reporte.reporte;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
@@ -53,6 +53,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
     private EditText mEditTxtNombre, mEditTxtFechaDelito, mEditTxtHoraDelito, mEditTxtComentariosDelito;
     private reporte Reporte;
     private UbicacionBusquedaAutocompletada ubicacionBusquedaAutocompletada;
+
     private final ActivityResultLauncher<Intent> activityResultLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
@@ -114,19 +115,22 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
     public void onClick(View view) {
         if (view.getId() == R.id.button_enviarReporte_subirReporteUsuario) {
             if (validarAllInputs()) {
+                Log.v("QUICKSTART", "Estoy en enviar reporte");
                 ReporteDAO reporteDAO = new ReporteDAO(this.getContext());
                 inicializarReporte();
                 if (verificarHistorialReportes(reporteDAO)) {
                     reporteDAO.anadirReporte(Reporte);
-                    Toast.makeText(this.getContext(), "Tu reporte será verificado el siguiente fin de semana", Toast.LENGTH_LONG).show();
+                    requireActivity().finish();
                 }
             }
         } else if (view.getId() == R.id.editText_fechaDelito_subirReporteUsuario){
+            Log.v("QUICKSTART", "Estoy en poner fecha delito");
             DialogDatePicker dialogDatePicker = new DialogDatePicker();
             dialogDatePicker.mostrarDatePickerDialog(mEditTxtFechaDelito, this);
             mEditTxtFechaDelito.setError(null);
         }
         else if (view.getId() == R.id.editText_horaDelito_subirReporteUsuario){
+            Log.v("QUICKSTART", "Estoy en poner HORA delito");
             DialogTimePicker dialogTimePicker = new DialogTimePicker();
             dialogTimePicker.mostrarTimePickerDialog(mEditTxtHoraDelito, this);
             mEditTxtHoraDelito.setError(null);
@@ -183,7 +187,6 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
     private boolean verificarHistorialReportes(ReporteDAO reporte_DAO) {
         RealmResults<reporte> reportes = reporte_DAO.obtenerReportesPorUsuario(Reporte);
         int reportesAnteriores = 0;
-
         Duration diff;
         long diffMinutos, diffHoras, diffDias;
 

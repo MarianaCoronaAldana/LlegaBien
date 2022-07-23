@@ -87,7 +87,6 @@ public class FragmentoConfigAvanAdmin extends Fragment implements View.OnClickLi
             mTxtViewCorreo.setText(Usuario.getCorreoElectronico());
             mTxtViewNombre.setText(Usuario.getNombre());
         }
-
     }
 
 }

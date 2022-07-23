@@ -41,6 +41,14 @@
     <string name="titulo_listaUsuarios_admin">Usuarios registrados</string>
     <string name="descripcion_listaUsuarios_admin">Aquí puedes ver los usuarios de la aplicación.</string>
 
+    <!-- Lista de ubicaciones en favorito -->
+    <string name="titulo_favoritos">Favoritos</string>
+    <string name="descripcion_favoritos">Aquí puedes ver tus lugares favoritos.</string>
+
+    <!-- Lista de rutas de usuarios -->
+    <string name="titulo_mostrar_rutas">Rutas</string>
+    <string name="descripcion_mostrar_rutas">Aquí puedes ver las rutas que has generado.</string>
+
     <!-- Registro -->
     <string name="titulo_registro">Registro</string>
     <string name="instrucciones_registro">Ingresa tus datos personales</string>
@@ -187,10 +195,6 @@
     <string name="nombreCompletoTextView">Nombre completo:</string>
     <string name="numTelefónicoTextView">Número telefónico:</string>
     <string name="aceptarBtn">Aceptar</string>
-
-    <!-- Google Maps API Key. -->
-    <string name="titulo_favoritos">Favoritos</string>
-    <string name="descripcion_favoritos">Aquí puedes ver tus lugares favoritos.</string>
 
     <!-- Google Maps API Key. -->
     <string name="api_key">AIzaSyA_1vA9ikwZ0Ju7s5s2-C1QLQ51BQmwSlM</string>
