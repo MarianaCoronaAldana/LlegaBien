@@ -2,7 +2,7 @@ package com.example.llegabien.backend.ruta.directions;
 
 import android.location.Address;
 
-import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
+import com.example.llegabien.backend.ubicacion.ubicacion;
 
 import java.util.Locale;
 

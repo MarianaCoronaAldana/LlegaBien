@@ -8,6 +8,10 @@ import java.util.List;
 public class Ruta {
 
     private List<UbicacionRuta> mCallesRuta;
+    private List<PolylineOptions> mPolyline;
+
+    private List<String> mDelitosZonasInseguras;
+
     private int mNumeroCalles;
     private String mTiempoTotal;
     private String mDistanciaTotalDirections;
@@ -15,118 +19,126 @@ public class Ruta {
     private double mMediaHistorica;
     private double mPorcentajeZonasSeguras;
     private double mPorcentajeDistanciaSegura;
-    private List<PolylineOptions> mPolyline;
-    private int numeroDeRuta;
+    private int mNumeroDeRuta;
 
-    private boolean hasMenorMediaHistorica;
-    private boolean hasMayorPorcentajeZonasSeguras;
-    private boolean hasMayorPorcentajeDistanciaSegura;
+
+    private boolean mHasMenorMediaHistorica;
+    private boolean mHasMayorPorcentajeZonasSeguras;
+    private boolean mHasMayorPorcentajeDistanciaSegura;
 
     public Ruta() {
         mPolyline = new ArrayList<>();
     }
 
-    public List<UbicacionRuta> getmCallesRuta() {
+    public List<UbicacionRuta> getCallesRuta() {
         return mCallesRuta;
     }
 
-    public void setmCallesRuta(List<UbicacionRuta> mCallesRuta) {
+    public void setCallesRuta(List<UbicacionRuta> mCallesRuta) {
         this.mCallesRuta = mCallesRuta;
     }
 
-    public int getmNumeroCalles() {
+    public int getNumeroCalles() {
         return mNumeroCalles;
     }
 
-    public void setmNumeroCalles(int mNumeroCalles) {
+    public void setNumeroCalles(int mNumeroCalles) {
         this.mNumeroCalles = mNumeroCalles;
     }
 
-    public String getmTiempoTotal() {
+    public String getTiempoTotal() {
         return mTiempoTotal;
     }
 
-    public void setmTiempoTotal(String mTiempoTotal) {
+    public void setTiempoTotal(String mTiempoTotal) {
         this.mTiempoTotal = mTiempoTotal;
     }
 
-    public String getmDistanciaTotalDirections() {
+    public String getDistanciaTotalDirections() {
         return mDistanciaTotalDirections;
     }
 
-    public void setmDistanciaTotalDirections(String mDistanciaTotalDirections) {
+    public void setDistanciaTotalDirections(String mDistanciaTotalDirections) {
         this.mDistanciaTotalDirections = mDistanciaTotalDirections;
     }
 
-    public int getmDistanciaTotal() {
+    public int getDistanciaTotal() {
         return mDistanciaTotal;
     }
 
-    public void setmDistanciaTotal(int mDistanciaTotal) {
+    public void setDistanciaTotal(int mDistanciaTotal) {
         this.mDistanciaTotal = mDistanciaTotal;
     }
 
-    public double getmMediaHistorica() {
+    public double getMediaHistorica() {
         return mMediaHistorica;
     }
 
-    public void setmMediaHistorica(double mMediaHistorica) {
+    public void setMediaHistorica(double mMediaHistorica) {
         this.mMediaHistorica = mMediaHistorica;
     }
 
-    public double getmPorcentajeZonasSeguras() {
+    public double getPorcentajeZonasSeguras() {
         return mPorcentajeZonasSeguras;
     }
 
-    public void setmPorcentajeZonasSeguras(double mPorcentajeZonasSeguras) {
+    public void setPorcentajeZonasSeguras(double mPorcentajeZonasSeguras) {
         this.mPorcentajeZonasSeguras = mPorcentajeZonasSeguras;
     }
 
-    public double getmPorcentajeDistanciaSegura() {
+    public double getPorcentajeDistanciaSegura() {
         return mPorcentajeDistanciaSegura;
     }
 
-    public void setmPorcentajeDistanciaSegura(double mPorcentajeDistanciaSegura) {
+    public void setPorcentajeDistanciaSegura(double mPorcentajeDistanciaSegura) {
         this.mPorcentajeDistanciaSegura = mPorcentajeDistanciaSegura;
     }
 
-    public List<PolylineOptions> getmPolyline() {
+    public List<PolylineOptions> getPolyline() {
         return mPolyline;
     }
 
-    public void setmPolyline(List<PolylineOptions> mPolyline) {
+    public void setPolyline(List<PolylineOptions> mPolyline) {
         this.mPolyline = mPolyline;
     }
 
     public int getNumeroDeRuta() {
-        return numeroDeRuta;
+        return mNumeroDeRuta;
     }
 
-    public void setNumeroDeRuta(int numeroDeRuta) {
-        this.numeroDeRuta = numeroDeRuta;
+    public void setNumeroDeRuta(int mNumeroDeRuta) {
+        this.mNumeroDeRuta = mNumeroDeRuta;
     }
 
-    public boolean isHasMenorMediaHistorica() {
-        return hasMenorMediaHistorica;
+    public boolean getHasMenorMediaHistorica() {
+        return mHasMenorMediaHistorica;
     }
 
-    public void setHasMenorMediaHistorica(boolean hasMenorMediaHistorica) {
-        this.hasMenorMediaHistorica = hasMenorMediaHistorica;
+    public void setHasMenorMediaHistorica(boolean mHasMenorMediaHistorica) {
+        this.mHasMenorMediaHistorica = mHasMenorMediaHistorica;
     }
 
-    public boolean isHasMayorPorcentajeZonasSeguras() {
-        return hasMayorPorcentajeZonasSeguras;
+    public boolean getHasMayorPorcentajeZonasSeguras() {
+        return mHasMayorPorcentajeZonasSeguras;
     }
 
-    public void setHasMayorPorcentajeZonasSeguras(boolean hasMayorPorcentajeZonasSeguras) {
-        this.hasMayorPorcentajeZonasSeguras = hasMayorPorcentajeZonasSeguras;
+    public void setHasMayorPorcentajeZonasSeguras(boolean mHasMayorPorcentajeZonasSeguras) {
+        this.mHasMayorPorcentajeZonasSeguras = mHasMayorPorcentajeZonasSeguras;
     }
 
-    public boolean isHasMayorPorcentajeDistanciaSegura() {
-        return hasMayorPorcentajeDistanciaSegura;
+    public boolean getHasMayorPorcentajeDistanciaSegura() {
+        return mHasMayorPorcentajeDistanciaSegura;
     }
 
-    public void setHasMayorPorcentajeDistanciaSegura(boolean hasMayorPorcentajeDistanciaSegura) {
-        this.hasMayorPorcentajeDistanciaSegura = hasMayorPorcentajeDistanciaSegura;
+    public void setHasMayorPorcentajeDistanciaSegura(boolean mHasMayorPorcentajeDistanciaSegura) {
+        this.mHasMayorPorcentajeDistanciaSegura = mHasMayorPorcentajeDistanciaSegura;
+    }
+
+    public List<String> getDelitosZonasInseguras() {
+        return mDelitosZonasInseguras;
+    }
+
+    public void setDelitosZonasInseguras(List<String> mDelitosZonasInseguras) {
+        this.mDelitosZonasInseguras = mDelitosZonasInseguras;
     }
 }

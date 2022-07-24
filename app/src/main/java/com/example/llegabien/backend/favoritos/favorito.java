@@ -1,4 +1,4 @@
-package com.example.llegabien.backend.mapa.favoritos;
+package com.example.llegabien.backend.favoritos;
 
 import org.bson.types.ObjectId;
 

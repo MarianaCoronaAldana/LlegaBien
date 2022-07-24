@@ -99,7 +99,7 @@ public class ReporteDAO {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void anadirReportesIIEG(Intent data, Context context) {
+    public void anadirReportesIIEG(Intent data) {
         if (data != null) {
             if (realm == null)
                 realm = conectarBD.conseguirUsuarioMongoDB();
@@ -107,35 +107,36 @@ public class ReporteDAO {
             if (realm != null) {
                 realm.executeTransactionAsync(realm -> {
                             try {
-                                InputStreamReader inputStreamReader = new InputStreamReader(context.getContentResolver().openInputStream(data.getData()));
+                                InputStreamReader inputStreamReader = new InputStreamReader(mContext.getContentResolver().openInputStream(data.getData()));
                                 CSVReader csvReader = new CSVReader(inputStreamReader);
                                 String[] nextLine = csvReader.readNext();
 
                                 reporte reporte = new reporte();
 
                                 while ((nextLine = csvReader.readNext()) != null) {
-                                    reporte.set_id(new ObjectId());
                                     if (!nextLine[0].equals(""))
                                         reporte.setIdUbicacion(new ObjectId(nextLine[0].trim()));
                                     if (!nextLine[1].equals(""))
                                         reporte.setIdUsuario(new ObjectId(nextLine[1].trim()));
+                                    if(!nextLine[2].equals(""))
+                                        reporte.set_id(new ObjectId(nextLine[2].trim()));
                                     reporte.set_partition("LlegaBien");
-                                    reporte.setAutor(nextLine[3]);
-                                    reporte.setCantidad(Integer.valueOf(nextLine[4]));
-                                    reporte.setComentarios(nextLine[5]);
-                                    reporte.setFecha(Date.from(Instant.from(DateTimeFormatter.ISO_INSTANT.parse(nextLine[6]))));
-                                    reporte.setFechaReporte(Date.from(Instant.from(DateTimeFormatter.ISO_INSTANT.parse(nextLine[7]))));
-                                    reporte.setTipoDelito(nextLine[8]);
-                                    reporte.setUbicacion(nextLine[9]);
+                                    reporte.setAutor(nextLine[4]);
+                                    reporte.setCantidad(Integer.valueOf(nextLine[5]));
+                                    reporte.setComentarios(nextLine[6]);
+                                    reporte.setFecha(Date.from(Instant.from(DateTimeFormatter.ISO_INSTANT.parse(nextLine[7]))));
+                                    reporte.setFechaReporte(Date.from(Instant.from(DateTimeFormatter.ISO_INSTANT.parse(nextLine[8]))));
+                                    reporte.setTipoDelito(nextLine[9]);
+                                    reporte.setUbicacion(nextLine[10]);
                                     realm.insert(reporte);
                                 }
 
                             } catch (IOException | CsvException e) {
-                                Toast.makeText(context, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
                             }
                         },
                         () -> Log.v("QUICKSTART", "SÍ SE SUBIERON REPORTES, POR FIN PTM."),
-                        error -> Log.v("QUICKSTART", error.toString() + "NO SE SEUBIERON REPORTES, PTM PTM PTM PTM PTM PTM."));
+                        error -> Log.v("QUICKSTART", error.toString() + "NO SE SE SUBIERON REPORTES, PTM PTM PTM PTM PTM PTM."));
             } else
                 errorConexion();
         }

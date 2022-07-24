@@ -1,4 +1,4 @@
-package com.example.llegabien.backend.mapa.ubicacion;
+package com.example.llegabien.backend.ubicacion;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

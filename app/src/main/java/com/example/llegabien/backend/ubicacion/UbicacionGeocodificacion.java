@@ -1,4 +1,4 @@
-package com.example.llegabien.backend.mapa.ubicacion;
+package com.example.llegabien.backend.ubicacion;
 
 import android.content.Context;
 import android.location.Address;
@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class UbicacionGeocodificacion {
+
     private Geocoder mGeocoder;
 
     public UbicacionGeocodificacion(Context context){
@@ -21,6 +22,7 @@ public class UbicacionGeocodificacion {
             if(addressList.size()>0) {
                 return addressList.get(0);
             }
+
         }catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,35 +54,6 @@ public class UbicacionGeocodificacion {
         return null;
     }
 
-    public Address degeocodificarUbiciacionSinNumero(Context c, double latitude, double longitude){
-        mGeocoder = new Geocoder(c, Locale.getDefault());
-        try{
-            List<Address> addressList = mGeocoder.getFromLocation(latitude, longitude, 1);
-            if(addressList.size()>0) {
-                String calle = addressList.get(0).getThoroughfare();
-                if(calle == null)
-                    calle = addressList.get(0).getThoroughfare();
-
-                String colonia = addressList.get(0).getSubLocality();
-                if (colonia == null) {
-                    colonia =  addressList.get(0).getAddressLine(0).split(",", 3)[1].trim();
-                }
-                Address direccion = new Address(Locale.getDefault());
-                direccion.setThoroughfare(calle);
-                direccion.setSubLocality(colonia);
-                direccion.setLocality(addressList.get(0).getLocality());
-                direccion.setAdminArea(addressList.get(0).getAdminArea());
-                direccion.setCountryName(addressList.get(0).getCountryName());
-                direccion.setLatitude(latitude);
-                direccion.setLongitude(longitude);
-                return direccion;
-            }
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public static String establecerNombreUbicacion(Address addressGoogle, ubicacion colonia) {
         // Para establecer el nombre de la calle se establece con Thoroughfare o FeatureName.
         // En caso de que Thoroughfare o FeatureName sean nulos, quiere decir que la ubicacion no se encontró como calle o vía pública.
@@ -102,5 +75,4 @@ public class UbicacionGeocodificacion {
         }
         return null;
     }
-
 }

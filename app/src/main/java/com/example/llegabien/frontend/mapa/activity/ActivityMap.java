@@ -13,6 +13,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Permisos;
+import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.poligonos.Poligono;
+import com.example.llegabien.backend.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.mapa.poligonos.Poligono;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.notificacion.Notificacion;
@@ -126,6 +129,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         super.onResume();
         //Se verifica el nivel de bateria del telefono celular
         Notificacion bateria = new Notificacion(getApplicationContext(), this);
+        bateria.monitorearBateria();
 
         if (mGoogleMap != null) {
             //Para activar My Location layer
@@ -272,14 +276,12 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onTaskDone(Object... values) {
-        List<Ruta> rutas = new ArrayList<>();
-        rutas = (List<Ruta>) values[0];
+        Ruta rutaMasSegura = (Ruta) values[0];
 
-        for (int y = 0; y < rutas.size(); y++) {
-            for (int i = 0; i < rutas.get(y).getmNumeroCalles(); i++) {
-                mGoogleMap.addPolyline(rutas.get(y).getmPolyline().get(i));
-            }
+        for (int i = 0; i < rutaMasSegura.getNumeroCalles(); i++) {
+            mGoogleMap.addPolyline(rutaMasSegura.getPolyline().get(i));
         }
+
        /* EvaluacionRuta evaluacionRuta = new EvaluacionRuta(mGoogleMap,this);
         evaluacionRuta.obtenerRuta((RutaDirections) values[0]);*/
     }

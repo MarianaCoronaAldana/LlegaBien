@@ -1,8 +1,9 @@
-package com.example.llegabien.backend.mapa.ubicacion;
+package com.example.llegabien.backend.ubicacion;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_UBICACION;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.os.Build;
 import android.util.Log;
@@ -11,12 +12,16 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.poligonos.Poligono;
+import com.example.llegabien.backend.poligonos.Poligono;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
 import com.google.android.gms.maps.model.LatLng;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 
 import org.bson.types.ObjectId;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import io.realm.Realm;
@@ -171,6 +176,7 @@ public class UbicacionDAO {
         } else
             errorConexion();
 
+        Toast.makeText(mContext, "Esta ubicación no está dentro del Área Metropolitana de Guadalajara", Toast.LENGTH_SHORT);
         return false;
     }
 
@@ -188,6 +194,52 @@ public class UbicacionDAO {
 
         } else
             errorConexion();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void anadirUbicacionesBD(Intent data) {
+        if (data != null) {
+            if (realm == null)
+                realm = conectarBD.conseguirUsuarioMongoDB();
+
+            if (realm != null) {
+                realm.executeTransactionAsync(realm -> {
+                            try {
+                                InputStreamReader inputStreamReader = new InputStreamReader(mContext.getContentResolver().openInputStream(data.getData()));
+                                CSVReader csvReader = new CSVReader(inputStreamReader);
+                                String[] nextLine = csvReader.readNext();
+
+                                ubicacion ubicacion = new ubicacion();
+
+                                while ((nextLine = csvReader.readNext()) != null) {
+                                    if (!nextLine[0].equals("") && !nextLine[0].equals("null"))
+                                        ubicacion.setIdColonia(new ObjectId(nextLine[0].trim()));
+                                    if (!nextLine[1].equals("") && !nextLine[1].equals("null"))
+                                        ubicacion.setIdMunicipio(new ObjectId(nextLine[1].trim()));
+                                    if (!nextLine[2].equals(""))
+                                        ubicacion.set_id(new ObjectId(nextLine[2].trim()));
+                                    ubicacion.set_partition("LlegaBien");
+                                    ubicacion.setCoordenadas_string(nextLine[4]);
+                                    ubicacion.setDelito_mas_frecuente(nextLine[5]);
+                                    ubicacion.setDelitos_semana(Integer.valueOf(nextLine[6]));
+                                    ubicacion.setMedia_historica_double(Double.valueOf(nextLine[7]));
+                                    ubicacion.setMeta_reduccion_double(Double.valueOf(nextLine[8]));
+                                    ubicacion.setNombre(nextLine[9]);
+                                    ubicacion.setSeguridad(nextLine[10]);
+                                    ubicacion.setSuma_delitos(Integer.valueOf(nextLine[11]));
+                                    ubicacion.setTipo(nextLine[12]);
+                                    realm.insert(ubicacion);
+                                }
+
+                            } catch (IOException | CsvException e) {
+                                Toast.makeText(mContext, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+                            }
+                        },
+                        () -> Log.v("QUICKSTART", "SÍ SE SUBIERON UBICACIONES, POR FIN PTM."),
+                        error -> Log.v("QUICKSTART", error.toString() + "NO SE SEUBIERON UBICACIONES, PTM PTM PTM PTM PTM PTM."));
+            } else
+                errorConexion();
+        }
     }
 
     private void errorConexion() {

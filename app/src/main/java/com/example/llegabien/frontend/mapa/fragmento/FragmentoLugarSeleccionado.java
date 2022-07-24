@@ -30,12 +30,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.favoritos.Favorito_DAO;
-import com.example.llegabien.backend.mapa.favoritos.favorito;
-import com.example.llegabien.backend.mapa.favoritos.favorito_ubicacion;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeocodificacion;
-import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
+import com.example.llegabien.backend.favoritos.Favorito_DAO;
+import com.example.llegabien.backend.favoritos.favorito;
+import com.example.llegabien.backend.favoritos.favorito_ubicacion;
+import com.example.llegabien.backend.ubicacion.UbicacionBusquedaAutocompletada;
+import com.example.llegabien.backend.ubicacion.UbicacionGeocodificacion;
+import com.example.llegabien.backend.ubicacion.ubicacion;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.mapa.Mapa;

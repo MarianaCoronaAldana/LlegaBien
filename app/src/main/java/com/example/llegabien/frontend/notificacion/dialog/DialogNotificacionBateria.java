@@ -37,6 +37,7 @@ public class DialogNotificacionBateria extends Dialog implements View.OnClickLis
     @Override
     public void onClick(View v) {
         Notificacion notificar = new Notificacion(mBateria, this.getContext());
+        notificar.EmpezarProtocolo();
         dismiss();
     }
 

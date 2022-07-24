@@ -24,8 +24,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
+import com.example.llegabien.backend.ubicacion.UbicacionBusquedaAutocompletada;
+import com.example.llegabien.backend.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.reporte.ReporteDAO;
 import com.example.llegabien.backend.reporte.reporte;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;

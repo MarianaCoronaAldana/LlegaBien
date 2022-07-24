@@ -26,7 +26,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeocodificacion;
+import com.example.llegabien.backend.ubicacion.UbicacionGeocodificacion;
 import com.example.llegabien.backend.ruta.realm.ruta;
 import com.example.llegabien.backend.ruta.realm.rutaDAO;
 import com.example.llegabien.backend.usuario.usuario;

@@ -1,16 +1,10 @@
 package com.example.llegabien.backend.ruta.realm;
 
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_FAVORITO;
-
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.favoritos.favorito;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
-import com.example.llegabien.backend.reporte.reporte;
-import com.example.llegabien.backend.usuario.usuario;
 
 import org.bson.types.ObjectId;
 

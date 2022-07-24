@@ -1,4 +1,4 @@
-package com.example.llegabien.backend.mapa.ubicacion;
+package com.example.llegabien.backend.ubicacion;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -49,13 +49,14 @@ public class UbicacionBusquedaAutocompletada {
             Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getAddress());
             String address = place.getAddress();
 
-            UbicacionGeocodificacion ubicacionGeodicacion = new UbicacionGeocodificacion(context);
-            Address ubicacionGeocodificada = ubicacionGeodicacion.geocodificarUbiciacion(address);
+            UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(context);
+            Address ubicacionGeocodificada = ubicacionGeocodificacion.geocodificarUbiciacion(address);
             LatLng ubicacionBuscada = new LatLng(ubicacionGeocodificada.getLatitude(), ubicacionGeocodificada.getLongitude());
             UbicacionDAO ubicacionDAO = new UbicacionDAO(context);
 
             boolean isUbicacionBuscadaEnBD = ubicacionDAO.obtenerUbicacionBuscada(ubicacionBuscada.latitude,ubicacionBuscada.longitude);
             onUbicacionBuscadaObtenida.isUbicacionBuscadaObtenida(true, isUbicacionBuscadaEnBD,ubicacionBuscada, address);
+
         }
 
         else if (resultCode == AutocompleteActivity.RESULT_ERROR) {

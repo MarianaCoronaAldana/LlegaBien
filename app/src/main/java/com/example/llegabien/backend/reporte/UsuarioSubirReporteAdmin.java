@@ -13,9 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionDAO;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeocodificacion;
-import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
+import com.example.llegabien.backend.ubicacion.UbicacionDAO;
+import com.example.llegabien.backend.ubicacion.UbicacionGeocodificacion;
+import com.example.llegabien.backend.ubicacion.ubicacion;
 import com.example.llegabien.backend.usuario.usuario;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
@@ -61,10 +61,13 @@ public class UsuarioSubirReporteAdmin {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void subirReportesAdmin(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            obtenerReportesDeArchivo(data);
-            actualizarUbicaciones(this.mReportesDeArchivo);
-            ReporteDAO reporteDAO = new ReporteDAO(mContext);
-            reporteDAO.anadirReportes(this.mReportesParaAnadir);
+            //obtenerReportesDeArchivo(data);
+            //actualizarUbicaciones(this.mReportesDeArchivo);
+            //ReporteDAO reporteDAO = new ReporteDAO(mContext);
+            //reporteDAO.anadirReportes(this.mReportesParaAnadir);
+            //reporteDAO.anadirReportesIIEG(data);
+            UbicacionDAO ubicacionDAO = new UbicacionDAO(mContext);
+            ubicacionDAO.anadirUbicacionesBD(data);
         }
     }
 

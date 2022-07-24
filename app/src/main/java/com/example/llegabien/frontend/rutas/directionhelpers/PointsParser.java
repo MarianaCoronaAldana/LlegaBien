@@ -99,7 +99,7 @@ public class PointsParser extends AsyncTask<String, Integer, RutaDirections> {
         if (rutas != null) {
             rutasDirections.setRutasDirectionsPolylineOptions(rutas);
             EvaluacionRuta evaluacionRuta = new EvaluacionRuta(context, taskCallback);
-            evaluacionRuta.obtenerRuta(rutasDirections);
+            evaluacionRuta.inicializarAtributosMiembro(rutasDirections);
             evaluacionRuta.execute();
             //taskCallback.onTaskDone(rutasDirections);
         } else {

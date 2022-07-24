@@ -1,4 +1,4 @@
-package com.example.llegabien.backend.mapa.poligonos;
+package com.example.llegabien.backend.poligonos;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_UBICACION;
 
@@ -7,8 +7,8 @@ import android.graphics.Color;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionDAO;
-import com.example.llegabien.backend.mapa.ubicacion.ubicacion;
+import com.example.llegabien.backend.ubicacion.UbicacionDAO;
+import com.example.llegabien.backend.ubicacion.ubicacion;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;

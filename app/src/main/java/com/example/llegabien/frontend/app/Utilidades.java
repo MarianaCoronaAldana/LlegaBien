@@ -1,5 +1,9 @@
 package com.example.llegabien.frontend.app;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -40,5 +44,13 @@ public class Utilidades {
             System.err.println("NumberParseException was thrown: " + e.toString());
         }
         return null;
+    }
+
+    @SuppressLint("ObjectAnimatorBinding")
+    public static void startAnimacionBtnEmergencia(ObjectAnimator scaleDown) {
+        scaleDown.setDuration(2000);
+        scaleDown.setRepeatMode(ValueAnimator.REVERSE);
+        scaleDown.setRepeatCount(ValueAnimator.INFINITE);
+        scaleDown.start();
     }
 }

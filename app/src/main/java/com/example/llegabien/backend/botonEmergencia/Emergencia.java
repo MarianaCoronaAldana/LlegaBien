@@ -10,8 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeocodificacion;
+import com.example.llegabien.backend.ubicacion.UbicacionDispositivo;
+import com.example.llegabien.backend.ubicacion.UbicacionGeocodificacion;
 import com.example.llegabien.backend.usuario.usuario;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -43,11 +43,12 @@ public class Emergencia extends AppCompatActivity  {
     public void EmpezarProtocolo(){
         //Para inicializar a FusedLocationProviderClient.
         FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mActivity);
+
         UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
         mUbicacionDispositivo.getUbicacionDelDispositivo((isUbicacionObtenida, ubicacionObtenida) -> {
             if (isUbicacionObtenida) {
-                UbicacionGeocodificacion ubicacionGeodicacion = new UbicacionGeocodificacion(mActivity);
-                inicializarDatos(ubicacionGeodicacion.degeocodificarUbiciacion(ubicacionObtenida.getLatitude(),ubicacionObtenida.getLongitude()));
+                UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(mActivity);
+                inicializarDatos(ubicacionGeocodificacion.degeocodificarUbiciacion(ubicacionObtenida.getLatitude(),ubicacionObtenida.getLongitude()));
                 hacerLlamada();
             }
             else {
@@ -55,17 +56,23 @@ public class Emergencia extends AppCompatActivity  {
             }
         }, true,fusedLocationProviderClient, mActivity);
     }
-
     private void inicializarDatos(String ubicacion){
+
         Usuario = Preferences.getSavedObjectFromPreference(mActivity, PREFERENCE_USUARIO, usuario.class);
+
         if (Usuario != null) {
             for (int i = 0; i < Usuario.getContacto().size(); i++)
                 mContactos.add("+" + Usuario.getContacto().get(i).getTelCelular());
+
+
             for (int i = mContactos.size(); i < 5; i++)
                 mContactos.add("-1");
+
             mNombre = Usuario.getNombre() + " " + Usuario.getApellidos();
+
             mUbicacion = ubicacion;
         }
+
     }
 
     private void hacerLlamada(){
@@ -79,7 +86,9 @@ public class Emergencia extends AppCompatActivity  {
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) {
                     runOnUiThread(() -> {
+                        Toast.makeText(mActivity,response.message(),Toast.LENGTH_SHORT).show();
                         Log.v("QUICKSTART", response.message());
+
                         if(!response.isSuccessful())
                             Toast.makeText(mActivity, "ERROR, CONTACTE A EMERGENCIAS DIRECTAMENTE!",Toast.LENGTH_LONG).show();
                     });
@@ -92,6 +101,7 @@ public class Emergencia extends AppCompatActivity  {
 
     private void post(Callback callback) throws IOException {
         Log.v("QUICKSTART", "Contacto 1: " + Usuario.getContacto().first().getTelCelular());
+
         RequestBody formBody = new FormBody.Builder()
                 .add("NombreUsuario", mNombre)
                 .add("Ubicacion", mUbicacion)
@@ -104,10 +114,11 @@ public class Emergencia extends AppCompatActivity  {
                 .add("Contacto5", mContactos.get(4))
                 .build();
         Request request = new Request.Builder()
-                .url("https://e1e5-2806-103e-29-50f1-94da-3fdb-6337-85d7.ngrok.io/emergencia")
+                .url("https://c0af-200-68-166-53.ngrok.io/emergencia")
                 .post(formBody)
                 .build();
         Call response = mClient.newCall(request);
         response.enqueue(callback);
+
     }
 }
