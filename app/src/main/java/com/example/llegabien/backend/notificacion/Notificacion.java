@@ -42,16 +42,14 @@ public class Notificacion extends AppCompatActivity {
     public Notificacion(float Bateria, Context c){
         mBateria = Bateria;
         mContext = c;
-        EmpezarProtocolo();
     }
 
     public Notificacion(Context context, Activity activity){
         mContext = context;
         mActivity = activity;
-        monitorearBateria();
     }
 
-    private void monitorearBateria() {
+    public void monitorearBateria() {
         // Se verifica el nivel de bateria del celular, si es menor a 21%, se hace un protocolo
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = mContext.registerReceiver(null, ifilter);

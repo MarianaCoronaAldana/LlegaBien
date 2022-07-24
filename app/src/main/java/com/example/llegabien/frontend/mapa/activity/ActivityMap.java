@@ -138,6 +138,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         super.onResume();
         //Se verifica el nivel de bateria del telefono celular
         Notificacion bateria = new Notificacion(getApplicationContext(), this);
+        bateria.monitorearBateria();
 
         if (mGoogleMap != null) {
             //Para activar My Location layer
@@ -165,28 +166,6 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         } else
             //Para obtener la ubicación actual del dispositivo y ubicacion buscada (si existe)
             mostrarUbicacionDispositivo();
-
-
-        // TODO: UTILIZACION DE API DIRECTIONS
-// ->
-        // JAVIER MINA
-        //20.6674235372583, -103.31179439549422
-        //20.67097726320246, -103.31441214692855
-
-        //LAS AGUILAS
-        //20.624252804065094, -103.40912012122419
-        //20.622204544200045, -103.41392667663345
-
-        place1 = new MarkerOptions().position(new LatLng(20.624252804065094, -103.40912012122419)).title("Location 1");
-        place2 = new MarkerOptions().position(new LatLng(20.622204544200045, -103.41392667663345)).title("Location 2");
-        mGoogleMap.addMarker(place1);
-        mGoogleMap.addMarker(place2);
-
-        //PARA AÑADIR RUTA A FAVORITOS
-        //añadirRuta();
-
-        //PRUEBA();
-// ->
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -335,14 +314,12 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onTaskDone(Object... values) {
-        List<Ruta> rutas = new ArrayList<>();
-        rutas = (List<Ruta>) values[0];
+        Ruta rutaMasSegura = (Ruta) values[0];
 
-        for (int y = 0; y < rutas.size(); y++) {
-            for (int i = 0; i < rutas.get(y).getmNumeroCalles(); i++) {
-                mGoogleMap.addPolyline(rutas.get(y).getmPolyline().get(i));
-            }
+        for (int i = 0; i < rutaMasSegura.getNumeroCalles(); i++) {
+            mGoogleMap.addPolyline(rutaMasSegura.getPolyline().get(i));
         }
+
        /* EvaluacionRuta evaluacionRuta = new EvaluacionRuta(mGoogleMap,this);
         evaluacionRuta.obtenerRuta((RutaDirections) values[0]);*/
     }
