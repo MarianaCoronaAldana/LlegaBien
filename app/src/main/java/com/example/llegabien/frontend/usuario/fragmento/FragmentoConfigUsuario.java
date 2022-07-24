@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.ruta.realm.rutaDAO;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.contactos.activity.ActivityEditarLeerContactos;
 import com.example.llegabien.frontend.reportes.fragmento.FragmentoListaReportes;
@@ -113,6 +114,8 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
             mTxtViewNombre.setText(Usuario.getNombre() + " " + Usuario.getApellidos());
         }
 
+        rutaDAO rutaDao = new rutaDAO(this.requireActivity());
+        rutaDao.deleteRutasPorUsuario(Usuario);
     }
 
 }

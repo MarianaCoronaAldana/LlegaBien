@@ -128,8 +128,8 @@
     <!-- Indicaciones -->
     <string name="puntoPartida_indicaciones">Escribe tu punto de partida…</string>
     <string name="puntoDestino_indicaciones">Escribe tu punto de destino…</string>
-    <string name="tiempoBiciBtn_indicaciones">38 min</string>
-    <string name="tiempoCaminandoBtn_indicaciones">1hr 30 min</string>
+    <string name="tiempoBiciBtn_indicaciones">A bicicleta</string>
+    <string name="tiempoCaminandoBtn_indicaciones">A pie</string>
     <string name="tiempo_indicaciones">18 min</string>
     <string name="km_indicaciones">(2.1km).</string>
     <string name="descripcionRuta_indicaciones">Rutas más segura debido a la inicidencia delictiva.</string>

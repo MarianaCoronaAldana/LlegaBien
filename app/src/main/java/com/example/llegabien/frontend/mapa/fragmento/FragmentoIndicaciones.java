@@ -27,11 +27,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeocodificacion;
+import com.example.llegabien.backend.ruta.directions.Ruta;
 import com.example.llegabien.backend.ruta.realm.ruta;
 import com.example.llegabien.backend.ruta.realm.rutaDAO;
+import com.example.llegabien.backend.ubicacion.UbicacionBusquedaAutocompletada;
+import com.example.llegabien.backend.ubicacion.UbicacionDispositivo;
+import com.example.llegabien.backend.ubicacion.UbicacionGeocodificacion;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
@@ -42,11 +43,11 @@ import com.google.android.gms.maps.model.LatLng;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-public class FragmentoIndicaciones extends Fragment implements View.OnClickListener {
+public class FragmentoIndicaciones extends Fragment implements View.OnClickListener, TaskLoadedCallback {
 
     Button mBtnPuntoPartida, mBtnPuntoDestino, mBtnPresionado;
     ConstraintLayout mBtnTiempoBici, mBtnTiempoCaminando;
-    TextView mTxtViewTiempoBici, mTxtViewTiempoCaminando;
+    TextView mTxtViewTiempoBici, mTxtViewTiempoCaminando, mTxtViewTiempoDetalles, mTxtViewDistanciaDetalles;
     View mViewBici, mViewCaminar;
     String mPuntoPartida, mPuntoDestino, mUbicacionBuscada, mDirectionMode = "walking";
 
@@ -71,14 +72,14 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
                     }
             );
 
-    public FragmentoIndicaciones(){
+    public FragmentoIndicaciones() {
     }
 
-    public FragmentoIndicaciones(String ubicacionBuscada){
+    public FragmentoIndicaciones(String ubicacionBuscada) {
         mUbicacionBuscada = ubicacionBuscada;
     }
 
-    public FragmentoIndicaciones(String puntoPartida, String puntoDestino){
+    public FragmentoIndicaciones(String puntoPartida, String puntoDestino) {
         mPuntoPartida = puntoPartida;
         mPuntoDestino = puntoDestino;
     }
@@ -99,6 +100,8 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         mBtnTiempoBici = root.findViewById(R.id.button_tiempoBici_indicaciones);
         mTxtViewTiempoBici = root.findViewById(R.id.textView_btnTiempoBici);
         mTxtViewTiempoCaminando = root.findViewById(R.id.textView_btnTiempoCaminando);
+        mTxtViewTiempoDetalles = root.findViewById(R.id.textView_tiempo_detallesRuta);
+        mTxtViewDistanciaDetalles = root.findViewById(R.id.textView_km_detallesRuta);
         mViewBici = root.findViewById(R.id.iconBici_btnTimepoBici);
         mViewCaminar = root.findViewById(R.id.iconCaminando_btnTimepoCaminando);
         ConstraintLayout btnCentrarMapa = root.findViewById(R.id.button_centrarMapa_indicaciones);
@@ -117,12 +120,12 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         ubicacionDispositivo.mostrarStringUbicacionActual(requireActivity(), mBtnPuntoPartida, this);
 
         // Para mostrar la informacion del lugar seleccionado en Boton
-        if(mUbicacionBuscada != null){
+        if (mUbicacionBuscada != null) {
             mBtnPuntoDestino.setText(mUbicacionBuscada);
             tomarDatosRuta();
         }
 
-        if(mPuntoPartida != null && mPuntoDestino != null){
+        if (mPuntoPartida != null && mPuntoDestino != null) {
             mBtnPuntoDestino.setText(mPuntoDestino);
             mBtnPuntoDestino.setText(mPuntoDestino);
         }
@@ -139,8 +142,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
             FragmentoNavegacion fragmentoNavegacion = new FragmentoNavegacion();
             fragmentTransaction.replace(R.id.fragmentContainerView_fragmentoLugares_activityMaps, fragmentoNavegacion).commit();
             fragmentTransaction.addToBackStack(null);
-        }
-        else if (view.getId() == R.id.button_puntoPartida_indicaciones || view.getId() == R.id.button_puntoDestino_indicaciones) {
+        } else if (view.getId() == R.id.button_puntoPartida_indicaciones || view.getId() == R.id.button_puntoDestino_indicaciones) {
             if (view.getId() == R.id.button_puntoPartida_indicaciones)
                 mBtnPresionado = mBtnPuntoPartida;
             else if (view.getId() == R.id.button_puntoDestino_indicaciones)
@@ -149,9 +151,8 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
             ubicacionBusquedaAutocompletada = new UbicacionBusquedaAutocompletada();
             ubicacionBusquedaAutocompletada.inicializarIntent(requireActivity());
             activityResultLauncher.launch(ubicacionBusquedaAutocompletada.getIntent());
-            tomarDatosRuta();
-        }
-        else if (view.getId() == R.id.button_tiempoCaminando_indicaciones) {
+            //  tomarDatosRuta();
+        } else if (view.getId() == R.id.button_tiempoCaminando_indicaciones) {
             mBtnTiempoCaminando.setBackgroundTintList(ContextCompat.getColorStateList(requireActivity(), R.color.morado_oscuro));
             mTxtViewTiempoCaminando.setTextColor(this.requireActivity().getResources().getColor(R.color.blanco));
             mViewCaminar.setBackgroundTintList(ContextCompat.getColorStateList(requireActivity(), R.color.blanco));
@@ -161,8 +162,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
             mViewBici.setBackgroundTintList(ContextCompat.getColorStateList(requireActivity(), R.color.negro));
             mDirectionMode = "walking";
             tomarDatosRuta();
-        }
-        else if (view.getId() == R.id.button_tiempoBici_indicaciones) {
+        } else if (view.getId() == R.id.button_tiempoBici_indicaciones) {
             mBtnTiempoCaminando.setBackgroundTintList(ContextCompat.getColorStateList(requireActivity(), R.color.blanco));
             mTxtViewTiempoCaminando.setTextColor(this.requireActivity().getResources().getColor(R.color.negro));
             mViewCaminar.setBackgroundTintList(ContextCompat.getColorStateList(requireActivity(), R.color.negro));
@@ -172,44 +172,37 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
             mViewBici.setBackgroundTintList(ContextCompat.getColorStateList(requireActivity(), R.color.blanco));
             mDirectionMode = "bicycling";
             tomarDatosRuta();
-        }
-        else if (view.getId() == R.id.button_intercambiarDireccion_partidaDestino) {
-            if(mBtnPuntoPartida.getText() != null && mBtnPuntoDestino.getText() != null){
+        } else if (view.getId() == R.id.button_intercambiarDireccion_partidaDestino) {
+            if (mBtnPuntoPartida.getText() != null && mBtnPuntoDestino.getText() != null) {
                 String puntoDestino = mBtnPuntoDestino.getText().toString();
                 mBtnPuntoDestino.setText(mBtnPuntoPartida.getText().toString());
                 mBtnPuntoPartida.setText(puntoDestino);
                 tomarDatosRuta();
             }
-        }
-        else if (view.getId() == R.id.button_centrarMapa_indicaciones) {
+        } else if (view.getId() == R.id.button_centrarMapa_indicaciones) {
             Mapa mapa = new Mapa((ActivityMap) requireActivity());
             mapa.centrarMapa();
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void tomarDatosRuta(){
+    private void tomarDatosRuta() {
         LatLng origen = obtenerCoordenadas(mBtnPuntoPartida.getText().toString());
         LatLng destino = obtenerCoordenadas(mBtnPuntoDestino.getText().toString());
-        if (origen!=null && destino != null) {
+        if (origen != null && destino != null) {
             anadirRutaBD(origen, destino);
-            new FetchURL((TaskLoadedCallback) requireActivity(), this.requireActivity().getApplicationContext()).execute(generarUrlRuta(origen, destino), mDirectionMode);
-        }
-        else {
-            Toast.makeText(getApplicationContext(), "Ingresa punto de irigen y destino", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Creando ruta....", Toast.LENGTH_SHORT).show();
+            new FetchURL((TaskLoadedCallback) this, (TaskLoadedCallback) requireActivity(), this.requireActivity().getApplicationContext()).execute(generarUrlRuta(origen, destino), mDirectionMode);
+        } else {
+            Toast.makeText(getApplicationContext(), "Ingresa punto de origen y destino", Toast.LENGTH_SHORT).show();
             Log.v("QUICKSTART", "wey es nulo");
         }
-/*
-        MarkerOptions place1, place2;
-        place1 = new MarkerOptions().position(new LatLng(20.6674235372583, -103.31179439549422)).title("Location 1");
-        place2 = new MarkerOptions().position(new LatLng(20.67097726320246, -103.31441214692855)).title("Location 2");
-        new FetchURL((TaskLoadedCallback) requireActivity()).execute(generarUrlRuta(place1.getPosition(), place2.getPosition()), "walking", "walking");*/
     }
 
-    private LatLng obtenerCoordenadas(String adress){
+    private LatLng obtenerCoordenadas(String adress) {
         UbicacionGeocodificacion ubicacionGeodicacion = new UbicacionGeocodificacion(this.requireActivity().getApplicationContext());
         Address ubicacionGeocodificada = ubicacionGeodicacion.geocodificarUbiciacion(adress);
-        if(ubicacionGeocodificada!=null)
+        if (ubicacionGeocodificada != null)
             return new LatLng(ubicacionGeocodificada.getLatitude(), ubicacionGeocodificada.getLongitude());
         return null;
     }
@@ -226,7 +219,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         // Formato de salida
         String output = "json";
         // Construyendo url final
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters +"&alternatives=true" +"&key=" + getString(R.string.api_key);
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&alternatives=true" + "&key=" + getString(R.string.api_key);
         Log.v("QUICKSTART", "url: ");
         Log.v("QUICKSTART", url);
         return url;
@@ -243,7 +236,27 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         Ruta.setPuntoInicio(origen);
         Ruta.setPuntoDestino(destino);
         rutaDAO rutaDAO = new rutaDAO(getApplicationContext());
-        rutaDAO.anadirRuta(Ruta);
+
+        // Si la ruta ya está dentro de la base de datos, solo se actualiza su atributo "fUsoRuta"
+        if (rutaDAO.verificarExistenciaRuta(Ruta.getIdUsuario(), Ruta.getPuntoInicio(), Ruta.getPuntoDestino()))
+            rutaDAO.anadirRuta(Ruta);
+        else {
+            Log.v("QUICKSTART", "RUTA YA AÑADIDA A BASE DE DATOS");
+            rutaDAO.actualizarFechaRuta(Ruta);
+        }
     }
 
+    // Recibe el objeto Ruta que representa la ruta más segura, toma su información de distancia y tiempo
+    // y pone sus valores en los TxtViews correspondientes
+    // Luego la manda a la clase ActivityMap para que se pueda imprimir la ruta en sí
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void onTaskDone(Object... values) {
+        Log.v("QUICKSTART", "ESTOY EN FRAGMENTO");
+        Ruta rutaMasSegura = (Ruta) values[0];
+        mTxtViewTiempoDetalles.setText(rutaMasSegura.getTiempoTotal().replace("hours", "horas"));
+        mTxtViewDistanciaDetalles.setText(rutaMasSegura.getDistanciaTotalDirections());
+        TaskLoadedCallback taskLoadedCallbackActivity = (TaskLoadedCallback) values[1];
+        taskLoadedCallbackActivity.onTaskDone(rutaMasSegura);
+    }
 }

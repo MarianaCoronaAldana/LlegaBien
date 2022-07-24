@@ -44,7 +44,7 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
     private List<String> tipoUbicacion;
     private boolean mIsCalleEnRutas = false;
     private RutaDirections directionsObtenidas;
-    private TaskLoadedCallback taskCallback;
+    private TaskLoadedCallback taskCallback, taskLoaderFragmento;
     private Ruta mRutaMasSegura;
 
     public EvaluacionRuta(GoogleMap mGoogleMap, Context mContext) {
@@ -55,6 +55,12 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
     public EvaluacionRuta(Context mContext, TaskLoadedCallback Task) {
         this.mContext = mContext;
         this.taskCallback = Task;
+    }
+
+    public EvaluacionRuta(Context mContext, TaskLoadedCallback TaskActivity, TaskLoadedCallback TaskFragmento) {
+        this.mContext = mContext;
+        this.taskCallback = TaskActivity;
+        this.taskLoaderFragmento = TaskFragmento;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -466,7 +472,6 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
                         this.mRutaMasSegura.getDelitosZonasInseguras().add(delitoFrecuente);
                 }
             }
-
         }
     }
 
@@ -474,6 +479,6 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onPostExecute(Ruta ruta) {
-        taskCallback.onTaskDone(ruta);
+        taskCallback.onTaskDone(ruta, taskLoaderFragmento);
     }
 }

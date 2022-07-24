@@ -20,13 +20,19 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PointsParser extends AsyncTask<String, Integer, RutaDirections> {
-    TaskLoadedCallback taskCallback;
+    TaskLoadedCallback taskCallback, taskLoaderFragmento;
     String directionMode = "driving";
     RutaDirections rutasDirections = new RutaDirections();
     Context context;
 
     public PointsParser(TaskLoadedCallback mContext, String directionMode, Context c) {
         this.taskCallback =  mContext;
+        this.directionMode = directionMode;
+        this.context = c;
+    }
+    public PointsParser(TaskLoadedCallback taskCallbackActivity, TaskLoadedCallback taskCallbackFragmento, String directionMode, Context c) {
+        this.taskCallback =  taskCallbackActivity;
+        this.taskLoaderFragmento = taskCallbackFragmento;
         this.directionMode = directionMode;
         this.context = c;
     }
@@ -98,7 +104,7 @@ public class PointsParser extends AsyncTask<String, Integer, RutaDirections> {
         // Devolviendo las rutas encontradas
         if (rutas != null) {
             rutasDirections.setRutasDirectionsPolylineOptions(rutas);
-            EvaluacionRuta evaluacionRuta = new EvaluacionRuta(context, taskCallback);
+            EvaluacionRuta evaluacionRuta = new EvaluacionRuta(context, taskCallback, taskLoaderFragmento);
             evaluacionRuta.inicializarAtributosMiembro(rutasDirections);
             evaluacionRuta.execute();
             //taskCallback.onTaskDone(rutasDirections);

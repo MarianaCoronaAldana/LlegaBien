@@ -1,10 +1,13 @@
 package com.example.llegabien.frontend.mapa.activity;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTASEGURA;
+
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -14,12 +17,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Permisos;
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.poligonos.Poligono;
-import com.example.llegabien.backend.ubicacion.UbicacionDispositivo;
-import com.example.llegabien.backend.mapa.poligonos.Poligono;
-import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.notificacion.Notificacion;
+import com.example.llegabien.backend.poligonos.Poligono;
 import com.example.llegabien.backend.ruta.directions.Ruta;
+import com.example.llegabien.backend.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.databinding.ActivityMapsBinding;
 import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoBuscarLugar;
@@ -37,11 +38,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.libraries.places.api.Places;
 
-import java.util.ArrayList;
-import java.util.List;
 
-
-public class ActivityMap extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnPolygonClickListener, TaskLoadedCallback {
+public class ActivityMap extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnPolygonClickListener, TaskLoadedCallback{
 
     private static final int DEFAULT_ZOOM = 18;
     private GoogleMap mGoogleMap = null;
@@ -158,17 +156,6 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
             //Para obtener la ubicación actual del dispositivo y ubicacion buscada (si existe)
             mostrarUbicacionDispositivo();
 
-
-        // TODO: UTILIZACION DE API DIRECTIONS
-// ->
-        // JAVIER MINA
-        //20.6674235372583, -103.31179439549422
-        //20.67097726320246, -103.31441214692855
-
-        //LAS AGUILAS
-        //20.624252804065094, -103.40912012122419
-        //20.622204544200045, -103.41392667663345
-
     }
 
     @Override
@@ -276,13 +263,33 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onTaskDone(Object... values) {
+        Log.v("QUICKSTART", "ESTOY EN ACTIVITY");
+        mGoogleMap.clear();
+        Toast.makeText(getApplicationContext(), "Ruta creada!", Toast.LENGTH_SHORT).show();
         Ruta rutaMasSegura = (Ruta) values[0];
 
-        for (int i = 0; i < rutaMasSegura.getNumeroCalles(); i++) {
-            mGoogleMap.addPolyline(rutaMasSegura.getPolyline().get(i));
-        }
+        Preferences.savePreferenceObject(getApplicationContext(), PREFERENCE_RUTASEGURA, rutaMasSegura);
+        rutaMasSegura = Preferences.getSavedObjectFromPreference(this, PREFERENCE_RUTASEGURA, Ruta.class);
 
-       /* EvaluacionRuta evaluacionRuta = new EvaluacionRuta(mGoogleMap,this);
-        evaluacionRuta.obtenerRuta((RutaDirections) values[0]);*/
+        for (int i = 0; i < rutaMasSegura.getNumeroCalles(); i++) {
+            if(rutaMasSegura.getCallesRuta().get(i).getmUbicacion().getSeguridad().equals("Seguridad alta")){
+                mGoogleMap.addPolyline(rutaMasSegura.getPolyline().get(i)).setColor(R.color.verde_poligono);
+                Log.v("QUICKSTART", "Punto : " + i + " seguridad ALTA");
+            }
+            else if(rutaMasSegura.getCallesRuta().get(i).getmUbicacion().getSeguridad().equals("Seguridad media")) {
+                mGoogleMap.addPolyline(rutaMasSegura.getPolyline().get(i)).setColor(R.color.amarillo_poligono);
+                Log.v("QUICKSTART", "Punto : " + i + " seguridad MEDIA");
+            }
+            else if(rutaMasSegura.getCallesRuta().get(i).getmUbicacion().getSeguridad().equals("Seguridad baja")) {
+                mGoogleMap.addPolyline(rutaMasSegura.getPolyline().get(i)).setColor(R.color.rojo_claro);
+                Log.v("QUICKSTART", "Punto : " + i + " seguridad BAJA");
+            }
+
+            if(i == rutaMasSegura.getNumeroCalles() -1 ) {
+                Log.v("QUICKSTART", "SIZE PUNTOS : " + rutaMasSegura.getPolyline().get(i).getPoints().size());
+                mMapa.removerMarkerAnterior();
+                mMarkerAnterior = mGoogleMap.addMarker((new MarkerOptions().position(rutaMasSegura.getPolyline().get(i).getPoints().get(1))));
+            }
+        }
     }
 }

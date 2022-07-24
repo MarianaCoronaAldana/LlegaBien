@@ -39,7 +39,6 @@
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_cambiar_contra_usuario.xml" value="0.1" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_config_avan_admin.xml" value="0.2" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_configuracion_usuario.xml" value="0.4" />
-        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_consejos_ruta.xml" value="0.136" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_detalles_lugar.xml" value="0.4" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_editar_contacto.xml" value="0.13903985507246377" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_editar_perfil_usuario.xml" value="0.1" />
@@ -49,7 +48,7 @@
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_leer_contactos.xml" value="0.2" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_lista_reportes.xml" value="0.1" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_lugar_seleccionado.xml" value="0.17777777777777778" />
-        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_navegacion.xml" value="0.264" />
+        <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_navegacion.xml" value="0.536" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_registrar_usuario1.xml" value="0.1" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_restablecer_contrasena1.xml" value="0.12158054711246201" />
         <entry key="..\:/CETI/Carrera/ProyectoTitulacion/8vo/LlegaBien/app/src/main/res/layout/fragmento_restablecer_contrasena2.xml" value="0.12158054711246201" />
@@ -198,7 +197,7 @@
         <entry key="..\:/Users/roset/Downloads/Respaldo/LlegaBien/app/src/main/res/layout/fragmento_barra_navegacion.xml" value="0.1" />
         <entry key="..\:/Users/roset/Downloads/Respaldo/LlegaBien/app/src/main/res/layout/fragmento_configuracion_usuario.xml" value="0.33" />
         <entry key="..\:/Users/roset/Downloads/Respaldo/LlegaBien/app/src/main/res/layout/fragmento_editar_contacto.xml" value="0.18854166666666666" />
-        <entry key="..\:/Users/roset/Downloads/Respaldo/LlegaBien/app/src/main/res/layout/fragmento_indicaciones.xml" value="0.1" />
+        <entry key="..\:/Users/roset/Downloads/Respaldo/LlegaBien/app/src/main/res/layout/fragmento_indicaciones.xml" value="0.33" />
         <entry key="..\:/Users/roset/Downloads/Respaldo/LlegaBien/app/src/main/res/layout/fragmento_subir_reporte_usuario.xml" value="0.18854166666666666" />
       </map>
     </option>

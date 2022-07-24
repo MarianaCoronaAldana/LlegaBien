@@ -12,7 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class FetchURL extends AsyncTask<String, Void, String> {
-    TaskLoadedCallback taskLoader;
+    TaskLoadedCallback taskLoader, taskLoaderFragmento;
     String directionMode = "driving";
     Context context;
 
@@ -22,6 +22,12 @@ public class FetchURL extends AsyncTask<String, Void, String> {
 
     public FetchURL(TaskLoadedCallback task, Context context) {
         this.taskLoader = task;
+        this.context = context;
+    }
+
+    public FetchURL(TaskLoadedCallback taskActivity, TaskLoadedCallback taskFragmento, Context context) {
+        this.taskLoader = taskActivity;
+        this.taskLoaderFragmento = taskFragmento;
         this.context = context;
     }
 
@@ -43,7 +49,7 @@ public class FetchURL extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        PointsParser parserTask = new PointsParser(taskLoader, directionMode, context);
+        PointsParser parserTask = new PointsParser(taskLoader, taskLoaderFragmento, directionMode, context);
         // Para parsear la info de JSON
         parserTask.execute(s);
     }

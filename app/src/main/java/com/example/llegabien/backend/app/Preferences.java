@@ -23,6 +23,7 @@ public class Preferences extends AppCompatActivity {
     public static final String PREFERENCE_CALLE = "calle";
     public static final String PREFERENCE_FAVORITO = "favorito";
     public static final String PREFERENCE_EDITANDO_USUARIO_CON_ADMIN = "editando.usuario.admin";
+    public static final String PREFERENCE_RUTASEGURA = "rutaSegura";
 
     // Guardar preferencia sobre un tipo boolean
     public static void savePreferenceBoolean(Context c, boolean b, String key){
@@ -41,6 +42,12 @@ public class Preferences extends AppCompatActivity {
         mSharedPreferences.edit().putString(key, jsonObjectRealm).apply();
     }
 
+    public static void savePreferenceObject(Context c, String key, Object object) {
+        final Gson gson = new Gson();
+        mSharedPreferences = c.getSharedPreferences(STRING_PREFERENCES, c.MODE_PRIVATE);
+        String jsonObject = gson.toJson(object);
+        mSharedPreferences.edit().putString(key, jsonObject ).apply();
+    }
 
     // Obtener preferencia acerca de un tipo boolean
     public static boolean getSavedBooleanFromPreference(Context c,String key){

@@ -241,7 +241,7 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
             Favorito.setNombre(nombreLugar);
             Favorito.setUbicacion(Favorito_ubicacion);
 
-            if (!favoritoDAO.obtenerFavoritoPorNombre_Id(Usuario.get_id(), Favorito.getNombre())) {
+            if (!favoritoDAO.verificarExistenciaFavorito(Usuario.get_id(), Favorito.getNombre())) {
                 favoritoDAO.anadirFavorito(Favorito);
                 Toast.makeText(this.getContext(), "Ubicacion añadida a favoritos.", Toast.LENGTH_LONG).show();
             } else

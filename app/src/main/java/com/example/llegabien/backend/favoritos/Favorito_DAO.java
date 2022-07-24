@@ -75,8 +75,8 @@ public class Favorito_DAO {
         return null;
     }
 
-    // Devuelve un objeto favorito basado en el id
-    public boolean obtenerFavoritoPorNombre_Id(ObjectId id, String nombre) {
+    // Devuelve un booleano, depensiendo de si el objeto favorito ya existe
+    public boolean verificarExistenciaFavorito(ObjectId id, String nombre) {
         realm = conectarBD.conseguirUsuarioMongoDB();
 
         if(realm!=null){
