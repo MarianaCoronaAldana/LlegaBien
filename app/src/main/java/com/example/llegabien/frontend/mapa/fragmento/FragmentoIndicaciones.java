@@ -236,14 +236,14 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         Ruta.setPuntoInicio(origen);
         Ruta.setPuntoDestino(destino);
         rutaDAO rutaDAO = new rutaDAO(getApplicationContext());
-
+        rutaDAO.verificarExistenciaRuta(Ruta);
+        /*
         // Si la ruta ya está dentro de la base de datos, solo se actualiza su atributo "fUsoRuta"
-        if (rutaDAO.verificarExistenciaRuta(Ruta.getIdUsuario(), Ruta.getPuntoInicio(), Ruta.getPuntoDestino()))
+        if (!rutaDAO.verificarExistenciaRuta(Ruta.getIdUsuario(), Ruta.getPuntoInicio(), Ruta.getPuntoDestino(), Ruta.getFUsoRuta()))
             rutaDAO.anadirRuta(Ruta);
         else {
             Log.v("QUICKSTART", "RUTA YA AÑADIDA A BASE DE DATOS");
-            rutaDAO.actualizarFechaRuta(Ruta);
-        }
+        }*/
     }
 
     // Recibe el objeto Ruta que representa la ruta más segura, toma su información de distancia y tiempo

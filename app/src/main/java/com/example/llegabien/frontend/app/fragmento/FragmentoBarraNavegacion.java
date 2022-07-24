@@ -2,22 +2,19 @@ package com.example.llegabien.frontend.app.fragmento;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Permisos;
@@ -25,8 +22,8 @@ import com.example.llegabien.frontend.app.Utilidades;
 import com.example.llegabien.frontend.botonEmergencia.fragmento.FragmentoBotonEmergencia;
 import com.example.llegabien.frontend.contactos.activity.ActivityEditarLeerContactos;
 import com.example.llegabien.frontend.favoritos.activity.ActivityFavoritos;
-import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.reportes.activity.ActivityReportes;
+import com.example.llegabien.frontend.rutas.ActivityMostrarRutas;
 
 public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchListener, View.OnClickListener {
 
@@ -54,6 +51,7 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
         mBtnSubirReporte.setOnClickListener(this);
         mBtnContactos.setOnClickListener(this);
         mBtnFavoritos.setOnClickListener(this);
+        mBtnHistorialRutas.setOnClickListener(this);
 
         this.mScaleDown = ObjectAnimator.ofPropertyValuesHolder(
                 btnEmergencia,
@@ -81,6 +79,8 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
             startActivity(new Intent(requireActivity(), ActivityEditarLeerContactos.class));
         else if (view.getId() == R.id.button_favoritos_barraNavegacion)
             startActivity(new Intent(requireActivity(), ActivityFavoritos.class));
+        else if (view.getId() == R.id.button_historialRutas_barraNavegacion)
+            startActivity(new Intent(requireActivity(), ActivityMostrarRutas.class));
     }
 
     @SuppressLint("ClickableViewAccessibility")
