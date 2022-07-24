@@ -164,26 +164,8 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         //LAS AGUILAS
         //20.624252804065094, -103.40912012122419
         //20.622204544200045, -103.41392667663345
-/*
-        //PARA AÑADIR RUTA A FAVORITOS
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            añadirRuta();
-        }*/
+
     }
-/*
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void añadirRuta() {
-        usuario Usuario = Preferences.getSavedObjectFromPreference(getApplicationContext(), PREFERENCE_USUARIO, usuario.class);
-        ruta Ruta = new ruta();
-        Ruta.setIdUsuario(Usuario.get_id());
-        Ruta.setFUsoRuta(java.util.Date
-                .from(LocalDateTime.now().atZone(ZoneId.systemDefault())
-                        .toInstant()));
-        Ruta.setPuntoInicio(place1.getPosition());
-        Ruta.setPuntoDestino(place2.getPosition());
-        rutaDAO rutaDAO = new rutaDAO(getApplicationContext());
-        rutaDAO.anadirRuta(Ruta);
-    }*/
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

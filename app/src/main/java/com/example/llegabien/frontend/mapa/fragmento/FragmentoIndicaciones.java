@@ -1,9 +1,11 @@
 package com.example.llegabien.frontend.mapa.fragmento;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 import static io.realm.Realm.getApplicationContext;
 
 import android.content.Intent;
 import android.location.Address;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,20 +19,28 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
+import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionBusquedaAutocompletada;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.mapa.ubicacion.UbicacionGeocodificacion;
+import com.example.llegabien.backend.ruta.realm.ruta;
+import com.example.llegabien.backend.ruta.realm.rutaDAO;
+import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.rutas.directionhelpers.FetchURL;
 import com.example.llegabien.frontend.rutas.directionhelpers.TaskLoadedCallback;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class FragmentoIndicaciones extends Fragment implements View.OnClickListener {
 
@@ -45,6 +55,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
                     new ActivityResultCallback<ActivityResult>() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
                         @Override
                         public void onActivityResult(ActivityResult activityResult) {
                             int result = activityResult.getResultCode();
@@ -72,6 +83,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         mPuntoDestino = puntoDestino;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -119,6 +131,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         return root;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.button_comenzar_indicaciones) {
@@ -174,11 +187,14 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void tomarDatosRuta(){
         LatLng origen = obtenerCoordenadas(mBtnPuntoPartida.getText().toString());
         LatLng destino = obtenerCoordenadas(mBtnPuntoDestino.getText().toString());
-        if (origen!=null && destino != null)
+        if (origen!=null && destino != null) {
+            anadirRutaBD(origen, destino);
             new FetchURL((TaskLoadedCallback) requireActivity(), this.requireActivity().getApplicationContext()).execute(generarUrlRuta(origen, destino), mDirectionMode);
+        }
         else {
             Toast.makeText(getApplicationContext(), "Ingresa punto de irigen y destino", Toast.LENGTH_LONG).show();
             Log.v("QUICKSTART", "wey es nulo");
@@ -214,6 +230,20 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         Log.v("QUICKSTART", "url: ");
         Log.v("QUICKSTART", url);
         return url;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void anadirRutaBD(LatLng origen, LatLng destino) {
+        usuario Usuario = Preferences.getSavedObjectFromPreference(requireActivity().getApplicationContext(), PREFERENCE_USUARIO, usuario.class);
+        ruta Ruta = new ruta();
+        Ruta.setIdUsuario(Usuario.get_id());
+        Ruta.setFUsoRuta(java.util.Date
+                .from(LocalDateTime.now().atZone(ZoneId.systemDefault())
+                        .toInstant()));
+        Ruta.setPuntoInicio(origen);
+        Ruta.setPuntoDestino(destino);
+        rutaDAO rutaDAO = new rutaDAO(getApplicationContext());
+        rutaDAO.anadirRuta(Ruta);
     }
 
 }

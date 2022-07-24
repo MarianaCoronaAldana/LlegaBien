@@ -27,9 +27,9 @@ import com.example.llegabien.frontend.reportes.fragmento.FragmentoListaReportes;
 import com.example.llegabien.frontend.rutas.ActivityMostrarRutas;
 import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUsuario;
 
-public class FragmentoConfigUsuario extends Fragment implements View.OnClickListener{
+public class FragmentoConfigUsuario extends Fragment implements View.OnClickListener {
 
-   // private ConstraintLayout mBtnHistorialRutas;
+    // private ConstraintLayout mBtnHistorialRutas;
     private TextView mTxtViewCorreo, mTxtViewNombre;
 
     public FragmentoConfigUsuario() {
@@ -52,6 +52,8 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
         mTxtViewCorreo = root.findViewById(R.id.textView_correoUsuario_configuracionUsuario);
         mTxtViewNombre = root.findViewById(R.id.textView_nombreUsuario_configuracionUsuario);
 
+        mBtnHistorialRutas.setClickable(true);
+
         //listeners
         mBtnEditarPerfil.setOnClickListener(this);
         mBtnCerrarSesion.setOnClickListener(this);
@@ -68,43 +70,38 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
-        if (view.getId() == R.id.button_editarPerfil_configuracionUsuario){
+        if (view.getId() == R.id.button_editarPerfil_configuracionUsuario) {
             Preferences.savePreferenceBoolean(this.requireActivity(), false, PREFERENCE_EDITANDO_USUARIO_CON_ADMIN);
 
             FragmentoEditarPerfilUsuario fragmentoEditarPerfilUsuario = new FragmentoEditarPerfilUsuario();
             fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
             fragmentTransaction.replace(R.id.fragment_configuracion, fragmentoEditarPerfilUsuario).commit();
             fragmentTransaction.addToBackStack(null);
-        }
-        else if (view.getId() == R.id.button_cerrarSesion_configuracionUsuario){
+        } else if (view.getId() == R.id.button_cerrarSesion_configuracionUsuario) {
             // Se reinician los datos importantes guardados en Preferences
-            Preferences.savePreferenceBoolean(this.requireActivity(),false, PREFERENCE_ESTADO_BUTTON_SESION);
+            Preferences.savePreferenceBoolean(this.requireActivity(), false, PREFERENCE_ESTADO_BUTTON_SESION);
             Preferences.savePreferenceBoolean(this.requireActivity(), false, PREFERENCE_ES_ADMIN);
             Preferences.savePreferenceBoolean(this.requireActivity(), false, PREFERENCE_EDITANDO_USUARIO_CON_ADMIN);
 
             startActivity(new Intent(requireActivity(), ActivityPaginaPrincipalUsuario.class));
-        }
-
-        else if (view.getId() == R.id.button_historialReportes_configuracionUsuario){
-            if(!Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_ES_ADMIN)) {
+        } else if (view.getId() == R.id.button_historialReportes_configuracionUsuario) {
+            Log.v("QUICKSTART", "HISTORIAL reportes");
+            if (!Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_ES_ADMIN)) {
                 FragmentoListaReportes fragmentoListaReportes = new FragmentoListaReportes();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
                 fragmentTransaction.replace(R.id.fragment_configuracion, fragmentoListaReportes).commit();
                 fragmentTransaction.addToBackStack(null);
             }
         }
-
-        else if (view.getId() == R.id.button_contactos_configuracionUsuario)
-            if(!Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_ES_ADMIN))
+        else if (view.getId() == R.id.button_contactos_configuracionUsuario) {
+            if (!Preferences.getSavedBooleanFromPreference(this.requireActivity(), PREFERENCE_ES_ADMIN))
                 startActivity(new Intent(requireActivity(), ActivityEditarLeerContactos.class));
+        }
+        else if (view.getId() == R.id.button_historialRutas_configuracionUsuario)
+            startActivity(new Intent(requireActivity(), ActivityMostrarRutas.class));
 
-        else if (view.getId() == R.id.button_historialRutas_configuracionUsuario) {
-                Log.v("QUICKSTART", "HISTORIAL RUTas");
-                startActivity(new Intent(requireActivity(), ActivityMostrarRutas.class));
-            }
         else if (view.getId() == R.id.button_regresar_configuracionUsuario)
             requireActivity().finish();
-
     }
 
     // Escribir dentro de las EditText los datos previos del usuario

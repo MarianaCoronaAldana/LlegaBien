@@ -221,6 +221,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_historialRutas_configuracionUsuario"
             style="@style/BtnMoradoClaro"
+            android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_configuracionUsuario"
             app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_configuracionUsuario"
@@ -246,7 +247,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.9"  />
+                app:layout_constraintGuide_percent="0.9" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline2_arrow_historialRutas_configuracionUsuario"
