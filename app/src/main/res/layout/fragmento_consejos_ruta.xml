@@ -53,8 +53,9 @@
                 app:layout_constraintGuide_percent="0.20" />
 
             <Button
-                android:id="@+id/button_regresar_consejos"
+                android:id="@+id/button_cerrar_consejos"
                 style="@style/BkgdIcon"
+                android:background="@drawable/bkgd_button_cerrar_2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/guideline_textView_titulo_consejos"
                 app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +67,7 @@
                 android:textColor="#760000"
                 android:background="@android:color/transparent"
                 android:text="@string/titulo_consejos"
-                android:textSize="@dimen/text_size_titulo_medium"
+                android:textSize="@dimen/text_size_titulo_small"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="4:1"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@drawable/bkgd_esquinas_superiores_redondeadas"
-            android:backgroundTint="#FFD3D3"
+            android:backgroundTint="@color/coral"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="@id/guideline_fondo_consejos">
 
@@ -130,11 +131,11 @@
                 <TextView
                     android:id="@+id/textView_instrucciones1_consejos"
                     style="@style/TxtViewAzulOscuro"
-                    android:backgroundTint="#760000"
+                    android:backgroundTint="@color/rojo_oscuro"
                     android:paddingStart="20dp"
                     android:paddingEnd="20dp"
                     android:text="@string/descripcion_consejos"
-                    android:textSize="@dimen/text_size_parrafo_medium"
+                    android:textSize="@dimen/text_size_parrafo"
                     android:lineSpacingExtra="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="6:2"

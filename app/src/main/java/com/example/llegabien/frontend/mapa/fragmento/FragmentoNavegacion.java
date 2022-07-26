@@ -1,9 +1,15 @@
 package com.example.llegabien.frontend.mapa.fragmento;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTASEGURA;
+
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -12,13 +18,20 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Permisos;
+import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.ruta.directions.Ruta;
+import com.example.llegabien.backend.ruta.directions.UbicacionRuta;
+import com.example.llegabien.backend.ubicacion.UbicacionGeocodificacion;
 import com.example.llegabien.frontend.app.Utilidades;
 import com.example.llegabien.frontend.app.fragmento.FragmentoPermisos;
 import com.example.llegabien.frontend.botonEmergencia.fragmento.FragmentoBotonEmergencia;
@@ -26,23 +39,33 @@ import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.reportes.activity.ActivityReportes;
 
-public class FragmentoNavegacion extends Fragment implements View.OnClickListener, View.OnTouchListener {
+public class FragmentoNavegacion extends Fragment implements View.OnClickListener, View.OnTouchListener{
 
     private ObjectAnimator mScaleDown = null;
-    ConstraintLayout mBtnSubirReporte;
-    ConstraintLayout mBtnAdvertencia;
-    ConstraintLayout mBtnCentrarMapa;
+    private ConstraintLayout mBtnSubirReporte, mBtnAdvertencia, mBtnCentrarMapa, mConsLytIndicaciones;
+    private TextView mTxtViewCalleActual, mTxtViewCalleSiguiente, mTxtViewUbicacionSeguridad;
+    private View mIconSeguridad;
+    private FragmentTransaction mFragmentTransaction;
+    private UbicacionGeocodificacion mUbicacionGeocodificacion;
+    private Ruta mRutaSegura;
+    private int mNumCalleActual = -1;
+    private Mapa mMapa;
 
     public FragmentoNavegacion() {
         // Required empty public constructor
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragmento_navegacion, container, false);
+
+        // Se obtiene la ruta segura de Preferences.
+        mRutaSegura = Preferences.getSavedObjectFromPreference(this.requireActivity(), PREFERENCE_RUTASEGURA, Ruta.class);
+        mUbicacionGeocodificacion = new UbicacionGeocodificacion(this.requireActivity());
+        mMapa = new Mapa((ActivityMap) requireActivity());
 
         // Para cambiar el color de la status bar.
         Window window = requireActivity().getWindow();
@@ -54,6 +77,11 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
         mBtnSubirReporte = root.findViewById(R.id.button_subirReporte_navegacion);
         mBtnAdvertencia = root.findViewById(R.id.button_advertencia_navegacion);
         mBtnCentrarMapa = root.findViewById(R.id.button_centrarMapa_navegacion);
+        mTxtViewCalleActual = root.findViewById(R.id.textview_nombreCalleActual_indicaciones);
+        mTxtViewCalleSiguiente = root.findViewById(R.id.textview_nombreCalleSiguiente_indicaciones);
+        mTxtViewUbicacionSeguridad = root.findViewById(R.id.textView_seguridad_navegacion);
+        mConsLytIndicaciones = root.findViewById(R.id.consLyt_indicaciones_navegacion);
+        mIconSeguridad = root.findViewById(R.id.icon_seguridad_navegacion);
 
         //listeners
         btnEmergencia.setOnTouchListener(this);
@@ -61,7 +89,7 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
         mBtnAdvertencia.setOnClickListener(this);
         mBtnCentrarMapa.setOnClickListener(this);
 
-
+        // Para empezar animación del boton de emergencia.
         this.mScaleDown = ObjectAnimator.ofPropertyValuesHolder(
                 btnEmergencia,
                 PropertyValuesHolder.ofFloat("scaleX", 0.6f),
@@ -69,13 +97,26 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
         );
         Utilidades.startAnimacionBtnEmergencia(mScaleDown);
 
+        // Para verificar que la ruta pase por zonas inseguras.
+        mFragmentTransaction = this.requireActivity().getSupportFragmentManager().beginTransaction();
+        if (mRutaSegura.getDelitosZonasInseguras() != null) {
+            FragmentoConsejosRuta fragmentoConsejosRuta = new FragmentoConsejosRuta();
+            mFragmentTransaction.add(R.id.fragmentContainerView_navegacion, fragmentoConsejosRuta, "FragmentoConsejosRuta").commit();
+        }
+
         return root;
     }
 
+    @SuppressLint({"MissingPermission"})
     @Override
     public void onResume() {
         super.onResume();
         this.mScaleDown.start();
+        LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER,
+                1000,
+                0,
+                locationListener);
     }
 
     //LISTENERS//
@@ -83,7 +124,8 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        if (mFragmentTransaction != null)
+            mFragmentTransaction = this.requireActivity().getSupportFragmentManager().beginTransaction();
 
         // Cuando el boton es presionado.
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -97,11 +139,11 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
                 mBtnSubirReporte.setClickable(false);
 
                 // Para mostrar el ProgressCircle.
-                FragmentoBotonEmergencia fragmentoBotonEmergencia = new FragmentoBotonEmergencia(mBtnSubirReporte,mBtnCentrarMapa, mBtnAdvertencia);
-                fragmentTransaction.add(R.id.fragmentContainerView_botonEmergencia_navegacion, fragmentoBotonEmergencia, "FragmentoBotonEmergencia").commit();
+                FragmentoBotonEmergencia fragmentoBotonEmergencia = new FragmentoBotonEmergencia(mBtnSubirReporte, mBtnCentrarMapa, mBtnAdvertencia);
+                mFragmentTransaction.add(R.id.fragmentContainerView_navegacion, fragmentoBotonEmergencia, "FragmentoBotonEmergencia").commit();
             } else {
                 FragmentoPermisos fragmentoPermisos = new FragmentoPermisos();
-                fragmentTransaction.add(R.id.fragmentContainerView_reportes, fragmentoPermisos).commit();
+                mFragmentTransaction.add(R.id.fragmentContainerView_reportes, fragmentoPermisos).commit();
             }
         }
 
@@ -111,7 +153,7 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
             // Para esconder el ProgressCircle.
             Fragment fragment = requireActivity().getSupportFragmentManager().findFragmentByTag("FragmentoBotonEmergencia");
             if (fragment != null)
-                fragmentTransaction.remove(fragment).commit();
+                mFragmentTransaction.remove(fragment).commit();
         }
         return true;
     }
@@ -120,10 +162,62 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
     public void onClick(View view) {
         if (view.getId() == R.id.button_subirReporte_navegacion)
             startActivity(new Intent(requireActivity(), ActivityReportes.class));
-        else if (view.getId() == R.id.button_centrarMapa_navegacion) {
-            Mapa mapa = new Mapa((ActivityMap) requireActivity());
-            mapa.centrarMapa();
-        }
+        else if (view.getId() == R.id.button_centrarMapa_navegacion)
+            mMapa.centrarMapa();
+
 
     }
+
+    LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(@NonNull Location location) {
+            if (mNumCalleActual == mRutaSegura.getCallesRuta().size())
+                mNumCalleActual = -1;
+
+            mMapa.actualizarCamaraByUbicacionDispositivo(location);
+
+            UbicacionRuta mCalleSiguiente = mRutaSegura.getCallesRuta().get(mNumCalleActual + 1);
+
+            Location puntoInicioCalleSiguiente = new Location(LocationManager.GPS_PROVIDER);
+            puntoInicioCalleSiguiente.setLatitude(mCalleSiguiente.getLatPuntoInicio());
+            puntoInicioCalleSiguiente.setLongitude(mCalleSiguiente.getLngPuntoInicio());
+
+            if (location.distanceTo(puntoInicioCalleSiguiente) <= 10) {
+                Toast.makeText(requireActivity(), "MENOS DE 10 METROS", Toast.LENGTH_SHORT).show();
+                if (mNumCalleActual == -1 && mConsLytIndicaciones.getVisibility() == View.GONE)
+                    mConsLytIndicaciones.setVisibility(View.VISIBLE);
+
+
+                mNumCalleActual++;
+                UbicacionRuta mCalleActual = mRutaSegura.getCallesRuta().get(mNumCalleActual);
+                mCalleSiguiente = mRutaSegura.getCallesRuta().get(mNumCalleActual + 1);
+
+                mTxtViewCalleActual.setText(mUbicacionGeocodificacion
+                        .degeocodificarUbiciacion(mCalleActual.getLatPuntoInicio(), mCalleActual.getLngPuntoInicio())
+                        .split("\\d+", 2)[0].trim());
+                mTxtViewCalleSiguiente.setText(mUbicacionGeocodificacion
+                        .degeocodificarUbiciacion(mCalleSiguiente.getLatPuntoInicio(), mCalleSiguiente.getLngPuntoInicio())
+                        .split("\\d+", 2)[0].trim());
+
+                mTxtViewUbicacionSeguridad.setText(mCalleActual.getmUbicacion().getSeguridad());
+                Utilidades.setColoIconSeguridad(mCalleActual.getmUbicacion().getSeguridad(),mIconSeguridad,requireContext());
+
+            }
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
 }

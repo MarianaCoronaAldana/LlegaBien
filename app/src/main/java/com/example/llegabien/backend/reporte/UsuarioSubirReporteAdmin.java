@@ -63,11 +63,10 @@ public class UsuarioSubirReporteAdmin {
         if (resultCode == RESULT_OK) {
             //obtenerReportesDeArchivo(data);
             //actualizarUbicaciones(this.mReportesDeArchivo);
+
             //ReporteDAO reporteDAO = new ReporteDAO(mContext);
             //reporteDAO.anadirReportes(this.mReportesParaAnadir);
             //reporteDAO.anadirReportesIIEG(data);
-            UbicacionDAO ubicacionDAO = new UbicacionDAO(mContext);
-            ubicacionDAO.anadirUbicacionesBD(data);
         }
     }
 

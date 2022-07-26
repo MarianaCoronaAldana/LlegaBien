@@ -46,6 +46,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/consLyt_indicaciones_navegacion"
         style="@style/ConsLytTituloBlanco"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="4:1"
         app:layout_constraintEnd_toEndOf="@id/guideline2_textView_navegacion"
@@ -113,6 +114,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/parrafo_bold"
             android:gravity="center_vertical|start"
+            android:maxLines="1"
             android:text="@string/nombreCalleActual_navegacion"
             android:textColor="#674277"
             android:textSize="@dimen/text_size_titulo_medium"
@@ -148,6 +150,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/parrafo_bold"
             android:gravity="center_vertical|start"
+            android:maxLines="1"
             android:paddingStart="10dp"
             android:text="@string/nombreCalleSiguiente_navegacion"
             android:textColor="@color/negro"
@@ -164,16 +167,16 @@
 
     <Button
         android:id="@+id/button_emergencia_navegacion"
-        android:layout_height="0dp"
         android:layout_width="0dp"
-        app:layout_constraintDimensionRatio="1:1"
+        android:layout_height="0dp"
         android:background="@drawable/bkgd_button_emergencia"
         app:layout_constraintBottom_toBottomOf="@id/guideline_fragment2_barraNavegacion"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@id/guideline2_textView_navegacion"
         app:layout_constraintStart_toStartOf="@id/guideline1_miniBtn_navegacion"
         app:layout_constraintTop_toBottomOf="@id/consLyt_indicaciones_navegacion"
         app:layout_constraintVertical_bias="0.75" />
-    
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/button_subirReporte_navegacion"
         style="@style/BtnDirecciones"
@@ -247,8 +250,8 @@
         android:id="@+id/button_centrarMapa_navegacion"
         style="@style/BtnDirecciones"
         android:backgroundTint="@color/azul_claro"
-        app:layout_constraintDimensionRatio="3:1"
         app:layout_constraintBottom_toTopOf="@id/guideline_fragment2_barraNavegacion"
+        app:layout_constraintDimensionRatio="3:1"
         app:layout_constraintEnd_toEndOf="@id/guideline1_btnCentrarMapa_navegacion"
         app:layout_constraintStart_toStartOf="@id/guideline1_textView_navegacion"
         app:layout_constraintTop_toBottomOf="@id/consLyt_indicaciones_navegacion"
@@ -257,11 +260,11 @@
         <TextView
             android:id="@+id/textView_centrarMapa"
             style="@style/TxtViewTransparente"
-            android:textColor="@color/azul_oscuro"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:fontFamily="@font/parrafo_bold"
             android:text="@string/centrar_navegacion"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent" />
+            android:textColor="@color/azul_oscuro" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -352,15 +355,16 @@
             android:text="@string/kmRestantes_horaDeLlegada_navegacion"
             android:textColor="@color/negro"
             android:textSize="@dimen/text_size_parrafo_medium"
-            app:layout_constraintTop_toBottomOf="@id/guideline3_detallesUbicacion_navegacion"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline3_detallesUbicacion_navegacion"
             app:layout_constraintVertical_bias="0.5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView_botonEmergencia_navegacion"
+        android:id="@+id/fragmentContainerView_navegacion"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="10dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

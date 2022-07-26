@@ -144,7 +144,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/button_direcciones_buscarLugar"
+        android:id="@+id/button_indicaciones_buscarLugar"
         style="@style/BtnDirecciones"
         app:layout_constraintBottom_toTopOf="@id/guideline_fragment2_barraNavegacion"
         app:layout_constraintEnd_toEndOf="@id/guideline2_barraBusqueda_buscarLugar"

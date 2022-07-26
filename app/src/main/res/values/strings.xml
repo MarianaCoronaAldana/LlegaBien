@@ -128,10 +128,8 @@
     <!-- Indicaciones -->
     <string name="puntoPartida_indicaciones">Escribe tu punto de partida…</string>
     <string name="puntoDestino_indicaciones">Escribe tu punto de destino…</string>
-    <string name="tiempoBiciBtn_indicaciones">A bicicleta</string>
-    <string name="tiempoCaminandoBtn_indicaciones">A pie</string>
-    <string name="tiempo_indicaciones">18 min</string>
-    <string name="km_indicaciones">(2.1km).</string>
+    <string name="tiempoBiciBtn_indicaciones">Bicicleta</string>
+    <string name="tiempoCaminandoBtn_indicaciones">Caminando</string>
     <string name="descripcionRuta_indicaciones">Rutas más segura debido a la inicidencia delictiva.</string>
     <string name="comenzarBtn_indicaciones">Comenzar</string>
 
@@ -144,8 +142,52 @@
     <string name="kmRestantes_horaDeLlegada_navegacion">0.3 km ・ 10.44 a.m</string>
 
     <!-- Consejos -->
-    <string name="titulo_consejos">!ADVERTENCIA!</string>
-    <string name="descripcion_consejos">Te ofrecemos una serie de consejos para prevenir ser víctima de los delitos más frecuentes de las zonas inseguras por las que pase esta ruta. </string>
+    <string name="titulo_consejos">¡ADVERTENCIA!</string>
+    <string name="descripcion_consejos">¡Cuidado! Pasaras por zonas inseguras donde usualmente ocurren los siguientes delitos</string>
+    <string name="general_consejos"><![CDATA[ <b> ➊ Confié en su instinto: </b> Si alguien le incomoda, aléjese. <br/> <br/>
+                                                  ➋ No use ropa ostentosa, ni joyas valiosas. <br/> <br/>
+                                                  ➌ Siempre lleve consigo un artículo de defensa personal. <br/> <br/>
+                                              <b> ➍ Mantenga comunicación constante con su familia: </b> Infórmeles dónde y con quién estará. <br/> <br/>
+                                              <b> ➎ Evite la rutina: </b>  Salir a la misma hora, pasar por los mismos lugares, etc. <br/><br/>
+                                                  ➏ Manténgase atento y vigilante de todo lo que sucede a su alrededor. <br/><br/>
+                                                  ➐ Lleve el dinero necesario y no lo cuente en público. <br/><br/>
+                                                  ➑ Cuando camine sobre las aceras, hágalo alejado del borde que da hacia la calle, así evitará los posibles arrebatos. <br/><br/>
+                                                  ➒ Lleve bolsos u otras pertenencias de valor al frente contra su pecho y cubiertas por el antebrazo. <br/><br/>
+                                                  ➊ De noche, evite caminar sobre aceras poco iluminadas y con posibles sitios que puedan servir de escondites para malhechores. <br/>]]></string>
+
+    <string name="robo_consejos"><![CDATA[ <b> ➊ No llevar todo lo valioso junto: </b> El dinero, las llaves, las tarjetas y la documentación personal no deben estar juntas. <br/> <br/>
+                                           <b> ➋ No dejar a la vista objetos de valor: </b> Un ordenador portátil, una buena cámara de fotos, el móvil de última generación. <br/> <br/>
+                                           <b> ➌ Evite en lo posible las aglomeraciones: </b> Si observa algo anormal cruce la calle y aléjese del lugar. <br/> <br/>
+                                               ➍ Evitar acercarte a dar indicaciones o limosnas si la calle está solitaria. <br/> <br/>
+                                               ➎ De noche, caminar por calles iluminadas. <br/>]]></string>
+
+    <string name="acosoSexual_consejos"><![CDATA[ <b> ➊ Si es víctima acoso callejero: </b> Responda siempre que el agresor no amenace su integridad física. De lo contrario pida ayuda a otras personas.<br/> <br/>
+                                                      ➋ Intente no usar la violencia, ni la agresividad, éstas pueden hacer que el acosador se vuelva más agresivo. <br/> <br/>
+                                                  <b> ➌ Grábelo, saque su celular, pues es funcional grabar la cara de quien le está agrediendo. <br/> <br/>
+                                                      ➍ Exhíbalo en las redes sociales, puede ayudar a que esa persona sea identificada y también que las autoridades le presten atención. <br/> <br/>
+                                                      ➎ Siempre denuncie a su agresor. <br/>]]></string>
+
+    <string name="abusoSexual_consejos"><![CDATA[ <b> ➊ Confíe en sus instintos: </b> Si algo parece no estar bien, trate de salirse de esa situación.  <br/> <br/>
+                                           <b> ➋ ESTÁ BIEN </b> mentir o dar excusar si esto ayuda a alejarse. <br/> <br/>
+                                               ➌ Mantenga comunicación constante con su familia; infórmeles dónde y con quién estará. <br/> <br/>
+                                               ➍ Evite estar con personas que no conoce o en quienes no confía.   <br/> <br/>
+                                               ➎ Sea consciente de dónde está y de lo que está a su alrededor.  <br/><br/>
+                                               ➏ Cuando salga, no cubra los dos oídos con auriculares de música. <br/><br/>
+                                               ➐ Asegúrese de tener efectivo o tarjetas de crédito para pagar un taxi que le lleve a casa. <br/><br/>
+                                               ➑ Trate de parecer fuerte, confiado, consciente y seguro de sus alrededores. <br/>]]></string>
+
+    <string name="tiroteo_consejos"><![CDATA[  ➊ Debe tirarse al suelo, buscar refugio en una pared o un vehículo y colocarse pechotierra, con los brazos cubriendo la cabeza. <br/> <br/>
+                                               ➋ Busque un lugar seguro, arrastrándose o caminando en cuclillas. <br/> <br/>
+                                               ➌ Las balas por lo general aciertan en un cuerpo de la cintura para arriba. <br/> <br/>
+                                           <b> ➍ En caso de estar cerca del lugar del conflicto: </b> Retírese con precaución a pie o en vehículo según sea el caso. <br/> <br/>
+                                               ➎ Es importante que si las autoridades policíacas le piden evacuar el lugar, haga caso. <br/>]]></string>
+
+    <string name="secuestro_consejos"><![CDATA[ ➊ Use prendas poco llamativas, tratando de que sean comunes en el lugar al que acudirá. <br/> <br/>
+                                                ➋ Siempre lleve consigo un artículo de defensa personal. <br/> <br/>
+                                            <b> ➌ Mantenga comunicación constante con su familia: </b> Infórmeles dónde y con quién estará. <br/> <br/>
+                                                ➍ Manténgase atento y vigilante de todo lo que sucede a su alrededor. <br/> <br/>
+                                                ➎ Si nota alguna persona sospechosa en su entorno, repórtela a las autoridades. <br/><br/>
+                                                ➏ Evite acordar encuentros con desconocidos: Si es necesario, que sean en sitios públicos y comparta su ubicación a familiares o amigos. <br/>]]></string>
 
     <!-- Bóton de emergencia. -->
     <string name="segundos_progressCircle">SEGUNDOS</string>

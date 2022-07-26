@@ -1,13 +1,19 @@
 package com.example.llegabien.frontend.mapa;
 
+import android.location.Location;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
+import com.example.llegabien.backend.poligonos.Poligono;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoBuscarLugar;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoLugarSeleccionado;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -93,6 +99,36 @@ public class Mapa {
                 mGoogleMap = mActivityMap.getGoogleMap();
                 if (mGoogleMap != null)
                     mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mActivityMap.getLastKnownLocation().getLatitude(), mActivityMap.getLastKnownLocation().getLongitude()), DEFAULT_ZOOM));
+            }
+        }
+    }
+
+    public void actualizarCamaraByUbicacionDispositivo(Location deviceLocation) {
+        if (mActivityMap != null) {
+            mGoogleMap = mActivityMap.getGoogleMap();
+            if (mGoogleMap != null) {
+                CameraPosition currentPlace = new CameraPosition.Builder()
+                        .target(new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude()))
+                        .bearing(deviceLocation.getBearing())
+                        .zoom(18f)
+                        .build();
+                mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(currentPlace));
+
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void mostrarColonias() {
+        if (mActivityMap != null) {
+            if (mActivityMap.getLastKnownLocation() != null) {
+                mGoogleMap = mActivityMap.getGoogleMap();
+                if (mGoogleMap != null) {
+                    mGoogleMap.clear();
+                    abrirFragmentoBuscarLugar();
+                    centrarMapa();
+                    mActivityMap.mostrarColonias();
+                }
             }
         }
     }

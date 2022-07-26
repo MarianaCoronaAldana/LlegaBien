@@ -16,18 +16,9 @@ public class FetchURL extends AsyncTask<String, Void, String> {
     String directionMode = "driving";
     Context context;
 
-    public FetchURL(TaskLoadedCallback Context) {
-        this.taskLoader = Context;
-    }
 
     public FetchURL(TaskLoadedCallback task, Context context) {
         this.taskLoader = task;
-        this.context = context;
-    }
-
-    public FetchURL(TaskLoadedCallback taskActivity, TaskLoadedCallback taskFragmento, Context context) {
-        this.taskLoader = taskActivity;
-        this.taskLoaderFragmento = taskFragmento;
         this.context = context;
     }
 

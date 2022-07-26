@@ -23,24 +23,15 @@ public class PointsParser extends AsyncTask<String, Integer, RutaDirections> {
     TaskLoadedCallback taskCallback, taskLoaderFragmento;
     String directionMode = "driving";
     RutaDirections rutasDirections = new RutaDirections();
-    Context context;
+    Context mContext;
 
-    public PointsParser(TaskLoadedCallback mContext, String directionMode, Context c) {
-        this.taskCallback =  mContext;
-        this.directionMode = directionMode;
-        this.context = c;
-    }
     public PointsParser(TaskLoadedCallback taskCallbackActivity, TaskLoadedCallback taskCallbackFragmento, String directionMode, Context c) {
         this.taskCallback =  taskCallbackActivity;
         this.taskLoaderFragmento = taskCallbackFragmento;
         this.directionMode = directionMode;
-        this.context = c;
+        this.mContext = c;
     }
 
-    public PointsParser(TaskLoadedCallback mContext, String directionMode) {
-        this.taskCallback =  mContext;
-        this.directionMode = directionMode;
-    }
 
     // Se encarga de parsear la info
     @Override
@@ -104,7 +95,7 @@ public class PointsParser extends AsyncTask<String, Integer, RutaDirections> {
         // Devolviendo las rutas encontradas
         if (rutas != null) {
             rutasDirections.setRutasDirectionsPolylineOptions(rutas);
-            EvaluacionRuta evaluacionRuta = new EvaluacionRuta(context, taskCallback, taskLoaderFragmento);
+            EvaluacionRuta evaluacionRuta = new EvaluacionRuta(mContext, taskCallback, taskLoaderFragmento);
             evaluacionRuta.inicializarAtributosMiembro(rutasDirections);
             evaluacionRuta.execute();
             //taskCallback.onTaskDone(rutasDirections);

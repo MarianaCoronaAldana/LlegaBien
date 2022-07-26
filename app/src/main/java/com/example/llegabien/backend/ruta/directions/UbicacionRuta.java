@@ -7,20 +7,19 @@ import com.example.llegabien.backend.ubicacion.ubicacion;
 import java.util.Locale;
 
 public class UbicacionRuta {
-    int mDistancia;
-    Address mAddress;
-    String mDireccion;
-    ubicacion mUbicacion;
-    ubicacion mUbicacionColonia;
-    ubicacion mUbicacionCalle;
-
-    public UbicacionRuta() {
-    }
+    private int mDistancia;
+    private float mLatPuntoInicio;
+    private float mLngPuntoInicio;
+    private Address mAddressPuntoMedio;
+    private String mNombreCalle;
+    private ubicacion mUbicacion;
+    private ubicacion mUbicacionColonia;
+    private ubicacion mUbicacionCalle;
 
     public UbicacionRuta(int Distancia, Address Address, String Direccion) {
         this.mDistancia = Distancia;
-        this.mAddress = Address;
-        this.mDireccion = Direccion;
+        this.mAddressPuntoMedio = Address;
+        this.mNombreCalle = Direccion;
     }
 
     public int getmDistancia() {
@@ -31,20 +30,20 @@ public class UbicacionRuta {
         this.mDistancia = mDistancia;
     }
 
-    public Address getmAddress() {
-        return mAddress;
+    public Address getmAddressPuntoMedio() {
+        return mAddressPuntoMedio;
     }
 
-    public void setmAddress(Address mAddress) {
-        this.mAddress = mAddress;
+    public void setmAddressPuntoMedio(Address mAddressPuntoMedio) {
+        this.mAddressPuntoMedio = mAddressPuntoMedio;
     }
 
-    public String getmDireccion() {
-        return mDireccion;
+    public String getmNombreCalle() {
+        return mNombreCalle;
     }
 
-    public void setmDireccion(String Direccion) {
-        this.mDireccion = Direccion;
+    public void setmNombreCalle(String Direccion) {
+        this.mNombreCalle = Direccion;
     }
 
     public ubicacion getmUbicacion() {
@@ -56,8 +55,8 @@ public class UbicacionRuta {
     }
 
     public String construirDireccion(){
-        return (mAddress.getThoroughfare() + ", " + mAddress.getSubLocality() + ", " + mAddress.getLocality() + ", " + mAddress.getAdminArea()
-                + ", " + mAddress.getCountryName()).toUpperCase(Locale.ROOT);
+        return (mAddressPuntoMedio.getThoroughfare() + ", " + mAddressPuntoMedio.getSubLocality() + ", " + mAddressPuntoMedio.getLocality() + ", " + mAddressPuntoMedio.getAdminArea()
+                + ", " + mAddressPuntoMedio.getCountryName()).toUpperCase(Locale.ROOT);
     }
 
     public ubicacion getmUbicacionColonia() {
@@ -74,6 +73,22 @@ public class UbicacionRuta {
 
     public void setmUbicacionCalle(ubicacion mUbicacionCalle) {
         this.mUbicacionCalle = mUbicacionCalle;
+    }
+
+    public float getLatPuntoInicio() {
+        return mLatPuntoInicio;
+    }
+
+    public void setLatPuntoInicio(float mLatPuntoInicio) {
+        this.mLatPuntoInicio = mLatPuntoInicio;
+    }
+
+    public float getLngPuntoInicio() {
+        return mLngPuntoInicio;
+    }
+
+    public void setLngPuntoInicio(float mLngPuntoInicio) {
+        this.mLngPuntoInicio = mLngPuntoInicio;
     }
 
 }

@@ -10,7 +10,7 @@ public class UbicacionRutaDAO {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public UbicacionRuta obtenerUbicacionRutaConAdress(String calle, List<UbicacionRuta> ruta) {
-        return ruta.stream().filter(ubicacionRuta -> ubicacionRuta.getmDireccion().equals(calle)).findAny().orElse(null);
+        return ruta.stream().filter(ubicacionRuta -> ubicacionRuta.getmNombreCalle().equals(calle)).findAny().orElse(null);
     }
 
 }

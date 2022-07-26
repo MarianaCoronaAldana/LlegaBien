@@ -1,9 +1,13 @@
 package com.example.llegabien.frontend.mapa.fragmento;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTASEGURA;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 import static io.realm.Realm.getApplicationContext;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,18 +42,27 @@ import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.rutas.directionhelpers.FetchURL;
 import com.example.llegabien.frontend.rutas.directionhelpers.TaskLoadedCallback;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.SquareCap;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 public class FragmentoIndicaciones extends Fragment implements View.OnClickListener, TaskLoadedCallback {
 
-    Button mBtnPuntoPartida, mBtnPuntoDestino, mBtnPresionado;
-    ConstraintLayout mBtnTiempoBici, mBtnTiempoCaminando;
-    TextView mTxtViewTiempoBici, mTxtViewTiempoCaminando, mTxtViewTiempoDetalles, mTxtViewDistanciaDetalles;
-    View mViewBici, mViewCaminar;
-    String mPuntoPartida, mPuntoDestino, mUbicacionBuscada, mDirectionMode = "walking";
+    private Button mBtnPuntoPartida, mBtnPuntoDestino, mBtnPresionado;
+    private ConstraintLayout mBtnTiempoBici, mBtnTiempoCaminando, mBtnComenzarNavegacion, mConsLytRutaDetalles;
+    private TextView mTxtViewTiempoBici, mTxtViewTiempoCaminando, mTxtViewTiempoDetalles, mTxtViewDistanciaDetalles;
+    private View mViewBici, mViewCaminar;
+    private String mPuntoPartida, mPuntoDestino, mUbicacionBuscada, mDirectionMode = "walking";
+    private ActivityMap mActivityMap;
+    private GoogleMap mGoogleMap;
+    private Mapa mMapa;
 
     private UbicacionBusquedaAutocompletada ubicacionBusquedaAutocompletada;
     private final ActivityResultLauncher<Intent> activityResultLauncher =
@@ -72,9 +85,6 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
                     }
             );
 
-    public FragmentoIndicaciones() {
-    }
-
     public FragmentoIndicaciones(String ubicacionBuscada) {
         mUbicacionBuscada = ubicacionBuscada;
     }
@@ -92,8 +102,9 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         View root = inflater.inflate(R.layout.fragmento_indicaciones, container, false);
 
         //wiring up
-        ConstraintLayout btnComenzarNavegacion = root.findViewById(R.id.button_comenzar_indicaciones);
+        mBtnComenzarNavegacion = root.findViewById(R.id.button_comenzar_indicaciones);
         Button btnIntercambiarPuntos = root.findViewById(R.id.button_intercambiarDireccion_partidaDestino);
+        Button btnRegresar = root.findViewById(R.id.button_regresar_partidaDestino);
         mBtnPuntoPartida = root.findViewById(R.id.button_puntoPartida_indicaciones);
         mBtnPuntoDestino = root.findViewById(R.id.button_puntoDestino_indicaciones);
         mBtnTiempoCaminando = root.findViewById(R.id.button_tiempoCaminando_indicaciones);
@@ -105,6 +116,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         mViewBici = root.findViewById(R.id.iconBici_btnTimepoBici);
         mViewCaminar = root.findViewById(R.id.iconCaminando_btnTimepoCaminando);
         ConstraintLayout btnCentrarMapa = root.findViewById(R.id.button_centrarMapa_indicaciones);
+        mConsLytRutaDetalles = root.findViewById(R.id.consLyt_detallesRuta_indicaciones);
 
         //listeners
         mBtnTiempoCaminando.setOnClickListener(this);
@@ -112,8 +124,13 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         mBtnPuntoDestino.setOnClickListener(this);
         mBtnPuntoPartida.setOnClickListener(this);
         btnCentrarMapa.setOnClickListener(this);
-        btnComenzarNavegacion.setOnClickListener(this);
+        mBtnComenzarNavegacion.setOnClickListener(this);
         btnIntercambiarPuntos.setOnClickListener(this);
+        btnRegresar.setOnClickListener(this);
+
+        // Para inicializar objeto de clase Mapa.
+        if (getActivity() != null)
+            mMapa = new Mapa((ActivityMap) requireActivity());
 
         //Para mostrar la ubicacion del dispositivo en Boton.
         UbicacionDispositivo ubicacionDispositivo = new UbicacionDispositivo();
@@ -134,15 +151,19 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         return root;
     }
 
+    // LISTENERS //
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.button_comenzar_indicaciones) {
+
             FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
             FragmentoNavegacion fragmentoNavegacion = new FragmentoNavegacion();
-            fragmentTransaction.replace(R.id.fragmentContainerView_fragmentoLugares_activityMaps, fragmentoNavegacion).commit();
+            fragmentTransaction.replace(R.id.fragmentContainerView_fragmentoLugares_activityMaps, fragmentoNavegacion, "FragmentoNavegacion").commit();
             fragmentTransaction.addToBackStack(null);
+
         } else if (view.getId() == R.id.button_puntoPartida_indicaciones || view.getId() == R.id.button_puntoDestino_indicaciones) {
+
             if (view.getId() == R.id.button_puntoPartida_indicaciones)
                 mBtnPresionado = mBtnPuntoPartida;
             else if (view.getId() == R.id.button_puntoDestino_indicaciones)
@@ -151,8 +172,9 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
             ubicacionBusquedaAutocompletada = new UbicacionBusquedaAutocompletada();
             ubicacionBusquedaAutocompletada.inicializarIntent(requireActivity());
             activityResultLauncher.launch(ubicacionBusquedaAutocompletada.getIntent());
-            //  tomarDatosRuta();
+
         } else if (view.getId() == R.id.button_tiempoCaminando_indicaciones) {
+
             mBtnTiempoCaminando.setBackgroundTintList(ContextCompat.getColorStateList(requireActivity(), R.color.morado_oscuro));
             mTxtViewTiempoCaminando.setTextColor(this.requireActivity().getResources().getColor(R.color.blanco));
             mViewCaminar.setBackgroundTintList(ContextCompat.getColorStateList(requireActivity(), R.color.blanco));
@@ -162,7 +184,9 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
             mViewBici.setBackgroundTintList(ContextCompat.getColorStateList(requireActivity(), R.color.negro));
             mDirectionMode = "walking";
             tomarDatosRuta();
+
         } else if (view.getId() == R.id.button_tiempoBici_indicaciones) {
+
             mBtnTiempoCaminando.setBackgroundTintList(ContextCompat.getColorStateList(requireActivity(), R.color.blanco));
             mTxtViewTiempoCaminando.setTextColor(this.requireActivity().getResources().getColor(R.color.negro));
             mViewCaminar.setBackgroundTintList(ContextCompat.getColorStateList(requireActivity(), R.color.negro));
@@ -172,19 +196,61 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
             mViewBici.setBackgroundTintList(ContextCompat.getColorStateList(requireActivity(), R.color.blanco));
             mDirectionMode = "bicycling";
             tomarDatosRuta();
+
         } else if (view.getId() == R.id.button_intercambiarDireccion_partidaDestino) {
+
             if (mBtnPuntoPartida.getText() != null && mBtnPuntoDestino.getText() != null) {
                 String puntoDestino = mBtnPuntoDestino.getText().toString();
                 mBtnPuntoDestino.setText(mBtnPuntoPartida.getText().toString());
                 mBtnPuntoPartida.setText(puntoDestino);
                 tomarDatosRuta();
             }
-        } else if (view.getId() == R.id.button_centrarMapa_indicaciones) {
-            Mapa mapa = new Mapa((ActivityMap) requireActivity());
-            mapa.centrarMapa();
+
+        }else if(view.getId() == R.id.button_regresar_partidaDestino) {
+            mMapa.abrirFragmentoBuscarLugar();
+            mMapa.mostrarColonias();
         }
+
+        else if (view.getId() == R.id.button_centrarMapa_indicaciones)
+            mMapa.centrarMapa();
+
     }
 
+    // Recibe el objeto Ruta que representa la ruta más segura, toma su información de distancia y tiempo.
+    // Pone sus valores en los TxtViews correspondientes
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void onTaskDone(Object... values) {
+        Log.v("QUICKSTART", "ESTOY EN FRAGMENTO");
+        Ruta rutaMasSegura = (Ruta) values[0];
+        if (rutaMasSegura != null) {
+            mTxtViewTiempoDetalles.setText(rutaMasSegura.getTiempoTotal().replace("hours", "horas"));
+            mTxtViewDistanciaDetalles.setText(rutaMasSegura.getDistanciaTotalDirections());
+            if (this.getActivity() != null) {
+                this.mActivityMap = (ActivityMap) requireActivity();
+                this.mGoogleMap = mActivityMap.getGoogleMap();
+
+                mGoogleMap.clear();
+                Toast.makeText(getApplicationContext(), "Ruta creada!", Toast.LENGTH_SHORT).show();
+
+                // Se guarda ruta en Preferences.
+                Preferences.savePreferenceObject(this.requireActivity(), PREFERENCE_RUTASEGURA, rutaMasSegura);
+                rutaMasSegura = Preferences.getSavedObjectFromPreference(this.requireActivity(), PREFERENCE_RUTASEGURA, Ruta.class);
+
+                if (rutaMasSegura != null) {
+                    setValoresRutaPolylines(rutaMasSegura);
+                    centrarRutaEnMapa(rutaMasSegura);
+                    mBtnComenzarNavegacion.setVisibility(View.VISIBLE);
+                    mConsLytRutaDetalles.setVisibility(View.VISIBLE);
+                }
+
+            }
+        }
+        else
+            Toast.makeText(this.requireActivity(), "¡No hay rutas disponibles!", Toast.LENGTH_SHORT).show();
+    }
+
+    // OTRAS FUNCIONES //
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void tomarDatosRuta() {
         LatLng origen = obtenerCoordenadas(mBtnPuntoPartida.getText().toString());
@@ -192,10 +258,10 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         if (origen != null && destino != null) {
             anadirRutaBD(origen, destino);
             Toast.makeText(getApplicationContext(), "Creando ruta....", Toast.LENGTH_SHORT).show();
-            new FetchURL((TaskLoadedCallback) this, (TaskLoadedCallback) requireActivity(), this.requireActivity().getApplicationContext()).execute(generarUrlRuta(origen, destino), mDirectionMode);
+            new FetchURL(this, this.requireActivity()).execute(generarUrlRuta(origen, destino), mDirectionMode);
         } else {
             Toast.makeText(getApplicationContext(), "Ingresa punto de origen y destino", Toast.LENGTH_SHORT).show();
-            Log.v("QUICKSTART", "wey es nulo");
+            Log.v("QUICKSTART", "Wey es nulo");
         }
     }
 
@@ -237,26 +303,70 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         Ruta.setPuntoDestino(destino);
         rutaDAO rutaDAO = new rutaDAO(getApplicationContext());
         rutaDAO.verificarExistenciaRuta(Ruta);
-        /*
-        // Si la ruta ya está dentro de la base de datos, solo se actualiza su atributo "fUsoRuta"
-        if (!rutaDAO.verificarExistenciaRuta(Ruta.getIdUsuario(), Ruta.getPuntoInicio(), Ruta.getPuntoDestino(), Ruta.getFUsoRuta()))
-            rutaDAO.anadirRuta(Ruta);
-        else {
-            Log.v("QUICKSTART", "RUTA YA AÑADIDA A BASE DE DATOS");
-        }*/
     }
 
-    // Recibe el objeto Ruta que representa la ruta más segura, toma su información de distancia y tiempo
-    // y pone sus valores en los TxtViews correspondientes
-    // Luego la manda a la clase ActivityMap para que se pueda imprimir la ruta en sí
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    public void onTaskDone(Object... values) {
-        Log.v("QUICKSTART", "ESTOY EN FRAGMENTO");
-        Ruta rutaMasSegura = (Ruta) values[0];
-        mTxtViewTiempoDetalles.setText(rutaMasSegura.getTiempoTotal().replace("hours", "horas"));
-        mTxtViewDistanciaDetalles.setText(rutaMasSegura.getDistanciaTotalDirections());
-        TaskLoadedCallback taskLoadedCallbackActivity = (TaskLoadedCallback) values[1];
-        taskLoadedCallbackActivity.onTaskDone(rutaMasSegura);
+    private void mostrarRutaEnMapa(int i, int color, Ruta ruta) {
+        if (i == 0) {
+            this.mGoogleMap.addPolyline(ruta.getPolyline().get(i)
+                    .color(color)
+                    .startCap(new SquareCap())
+                    .width(10));
+        }
+        else {
+            this.mGoogleMap.addPolyline(ruta.getPolyline().get(i)
+                    .color(color)
+                    .width(10));
+        }
     }
+
+    private void setValoresRutaPolylines(Ruta rutaMasSegura) {
+        // Para establecer el color de cada calle dependiendo seguridad.
+        for (int i = 0; i < rutaMasSegura.getNumeroCalles(); i++) {
+
+            if (i == 0) {
+                Drawable vectorDrawable = ContextCompat.getDrawable(this.requireActivity(), R.drawable.bkgd_icon_puntopartida);
+                vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+                Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(bitmap);
+                vectorDrawable.draw(canvas);
+               this.mGoogleMap.addMarker((new MarkerOptions()
+                       .position(rutaMasSegura.getPolyline().get(0).getPoints().get(0))
+                       .icon(BitmapDescriptorFactory.fromBitmap(bitmap))));
+            }
+
+            switch (rutaMasSegura.getCallesRuta().get(i).getmUbicacion().getSeguridad()) {
+                case "Seguridad alta":
+                    mostrarRutaEnMapa(i, getResources().getColor(R.color.verde_oscuro_poligono), rutaMasSegura);
+                    Log.v("QUICKSTART", "Punto " + i + ": seguridad ALTA.");
+                    break;
+                case "Seguridad media":
+                    mostrarRutaEnMapa(i, getResources().getColor(R.color.amarillo_oscuro_poligono), rutaMasSegura);
+                    Log.v("QUICKSTART", "Punto " + i + ": seguridad MEDIA.");
+                    break;
+                case "Seguridad baja":
+                    mostrarRutaEnMapa(i, getResources().getColor(R.color.rojo_oscuro_poligono), rutaMasSegura);
+                    Log.v("QUICKSTART", "Punto " + i + ": seguridad BAJA.");
+                    break;
+            }
+
+            if (i == rutaMasSegura.getNumeroCalles() - 1)
+                this.mGoogleMap.addMarker((new MarkerOptions().position(rutaMasSegura.getPolyline().get(i).getPoints().get(1))));
+
+        }
+    }
+
+    private void centrarRutaEnMapa(Ruta rutaMasSegura){
+        LatLng latLngPuntoPartida = rutaMasSegura.getPolyline().get(0).getPoints().get(0);
+        LatLng latLngPuntoDestino = rutaMasSegura.getPolyline().get(rutaMasSegura.getNumeroCalles() - 1).getPoints()
+                .get(rutaMasSegura.getPolyline().get(rutaMasSegura.getNumeroCalles() - 1).getPoints().size() - 1);
+
+        LatLngBounds latLngBounds = new LatLngBounds.Builder()
+                .include((new LatLng(latLngPuntoPartida.latitude, latLngPuntoPartida.longitude)))
+                .include((new LatLng(latLngPuntoDestino.latitude, latLngPuntoDestino.longitude)))
+                .build();
+
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 250));
+    }
+
+
 }

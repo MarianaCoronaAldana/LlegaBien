@@ -38,6 +38,15 @@ public class UsuarioFirebaseVerificaciones {
     public UsuarioFirebaseVerificaciones(Activity activity){ mActivity = activity; }
 
     public void enviarCodigoNumTelefonico(OnCodigoNumTelefonicoEnviado onCodigoNumTelefonicoEnviado, String numTelefonico){
+        PhoneAuthProvider.verifyPhoneNumber(
+                PhoneAuthOptions
+                        .newBuilder(FirebaseAuth.getInstance())
+                        .setActivity(mActivity)
+                        .setPhoneNumber(numTelefonico)
+                        .setTimeout(60L, TimeUnit.SECONDS)
+                        .setCallbacks(mCallbacks)
+                        .build());
+
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
@@ -48,6 +57,7 @@ public class UsuarioFirebaseVerificaciones {
             @Override
             public void onVerificationFailed(@androidx.annotation.NonNull FirebaseException e) {
                 Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
+                onCodigoNumTelefonicoEnviado.isSMSEnviado(false, null);
                 Log.v("QUICKSTART", "ERROR: " + e.getMessage());
             }
 
@@ -57,15 +67,6 @@ public class UsuarioFirebaseVerificaciones {
                 onCodigoNumTelefonicoEnviado.isSMSEnviado(true, verificationId);
             }
         };
-
-        PhoneAuthProvider.verifyPhoneNumber(
-                PhoneAuthOptions
-                        .newBuilder(FirebaseAuth.getInstance())
-                        .setActivity(mActivity)
-                        .setPhoneNumber(numTelefonico)
-                        .setTimeout(60L, TimeUnit.SECONDS)
-                        .setCallbacks(mCallbacks)
-                        .build());
     }
 
 
@@ -82,7 +83,6 @@ public class UsuarioFirebaseVerificaciones {
                             else {
                                 onCodigoCorreoEnviado.isCorreoEnviado(false);
                                 Toast.makeText(mActivity, Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
-                                Log.v("QUICKSTART", task1.getException().getMessage());
                             }
                         });
                     }

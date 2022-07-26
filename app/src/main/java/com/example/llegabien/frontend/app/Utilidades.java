@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -19,6 +20,7 @@ import com.google.i18n.phonenumbers.Phonenumber;
 
 public class Utilidades {
 
+    @SuppressLint("SetTextI18n")
     public static void mostrarContraseña(EditText editText, Button button, Context context){
         if (button.getText().toString().equals("hide")) {
             button.setBackground(ContextCompat.getDrawable(context, R.drawable.bkgd_icon_ojo_abierto));
@@ -52,5 +54,14 @@ public class Utilidades {
         scaleDown.setRepeatMode(ValueAnimator.REVERSE);
         scaleDown.setRepeatCount(ValueAnimator.INFINITE);
         scaleDown.start();
+    }
+
+    public static void setColoIconSeguridad(String seguridad, View iconSeguridad, Context context){
+        if (seguridad.equals("Seguridad baja"))
+            iconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.rojo_icon));
+        if (seguridad.equals("Seguridad media"))
+            iconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.amarillo_icon));
+        if (seguridad.equals("Seguridad alta"))
+            iconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.verde_icon));
     }
 }

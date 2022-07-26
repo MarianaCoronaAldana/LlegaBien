@@ -69,7 +69,7 @@ public class FragmentoBuscarLugar extends Fragment implements View.OnClickListen
         Button btnBusqueda = (Button) root.findViewById(R.id.button_titulo_barraBusqueda_buscarLugar);
         Button btnConfiguracion = (Button) root.findViewById(R.id.button_configuracion_barraBusqueda);
         ConstraintLayout btnCentrarMapa = (ConstraintLayout) root.findViewById(R.id.button_centrarMapa_buscarLugar);
-        ConstraintLayout btnIndicaciones = root.findViewById(R.id.button_direcciones_buscarLugar);
+        ConstraintLayout btnIndicaciones = root.findViewById(R.id.button_indicaciones_buscarLugar);
 
         //listeners
         btnBusqueda.setOnClickListener(this);
@@ -100,10 +100,10 @@ public class FragmentoBuscarLugar extends Fragment implements View.OnClickListen
             } else
                 startActivity(new Intent(this.requireActivity(), ActivityConfiguracionUsuario.class));
         }
-        else if (view.getId() == R.id.button_direcciones_buscarLugar) {
+        else if (view.getId() == R.id.button_indicaciones_buscarLugar) {
             FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
             FragmentoIndicaciones fragmentoIndicaciones = new FragmentoIndicaciones(null);
-            fragmentTransaction.replace(R.id.fragmentContainerView_fragmentoLugares_activityMaps, fragmentoIndicaciones).commit();
+            fragmentTransaction.replace(R.id.fragmentContainerView_fragmentoLugares_activityMaps, fragmentoIndicaciones,"FragmentoIndicaciones").commit();
         }
         else if (view.getId() == R.id.button_centrarMapa_buscarLugar) {
             Mapa mapa = new Mapa ((ActivityMap) requireActivity());

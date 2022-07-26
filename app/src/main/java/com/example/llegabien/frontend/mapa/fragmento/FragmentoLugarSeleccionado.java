@@ -37,6 +37,7 @@ import com.example.llegabien.backend.ubicacion.UbicacionBusquedaAutocompletada;
 import com.example.llegabien.backend.ubicacion.UbicacionGeocodificacion;
 import com.example.llegabien.backend.ubicacion.ubicacion;
 import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.frontend.app.Utilidades;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.mapa.Mapa;
 import com.google.android.gms.maps.model.LatLng;
@@ -95,8 +96,8 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
 
         //wirirng up
         BottomSheetBehavior<ConstraintLayout> mBottomSheetBehavior = BottomSheetBehavior.from(root.findViewById(R.id.bottomSheet_detallesLugar));
-        Button mBtnRegresar = root.findViewById(R.id.button_regresar_barraBusqueda_lugarSeleccionado);
-        Button mBtnBarraBusqueda = root.findViewById(R.id.button_titulo_barraBusqueda_lugarSeleccionado);
+        Button btnRegresar = root.findViewById(R.id.button_regresar_barraBusqueda_lugarSeleccionado);
+        Button btnBarraBusqueda = root.findViewById(R.id.button_titulo_barraBusqueda_lugarSeleccionado);
         ConstraintLayout btnCentrarMapa = root.findViewById(R.id.button_centrarMapa_lugarSeleccionado);
         ConstraintLayout btnIndicaciones = root.findViewById(R.id.button_indicaciones_detallesLugar);
         mBtnGuardarEnFavoritos = root.findViewById(R.id.button_añadirFavorito_detallesLugar);
@@ -111,8 +112,8 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
         //listeners
-        mBtnRegresar.setOnClickListener(this);
-        mBtnBarraBusqueda.setOnClickListener(this);
+        btnRegresar.setOnClickListener(this);
+        btnBarraBusqueda.setOnClickListener(this);
         btnCentrarMapa.setOnClickListener(this);
         btnIndicaciones.setOnClickListener(this);
         mBtnGuardarEnFavoritos.setOnClickListener(this);
@@ -175,7 +176,7 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
         else if (view.getId() == R.id.button_indicaciones_detallesLugar){
             FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
             FragmentoIndicaciones fragmentoIndicaciones = new FragmentoIndicaciones(mNombreLugar[0].trim() + ", " + mNombreLugar[1].trim());
-            fragmentTransaction.replace(R.id.fragmentContainerView_fragmentoLugares_activityMaps, fragmentoIndicaciones).commit();
+            fragmentTransaction.replace(R.id.fragmentContainerView_fragmentoLugares_activityMaps, fragmentoIndicaciones, "FragmentoIndicaciones").commit();
         }
 
         else if (view.getId() == R.id.button_centrarMapa_lugarSeleccionado)
@@ -213,12 +214,7 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
 
             String seguridad = ubicacion.getSeguridad();
             mTxtSeguridad.setText(seguridad);
-            if (seguridad.equals("Seguridad baja"))
-                mIconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.rojo_icon));
-            if (seguridad.equals("Seguridad media"))
-                mIconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.amarillo_icon));
-            if (seguridad.equals("Seguridad alta"))
-                mIconSeguridad.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.verde_icon));
+            Utilidades.setColoIconSeguridad(seguridad,mIconSeguridad,requireContext());
         }
     }
 
