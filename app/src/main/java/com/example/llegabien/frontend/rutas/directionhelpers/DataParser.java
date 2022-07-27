@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DataParser {
+    
     public RutaDirections parser(JSONObject jObject) {
         List<List<HashMap<String, String>>> routes = new ArrayList<>();
         JSONArray jRoutes;

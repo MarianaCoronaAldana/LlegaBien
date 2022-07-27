@@ -144,7 +144,6 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
     public boolean onTouch(View v, MotionEvent event) {
         if (mFragmentTransaction != null)
             mFragmentTransaction = this.requireActivity().getSupportFragmentManager().beginTransaction();
-
         // Cuando el boton es presionado.
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             Permisos mPermisos = new Permisos();

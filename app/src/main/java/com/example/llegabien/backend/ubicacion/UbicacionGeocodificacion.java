@@ -10,7 +10,7 @@ import java.util.Locale;
 
 public class UbicacionGeocodificacion {
 
-    private Geocoder mGeocoder;
+    private final Geocoder mGeocoder;
 
     public UbicacionGeocodificacion(Context context){
         mGeocoder = new Geocoder(context, Locale.getDefault());
@@ -35,7 +35,6 @@ public class UbicacionGeocodificacion {
             if(addressList.size()>0) {
                 return addressList.get(0);
             }
-
         }catch (IOException e) {
             e.printStackTrace();
         }

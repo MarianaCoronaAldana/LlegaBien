@@ -115,7 +115,7 @@ public class Notificacion extends AppCompatActivity {
                 .add("Contacto5", mContactos.get(4))
                 .build();
         Request request = new Request.Builder()
-                .url("https://c0af-200-68-166-53.ngrok.io/bateriaS")
+                .url("https://ccaa-2806-103e-29-bb08-f92a-b489-8af-f524.ngrok.io/bateria")
                 .post(formBody)
                 .build();
         Call response = mClient.newCall(request);

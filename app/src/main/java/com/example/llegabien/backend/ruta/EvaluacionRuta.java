@@ -136,6 +136,7 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
                         ubicacionRuta.setmDistancia(longitudCalle + ubicacionRuta.getmDistancia());
                         ruta.getCallesRuta().set(index, ubicacionRuta);
                     }
+
                     Log.v("QUICKSTART", "Calle: " + calle + " Distancia " + ubicacionRuta.getmDistancia());
                 }
                 rutaDirectionsPolyline = ruta.getPolyline();
@@ -152,7 +153,7 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
 
             Log.v("QUICKSTART", "DISTANCIA, TIEMPO: " + directionsObtenidas.getDistancia().get(i) + " , " + directionsObtenidas.getDuracion().get(i));
         }
-        directionsObtenidas.setRutasEnPolylines(rutasDirectionsPolyline);
+      //  directionsObtenidas.setRutasEnPolylines(rutasDirectionsPolyline);
 
         this.rutas.sort(Comparator.comparing(Ruta::getNumeroCalles).reversed());
 

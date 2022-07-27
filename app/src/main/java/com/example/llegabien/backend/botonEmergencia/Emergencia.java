@@ -86,9 +86,7 @@ public class Emergencia extends AppCompatActivity  {
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) {
                     runOnUiThread(() -> {
-                        Toast.makeText(mActivity,response.message(),Toast.LENGTH_SHORT).show();
                         Log.v("QUICKSTART", response.message());
-
                         if(!response.isSuccessful())
                             Toast.makeText(mActivity, "ERROR, CONTACTE A EMERGENCIAS DIRECTAMENTE!",Toast.LENGTH_LONG).show();
                     });
@@ -114,7 +112,7 @@ public class Emergencia extends AppCompatActivity  {
                 .add("Contacto5", mContactos.get(4))
                 .build();
         Request request = new Request.Builder()
-                .url("https://c0af-200-68-166-53.ngrok.io/emergencia")
+                .url("https://ccaa-2806-103e-29-bb08-f92a-b489-8af-f524.ngrok.io/emergencia")
                 .post(formBody)
                 .build();
         Call response = mClient.newCall(request);

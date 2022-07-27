@@ -61,8 +61,8 @@ public class UsuarioSubirReporteAdmin {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void subirReportesAdmin(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            //obtenerReportesDeArchivo(data);
-            //actualizarUbicaciones(this.mReportesDeArchivo);
+            obtenerReportesDeArchivo(data);
+            actualizarUbicaciones(this.mReportesDeArchivo);
 
             //ReporteDAO reporteDAO = new ReporteDAO(mContext);
             //reporteDAO.anadirReportes(this.mReportesParaAnadir);
@@ -212,7 +212,7 @@ public class UsuarioSubirReporteAdmin {
                 + ", " + colonia.getNombre());
 
         // Para establecer el nombre de la calle que se va a utilizar en el objeto ubicacion.
-        String ubicacionNombreGoogle = establecerNombreUbicacion(addressCalle, colonia);
+        String ubicacionNombreGoogle =  establecerNombreUbicacion(addressCalle, colonia);
 
         if (ubicacionNombreGoogle != null) {
             ubicacion calle = mUbicacionDAO.obtenerUbicacionConNombreDeLista(ubicacionNombreGoogle, this.mUbicaciones);

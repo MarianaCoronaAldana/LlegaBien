@@ -170,7 +170,6 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
                     requireActivity().finish();
             } else
                 mapa.abrirFragmentoBuscarLugar();
-
         }
 
         else if (view.getId() == R.id.button_indicaciones_detallesLugar){
@@ -218,32 +217,25 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
         }
     }
 
-
     private void anadirFavoritoaBD(String nombreLugar) {
         RealmList<Double> coordenadas = new RealmList<>();
         usuario Usuario = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_USUARIO, usuario.class);
         favorito_ubicacion Favorito_ubicacion = new favorito_ubicacion();
         favorito Favorito = new favorito();
         Favorito_DAO favoritoDAO = new Favorito_DAO(this.getContext());
-
         coordenadas.add(mCoordenadasParaFavorito.latitude);
         coordenadas.add(mCoordenadasParaFavorito.longitude);
-
         Favorito_ubicacion.setCoordinates(coordenadas);
-
         if (Usuario != null) {
             Favorito.setIdUsuario(Usuario.get_id());
-
             Favorito.setNombre(nombreLugar);
             Favorito.setUbicacion(Favorito_ubicacion);
-
             if (!favoritoDAO.verificarExistenciaFavorito(Usuario.get_id(), Favorito.getNombre())) {
                 favoritoDAO.anadirFavorito(Favorito);
                 Toast.makeText(this.getContext(), "Ubicacion añadida a favoritos.", Toast.LENGTH_LONG).show();
             } else
                 Toast.makeText(this.getContext(), "¡Ya tienes esta ubicación guardada!", Toast.LENGTH_LONG).show();
         }
-
     }
 
 

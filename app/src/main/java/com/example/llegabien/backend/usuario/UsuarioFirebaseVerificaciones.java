@@ -53,14 +53,12 @@ public class UsuarioFirebaseVerificaciones {
                 Toast.makeText(mActivity, "SI SE PUDO ENVIAR SMS", Toast.LENGTH_SHORT).show();
                 onCodigoNumTelefonicoEnviado.isSMSEnviado(true, null);
             }
-
             @Override
             public void onVerificationFailed(@androidx.annotation.NonNull FirebaseException e) {
                 Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
                 onCodigoNumTelefonicoEnviado.isSMSEnviado(false, null);
                 Log.v("QUICKSTART", "ERROR: " + e.getMessage());
             }
-
             @Override
             public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 Toast.makeText(mActivity, "SI SE PUDO", Toast.LENGTH_SHORT).show();

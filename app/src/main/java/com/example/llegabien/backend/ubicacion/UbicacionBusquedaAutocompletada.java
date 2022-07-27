@@ -30,6 +30,7 @@ public class UbicacionBusquedaAutocompletada {
 
     public UbicacionBusquedaAutocompletada(){
     }
+
     public Intent getIntent(){ return mIntent; }
 
     public void inicializarIntent(Activity activity) {
@@ -40,7 +41,6 @@ public class UbicacionBusquedaAutocompletada {
         mIntent = new Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.FULLSCREEN, fields).setCountry("MX")
                 .build(activity);
-
     }
     
     public void verificarResultadoBusqueda (OnUbicacionBuscadaObtenida onUbicacionBuscadaObtenida, int resultCode, Intent data, Context context){
@@ -56,7 +56,6 @@ public class UbicacionBusquedaAutocompletada {
 
             boolean isUbicacionBuscadaEnBD = ubicacionDAO.obtenerUbicacionBuscada(ubicacionBuscada.latitude,ubicacionBuscada.longitude);
             onUbicacionBuscadaObtenida.isUbicacionBuscadaObtenida(true, isUbicacionBuscadaEnBD,ubicacionBuscada, address);
-
         }
 
         else if (resultCode == AutocompleteActivity.RESULT_ERROR) {

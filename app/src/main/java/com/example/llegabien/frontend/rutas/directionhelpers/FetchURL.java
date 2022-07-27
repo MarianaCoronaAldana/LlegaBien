@@ -22,6 +22,12 @@ public class FetchURL extends AsyncTask<String, Void, String> {
         this.context = context;
     }
 
+    public FetchURL(TaskLoadedCallback taskActivity, TaskLoadedCallback taskFragmento, Context context) {
+        this.taskLoader = taskActivity;
+        this.taskLoaderFragmento = taskFragmento;
+        this.context = context;
+    }
+
     @Override
     protected String doInBackground(String... strings) {
         // Aqui se guardará lo recibido de Directions

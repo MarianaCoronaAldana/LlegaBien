@@ -49,14 +49,12 @@ public class UbicacionDAO {
     public ubicacion obtenerUbicacionConNombre(String nombre) {
         if (realm == null)
             realm = conectarBD.conseguirUsuarioMongoDB();
-
         if (realm != null) {
             ubicacion ubicacion = realm.where(ubicacion.class).equalTo("nombre", nombre).findFirst();
             if (ubicacion != null)
                 return realm.copyFromRealm(ubicacion);
         } else
             errorConexion();
-
         return null;
     }
 
@@ -230,7 +228,6 @@ public class UbicacionDAO {
                                     ubicacion.setTipo(nextLine[12]);
                                     realm.insert(ubicacion);
                                 }
-
                             } catch (IOException | CsvException e) {
                                 Toast.makeText(mContext, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
                             }

@@ -7,7 +7,6 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
-import com.example.llegabien.backend.poligonos.Poligono;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoBuscarLugar;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoLugarSeleccionado;
@@ -34,12 +33,9 @@ public class Mapa {
             if (mGoogleMap != null) {
                 removerPolygonAnterior();
                 removerMarkerAnterior();
-
                 // Para mostrar la ubicacion buscada en el mapa con un marcador.
                 mActivityMap.setMarkerAnterior(mGoogleMap.addMarker((new MarkerOptions().position(ubicacionBuscada))));
-
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionBuscada, DEFAULT_ZOOM));
-
                 // Para verificar que si se encontró la ubicación buscada en la BD.
                 if (isUbicacionBuscadaEnBD) {
                     // Para abrir el fragmento "LugarSeleccionado" cuando se obtenga un resultado.
@@ -52,7 +48,6 @@ public class Mapa {
                         FragmentTransaction fragmentTransaction = mActivityMap.getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.fragmentContainerView_fragmentoLugares_activityMaps, fragmentoBuscarLugar).commit();
                     }
-
                 }
             }
         }

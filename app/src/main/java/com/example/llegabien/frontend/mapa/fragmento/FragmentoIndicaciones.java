@@ -81,7 +81,6 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
                                 }
                             }, result, data, requireActivity());
                         }
-
                     }
             );
 
@@ -224,7 +223,16 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         Log.v("QUICKSTART", "ESTOY EN FRAGMENTO");
         Ruta rutaMasSegura = (Ruta) values[0];
         if (rutaMasSegura != null) {
-            mTxtViewTiempoDetalles.setText(rutaMasSegura.getTiempoTotalDirections().replace("hours", "horas"));
+
+            mBtnTiempoCaminando.setEnabled(true);
+            mBtnTiempoBici.setEnabled(true);
+            mBtnPuntoDestino.setEnabled(true);
+            mBtnPuntoPartida.setEnabled(true);
+
+            mTxtViewTiempoDetalles.setText(rutaMasSegura.getTiempoTotalDirections()
+                    .replace("hours", "horas")
+                    .replace("mins", "min")
+                    .replace("hour", "hora"));
             mTxtViewDistanciaDetalles.setText(rutaMasSegura.getDistanciaTotalDirections());
             if (this.getActivity() != null) {
                 this.mActivityMap = (ActivityMap) requireActivity();
@@ -243,7 +251,6 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
                     mBtnComenzarNavegacion.setVisibility(View.VISIBLE);
                     mConsLytRutaDetalles.setVisibility(View.VISIBLE);
                 }
-
             }
         }
         else
@@ -256,9 +263,19 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         LatLng origen = obtenerCoordenadas(mBtnPuntoPartida.getText().toString());
         LatLng destino = obtenerCoordenadas(mBtnPuntoDestino.getText().toString());
         if (origen != null && destino != null) {
-            anadirRutaBD(origen, destino);
-            Toast.makeText(getApplicationContext(), "Creando ruta....", Toast.LENGTH_SHORT).show();
-            new FetchURL(this, this.requireActivity()).execute(generarUrlRuta(origen, destino), mDirectionMode);
+            if(!origen.equals(destino)) {
+                anadirRutaBD(origen, destino);
+                Toast.makeText(getApplicationContext(), "Creando ruta....", Toast.LENGTH_SHORT).show();
+
+                mBtnTiempoCaminando.setEnabled(false);
+                mBtnTiempoBici.setEnabled(false);
+                mBtnPuntoDestino.setEnabled(false);
+                mBtnPuntoPartida.setEnabled(false);
+
+                new FetchURL((TaskLoadedCallback) this, this.requireActivity().getApplicationContext()).execute(generarUrlRuta(origen, destino), mDirectionMode);
+            }
+            else
+                Toast.makeText(getApplicationContext(), "Punto de origen y partida no pueden ser los mismos", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getApplicationContext(), "Ingresa punto de origen y destino", Toast.LENGTH_SHORT).show();
             Log.v("QUICKSTART", "Wey es nulo");
@@ -322,7 +339,6 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
     private void setValoresRutaPolylines(Ruta rutaMasSegura) {
         // Para establecer el color de cada calle dependiendo seguridad.
         for (int i = 0; i < rutaMasSegura.getNumeroCalles(); i++) {
-
             if (i == 0) {
                 Drawable vectorDrawable = ContextCompat.getDrawable(this.requireActivity(), R.drawable.bkgd_icon_puntopartida);
                 vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
@@ -351,7 +367,6 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
 
             if (i == rutaMasSegura.getNumeroCalles() - 1)
                 this.mGoogleMap.addMarker((new MarkerOptions().position(rutaMasSegura.getPolyline().get(i).getPoints().get(1))));
-
         }
     }
 

@@ -24,6 +24,7 @@ public class Preferences extends AppCompatActivity {
     public static final String PREFERENCE_FAVORITO = "favorito";
     public static final String PREFERENCE_EDITANDO_USUARIO_CON_ADMIN = "editando.usuario.admin";
     public static final String PREFERENCE_RUTASEGURA = "rutaSegura";
+    public static final String PREFERENCE_GUIAMOSTRADA = "guiaMostrada";
 
     // Guardar preferencia sobre un tipo boolean
     public static void savePreferenceBoolean(Context c, boolean b, String key){

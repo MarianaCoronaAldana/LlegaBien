@@ -171,8 +171,6 @@
       android:id="@+id/fragmentContainerView_guia_pagina_principal"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:name="com.example.llegabien.frontend.usuario.fragmento.FragmentoUsuarioGuia1"
       android:elevation="5dp" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

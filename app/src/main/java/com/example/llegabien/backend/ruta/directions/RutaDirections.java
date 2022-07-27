@@ -1,9 +1,6 @@
 package com.example.llegabien.backend.ruta.directions;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
-
-import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,24 +8,14 @@ import java.util.List;
 
 public class RutaDirections {
 
-    private ObjectId idUsuario;
     private List <String> duracion;
     private List <String> distancia;
     private List<List<HashMap<String, String>>> rutasDirectionsJSON;
     private List<PolylineOptions> rutasDirectionsPolylineOptions;
-    private List<List<PolylineOptions>> rutasEnPolylines;
-    private List<List<LatLng>> rutasPuntosMedios;
-    private List<List<String>> rutasNombresPuntosMedios;
 
     public RutaDirections() {
         duracion = new ArrayList<>();
         distancia = new ArrayList<>();
-    }
-
-    public ObjectId getIdUsuario() { return idUsuario; }
-
-    public void setIdUsuario(ObjectId idUsuario) {
-        this.idUsuario = idUsuario;
     }
 
     public List<String> getDuracion() {
@@ -61,30 +48,6 @@ public class RutaDirections {
 
     public void setRutasDirectionsPolylineOptions(List<PolylineOptions> rutasDirectionsPolylineOptions) {
         this.rutasDirectionsPolylineOptions = rutasDirectionsPolylineOptions;
-    }
-
-    public List<List<PolylineOptions>> getRutasEnPolylines() {
-        return rutasEnPolylines;
-    }
-
-    public void setRutasEnPolylines(List<List<PolylineOptions>> rutasEnPolylines) {
-        this.rutasEnPolylines = rutasEnPolylines;
-    }
-
-    public List<List<LatLng>> getRutasPuntosMedios() {
-        return rutasPuntosMedios;
-    }
-
-    public void setRutasPuntosMedios(List<List<LatLng>> rutasPuntosMedios) {
-        this.rutasPuntosMedios = rutasPuntosMedios;
-    }
-
-    public List<List<String>> getRutasNombresPuntosMedios() {
-        return rutasNombresPuntosMedios;
-    }
-
-    public void setRutasNombresPuntosMedios(List<List<String>> rutasNombresPuntosMedios) {
-        this.rutasNombresPuntosMedios = rutasNombresPuntosMedios;
     }
 
 

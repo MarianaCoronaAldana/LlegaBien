@@ -1,7 +1,6 @@
 package com.example.llegabien.frontend.rutas.directionhelpers;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
@@ -21,7 +20,7 @@ import java.util.List;
 
 public class PointsParser extends AsyncTask<String, Integer, RutaDirections> {
     TaskLoadedCallback taskCallback, taskLoaderFragmento;
-    String directionMode = "driving";
+    String directionMode;
     RutaDirections rutasDirections = new RutaDirections();
     Context mContext;
 
@@ -40,7 +39,7 @@ public class PointsParser extends AsyncTask<String, Integer, RutaDirections> {
         List<List<HashMap<String, String>>> rutas = null;
         try {
             jObject = new JSONObject(jsonData[0]);
-            Log.v("QUICKSTART", jsonData[0].toString());
+            Log.v("QUICKSTART", jsonData[0]);
             DataParser parser = new DataParser();
             Log.v("QUICKSTART", parser.toString());
             // Empieza a parsear
@@ -81,13 +80,6 @@ public class PointsParser extends AsyncTask<String, Integer, RutaDirections> {
             }
             // los puntos se agregan a la ruta
             ruta.addAll(puntos);
-            if (directionMode.equalsIgnoreCase("walking")) {
-                ruta.width(10);
-                ruta.color(Color.MAGENTA);
-            } else {
-                ruta.width(20);
-                ruta.color(Color.BLUE);
-            }
             Log.v("QUICKSTART", "onPostExecute ruta decodificada");
             rutas.add(ruta);
         }

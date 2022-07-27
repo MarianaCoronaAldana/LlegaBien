@@ -3,6 +3,7 @@ package com.example.llegabien.frontend.usuario.activity;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ADMIN;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_EDITANDO_USUARIO_CON_ADMIN;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ESTADO_BUTTON_SESION;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_GUIAMOSTRADA;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_MENSAJE_PORBATERIA_ENVIADO;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
@@ -25,6 +26,7 @@ import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.usuario.fragmento.FragmentoIniciarSesion1;
 import com.example.llegabien.frontend.usuario.fragmento.FragmentoRegistrarUsuario1;
+import com.example.llegabien.frontend.usuario.fragmento.FragmentoUsuarioGuia1;
 
 public class ActivityPaginaPrincipalUsuario extends AppCompatActivity implements View.OnClickListener {
 
@@ -32,6 +34,13 @@ public class ActivityPaginaPrincipalUsuario extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pagina_principal_usuario);
+
+        if(!Preferences.getSavedBooleanFromPreference(this, PREFERENCE_GUIAMOSTRADA)){
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            FragmentoUsuarioGuia1 fragmentoUsuarioGuia1 = new FragmentoUsuarioGuia1();
+            fragmentTransaction.add(R.id.fragmentContainerView_guia_pagina_principal, fragmentoUsuarioGuia1).commit();
+            Preferences.savePreferenceBoolean(this, true, PREFERENCE_GUIAMOSTRADA);
+        }
 
         //para verificar si el boton de recordar sesion fue presionado y saber si ya se inicio sesion
         if(Preferences.getSavedBooleanFromPreference(this,PREFERENCE_ESTADO_BUTTON_SESION)
