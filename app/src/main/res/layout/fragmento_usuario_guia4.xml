@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blanco"
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".frontend.usuario.fragmento.FragmentoUsuarioGuia4">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1_textView_usuarioGuia4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.10" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2_txtView_usuarioGuia4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.90" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_button_usuarioGuia4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_puntos_usuarioGuia4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.30" />
+
+    <View
+        android:id="@+id/view_icon_ruta_usuarioGuia4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bkgd_icon_noti_guia"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline2_txtView_usuarioGuia4"
+        app:layout_constraintStart_toStartOf="@id/guideline1_textView_usuarioGuia4"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <TextView
+        android:id="@+id/textView_titulo_usuarioGuia4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fontFamily="@font/subtitulo"
+        android:gravity="center_vertical|start"
+        android:text="@string/titulo_noti_guia"
+        android:textColor="@color/azul_claro"
+        android:textSize="@dimen/text_size_titulo_medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="4:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline2_txtView_usuarioGuia4"
+        app:layout_constraintStart_toStartOf="@id/guideline1_textView_usuarioGuia4"
+        app:layout_constraintTop_toBottomOf="@id/view_icon_ruta_usuarioGuia4"
+        app:layout_constraintVertical_bias="0.1" />
+
+    <TextView
+        android:id="@+id/textView_frase_usuarioGuia4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/parrafo"
+        android:gravity="center_vertical|start"
+        android:text="@string/frase_noti_guia"
+        android:textColor="@color/negro"
+        android:textSize="@dimen/text_size_titulo_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="5:2"
+        app:layout_constraintEnd_toEndOf="@id/guideline2_txtView_usuarioGuia4"
+        app:layout_constraintStart_toStartOf="@id/guideline1_textView_usuarioGuia4"
+        app:layout_constraintTop_toBottomOf="@id/textView_titulo_usuarioGuia4"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/button_siguiente_usuarioGuia4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bkgd_circulo"
+        android:backgroundTint="@color/azul_claro"
+        android:fontFamily="@font/parrafo_bold"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline2_txtView_usuarioGuia4"
+        app:layout_constraintStart_toStartOf="@id/guideline_button_usuarioGuia4"
+        app:layout_constraintTop_toBottomOf="@id/textView_frase_usuarioGuia4"
+        app:layout_constraintVertical_bias="0.8" >
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1_icon_usuarioGuia4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.35" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2_icon_usuarioGuia4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.65" />
+
+        <View
+            android:id="@+id/icon_siguiente"
+            style="@style/BkgdIcon"
+            android:background="@drawable/bkgd_icon_siguiente"
+            android:backgroundTint="@color/blanco"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline2_icon_usuarioGuia4"
+            app:layout_constraintStart_toStartOf="@id/guideline1_icon_usuarioGuia4"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/view_icon_puntos_usuarioGuia4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bkgd_icon_puntos_azul_claro"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="5:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline_puntos_usuarioGuia4"
+        app:layout_constraintStart_toStartOf="@id/guideline1_textView_usuarioGuia4"
+        app:layout_constraintTop_toBottomOf="@id/textView_frase_usuarioGuia4"
+        app:layout_constraintVertical_bias="0.85" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

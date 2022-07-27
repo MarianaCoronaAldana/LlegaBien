@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,18 +39,21 @@ import com.example.llegabien.frontend.botonEmergencia.fragmento.FragmentoBotonEm
 import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.reportes.activity.ActivityReportes;
+import com.google.android.gms.maps.GoogleMap;
 
-public class FragmentoNavegacion extends Fragment implements View.OnClickListener, View.OnTouchListener{
+public class FragmentoNavegacion extends Fragment implements View.OnClickListener, View.OnTouchListener, GoogleMap.OnCameraMoveStartedListener{
 
     private ObjectAnimator mScaleDown = null;
     private ConstraintLayout mBtnSubirReporte, mBtnAdvertencia, mBtnCentrarMapa, mConsLytIndicaciones;
-    private TextView mTxtViewCalleActual, mTxtViewCalleSiguiente, mTxtViewUbicacionSeguridad;
+    private TextView mTxtViewCalleActual, mTxtViewCalleSiguiente, mTxtViewUbicacionSeguridad, mTxtViewTiempoDistanciaRuta;
     private View mIconSeguridad;
     private FragmentTransaction mFragmentTransaction;
     private UbicacionGeocodificacion mUbicacionGeocodificacion;
     private Ruta mRutaSegura;
     private int mNumCalleActual = -1;
     private Mapa mMapa;
+    private GoogleMap mGoogleMap;
+    boolean mIsMapaDragged = false;
 
     public FragmentoNavegacion() {
         // Required empty public constructor
@@ -64,8 +68,16 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
 
         // Se obtiene la ruta segura de Preferences.
         mRutaSegura = Preferences.getSavedObjectFromPreference(this.requireActivity(), PREFERENCE_RUTASEGURA, Ruta.class);
+
+        // Se inicializa para utilizarlo en OnLocationChanged.
         mUbicacionGeocodificacion = new UbicacionGeocodificacion(this.requireActivity());
-        mMapa = new Mapa((ActivityMap) requireActivity());
+
+        // Para utilizar el mapa de la actividad ActivityMap.
+        ActivityMap activityMap = (ActivityMap) getActivity();
+        if (activityMap != null) {
+            mMapa = new Mapa(activityMap);
+            mGoogleMap = activityMap.getGoogleMap();
+        }
 
         // Para cambiar el color de la status bar.
         Window window = requireActivity().getWindow();
@@ -82,12 +94,18 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
         mTxtViewUbicacionSeguridad = root.findViewById(R.id.textView_seguridad_navegacion);
         mConsLytIndicaciones = root.findViewById(R.id.consLyt_indicaciones_navegacion);
         mIconSeguridad = root.findViewById(R.id.icon_seguridad_navegacion);
+        mTxtViewTiempoDistanciaRuta = root.findViewById(R.id.textview_tiempo_distancia_navegacion);
 
         //listeners
         btnEmergencia.setOnTouchListener(this);
         mBtnSubirReporte.setOnClickListener(this);
         mBtnAdvertencia.setOnClickListener(this);
         mBtnCentrarMapa.setOnClickListener(this);
+        mGoogleMap.setOnCameraMoveStartedListener(this);
+
+        // Para mostarar el tiempo y distancia total de la ruta.
+        String tiempoDistanciaRuta = mRutaSegura.getDistanciaTotalDirections() + " ・ " + mRutaSegura.getTiempoTotalDirections();
+        mTxtViewTiempoDistanciaRuta.setText(tiempoDistanciaRuta);
 
         // Para empezar animación del boton de emergencia.
         this.mScaleDown = ObjectAnimator.ofPropertyValuesHolder(
@@ -163,9 +181,7 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
         if (view.getId() == R.id.button_subirReporte_navegacion)
             startActivity(new Intent(requireActivity(), ActivityReportes.class));
         else if (view.getId() == R.id.button_centrarMapa_navegacion)
-            mMapa.centrarMapa();
-
-
+            mIsMapaDragged = false;
     }
 
     LocationListener locationListener = new LocationListener() {
@@ -174,7 +190,8 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
             if (mNumCalleActual == mRutaSegura.getCallesRuta().size())
                 mNumCalleActual = -1;
 
-            mMapa.actualizarCamaraByUbicacionDispositivo(location);
+            if (!mIsMapaDragged)
+                mMapa.actualizarCamaraByUbicacionDispositivo(location);
 
             UbicacionRuta mCalleSiguiente = mRutaSegura.getCallesRuta().get(mNumCalleActual + 1);
 
@@ -220,4 +237,13 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
 
         }
     };
+
+    @Override
+    public void onCameraMoveStarted(int i) {
+        if (i ==REASON_GESTURE) {
+            mIsMapaDragged = true;
+            Toast.makeText(getActivity(), "El usuario arrastró el mapa.",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
 }

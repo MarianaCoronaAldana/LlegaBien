@@ -2,6 +2,16 @@
     <string name="app_name">LlegaBien</string>
     <string name="title_activity_maps">MapsActivity</string>
 
+    <!-- Guía. -->
+    <string name="titulo_ruta_guia">Creación de rutas seguras.</string>
+    <string name="frase_ruta_guia">Obtenemos la ruta más segura en base a la seguridad de la calle o colonia por donde pase la ruta.</string>
+    <string name="titulo_mapa_guia">Visualización de seguridad.</string>
+    <string name="frase_mapa_guia">Mostramos en el mapa la seguridad de cada colonia con un código de colores.</string>
+    <string name="titulo_reportes_guia">Reportes de usuarios.</string>
+    <string name="frase_reportes_guia">Mantenemos nuestra información actualizada con reportes que el mismo usuario puede generar.</string>
+    <string name="titulo_noti_guia">Botón de emeregncia.</string>
+    <string name="frase_noti_guia">Ofrecemos un botón de emergencia en caso de que presencie o sea víctima de un delito.</string>
+
     <!-- Página principal. -->
     <string name="titulo_pagina_principal">LLEGA BIEN</string>
     <string name="frase_pagina_principal1">Tu seguridad es </string>
@@ -119,7 +129,7 @@
     <!-- Detalles de lugar -->
     <string name="nombreLugar1_detallesNombre">Jardines del Valle</string>
     <string name="nombreLugar2_detallesNombre">Zapopan, Jalisco, México</string>
-    <string name="seguridad_detallesNombre">Seguridad media</string>
+    <string name="seguridad_detallesNombre">¡Ve hacía el punto de partida! </string>
     <string name="mediaHistorica_detallesNombre">Media Histórica Semanal = </string>
     <string name="numDelitos_detallesNombre">Delitos última semana = </string>
     <string name="guardarBtn_detallesNombre">Guardar</string>

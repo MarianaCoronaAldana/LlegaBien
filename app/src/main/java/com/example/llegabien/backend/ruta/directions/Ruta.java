@@ -13,7 +13,7 @@ public class Ruta {
     private List<String> mDelitosZonasInseguras;
 
     private int mNumeroCalles;
-    private String mTiempoTotal;
+    private String mTiempoTotalDirections;
     private String mDistanciaTotalDirections;
     private int mDistanciaTotal;
     private double mMediaHistorica;
@@ -46,12 +46,12 @@ public class Ruta {
         this.mNumeroCalles = mNumeroCalles;
     }
 
-    public String getTiempoTotal() {
-        return mTiempoTotal;
+    public String getTiempoTotalDirections() {
+        return mTiempoTotalDirections;
     }
 
-    public void setTiempoTotal(String mTiempoTotal) {
-        this.mTiempoTotal = mTiempoTotal;
+    public void setTiempoTotalDirections(String mTiempoTotalDirections) {
+        this.mTiempoTotalDirections = mTiempoTotalDirections;
     }
 
     public String getDistanciaTotalDirections() {

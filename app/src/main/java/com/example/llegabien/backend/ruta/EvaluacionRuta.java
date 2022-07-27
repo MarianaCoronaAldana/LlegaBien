@@ -63,7 +63,7 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
         List<PolylineOptions> rutasObtenidas = directionsObtenidas.getRutasDirectionsPolylineOptions();
         if (rutasObtenidas != null) {
             obtenerPuntosRutas(rutasObtenidas);
-            verificarExistenciaColonias();
+            verificarExistenciaColoniasCalles();
             setNumeroDeRuta();
             if (!this.rutas.isEmpty()) {
                 if (this.rutas.size() == 1)
@@ -80,8 +80,8 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
                     calcularPorcentajes();
                     compararPocentajes();
                     comparacionFinalRutas();
-                    setDelitosZonasInseguras();
                 }
+                setDelitosZonasInseguras();
             } else
                 Log.v("QUICKSTART", "¡No hay rutas disponibles porque no se encontró alguna colonia!");
         }else
@@ -136,7 +136,6 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
                         ubicacionRuta.setmDistancia(longitudCalle + ubicacionRuta.getmDistancia());
                         ruta.getCallesRuta().set(index, ubicacionRuta);
                     }
-//                    mGoogleMap.addPolyline(lineOptions);
                     Log.v("QUICKSTART", "Calle: " + calle + " Distancia " + ubicacionRuta.getmDistancia());
                 }
                 rutaDirectionsPolyline = ruta.getPolyline();
@@ -147,7 +146,7 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
             rutasDirectionsPolyline.add(rutaDirectionsPolyline);
 
             ruta.setDistanciaTotalDirections(directionsObtenidas.getDistancia().get(i));
-            ruta.setTiempoTotal(directionsObtenidas.getDuracion().get(i));
+            ruta.setTiempoTotalDirections(directionsObtenidas.getDuracion().get(i));
             ruta.setDistanciaTotal(distanciaTotalRuta);
             this.rutas.add(ruta);
 
@@ -166,7 +165,7 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
 
     // Para verificar que existan las colonias de cada ruta.
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void verificarExistenciaColonias() {
+    private void verificarExistenciaColoniasCalles() {
         UbicacionDAO mUbicacionDAO = new UbicacionDAO(mContext);
         List<ubicacion> colonias = mUbicacionDAO.obtenerColonias();
         HashMap<String, ubicacion> coloniasEncontradas = new HashMap<>();

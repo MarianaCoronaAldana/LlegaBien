@@ -336,7 +336,7 @@
             android:layout_width="40dp"
             android:layout_height="15dp"
             android:background="@drawable/bkgd_esquinas_redondeadas"
-            android:backgroundTint="#FFEB3B"
+            android:backgroundTint="#979797"
             app:layout_constraintBottom_toTopOf="@id/guideline3_detallesUbicacion_navegacion"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -346,7 +346,7 @@
             app:layout_constraintVertical_bias="0.5" />
 
         <TextView
-            android:id="@+id/textview_km_horaLlegada_navegacion"
+            android:id="@+id/textview_tiempo_distancia_navegacion"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@android:color/transparent"
@@ -365,6 +365,8 @@
         android:id="@+id/fragmentContainerView_navegacion"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="10dp" />
+        android:elevation="10dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

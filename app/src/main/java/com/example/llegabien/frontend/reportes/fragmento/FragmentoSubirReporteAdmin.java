@@ -62,8 +62,6 @@ public class FragmentoSubirReporteAdmin extends Fragment implements View.OnClick
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.button_seleccionarArchivo_subirReporte){
-            //UbicacionSeguridad ubicacionSeguridad = new UbicacionSeguridad(this.requireContext());
-            //ubicacionSeguridad.actualizarUbicaciones();
             //usuarioSubirReporteAdmin = new UsuarioSubirReporteAdmin(FragmentoSubirReporteAdmin.this.getContext());
             //usuarioSubirReporteAdmin.inicializarIntent();
             //activityResultLauncher.launch(usuarioSubirReporteAdmin.getIntent());

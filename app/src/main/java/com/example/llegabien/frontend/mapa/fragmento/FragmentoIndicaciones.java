@@ -224,7 +224,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         Log.v("QUICKSTART", "ESTOY EN FRAGMENTO");
         Ruta rutaMasSegura = (Ruta) values[0];
         if (rutaMasSegura != null) {
-            mTxtViewTiempoDetalles.setText(rutaMasSegura.getTiempoTotal().replace("hours", "horas"));
+            mTxtViewTiempoDetalles.setText(rutaMasSegura.getTiempoTotalDirections().replace("hours", "horas"));
             mTxtViewDistanciaDetalles.setText(rutaMasSegura.getDistanciaTotalDirections());
             if (this.getActivity() != null) {
                 this.mActivityMap = (ActivityMap) requireActivity();

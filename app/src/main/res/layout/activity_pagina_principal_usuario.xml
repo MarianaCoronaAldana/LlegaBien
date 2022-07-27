@@ -55,9 +55,8 @@
       android:fontFamily="@font/subtitulo"
       android:gravity="center"
       android:text="@string/frase_pagina_principal1"
-      android:textAllCaps="false"
       android:textColor="@color/blanco"
-      android:textSize="30sp"
+      android:textSize="@dimen/text_size_titulo_medium"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintDimensionRatio="7:1"
       app:layout_constraintEnd_toEndOf="@id/guideline2_button_pagina_principal"
@@ -73,9 +72,8 @@
       android:fontFamily="@font/subtitulo"
       android:gravity="center"
       android:text="@string/frase_pagina_principal2"
-      android:textAllCaps="false"
       android:textColor="#FF9292"
-      android:textSize="30sp"
+      android:textSize="@dimen/text_size_titulo_medium"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintDimensionRatio="8:1"
       app:layout_constraintEnd_toEndOf="@id/guideline2_button_pagina_principal"
@@ -83,11 +81,11 @@
       app:layout_constraintTop_toBottomOf="@id/textView_frase_pagina_principal1"
       app:layout_constraintVertical_bias="0.0" />
 
-  <ImageView
+  <View
       android:id="@+id/imageView1_bkgd_gif_pagina_principal"
       android:layout_width="0dp"
       android:layout_height="0dp"
-      app:srcCompat="@drawable/bkgd_morado_claro"
+      android:background="@color/morado_claro"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintDimensionRatio="5:4"
       app:layout_constraintEnd_toEndOf="parent"
@@ -160,15 +158,21 @@
       app:layout_constraintTop_toBottomOf="@id/button_inicia_sesion_pagina_principal"
       app:layout_constraintVertical_bias="0.4" />
 
-  <FrameLayout
+  <androidx.fragment.app.FragmentContainerView
       android:id="@+id/fragment_pagina_principal"
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:elevation="5dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintDimensionRatio="1:0"
-      app:layout_constraintTop_toTopOf="@id/guideline_fragment_pagina_principal"
-      tools:layout_editor_absoluteX="0dp" />
+      app:layout_constraintTop_toBottomOf="@id/guideline_fragment_pagina_principal" />
+
+  <androidx.fragment.app.FragmentContainerView
+      android:id="@+id/fragmentContainerView_guia_pagina_principal"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:name="com.example.llegabien.frontend.usuario.fragmento.FragmentoUsuarioGuia1"
+      android:elevation="5dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
