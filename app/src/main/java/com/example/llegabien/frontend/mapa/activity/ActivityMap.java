@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -20,12 +19,10 @@ import com.example.llegabien.backend.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.databinding.ActivityMapsBinding;
 import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoBuscarLugar;
-import com.example.llegabien.frontend.mapa.fragmento.FragmentoConsejosRuta;
-import com.example.llegabien.frontend.mapa.fragmento.FragmentoIndicaciones;
+import com.example.llegabien.frontend.mapa.rutas.fragmento.FragmentoConsejosRuta;
+import com.example.llegabien.frontend.mapa.rutas.fragmento.FragmentoIndicaciones;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoLugarSeleccionado;
-import com.example.llegabien.frontend.mapa.fragmento.FragmentoNavegacion;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.example.llegabien.frontend.mapa.rutas.fragmento.FragmentoNavegacion;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
@@ -94,7 +91,13 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
                 FragmentoLugarSeleccionado fragmentoLugarSeleccionado = new FragmentoLugarSeleccionado(activityAnterior);
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.add(R.id.fragmentContainerView_fragmentoLugares_activityMaps, fragmentoLugarSeleccionado).commit();
-            } else
+            }
+            else if(activityAnterior.equals("HISTORIAL_RUTAS")){
+                FragmentoIndicaciones fragmentoIndicaciones = new FragmentoIndicaciones(activityAnterior, null);
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.add(R.id.fragmentContainerView_fragmentoLugares_activityMaps, fragmentoIndicaciones).commit();
+            }
+            else
                 mMapa.abrirFragmentoBuscarLugar();
         } else
             mMapa.abrirFragmentoBuscarLugar();

@@ -150,14 +150,20 @@ public class UbicacionDAO {
             realm = conectarBD.conseguirUsuarioMongoDB();
 
         if (realm != null) {
-            resultadosUbicaciones = realm.where(ubicacion.class).equalTo("tipo", "calle").findAll();
-            if (resultadosUbicaciones != null) {
-            }
-
             resultadosUbicaciones = realm.where(ubicacion.class).equalTo("tipo", "colonia").findAll();
             if (resultadosUbicaciones != null) {
                 ubicacion = poligono.isUbicacionEnPoligono(resultadosUbicaciones, latitude, longitude);
                 if (ubicacion != null) {
+                    resultadosUbicaciones = realm.where(ubicacion.class).equalTo("tipo", "calle").findAll();
+                    if (resultadosUbicaciones != null) {
+                        UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(mContext);
+                        ubicacion calle  = obtenerUbicacionConNombre(UbicacionGeocodificacion.establecerNombreUbicacion(ubicacionGeocodificacion
+                                .geocodificarUbiciacion(latitude,longitude), ubicacion));
+                        if (calle != null) {
+                            Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_UBICACION, calle);
+                            return true;
+                        }
+                    }
                     Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_UBICACION, ubicacion);
                     return true;
                 }

@@ -25,6 +25,7 @@ import com.example.llegabien.backend.ubicacion.UbicacionBusquedaAutocompletada;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.mapa.Mapa;
+import com.example.llegabien.frontend.mapa.rutas.fragmento.FragmentoIndicaciones;
 import com.example.llegabien.frontend.usuario.activity.ActivityConfiguracionUsuario;
 import com.example.llegabien.frontend.usuario.dialog.DialogTipoConfiguracion;
 import com.google.android.libraries.places.api.Places;
@@ -49,7 +50,6 @@ public class FragmentoBuscarLugar extends Fragment implements View.OnClickListen
                         }
                     }
             );
-
 
     public FragmentoBuscarLugar() {
         // Required empty public constructor
@@ -102,7 +102,7 @@ public class FragmentoBuscarLugar extends Fragment implements View.OnClickListen
         }
         else if (view.getId() == R.id.button_indicaciones_buscarLugar) {
             FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
-            FragmentoIndicaciones fragmentoIndicaciones = new FragmentoIndicaciones(null);
+            FragmentoIndicaciones fragmentoIndicaciones = new FragmentoIndicaciones(null,null);
             fragmentTransaction.replace(R.id.fragmentContainerView_fragmentoLugares_activityMaps, fragmentoIndicaciones,"FragmentoIndicaciones").commit();
         }
         else if (view.getId() == R.id.button_centrarMapa_buscarLugar) {

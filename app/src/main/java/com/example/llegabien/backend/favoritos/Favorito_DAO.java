@@ -21,7 +21,7 @@ public class Favorito_DAO {
     private Realm realm;
     private final Context mContext;
 
-    public Favorito_DAO(Context context){
+    public Favorito_DAO(Context context) {
         mContext = context;
     }
 
@@ -30,11 +30,10 @@ public class Favorito_DAO {
         Favorito.set_partition("LlegaBien");
         realm = conectarBD.conseguirUsuarioMongoDB();
 
-        if(realm!=null){
+        if (realm != null) {
             realm.executeTransactionAsync(transactionRealm -> transactionRealm.insert(Favorito));
             realm.close();
-        }
-        else
+        } else
             errorConexion();
     }
 
@@ -42,11 +41,9 @@ public class Favorito_DAO {
     public RealmResults<favorito> obtenerFavoritosDeUsuario(usuario Usuario) {
         realm = conectarBD.conseguirUsuarioMongoDB();
 
-        if(realm!=null){
-            return realm.where(favorito.class).equalTo("IdUsuario",Usuario.get_id()).findAll();
-        }
-
-        else
+        if (realm != null) {
+            return realm.where(favorito.class).equalTo("IdUsuario", Usuario.get_id()).findAll();
+        } else
             errorConexion();
 
         return null;
@@ -54,10 +51,10 @@ public class Favorito_DAO {
 
     // Devuelve un objeto favorito basado en el id
     public favorito obtenerFavoritoPorId(ObjectId id) {
-        realm = conectarBD.conseguirUsuarioMongoDB();
-        //realm = conectarBD.ConectarCorreoMongoDB(correo, contrasena);
+        if (realm == null)
+            realm = conectarBD.conseguirUsuarioMongoDB();
 
-        if(realm!=null){
+        if (realm != null) {
             favorito task = realm.where(favorito.class).equalTo("_id", id)
                     .findFirst();
 
@@ -67,9 +64,7 @@ public class Favorito_DAO {
                 Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_FAVORITO, task);
                 return task;
             }
-        }
-
-        else
+        } else
             errorConexion();
 
         return null;
@@ -79,23 +74,21 @@ public class Favorito_DAO {
     public boolean verificarExistenciaFavorito(ObjectId id, String nombre) {
         realm = conectarBD.conseguirUsuarioMongoDB();
 
-        if(realm!=null){
+        if (realm != null) {
             favorito task = realm.where(favorito.class).equalTo("IdUsuario", id)
                     .and()
                     .equalTo("nombre", nombre)
                     .findFirst();
 
             return task != null;
-        }
-
-        else
+        } else
             errorConexion();
 
         return false;
     }
 
 
-    private void errorConexion(){
+    private void errorConexion() {
         Toast.makeText(mContext, "Hubo un problema en conectarse, intenta mas tarde", Toast.LENGTH_SHORT).show();
     }
 }

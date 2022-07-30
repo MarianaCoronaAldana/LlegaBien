@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="220dp"
+    android:layout_height="260dp"
     android:background="@drawable/bkgd_esquinas_redondeadas"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -23,36 +23,31 @@
     <TextView
         android:id="@+id/textView_titulo_notificarBateria"
         style="@style/TxtViewTransparente"
-        android:layout_width="328dp"
-        android:layout_height="33dp"
-        android:fontFamily="@font/subtitulo"
-        android:lineSpacingExtra="4dp"
+        android:fontFamily="@font/titulo"
         android:text="@string/advertencia_dialogNotificarBateria"
         android:textColor="@color/rojo_claro"
         android:textSize="@dimen/text_size_subtitulo"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="5:1"
+        app:layout_constraintDimensionRatio="10:1"
         app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_notificarBateria"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_notificarBateria"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.088" />
+        app:layout_constraintVertical_bias="0.1" />
 
     <TextView
         android:id="@+id/textView_pregunta_notificarBateria"
         style="@style/TxtViewTransparente"
-        android:layout_width="328dp"
-        android:layout_height="95dp"
-        android:layout_marginTop="8dp"
         android:fontFamily="@font/subtitulo"
         android:lineSpacingExtra="4dp"
         android:text="@string/contenido_dialogNotificarBateria"
         android:textSize="@dimen/text_size_subtitulo"
-        app:layout_constraintDimensionRatio="9:1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="5:2"
         app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_notificarBateria"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_notificarBateria"
-        app:layout_constraintTop_toBottomOf="@id/textView_titulo_notificarBateria" />
+        app:layout_constraintTop_toBottomOf="@id/textView_titulo_notificarBateria"
+        app:layout_constraintVertical_bias="0.05"/>
 
     <Button
         android:id="@+id/button_confirmarnotificarBateria"
@@ -62,9 +57,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="6:1"
         app:layout_constraintEnd_toEndOf="@id/guideline2_textView_button_notificarBateria"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/guideline1_textView_button_notificarBateria"
         app:layout_constraintTop_toBottomOf="@id/textView_pregunta_notificarBateria"
-        app:layout_constraintVertical_bias="0.642" />
+        app:layout_constraintVertical_bias="0.2"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

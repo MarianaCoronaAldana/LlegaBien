@@ -3,6 +3,7 @@ package com.example.llegabien.frontend.reportes.fragmento;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.content.Intent;
+import android.location.Address;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,13 +26,18 @@ import androidx.fragment.app.Fragment;
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.ubicacion.UbicacionBusquedaAutocompletada;
+import com.example.llegabien.backend.ubicacion.UbicacionDAO;
 import com.example.llegabien.backend.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.reporte.ReporteDAO;
 import com.example.llegabien.backend.reporte.reporte;
+import com.example.llegabien.backend.ubicacion.UbicacionGeocodificacion;
+import com.example.llegabien.backend.ubicacion.ubicacion;
 import com.example.llegabien.backend.usuario.UsuarioInputValidaciones;
 import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.frontend.app.Utilidades;
 import com.example.llegabien.frontend.usuario.dialog.DialogDatePicker;
 import com.example.llegabien.frontend.usuario.dialog.DialogTimePicker;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.text.Normalizer;
 import java.time.Duration;
@@ -41,6 +47,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import io.realm.RealmResults;
@@ -63,9 +70,11 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
                             int result = activityResult.getResultCode();
                             Intent data = activityResult.getData();
                             ubicacionBusquedaAutocompletada.verificarResultadoBusqueda((isUbicacionBuscadaObtenida, isUbicacionBuscadaenBD, ubicacionBuscada, ubicacionBuscadaString) -> {
-                                if (isUbicacionBuscadaObtenida)
+                                if (isUbicacionBuscadaObtenida) {
                                     mBtnUbicacion.setText(ubicacionBuscadaString);
-                            }, result, data, requireActivity());
+
+                                }
+                            }, result, data);
                         }
                     }
             );
@@ -161,10 +170,10 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void inicializarReporte() {
         Reporte = new reporte();
+        establecerUbicacionReporte(Reporte, mBtnUbicacion.getText().toString());
         Reporte.setAutor(mEditTxtNombre.getText().toString());
         Reporte.setIdUsuario(Usuario.get_id());
         Reporte.setComentarios(mEditTxtComentariosDelito.getText().toString());
-        Reporte.setUbicacion(mBtnUbicacion.getText().toString());
         String delitoNormalizado = Normalizer.normalize(mSpinnerCualDelito.getSelectedItem().toString(), Normalizer.Form.NFD)
                 .replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toUpperCase(Locale.ROOT);
         Reporte.setTipoDelito(delitoNormalizado);
@@ -246,5 +255,27 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
             mBtnUbicacion.setError("Ingresa una ubicación válida.");
         }
         return esInputValido;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void establecerUbicacionReporte(reporte reporte, String ubicacion){
+        UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(requireActivity());
+        Address addressUbicacion = ubicacionGeocodificacion.geocodificarUbiciacion(ubicacion);
+
+        UbicacionDAO ubicacionDAO = new UbicacionDAO(this.requireActivity());
+        List<ubicacion> colonias = ubicacionDAO.obtenerColonias();
+
+        ubicacion colonia = ubicacionDAO.obtenerColonia(addressUbicacion.getSubLocality().toUpperCase(Locale.ROOT), colonias,
+                                    new LatLng(addressUbicacion.getLatitude(), addressUbicacion.getLongitude()));
+
+        if(colonia != null) {
+            String ubicacionString = UbicacionGeocodificacion.establecerNombreUbicacion(addressUbicacion, colonia);
+            if (ubicacionString != null)
+                reporte.setUbicacion(ubicacionString);
+            else
+                reporte.setUbicacion(mBtnUbicacion.getText().toString());
+        }
+        else
+            reporte.setUbicacion(mBtnUbicacion.getText().toString());
     }
 }

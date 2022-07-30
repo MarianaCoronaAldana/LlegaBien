@@ -1,4 +1,4 @@
-package com.example.llegabien.frontend.mapa.fragmento;
+package com.example.llegabien.frontend.mapa.rutas.fragmento;
 
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTASEGURA;
 
@@ -11,7 +11,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,6 +37,7 @@ import com.example.llegabien.frontend.app.fragmento.FragmentoPermisos;
 import com.example.llegabien.frontend.botonEmergencia.fragmento.FragmentoBotonEmergencia;
 import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
+import com.example.llegabien.frontend.mapa.rutas.fragmento.FragmentoConsejosRuta;
 import com.example.llegabien.frontend.reportes.activity.ActivityReportes;
 import com.google.android.gms.maps.GoogleMap;
 

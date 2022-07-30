@@ -1,4 +1,4 @@
-package com.example.llegabien.frontend.rutas.directionhelpers;
+package com.example.llegabien.frontend.mapa.rutas.directionhelpers;
 
 import com.example.llegabien.backend.ruta.directions.RutaDirections;
 

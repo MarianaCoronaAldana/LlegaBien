@@ -86,6 +86,7 @@ public class ActivityPaginaPrincipalUsuario extends AppCompatActivity implements
             FragmentoIniciarSesion1 fragmentoIniciarSesion1 = new FragmentoIniciarSesion1();
             fragmentTransaction.add(R.id.fragment_pagina_principal, fragmentoIniciarSesion1).commit();
         }
+
         else if (view.getId() == R.id.button_crea_cuenta_pagina_principal){
             FragmentoRegistrarUsuario1 fragmentoRegistrarUsuario1 = new FragmentoRegistrarUsuario1();
             fragmentTransaction.add(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario1).commit();

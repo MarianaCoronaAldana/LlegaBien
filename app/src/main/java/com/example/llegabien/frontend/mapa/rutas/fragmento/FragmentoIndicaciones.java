@@ -1,5 +1,6 @@
-package com.example.llegabien.frontend.mapa.fragmento;
+package com.example.llegabien.frontend.mapa.rutas.fragmento;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTA;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTASEGURA;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 import static io.realm.Realm.getApplicationContext;
@@ -40,8 +41,8 @@ import com.example.llegabien.backend.ubicacion.UbicacionGeocodificacion;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
-import com.example.llegabien.frontend.rutas.directionhelpers.FetchURL;
-import com.example.llegabien.frontend.rutas.directionhelpers.TaskLoadedCallback;
+import com.example.llegabien.frontend.mapa.rutas.directionhelpers.FetchURL;
+import com.example.llegabien.frontend.mapa.rutas.directionhelpers.TaskLoadedCallback;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -59,7 +60,9 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
     private ConstraintLayout mBtnTiempoBici, mBtnTiempoCaminando, mBtnComenzarNavegacion, mConsLytRutaDetalles;
     private TextView mTxtViewTiempoBici, mTxtViewTiempoCaminando, mTxtViewTiempoDetalles, mTxtViewDistanciaDetalles;
     private View mViewBici, mViewCaminar;
-    private String mPuntoPartida, mPuntoDestino, mUbicacionBuscada, mDirectionMode = "walking";
+    private String mUbicacionBuscada;
+    private String mDirectionMode = "bicycling";
+    private final String mActivityAnterior;
     private ActivityMap mActivityMap;
     private GoogleMap mGoogleMap;
     private Mapa mMapa;
@@ -79,19 +82,18 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
                                     mBtnPresionado.setText(ubicacionBuscadaString);
                                     tomarDatosRuta();
                                 }
-                            }, result, data, requireActivity());
+                            }, result, data);
                         }
                     }
             );
 
-    public FragmentoIndicaciones(String ubicacionBuscada) {
-        mUbicacionBuscada = ubicacionBuscada;
+    public FragmentoIndicaciones(String activityAnterior, String ubicacionBuscada) {
+        mActivityAnterior = activityAnterior;
+        if(activityAnterior == null)
+            mUbicacionBuscada = ubicacionBuscada;
     }
 
-    public FragmentoIndicaciones(String puntoPartida, String puntoDestino) {
-        mPuntoPartida = puntoPartida;
-        mPuntoDestino = puntoDestino;
-    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -131,22 +133,29 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         if (getActivity() != null)
             mMapa = new Mapa((ActivityMap) requireActivity());
 
-        //Para mostrar la ubicacion del dispositivo en Boton.
-        UbicacionDispositivo ubicacionDispositivo = new UbicacionDispositivo();
-        ubicacionDispositivo.mostrarStringUbicacionActual(requireActivity(), mBtnPuntoPartida, this);
+        // Para ver si la actividad anterior no es la de historial ruta.
+        if (mActivityAnterior != null) {
+            if (mActivityAnterior.equals("HISTORIAL_RUTAS")) {
+                ruta ruta = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_RUTA, ruta.class);
+                UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(requireActivity());
 
-        // Para mostrar la informacion del lugar seleccionado en Boton
-        if (mUbicacionBuscada != null) {
-            mBtnPuntoDestino.setText(mUbicacionBuscada);
-            tomarDatosRuta();
+                mBtnPuntoPartida.setText(ubicacionGeocodificacion.degeocodificarUbiciacion(Double.parseDouble(ruta.getPuntoInicio().get(0)), Double.parseDouble(ruta.getPuntoInicio().get(1))));
+                mBtnPuntoDestino.setText(ubicacionGeocodificacion.degeocodificarUbiciacion(Double.parseDouble(ruta.getPuntoDestino().get(0)), Double.parseDouble(ruta.getPuntoDestino().get(1))));
+                tomarDatosRuta();
+            }
         }
+        else {
 
-        if (mPuntoPartida != null && mPuntoDestino != null) {
-            mBtnPuntoDestino.setText(mPuntoDestino);
-            mBtnPuntoDestino.setText(mPuntoDestino);
+            //Para mostrar la ubicacion del dispositivo en Boton.
+            UbicacionDispositivo ubicacionDispositivo = new UbicacionDispositivo();
+            ubicacionDispositivo.mostrarStringUbicacionActual(requireActivity(), mBtnPuntoPartida, this);
+
+            // Para mostrar la informacion del lugar seleccionado en Boton
+            if (mUbicacionBuscada != null) {
+                mBtnPuntoDestino.setText(mUbicacionBuscada);
+                mDirectionMode = "bicycling";
+            }
         }
-
-        mDirectionMode = "bicycling";
         return root;
     }
 

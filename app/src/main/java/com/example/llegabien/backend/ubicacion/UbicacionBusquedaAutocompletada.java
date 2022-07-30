@@ -19,6 +19,7 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class UbicacionBusquedaAutocompletada {
 
@@ -27,6 +28,7 @@ public class UbicacionBusquedaAutocompletada {
     public interface OnUbicacionBuscadaObtenida {
         void isUbicacionBuscadaObtenida(boolean isUbicacionBuscadaObtenida, boolean isUbicacionBuscadaEnBD, LatLng ubicacionBuscada, String ubicacionBuscadaString);
     }
+
 
     public UbicacionBusquedaAutocompletada(){
     }
@@ -46,20 +48,31 @@ public class UbicacionBusquedaAutocompletada {
     public void verificarResultadoBusqueda (OnUbicacionBuscadaObtenida onUbicacionBuscadaObtenida, int resultCode, Intent data, Context context){
         if (resultCode == RESULT_OK) {
             Place place = Autocomplete.getPlaceFromIntent(data);
-            Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getAddress());
-            String address = place.getAddress();
 
-            UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(context);
-            Address ubicacionGeocodificada = ubicacionGeocodificacion.geocodificarUbiciacion(address);
-            LatLng ubicacionBuscada = new LatLng(ubicacionGeocodificada.getLatitude(), ubicacionGeocodificada.getLongitude());
             UbicacionDAO ubicacionDAO = new UbicacionDAO(context);
-
-            boolean isUbicacionBuscadaEnBD = ubicacionDAO.obtenerUbicacionBuscada(ubicacionBuscada.latitude,ubicacionBuscada.longitude);
-            onUbicacionBuscadaObtenida.isUbicacionBuscadaObtenida(true, isUbicacionBuscadaEnBD,ubicacionBuscada, address);
+            boolean isUbicacionBuscadaEnBD = ubicacionDAO.obtenerUbicacionBuscada(Objects.requireNonNull(place.getLatLng()).latitude,place.getLatLng().longitude);
+            onUbicacionBuscadaObtenida.isUbicacionBuscadaObtenida(true, isUbicacionBuscadaEnBD,place.getLatLng(), place.getAddress());
         }
 
         else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
             // TODO: Handle the error.
+            Status status = Autocomplete.getStatusFromIntent(data);
+            onUbicacionBuscadaObtenida.isUbicacionBuscadaObtenida(false, false,null, null);
+            Log.i(TAG, status.getStatusMessage());
+        }
+
+        else if (resultCode == RESULT_CANCELED) {
+            onUbicacionBuscadaObtenida.isUbicacionBuscadaObtenida(false, false,null, null);
+        }
+    }
+
+    public void verificarResultadoBusqueda (OnUbicacionBuscadaObtenida onUbicacionBuscadaObtenida, int resultCode, Intent data){
+        if (resultCode == RESULT_OK) {
+            Place place = Autocomplete.getPlaceFromIntent(data);
+            onUbicacionBuscadaObtenida.isUbicacionBuscadaObtenida(true, false,place.getLatLng(), place.getAddress());
+        }
+
+        else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
             Status status = Autocomplete.getStatusFromIntent(data);
             onUbicacionBuscadaObtenida.isUbicacionBuscadaObtenida(false, false,null, null);
             Log.i(TAG, status.getStatusMessage());

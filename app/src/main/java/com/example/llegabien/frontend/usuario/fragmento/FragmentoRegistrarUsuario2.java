@@ -89,15 +89,14 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
                     //para obtener los datos del fragmento y añadirlos a la clase usuario
                     usuarioConDatos();
 
-                    //REPONER//
                     //para mandar codigo a teléfono y email
-                    //enviarCodigos();
+                    enviarCodigos();
 
-                    FragmentoRegistrarUsuario3 fragmentoRegistrarUsuario3 = new FragmentoRegistrarUsuario3();
+                    /*FragmentoRegistrarUsuario3 fragmentoRegistrarUsuario3 = new FragmentoRegistrarUsuario3();
                     FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
                     fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario3).commit();
-                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.addToBackStack(null);*/
                 }
                 else
                     Toast.makeText(requireActivity(),"El correo electronico o el numero telefonico ya está registrado",Toast.LENGTH_LONG).show();
@@ -155,8 +154,8 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
                                             mEditTxtNumTelefonico.getText().toString();
 
         UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(requireActivity());
-        usuarioFirebaseVerificaciones.enviarCodigoNumTelefonico((isSMSEnviado, verificationId) -> {
-            if (isSMSEnviado){
+        usuarioFirebaseVerificaciones.enviarCodigoNumTelefonico((callbackLlamado, verificationId) -> {
+            if (callbackLlamado.equals("CODE_SENT")){
                 usuarioFirebaseVerificaciones.enviarCorreoDeVerificacion(isCorreoEnviado -> {
                     if(isCorreoEnviado){
                         FragmentoRegistrarUsuario3 fragmentoRegistrarUsuario3 = new FragmentoRegistrarUsuario3(verificationId);

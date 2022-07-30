@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
-    tools:context=".frontend.mapa.fragmento.FragmentoNavegacion">
+    tools:context=".frontend.mapa.rutas.fragmento.FragmentoNavegacion">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_fragment2_barraNavegacion"

@@ -1,11 +1,15 @@
 package com.example.llegabien.backend.ruta.realm;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_FAVORITO;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTA;
 import static io.realm.Realm.getApplicationContext;
 
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.llegabien.backend.app.Preferences;
+import com.example.llegabien.backend.favoritos.favorito;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
 import com.example.llegabien.backend.usuario.usuario;
 
@@ -40,18 +44,22 @@ public class rutaDAO {
         return null;
     }
 
-    // Devuelve un objeto RUTA basado en el id
+    // Devuelve un objeto favorito basado en el id
     public ruta obtenerRutaPorId(ObjectId id) {
-        realm = conectarBD.conseguirUsuarioMongoDB();
+        if (realm == null)
+            realm = conectarBD.conseguirUsuarioMongoDB();
+
         if (realm != null) {
             ruta task = realm.where(ruta.class).equalTo("_id", id)
                     .findFirst();
+
             if (task != null) {
-                Log.v("QUICKSTART", "estoy en conseguir ruta por id");
+                Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_RUTA, task);
                 return task;
             }
         } else
             errorConexion();
+
         return null;
     }
 

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/azul_claro"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".frontend.mapa.fragmento.FragmentoConsejosRuta">
+    tools:context=".frontend.mapa.rutas.fragmento.FragmentoConsejosRuta">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/consLyt_parentPrincipal_consejos"

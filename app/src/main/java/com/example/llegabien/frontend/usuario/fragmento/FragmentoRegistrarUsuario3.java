@@ -65,12 +65,13 @@ public class FragmentoRegistrarUsuario3 extends Fragment implements View.OnClick
         if (view.getId() == R.id.button_verificar_registro_3){
             if (validarAllInputs()){
                 //REPONER//
-                //verificarCodigoNumTelefonico();
-                FragmentoRegistrarUsuario4 fragmentoRegistrarUsuario4 = new FragmentoRegistrarUsuario4();
+                verificarCodigoNumTelefonico();
+
+                /*FragmentoRegistrarUsuario4 fragmentoRegistrarUsuario4 = new FragmentoRegistrarUsuario4();
                 FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);
                 fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario4).commit();
-                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.addToBackStack(null);*/
             }
         }
         else if(view.getId() == R.id.button_regresar_registro_3)
@@ -128,8 +129,8 @@ public class FragmentoRegistrarUsuario3 extends Fragment implements View.OnClick
                          mEditTxtCodigo6.getText().toString();
 
          UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(requireActivity());
-         usuarioFirebaseVerificaciones.validarCodigoNumTelefonico(isNumTelefonicoVerificado -> {
-             if (isNumTelefonicoVerificado){
+         usuarioFirebaseVerificaciones.validarCodigoNumTelefonico(callbackLlamado -> {
+             if (callbackLlamado){
                  FragmentoRegistrarUsuario4 fragmentoRegistrarUsuario4 = new FragmentoRegistrarUsuario4();
                  FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
                  fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,R.anim.slide_in_left,R.anim.slide_out_right);

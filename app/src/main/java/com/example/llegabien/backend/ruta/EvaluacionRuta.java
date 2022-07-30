@@ -16,7 +16,7 @@ import com.example.llegabien.backend.ruta.directions.UbicacionRutaDAO;
 import com.example.llegabien.backend.ubicacion.UbicacionDAO;
 import com.example.llegabien.backend.ubicacion.UbicacionGeocodificacion;
 import com.example.llegabien.backend.ubicacion.ubicacion;
-import com.example.llegabien.frontend.rutas.directionhelpers.TaskLoadedCallback;
+import com.example.llegabien.frontend.mapa.rutas.directionhelpers.TaskLoadedCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;

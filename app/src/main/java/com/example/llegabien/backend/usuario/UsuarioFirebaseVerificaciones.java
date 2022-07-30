@@ -24,7 +24,7 @@ public class UsuarioFirebaseVerificaciones {
     }
 
     public interface OnCodigoNumTelefonicoEnviado {
-        void isSMSEnviado(boolean isSMSEnviado, String verificationId);
+        void calbbackLlamado(String callbackLLamado, String verificationId);
     }
 
     public interface OnCodigoNumTelefonicoVerificado{
@@ -38,6 +38,26 @@ public class UsuarioFirebaseVerificaciones {
     public UsuarioFirebaseVerificaciones(Activity activity){ mActivity = activity; }
 
     public void enviarCodigoNumTelefonico(OnCodigoNumTelefonicoEnviado onCodigoNumTelefonicoEnviado, String numTelefonico){
+
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                Toast.makeText(mActivity, "VERIFICACION COMPLETA", Toast.LENGTH_SHORT).show();
+                onCodigoNumTelefonicoEnviado.calbbackLlamado("VERIFICATION_COMPLETED", null);
+            }
+            @Override
+            public void onVerificationFailed(@androidx.annotation.NonNull FirebaseException e) {
+                Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
+                onCodigoNumTelefonicoEnviado.calbbackLlamado("VERIFICATION_FAILED", null);
+                Log.v("QUICKSTART", "ERROR: " + e.getMessage());
+            }
+            @Override
+            public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                Toast.makeText(mActivity, "SI SE PUDO", Toast.LENGTH_SHORT).show();
+                onCodigoNumTelefonicoEnviado.calbbackLlamado("CODE_SENT", verificationId);
+            }
+        };
+
         PhoneAuthProvider.verifyPhoneNumber(
                 PhoneAuthOptions
                         .newBuilder(FirebaseAuth.getInstance())
@@ -46,25 +66,6 @@ public class UsuarioFirebaseVerificaciones {
                         .setTimeout(60L, TimeUnit.SECONDS)
                         .setCallbacks(mCallbacks)
                         .build());
-
-        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            @Override
-            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                Toast.makeText(mActivity, "SI SE PUDO ENVIAR SMS", Toast.LENGTH_SHORT).show();
-                onCodigoNumTelefonicoEnviado.isSMSEnviado(true, null);
-            }
-            @Override
-            public void onVerificationFailed(@androidx.annotation.NonNull FirebaseException e) {
-                Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
-                onCodigoNumTelefonicoEnviado.isSMSEnviado(false, null);
-                Log.v("QUICKSTART", "ERROR: " + e.getMessage());
-            }
-            @Override
-            public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                Toast.makeText(mActivity, "SI SE PUDO", Toast.LENGTH_SHORT).show();
-                onCodigoNumTelefonicoEnviado.isSMSEnviado(true, verificationId);
-            }
-        };
     }
 
 

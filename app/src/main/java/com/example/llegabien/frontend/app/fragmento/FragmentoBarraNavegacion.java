@@ -23,7 +23,7 @@ import com.example.llegabien.frontend.botonEmergencia.fragmento.FragmentoBotonEm
 import com.example.llegabien.frontend.contactos.activity.ActivityEditarLeerContactos;
 import com.example.llegabien.frontend.favoritos.activity.ActivityFavoritos;
 import com.example.llegabien.frontend.reportes.activity.ActivityReportes;
-import com.example.llegabien.frontend.rutas.ActivityMostrarRutas;
+import com.example.llegabien.frontend.mapa.rutas.activity.ActivityHistorialRutas;
 
 public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchListener, View.OnClickListener {
 
@@ -80,7 +80,7 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
         else if (view.getId() == R.id.button_favoritos_barraNavegacion)
             startActivity(new Intent(requireActivity(), ActivityFavoritos.class));
         else if (view.getId() == R.id.button_historialRutas_barraNavegacion)
-            startActivity(new Intent(requireActivity(), ActivityMostrarRutas.class));
+            startActivity(new Intent(requireActivity(), ActivityHistorialRutas.class));
     }
 
     @SuppressLint("ClickableViewAccessibility")

@@ -24,7 +24,7 @@ import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.contactos.activity.ActivityEditarLeerContactos;
 import com.example.llegabien.frontend.reportes.fragmento.FragmentoListaReportes;
-import com.example.llegabien.frontend.rutas.ActivityMostrarRutas;
+import com.example.llegabien.frontend.mapa.rutas.activity.ActivityHistorialRutas;
 import com.example.llegabien.frontend.usuario.activity.ActivityPaginaPrincipalUsuario;
 
 public class FragmentoConfigUsuario extends Fragment implements View.OnClickListener {
@@ -98,7 +98,7 @@ public class FragmentoConfigUsuario extends Fragment implements View.OnClickList
                 startActivity(new Intent(requireActivity(), ActivityEditarLeerContactos.class));
         }
         else if (view.getId() == R.id.button_historialRutas_configuracionUsuario)
-            startActivity(new Intent(requireActivity(), ActivityMostrarRutas.class));
+            startActivity(new Intent(requireActivity(), ActivityHistorialRutas.class));
 
         else if (view.getId() == R.id.button_regresar_configuracionUsuario)
             requireActivity().finish();

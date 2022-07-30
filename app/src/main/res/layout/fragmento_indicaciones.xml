@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
-    tools:context=".frontend.mapa.fragmento.FragmentoIndicaciones">
+    tools:context=".frontend.mapa.rutas.fragmento.FragmentoIndicaciones">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1_textView_editText_indicaciones"

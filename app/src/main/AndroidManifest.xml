@@ -51,7 +51,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-        android:name=".frontend.rutas.ActivityMostrarRutas"
+        android:name=".frontend.mapa.rutas.activity.ActivityHistorialRutas"
         android:configChanges="orientation"
         android:exported="false"
         android:windowSoftInputMode="adjustPan" />

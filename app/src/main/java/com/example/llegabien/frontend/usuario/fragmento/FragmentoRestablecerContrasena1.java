@@ -80,14 +80,15 @@ public class FragmentoRestablecerContrasena1 extends Fragment implements View.On
 
     private void enviarCodigoRestablecerContrasena(String numTelefonico) {
         UsuarioFirebaseVerificaciones usuarioFirebaseVerificaciones = new UsuarioFirebaseVerificaciones(requireActivity());
-        usuarioFirebaseVerificaciones.enviarCodigoNumTelefonico((isSMSEnviado, verificationId) -> {
-            if (isSMSEnviado) {
+        usuarioFirebaseVerificaciones.enviarCodigoNumTelefonico((callbackLlamado, verificationId) -> {
+            if (callbackLlamado.equals("CODE_SENT")) {
                 FragmentoRestablecerContrasena2 fragmentoRestablecerContrasena2 = new FragmentoRestablecerContrasena2(numTelefonico, verificationId);
                 FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
                 fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRestablecerContrasena2).commit();
                 fragmentTransaction.addToBackStack(null);
             }
+
         }, "+" + numTelefonico);
     }
 }

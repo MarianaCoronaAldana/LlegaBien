@@ -24,7 +24,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -40,6 +39,7 @@ import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.app.Utilidades;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.mapa.Mapa;
+import com.example.llegabien.frontend.mapa.rutas.fragmento.FragmentoIndicaciones;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
@@ -174,7 +174,7 @@ public class FragmentoLugarSeleccionado extends Fragment implements View.OnClick
 
         else if (view.getId() == R.id.button_indicaciones_detallesLugar){
             FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
-            FragmentoIndicaciones fragmentoIndicaciones = new FragmentoIndicaciones(mNombreLugar[0].trim() + ", " + mNombreLugar[1].trim());
+            FragmentoIndicaciones fragmentoIndicaciones = new FragmentoIndicaciones(null, mNombreLugar[0].trim() + ", " + mNombreLugar[1].trim());
             fragmentTransaction.replace(R.id.fragmentContainerView_fragmentoLugares_activityMaps, fragmentoIndicaciones, "FragmentoIndicaciones").commit();
         }
 
