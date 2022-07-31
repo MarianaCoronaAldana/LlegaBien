@@ -36,8 +36,8 @@ public class UbicacionDispositivo{
                             mUbicacion = task.getResult();
                             onUbicacionObtenida.isUbicacionObtenida(true, mUbicacion);
                         } else {
-                            Log.d("LOCATION NULL", "Current location is null. Using defaults.");
-                            Log.e("TASK EXCEPTION", "Exception: %s", task.getException());
+                            Log.v("LOCATION NULL", "Current location is null. Using defaults.");
+                            Log.v("TASK EXCEPTION", "Exception: %s", task.getException());
                             onUbicacionObtenida.isUbicacionObtenida(false, mUbicacion);
                         }
                     }

@@ -4,6 +4,7 @@ import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTA_SEGU
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 import static io.realm.Realm.getApplicationContext;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -30,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
+import com.example.llegabien.backend.app.Permisos;
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.ruta.directions.Ruta;
 import com.example.llegabien.backend.ruta.realm.ruta;
@@ -38,10 +40,13 @@ import com.example.llegabien.backend.ubicacion.UbicacionBusquedaAutocompletada;
 import com.example.llegabien.backend.ubicacion.UbicacionDispositivo;
 import com.example.llegabien.backend.ubicacion.UbicacionGeocodificacion;
 import com.example.llegabien.backend.usuario.usuario;
+import com.example.llegabien.frontend.app.fragmento.FragmentoPermisos;
 import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
 import com.example.llegabien.frontend.mapa.rutas.directionhelpers.FetchURL;
 import com.example.llegabien.frontend.mapa.rutas.directionhelpers.TaskLoadedCallback;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -143,17 +148,9 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
             }
         }
         else {
-
-            //Para mostrar la ubicacion del dispositivo en Boton.
-            UbicacionDispositivo ubicacionDispositivo = new UbicacionDispositivo();
-            ubicacionDispositivo.mostrarStringUbicacionActual(requireActivity(), mBtnPuntoPartida, this);
-
-            // Para mostrar la informacion del lugar seleccionado en Boton
-            if (mUbicacionBuscada != null) {
-                mBtnPuntoDestino.setText(mUbicacionBuscada);
-                tomarDatosRuta();
-            }
+           crearRutaConUbiBuscada();
         }
+        String partida = mBtnPuntoPartida.getText().toString();
         return root;
     }
 
@@ -282,7 +279,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
 
                     new FetchURL((TaskLoadedCallback) this, this.requireActivity().getApplicationContext()).execute(generarUrlRuta(origen, destino), mDirectionMode);
                 } else
-                    Toast.makeText(getApplicationContext(), "Punto de origen y partida no pueden ser los mismos", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Punto de origen y partida no pueden ser los mismos.", Toast.LENGTH_LONG).show();
             }
         }
         else {
@@ -390,6 +387,35 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
                 .build();
 
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 250));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void crearRutaConUbiBuscada() {
+        Permisos permisos = new Permisos();
+        permisos.getPermisoUbicacion(requireActivity(), false);
+        if (permisos.getLocationPermissionGranted()) {
+            FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+
+            UbicacionDispositivo mUbicacionDispositivo = new UbicacionDispositivo();
+            mUbicacionDispositivo.getUbicacionDelDispositivo((isUbicacionObtenida, ubicacionObtenida) -> {
+                if (isUbicacionObtenida) {
+                    UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(requireActivity());
+                    String Ubicacion = ubicacionGeocodificacion.degeocodificarUbiciacion(ubicacionObtenida.getLatitude(),
+                            ubicacionObtenida.getLongitude());
+                    
+                    mBtnPuntoPartida.setText(Ubicacion);
+                    // Para mostrar la direccion del lugar que se buscó en Botón.
+                    if (mUbicacionBuscada != null) {
+                        mBtnPuntoDestino.setText(mUbicacionBuscada);
+                        tomarDatosRuta();
+                    }
+                }
+            }, true, fusedLocationProviderClient, requireActivity());
+        }else {
+            FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+            FragmentoPermisos fragmentoPermisos = new FragmentoPermisos();
+            fragmentTransaction.add(R.id.fragmentContainerView_reportes, fragmentoPermisos).commit();
+        }
     }
 
 
