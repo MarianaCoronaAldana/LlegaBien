@@ -3,6 +3,8 @@
     <string name="title_activity_maps">MapsActivity</string>
 
     <!-- Guía. -->
+    <string name="titulo_bienvenida_guia">¡Hola, bienvenido!</string>
+    <string name="frase_bienvenida_guia">A contuniación, te mostramos una guía de las principales funciones de LLEGABIEN.</string>
     <string name="titulo_ruta_guia">Creación de rutas seguras.</string>
     <string name="frase_ruta_guia">Obtenemos la ruta más segura en base a la seguridad de la calle o colonia por donde pase la ruta.</string>
     <string name="titulo_mapa_guia">Visualización de seguridad.</string>

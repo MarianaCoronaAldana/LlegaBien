@@ -28,9 +28,9 @@ import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.app.Utilidades;
 
-public class FragmentoLeerContactos extends Fragment implements View.OnClickListener {
+public class FragmentoListaContactos extends Fragment implements View.OnClickListener {
 
-    private ConstraintLayout mConsLytScrollView, mConsLytPrincipalContacto;
+    private ConstraintLayout mConsLytScrollView;
     private View mViewAuxiliar;
     private usuario Usuario;
 
@@ -60,12 +60,12 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
         ConstraintSet constraintSet = new ConstraintSet();
 
         for (int i = 0; i < Usuario.getContacto().size(); i++) {
-            String countryCode =Utilidades.obtenerCountryCode(Usuario.getContacto().get(i).getTelCelular());
+            String countryCode = Utilidades.obtenerCountryCode(Usuario.getContacto().get(i).getTelCelular());
             String numTel = Usuario.getContacto().get(i).getTelCelular().replace(countryCode, "");
 
             // ConstraintLayout principal
             constraintSet.clone(mConsLytScrollView);
-            mConsLytPrincipalContacto = new ConstraintLayout(this.requireActivity());
+            ConstraintLayout mConsLytPrincipalContacto = new ConstraintLayout(this.requireActivity());
             mConsLytPrincipalContacto.setId(View.generateViewId());
 
             mConsLytScrollView.addView(mConsLytPrincipalContacto);
@@ -80,16 +80,33 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             constraintSet.connect(mConsLytPrincipalContacto.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
 
             constraintSet.constrainWidth(mConsLytPrincipalContacto.getId(), ConstraintSet.PARENT_ID);
-            constraintSet.constrainHeight(mConsLytPrincipalContacto.getId(), 0);
+            constraintSet.constrainHeight(mConsLytPrincipalContacto.getId(), ConstraintSet.WRAP_CONTENT);
 
-            constraintSet.setDimensionRatio(mConsLytPrincipalContacto.getId(), "12:10");
+            //constraintSet.setDimensionRatio(mConsLytPrincipalContacto.getId(), "12:10");
 
             constraintSet.setVerticalBias(mConsLytPrincipalContacto.getId(), 0.0f);
+            // Fin ConstraintLayout principal
 
-            mViewAuxiliar = mConsLytPrincipalContacto;
+            // Separador final
+            View viewSeparadorFinal = new View(new ContextThemeWrapper(this.requireActivity(), R.style.ViewSeparadorAuxiliar));
+
+            viewSeparadorFinal.setId(View.generateViewId());
+
+            mConsLytScrollView.addView(viewSeparadorFinal);
+
+            constraintSet.connect(viewSeparadorFinal.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
+            constraintSet.connect(viewSeparadorFinal.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
+            constraintSet.connect(viewSeparadorFinal.getId(), ConstraintSet.TOP, mConsLytPrincipalContacto.getId(), ConstraintSet.BOTTOM, 0);
+            constraintSet.connect(viewSeparadorFinal.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
+
+            constraintSet.setDimensionRatio(viewSeparadorFinal.getId(), "10:1");
+
+            constraintSet.setVerticalBias(viewSeparadorFinal.getId(), 0.0f);
+            //Fin de Separador final
+
+            mViewAuxiliar = viewSeparadorFinal;
 
             constraintSet.applyTo(mConsLytScrollView);
-            // Fin ConstraintLayout principal
 
             // Se cambia de ConstraintLayout
             constraintSet.clone(mConsLytPrincipalContacto);
@@ -326,29 +343,6 @@ public class FragmentoLeerContactos extends Fragment implements View.OnClickList
             // Para agregar cambios a "mConstLytPrincipalContacto"
             constraintSet.applyTo(consLytInformacionContacto);
         }
-
-        // Se cambia de ConstraintLayout
-        constraintSet.clone(mConsLytScrollView);
-
-        // Separador
-        View viewSeparadorFinal = new View(new ContextThemeWrapper(this.requireActivity(), R.style.ViewSeparadorAuxiliar));
-
-        viewSeparadorFinal.setId(View.generateViewId());
-
-        mConsLytScrollView.addView(viewSeparadorFinal);
-
-        constraintSet.connect(viewSeparadorFinal.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
-        constraintSet.connect(viewSeparadorFinal.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
-        constraintSet.connect(viewSeparadorFinal.getId(), ConstraintSet.TOP, mConsLytPrincipalContacto.getId(), ConstraintSet.BOTTOM, 0);
-        constraintSet.connect(viewSeparadorFinal.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
-
-        constraintSet.setDimensionRatio(viewSeparadorFinal.getId(), "4:1");
-
-        constraintSet.setVerticalBias(viewSeparadorFinal.getId(), 0.0f);
-        //Fin de Separador
-
-        // Para agregar cambios a "mConstLytPrincipalContacto"
-        constraintSet.applyTo(mConsLytScrollView);
     }
 
     @Override

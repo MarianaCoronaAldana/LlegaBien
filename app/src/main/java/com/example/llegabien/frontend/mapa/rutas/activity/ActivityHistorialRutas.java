@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -22,7 +21,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Preferences;
@@ -31,7 +29,6 @@ import com.example.llegabien.backend.ruta.realm.rutaDAO;
 import com.example.llegabien.backend.ubicacion.UbicacionGeocodificacion;
 import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
-import com.example.llegabien.frontend.mapa.rutas.fragmento.FragmentoIndicaciones;
 
 import org.bson.types.ObjectId;
 
@@ -54,7 +51,7 @@ public class ActivityHistorialRutas extends AppCompatActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mostrar_rutas);
+        setContentView(R.layout.activity_historial_rutas);
 
         mUbicacionGeocodificacion = new UbicacionGeocodificacion(this);
 

@@ -6,7 +6,7 @@
     android:clickable="true"
     android:fitsSystemWindows="true"
     android:focusable="true"
-    tools:context=".frontend.contactos.fragmento.FragmentoLeerContactos">
+    tools:context=".frontend.contactos.fragmento.FragmentoListaContactos">
     
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/consLyt_parentPrincipal_leerContactos"

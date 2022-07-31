@@ -282,13 +282,4 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     public void onLocationChanged(Location location) {
 
     }
-/*
-    // Para actualizar los datos de usuario cuando se llegue a ésta actividad
-    private void actualizarPreferencesUsuario() {
-        UsuarioDAO usuarioDAO = new UsuarioDAO(getApplicationContext());
-        usuario Usuario = Preferences.getSavedObjectFromPreference(getApplicationContext(), PREFERENCE_USUARIO, usuario.class);
-        Usuario = usuarioDAO.readUsuarioPorCorreo(Usuario.getCorreoElectronico());
-        Preferences.savePreferenceObjectRealm(getApplicationContext(), PREFERENCE_USUARIO, Usuario);
-    }*/
-
 }

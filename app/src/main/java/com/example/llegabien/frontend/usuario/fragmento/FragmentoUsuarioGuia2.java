@@ -21,14 +21,11 @@ public class FragmentoUsuarioGuia2 extends Fragment {
         View root = inflater.inflate(R.layout.fragmento_usuario_guia2, container, false);
 
         ConstraintLayout btnSiguiente = root.findViewById(R.id.button_siguiente_usuarioGuia2);
-        btnSiguiente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                FragmentoUsuarioGuia3 fragmentoUsuarioGuia3 = new FragmentoUsuarioGuia3();
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
-                fragmentTransaction.replace(R.id.fragmentContainerView_guia_pagina_principal, fragmentoUsuarioGuia3).commit();
-            }
+        btnSiguiente.setOnClickListener(view -> {
+            FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+            FragmentoUsuarioGuia3 fragmentoUsuarioGuia3 = new FragmentoUsuarioGuia3();
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
+            fragmentTransaction.replace(R.id.fragmentContainerView_guia_pagina_principal, fragmentoUsuarioGuia3).commit();
         });
 
         return root;

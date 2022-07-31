@@ -1,9 +1,11 @@
 package com.example.llegabien.frontend.usuario.fragmento;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -23,17 +25,17 @@ public class FragmentoUsuarioGuia4 extends Fragment {
         View root = inflater.inflate(R.layout.fragmento_usuario_guia4, container, false);
 
         ConstraintLayout btnSiguiente = root.findViewById(R.id.button_siguiente_usuarioGuia4);
-        btnSiguiente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Window window = requireActivity().getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setNavigationBarColor(getResources().getColor(R.color.morado_oscuro));
-                window.setStatusBarColor(getResources().getColor(R.color.morado_oscuro));
+        btnSiguiente.setOnClickListener(view -> {
+            Window window = requireActivity().getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setNavigationBarColor(getResources().getColor(R.color.morado_oscuro));
+            window.setStatusBarColor(getResources().getColor(R.color.morado_oscuro));
 
-                FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.remove(FragmentoUsuarioGuia4.this).commit();
-            }
+            FragmentContainerView fragmentContainerView = requireActivity().findViewById(R.id.fragmentContainerView_guia_pagina_principal);
+            fragmentContainerView.setBackgroundColor(Color.TRANSPARENT);
+
+            FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.remove(FragmentoUsuarioGuia4.this).commit();
         });
 
         return root;

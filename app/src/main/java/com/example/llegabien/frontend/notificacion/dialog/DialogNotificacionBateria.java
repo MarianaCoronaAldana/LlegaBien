@@ -15,7 +15,7 @@ import com.example.llegabien.backend.notificacion.Notificacion;
 
 public class DialogNotificacionBateria extends Dialog implements View.OnClickListener{
     public Activity mActivity;
-    public Button mBtnConfimarEmergencia;
+    public Button mBtnAceptar;
     private float mBateria;
 
     public DialogNotificacionBateria(Activity activity, float nivelBateria) {
@@ -30,14 +30,14 @@ public class DialogNotificacionBateria extends Dialog implements View.OnClickLis
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_notificar_bateria);
-        mBtnConfimarEmergencia = findViewById(R.id.button_confirmarnotificarBateria);
-        mBtnConfimarEmergencia.setOnClickListener(this);
+        mBtnAceptar = findViewById(R.id.button_confirmarnotificarBateria);
+        mBtnAceptar.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         Notificacion notificar = new Notificacion(mBateria, this.getContext());
-        notificar.EmpezarProtocolo();
+        notificar.empezarProtocolo();
         dismiss();
     }
 

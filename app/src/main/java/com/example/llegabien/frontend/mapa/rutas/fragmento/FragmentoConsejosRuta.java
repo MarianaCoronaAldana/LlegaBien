@@ -1,7 +1,7 @@
 package com.example.llegabien.frontend.mapa.rutas.fragmento;
 
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTASEGURA;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTA_SEGURA;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -50,7 +50,7 @@ public class FragmentoConsejosRuta extends Fragment implements View.OnClickListe
         //listeners
         btnCerrar.setOnClickListener(this);
 
-        Ruta mRutaMasSegura = Preferences.getSavedObjectFromPreference(this.requireActivity(), PREFERENCE_RUTASEGURA, Ruta.class);
+        Ruta mRutaMasSegura = Preferences.getSavedObjectFromPreference(this.requireActivity(), PREFERENCE_RUTA_SEGURA, Ruta.class);
 
         for (int i = 0; i < mRutaMasSegura.getDelitosZonasInseguras().size() + 1; i++) {
             if (i == mRutaMasSegura.getDelitosZonasInseguras().size())

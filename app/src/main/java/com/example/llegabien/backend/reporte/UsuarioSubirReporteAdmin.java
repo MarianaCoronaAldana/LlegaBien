@@ -64,8 +64,8 @@ public class UsuarioSubirReporteAdmin {
             obtenerReportesDeArchivo(data);
             actualizarUbicaciones(this.mReportesDeArchivo);
 
-            //ReporteDAO reporteDAO = new ReporteDAO(mContext);
-            //reporteDAO.anadirReportes(this.mReportesParaAnadir);
+            ReporteDAO reporteDAO = new ReporteDAO(mContext);
+            reporteDAO.anadirReportes(this.mReportesParaAnadir);
             //reporteDAO.anadirReportesIIEG(data);
         }
     }

@@ -111,7 +111,7 @@ public class FragmentoBarraNavegacion extends Fragment implements View.OnTouchLi
 
             } else {
                 FragmentoPermisos fragmentoPermisos = new FragmentoPermisos();
-                fragmentTransaction.add(R.id.fragmentContainerView_reportes, fragmentoPermisos).commit();
+                fragmentTransaction.add(R.id.fragmentContainerView_permisos, fragmentoPermisos).commit();
             }
         }
 

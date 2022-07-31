@@ -99,20 +99,16 @@ public class FragmentoBotonEmergencia extends Fragment {
                     mBtnHistorialRutasBarraNavegacion.setVisibility(View.VISIBLE);
                     mBtnFavoritosBarraNavegacion.setVisibility(View.VISIBLE);
                     mBtnSubirReporte.setVisibility(View.VISIBLE);
-                }
-
-                else{
-                   mBtnCentrarMapaNavegacion.setClickable(true);
-                   mBtnAdvertenciaNavegacion.setClickable(true);
-                   mBtnSubirReporte.setClickable(true);
+                } else {
+                    mBtnCentrarMapaNavegacion.setClickable(true);
+                    mBtnAdvertenciaNavegacion.setClickable(true);
+                    mBtnSubirReporte.setClickable(true);
                 }
 
                 mProgressCircle.setProgress(0);
 
                 FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                Fragment fragment = requireActivity().getSupportFragmentManager().findFragmentByTag("FragmentoBotonEmergencia");
-                if (fragment != null)
-                    fragmentTransaction.remove(fragment).commit();
+                fragmentTransaction.remove(FragmentoBotonEmergencia.this).commit();
 
                 Emergencia emergencia = new Emergencia(FragmentoBotonEmergencia.this.getActivity());
                 emergencia.EmpezarProtocolo();

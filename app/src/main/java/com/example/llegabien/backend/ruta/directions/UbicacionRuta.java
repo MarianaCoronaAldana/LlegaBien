@@ -4,8 +4,6 @@ import android.location.Address;
 
 import com.example.llegabien.backend.ubicacion.ubicacion;
 
-import java.util.Locale;
-
 public class UbicacionRuta {
     private int mDistancia;
     private float mLatPuntoInicio;
@@ -52,11 +50,6 @@ public class UbicacionRuta {
 
     public void setmUbicacion(ubicacion mUbicacion) {
         this.mUbicacion = mUbicacion;
-    }
-
-    public String construirDireccion(){
-        return (mAddressPuntoMedio.getThoroughfare() + ", " + mAddressPuntoMedio.getSubLocality() + ", " + mAddressPuntoMedio.getLocality() + ", " + mAddressPuntoMedio.getAdminArea()
-                + ", " + mAddressPuntoMedio.getCountryName()).toUpperCase(Locale.ROOT);
     }
 
     public ubicacion getmUbicacionColonia() {

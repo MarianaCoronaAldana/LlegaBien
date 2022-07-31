@@ -1,7 +1,6 @@
 package com.example.llegabien.backend.ruta.realm;
 
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_FAVORITO;
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTA;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTA_SEGURA;
 import static io.realm.Realm.getApplicationContext;
 
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.llegabien.backend.app.Preferences;
-import com.example.llegabien.backend.favoritos.favorito;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
 import com.example.llegabien.backend.usuario.usuario;
 
@@ -45,7 +43,7 @@ public class rutaDAO {
     }
 
     // Devuelve un objeto favorito basado en el id
-    public ruta obtenerRutaPorId(ObjectId id) {
+    public void obtenerRutaPorId(ObjectId id) {
         if (realm == null)
             realm = conectarBD.conseguirUsuarioMongoDB();
 
@@ -54,13 +52,11 @@ public class rutaDAO {
                     .findFirst();
 
             if (task != null) {
-                Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_RUTA, task);
-                return task;
+                Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_RUTA_SEGURA, task);
             }
         } else
             errorConexion();
 
-        return null;
     }
 
     // Se busca si el usuario ya generó una ruta especifica, si es así, le cambie el valor de "fUsoRuta"

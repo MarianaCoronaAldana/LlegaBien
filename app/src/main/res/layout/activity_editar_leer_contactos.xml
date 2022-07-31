@@ -9,7 +9,7 @@
     android:clickable="true"
     android:fitsSystemWindows="true"
     android:focusable="true"
-    android:background="@color/blanco"
+    android:background="@color/azul_claro"
     tools:context=".frontend.contactos.activity.ActivityEditarLeerContactos">
 
     <androidx.constraintlayout.widget.Guideline
@@ -23,8 +23,8 @@
         android:id="@+id/fragmentContainerView_leerEditarContactos"
         android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:name="com.example.llegabien.frontend.contactos.fragmento.FragmentoLeerContactos"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:name="com.example.llegabien.frontend.contactos.fragmento.FragmentoListaContactos"
+        app:layout_constraintBottom_toTopOf="@id/guideline_barraNavegacion_editarLeerContactos"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.fragment.app.FragmentContainerView
@@ -36,7 +36,7 @@
         android:id="@+id/fragmentContainerView_botonEmergencia"
         android:layout_height="0dp"
         android:layout_width="match_parent"
-        app:layout_constraintBottom_toBottomOf="@id/guideline_barraNavegacion_editarLeerContactos"
+        app:layout_constraintBottom_toTopOf="@id/guideline_barraNavegacion_editarLeerContactos"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <View

@@ -1,6 +1,6 @@
 package com.example.llegabien.backend.notificacion;
 
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_MENSAJE_PORBATERIA_ENVIADO;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_MENSAJE_BATERIA_ENVIADO;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
 import android.content.Context;
@@ -34,17 +34,17 @@ public class Notificacion extends AppCompatActivity {
     private final ArrayList<String> mContactos = new ArrayList<>();
     private final OkHttpClient mClient = new OkHttpClient();
     private String mNombre;
-    private Context mContext = null;
+    private final Context mContext;
     private usuario Usuario;
     private float mBateria;
     private Activity mActivity;
 
-    public Notificacion(float Bateria, Context c){
+    public Notificacion(float Bateria, Context c) {
         mBateria = Bateria;
         mContext = c;
     }
 
-    public Notificacion(Context context, Activity activity){
+    public Notificacion(Context context, Activity activity) {
         mContext = context;
         mActivity = activity;
     }
@@ -55,55 +55,54 @@ public class Notificacion extends AppCompatActivity {
         Intent batteryStatus = mContext.registerReceiver(null, ifilter);
         int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-        mBateria = level * 100 / (float)scale;
+        mBateria = level * 100 / (float) scale;
         Log.v("QUICKSTART", "Nivel bateria: " + mBateria);
 
-        if(mBateria<21){
-            if(!Preferences.getSavedBooleanFromPreference(mContext,PREFERENCE_MENSAJE_PORBATERIA_ENVIADO)) {
+        if (mBateria < 21) {
+            if (!Preferences.getSavedBooleanFromPreference(mContext, PREFERENCE_MENSAJE_BATERIA_ENVIADO)) {
                 DialogNotificacionBateria dialogNotificacionBateria = new DialogNotificacionBateria(mActivity, mBateria);
                 dialogNotificacionBateria.show();
-                //EmpezarProtocolo();
+            }
+        } else
+            Preferences.savePreferenceBoolean(mContext, false, PREFERENCE_MENSAJE_BATERIA_ENVIADO);
+    }
+
+
+    public void empezarProtocolo() {
+        inicializarDatos();
+        if (Usuario.getContacto().isEmpty())
+            Toast.makeText(mContext, "No tienes contactos de emergencia.", Toast.LENGTH_SHORT).show();
+        else {
+            try {
+                //TODO Cambiar link de ngrok aqui
+                post(new Callback() {
+                    @Override
+                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                        Log.v("QUICKSTART", "NO SE PUDO CONTACTAR PARA NOTIFICAR WE, ESTOY EN ON FAILURE.");
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(@NonNull Call call, @NonNull Response response) {
+                        runOnUiThread(() -> {
+                            Log.v("QUICKSTART", response.message());
+                            Preferences.savePreferenceBoolean(mContext, true, PREFERENCE_MENSAJE_BATERIA_ENVIADO);
+
+                            if (!response.isSuccessful()) {
+                                Toast.makeText(mContext, "NO SE PUDO NOTIFICAR A CONTACTOS POR BATERIA.", Toast.LENGTH_LONG).show();
+                                Log.v("QUICKSTART", "NO SE PUDO NOTIFICAR A CONTACTOS POR BATERIA.");
+                            }
+                        });
+                    }
+                });
+            } catch (IOException e) {
+                Log.v("QUICKSTART", "NO SE PUDO CONTACTAR PARA NOTIFICAR WE, ESTOY EN CATCH");
+                e.printStackTrace();
             }
         }
-        else
-            Preferences.savePreferenceBoolean(mContext,false, PREFERENCE_MENSAJE_PORBATERIA_ENVIADO);
     }
 
-
-    public void EmpezarProtocolo(){
-        InicializarDatos();
-        try {
-            //TODO Cambiar link de ngrok aqui
-            post(new  Callback(){
-                @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                   // Toast.makeText(mContext, "ERROR, NO SE PUDO CONTACTAR A CONTACTOS", Toast.LENGTH_LONG).show();
-                    Log.v("QUICKSTART", "NO SE PUDO CONTACTAR PARA NOTIFICAR WE, ESTOY EN on failure");
-                    e.printStackTrace();
-                }
-                @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) {
-                    runOnUiThread(() -> {
-                        Toast.makeText(mContext,"MENOS DEL 20% DE BATERIA, CUIDADO",Toast.LENGTH_LONG).show();
-                        Log.v("QUICKSTART", response.message());
-                        Preferences.savePreferenceBoolean(mContext,true, PREFERENCE_MENSAJE_PORBATERIA_ENVIADO);
-
-                        if(!response.isSuccessful()) {
-                            Toast.makeText(mContext, "NO SE PUDO NOTIFICAR A CONTACTOS POR BATERIA", Toast.LENGTH_LONG).show();
-                            Log.v("QUICKSTART", "NO SE PUDO CONTACTAR PARA NOTIFICAR WE");
-                        }
-                    });
-                }
-            });
-        } catch (IOException e) {
-            Log.v("QUICKSTART", "NO SE PUDO CONTACTAR PARA NOTIFICAR WE, ESTOY EN CATCH");
-            e.printStackTrace();
-        }
-    }
-
-    void post(Callback callback) throws IOException {
-        Log.v("QUICKSTART", "Contacto 1: " + Usuario.getContacto().first().getTelCelular());
-
+    private void post(Callback callback) throws IOException {
         RequestBody formBody = new FormBody.Builder()
                 .add("NombreUsuario", mNombre)
                 .add("Bateria", String.valueOf(mBateria))
@@ -123,7 +122,7 @@ public class Notificacion extends AppCompatActivity {
 
     }
 
-    private void InicializarDatos(){
+    private void inicializarDatos() {
         Usuario = Preferences.getSavedObjectFromPreference(mContext, PREFERENCE_USUARIO, usuario.class);
         if (Usuario != null) {
             for (int i = 0; i < Usuario.getContacto().size(); i++)

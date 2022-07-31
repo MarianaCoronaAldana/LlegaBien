@@ -1,7 +1,6 @@
 package com.example.llegabien.frontend.mapa.rutas.fragmento;
 
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTA;
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTASEGURA;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTA_SEGURA;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 import static io.realm.Realm.getApplicationContext;
 
@@ -63,7 +62,6 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
     private String mUbicacionBuscada;
     private String mDirectionMode = "bicycling";
     private final String mActivityAnterior;
-    private ActivityMap mActivityMap;
     private GoogleMap mGoogleMap;
     private Mapa mMapa;
 
@@ -136,7 +134,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         // Para ver si la actividad anterior no es la de historial ruta.
         if (mActivityAnterior != null) {
             if (mActivityAnterior.equals("HISTORIAL_RUTAS")) {
-                ruta ruta = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_RUTA, ruta.class);
+                ruta ruta = Preferences.getSavedObjectFromPreference(requireActivity(), PREFERENCE_RUTA_SEGURA, ruta.class);
                 UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(requireActivity());
 
                 mBtnPuntoPartida.setText(ubicacionGeocodificacion.degeocodificarUbiciacion(Double.parseDouble(ruta.getPuntoInicio().get(0)), Double.parseDouble(ruta.getPuntoInicio().get(1))));
@@ -153,7 +151,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
             // Para mostrar la informacion del lugar seleccionado en Boton
             if (mUbicacionBuscada != null) {
                 mBtnPuntoDestino.setText(mUbicacionBuscada);
-                mDirectionMode = "bicycling";
+                tomarDatosRuta();
             }
         }
         return root;
@@ -244,15 +242,15 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
                     .replace("hour", "hora"));
             mTxtViewDistanciaDetalles.setText(rutaMasSegura.getDistanciaTotalDirections());
             if (this.getActivity() != null) {
-                this.mActivityMap = (ActivityMap) requireActivity();
+                ActivityMap mActivityMap = (ActivityMap) requireActivity();
                 this.mGoogleMap = mActivityMap.getGoogleMap();
 
                 mGoogleMap.clear();
                 Toast.makeText(getApplicationContext(), "Ruta creada!", Toast.LENGTH_SHORT).show();
 
                 // Se guarda ruta en Preferences.
-                Preferences.savePreferenceObject(this.requireActivity(), PREFERENCE_RUTASEGURA, rutaMasSegura);
-                rutaMasSegura = Preferences.getSavedObjectFromPreference(this.requireActivity(), PREFERENCE_RUTASEGURA, Ruta.class);
+                Preferences.savePreferenceObject(this.requireActivity(), PREFERENCE_RUTA_SEGURA, rutaMasSegura);
+                rutaMasSegura = Preferences.getSavedObjectFromPreference(this.requireActivity(), PREFERENCE_RUTA_SEGURA, Ruta.class);
 
                 if (rutaMasSegura != null) {
                     setValoresRutaPolylines(rutaMasSegura);
@@ -269,27 +267,29 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
     // OTRAS FUNCIONES //
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void tomarDatosRuta() {
-        LatLng origen = obtenerCoordenadas(mBtnPuntoPartida.getText().toString());
-        LatLng destino = obtenerCoordenadas(mBtnPuntoDestino.getText().toString());
-        if (origen != null && destino != null) {
-            if(!origen.equals(destino)) {
-                anadirRutaBD(origen, destino);
-                Toast.makeText(getApplicationContext(), "Creando ruta....", Toast.LENGTH_SHORT).show();
+        if(mBtnPuntoPartida.getText() != null || mBtnPuntoDestino.getText() != null) {
+            LatLng origen = obtenerCoordenadas(mBtnPuntoPartida.getText().toString());
+            LatLng destino = obtenerCoordenadas(mBtnPuntoDestino.getText().toString());
+            if (origen != null && destino != null) {
+                if (!origen.equals(destino)) {
+                    anadirRutaBD(origen, destino);
+                    Toast.makeText(getApplicationContext(), "Creando ruta....", Toast.LENGTH_SHORT).show();
 
-                mBtnTiempoCaminando.setEnabled(false);
-                mBtnTiempoBici.setEnabled(false);
-                mBtnPuntoDestino.setEnabled(false);
-                mBtnPuntoPartida.setEnabled(false);
+                    mBtnTiempoCaminando.setEnabled(false);
+                    mBtnTiempoBici.setEnabled(false);
+                    mBtnPuntoDestino.setEnabled(false);
+                    mBtnPuntoPartida.setEnabled(false);
 
-                new FetchURL((TaskLoadedCallback) this, this.requireActivity().getApplicationContext()).execute(generarUrlRuta(origen, destino), mDirectionMode);
+                    new FetchURL((TaskLoadedCallback) this, this.requireActivity().getApplicationContext()).execute(generarUrlRuta(origen, destino), mDirectionMode);
+                } else
+                    Toast.makeText(getApplicationContext(), "Punto de origen y partida no pueden ser los mismos", Toast.LENGTH_LONG).show();
             }
-            else
-                Toast.makeText(getApplicationContext(), "Punto de origen y partida no pueden ser los mismos", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "Ingresa punto de origen y destino", Toast.LENGTH_SHORT).show();
-            Log.v("QUICKSTART", "Wey es nulo");
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Ingresa punto de origen y punto destino.", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private LatLng obtenerCoordenadas(String adress) {
         UbicacionGeocodificacion ubicacionGeodicacion = new UbicacionGeocodificacion(this.requireActivity().getApplicationContext());

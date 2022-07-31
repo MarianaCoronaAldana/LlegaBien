@@ -1,6 +1,6 @@
 package com.example.llegabien.frontend.mapa.rutas.fragmento;
 
-import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTASEGURA;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTA_SEGURA;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
@@ -37,7 +37,6 @@ import com.example.llegabien.frontend.app.fragmento.FragmentoPermisos;
 import com.example.llegabien.frontend.botonEmergencia.fragmento.FragmentoBotonEmergencia;
 import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.mapa.activity.ActivityMap;
-import com.example.llegabien.frontend.mapa.rutas.fragmento.FragmentoConsejosRuta;
 import com.example.llegabien.frontend.reportes.activity.ActivityReportes;
 import com.google.android.gms.maps.GoogleMap;
 
@@ -67,7 +66,7 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
         View root = inflater.inflate(R.layout.fragmento_navegacion, container, false);
 
         // Se obtiene la ruta segura de Preferences.
-        mRutaSegura = Preferences.getSavedObjectFromPreference(this.requireActivity(), PREFERENCE_RUTASEGURA, Ruta.class);
+        mRutaSegura = Preferences.getSavedObjectFromPreference(this.requireActivity(), PREFERENCE_RUTA_SEGURA, Ruta.class);
 
         // Se inicializa para utilizarlo en OnLocationChanged.
         mUbicacionGeocodificacion = new UbicacionGeocodificacion(this.requireActivity());

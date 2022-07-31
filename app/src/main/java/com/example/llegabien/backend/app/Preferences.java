@@ -15,16 +15,15 @@ public class Preferences extends AppCompatActivity {
     private static android.content.SharedPreferences mSharedPreferences;
     public static final String STRING_PREFERENCES = "Preferences";
     public static final String PREFERENCE_ESTADO_BUTTON_SESION = "estado.button.sesion";
-    public static final String PREFERENCE_MENSAJE_PORBATERIA_ENVIADO = "mensaje.por.bateria.enviado";
+    public static final String PREFERENCE_MENSAJE_BATERIA_ENVIADO = "mensaje.por.bateria.enviado";
     public static final String PREFERENCE_ES_ADMIN = "usuario.admin";
     public static final String PREFERENCE_USUARIO = "usuario";
     public static final String PREFERENCE_ADMIN = "administrador";
     public static final String PREFERENCE_UBICACION = "ubicacion";
     public static final String PREFERENCE_FAVORITO = "favorito";
-    public static final String PREFERENCE_RUTA = "ruta.bd";
     public static final String PREFERENCE_EDITANDO_USUARIO_CON_ADMIN = "editando.usuario.admin";
-    public static final String PREFERENCE_RUTASEGURA = "rutaSegura";
-    public static final String PREFERENCE_GUIAMOSTRADA = "guiaMostrada";
+    public static final String PREFERENCE_RUTA_SEGURA = "rutaSegura";
+    public static final String PREFERENCE_GUIA_MOSTRADA = "guiaMostrada";
 
     // Guardar preferencia sobre un tipo boolean
     public static void savePreferenceBoolean(Context c, boolean b, String key){

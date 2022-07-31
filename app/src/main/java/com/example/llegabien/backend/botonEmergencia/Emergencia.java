@@ -52,7 +52,7 @@ public class Emergencia extends AppCompatActivity  {
                 hacerLlamada();
             }
             else {
-                Toast.makeText(mActivity, "ERROR, CONTACTE A EMERGENCIAS DIRECTAMENTE!",Toast.LENGTH_LONG).show();
+                Toast.makeText(mActivity, "ERROR, ¡CONTACTA A EMERGENCIAS DIRECTAMENTE!",Toast.LENGTH_LONG).show();
             }
         }, true,fusedLocationProviderClient, mActivity);
     }

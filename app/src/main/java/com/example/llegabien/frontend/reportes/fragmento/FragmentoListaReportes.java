@@ -259,7 +259,6 @@ public class FragmentoListaReportes extends Fragment implements View.OnClickList
             // Fin de Textview "UbicacionDelito"
 
             constraintSet.applyTo(consLytPrincipalReporte);
-
         }
     }
 }
