@@ -4,7 +4,6 @@ import static com.example.llegabien.backend.app.Preferences.PREFERENCE_RUTA_SEGU
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 import static io.realm.Realm.getApplicationContext;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -150,7 +149,6 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
         else {
            crearRutaConUbiBuscada();
         }
-        String partida = mBtnPuntoPartida.getText().toString();
         return root;
     }
 
@@ -277,7 +275,7 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
                     mBtnPuntoDestino.setEnabled(false);
                     mBtnPuntoPartida.setEnabled(false);
 
-                    new FetchURL((TaskLoadedCallback) this, this.requireActivity().getApplicationContext()).execute(generarUrlRuta(origen, destino), mDirectionMode);
+                    new FetchURL(this, this.requireActivity().getApplicationContext()).execute(generarUrlRuta(origen, destino), mDirectionMode);
                 } else
                     Toast.makeText(getApplicationContext(), "Punto de origen y partida no pueden ser los mismos.", Toast.LENGTH_LONG).show();
             }

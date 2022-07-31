@@ -29,17 +29,14 @@ public class UbicacionDispositivo{
         try {
             if (isLocationPermissionGranted) {
                 Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(activity, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            mUbicacion = task.getResult();
-                            onUbicacionObtenida.isUbicacionObtenida(true, mUbicacion);
-                        } else {
-                            Log.v("LOCATION NULL", "Current location is null. Using defaults.");
-                            Log.v("TASK EXCEPTION", "Exception: %s", task.getException());
-                            onUbicacionObtenida.isUbicacionObtenida(false, mUbicacion);
-                        }
+                locationResult.addOnCompleteListener(activity, task -> {
+                    if (task.isSuccessful()) {
+                        mUbicacion = task.getResult();
+                        onUbicacionObtenida.isUbicacionObtenida(true, mUbicacion);
+                    } else {
+                        Log.v("LOCATION NULL", "Current location is null. Using defaults.");
+                        Log.v("TASK EXCEPTION", "Exception: %s", task.getException());
+                        onUbicacionObtenida.isUbicacionObtenida(false, mUbicacion);
                     }
                 });
             }
