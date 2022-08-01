@@ -39,6 +39,8 @@ import com.example.llegabien.frontend.usuario.dialog.DialogDatePicker;
 import com.example.llegabien.frontend.usuario.dialog.DialogTimePicker;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.bson.types.ObjectId;
+
 import java.text.Normalizer;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -111,7 +113,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
 
         // Para obtener ubicacion actual.
         UbicacionDispositivo ubicacionDispositivo = new UbicacionDispositivo();
-        ubicacionDispositivo.mostrarStringUbicacionActual(requireActivity(),mBtnUbicacion, this);
+        ubicacionDispositivo.mostrarStringUbicacionActual(requireActivity(), mBtnUbicacion, this);
 
         // Para inicializar valores del spinner.
         setSpinner();
@@ -132,24 +134,21 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
                     requireActivity().finish();
                 }
             }
-        } else if (view.getId() == R.id.editText_fechaDelito_subirReporteUsuario){
+        } else if (view.getId() == R.id.editText_fechaDelito_subirReporteUsuario) {
             Log.v("QUICKSTART", "Estoy en poner fecha delito");
             DialogDatePicker dialogDatePicker = new DialogDatePicker();
             dialogDatePicker.mostrarDatePickerDialog(mEditTxtFechaDelito, this);
             mEditTxtFechaDelito.setError(null);
-        }
-        else if (view.getId() == R.id.editText_horaDelito_subirReporteUsuario){
+        } else if (view.getId() == R.id.editText_horaDelito_subirReporteUsuario) {
             Log.v("QUICKSTART", "Estoy en poner HORA delito");
             DialogTimePicker dialogTimePicker = new DialogTimePicker();
             dialogTimePicker.mostrarTimePickerDialog(mEditTxtHoraDelito, this);
             mEditTxtHoraDelito.setError(null);
-        }
-        else if (view.getId() == R.id.button_ubicacionDelito_subirReporteUsuario){
+        } else if (view.getId() == R.id.button_ubicacionDelito_subirReporteUsuario) {
             ubicacionBusquedaAutocompletada = new UbicacionBusquedaAutocompletada();
             ubicacionBusquedaAutocompletada.inicializarIntent(requireActivity());
             activityResultLauncher.launch(ubicacionBusquedaAutocompletada.getIntent());
-        }
-        else if (view.getId() == R.id.button_regresar_subirReporteUsuario)
+        } else if (view.getId() == R.id.button_regresar_subirReporteUsuario)
             requireActivity().finish();
     }
 
@@ -207,7 +206,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
             Date fechaReporte = reportes.get(i).getFechaReporte();
             Date fechaReporteActual = Reporte.getFechaReporte();
             diff = Duration.between(fechaReporte.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(),
-                                        fechaReporteActual.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+                    fechaReporteActual.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
             diffHoras = diff.toHours();
             diffDias = diff.toDays();
 
@@ -229,7 +228,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
                 "Extorsión", "Acoso sexual",
                 "Robo", "Lesiones dolosas",
                 "Abuso sexual", "Abuso de autoridad",
-                "Vandalismo", "Tiroteo", "Violencia familiar","Feminicidio","Fraude","Portación de arma u objeto prohibido"};
+                "Vandalismo", "Tiroteo", "Violencia familiar", "Feminicidio", "Fraude", "Portación de arma u objeto prohibido"};
 
         // Create the instance of ArrayAdapter having the list of courses
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(requireActivity(), R.layout.spinner_item, delitos);
@@ -258,24 +257,43 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void establecerUbicacionReporte(reporte reporte, String ubicacion){
+    private void establecerUbicacionReporte(reporte reporte, String ubicacion) {
         UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(requireActivity());
         Address addressUbicacion = ubicacionGeocodificacion.geocodificarUbiciacion(ubicacion);
 
         UbicacionDAO ubicacionDAO = new UbicacionDAO(this.requireActivity());
         List<ubicacion> colonias = ubicacionDAO.obtenerColonias();
 
-        ubicacion colonia = ubicacionDAO.obtenerColonia(addressUbicacion.getSubLocality().toUpperCase(Locale.ROOT), colonias,
-                                    new LatLng(addressUbicacion.getLatitude(), addressUbicacion.getLongitude()));
 
-        if(colonia != null) {
-            String ubicacionString = UbicacionGeocodificacion.establecerNombreUbicacion(addressUbicacion, colonia);
-            if (ubicacionString != null)
-                reporte.setUbicacion(ubicacionString);
-            else
+        ubicacion colonia = ubicacionDAO.obtenerColonia(addressUbicacion.getSubLocality().toUpperCase(Locale.ROOT), colonias,
+                new LatLng(addressUbicacion.getLatitude(), addressUbicacion.getLongitude()));
+
+        if (colonia != null) {
+            String ubicacionNombreGoogle = UbicacionGeocodificacion.establecerNombreUbicacion(addressUbicacion, colonia,
+                    ubicacionDAO.obtenerUbicacionConNombre(colonia.getNombre().split(",", 2)[1].trim()));
+            if (ubicacionNombreGoogle != null) {
+                reporte.setUbicacion(ubicacionNombreGoogle);
+                ubicacion calle = ubicacionDAO.obtenerUbicacionConNombre(ubicacionNombreGoogle);
+                if (calle == null){
+                    // Si no existe la calle, se crea la ubicacion con los atributos necesarios.
+                    calle = new ubicacion();
+                    calle.set_id(new ObjectId());
+                    calle.set_partition("LlegaBien");
+                    calle.setNombre(ubicacionNombreGoogle);
+                    calle.setIdColonia(colonia.get_id());
+                    calle.setIdMunicipio(colonia.getIdMunicipio());
+                    calle.setSuma_delitos(0);
+                    calle.setDelitos_semana(0);
+                    calle.setMeta_reduccion_double(0.0);
+                    calle.setMedia_historica_double(0.0);
+                    calle.setTipo("calle");
+                }
+                reporte.setIdUbicacion(calle.get_id());
+            } else {
+                reporte.setIdUbicacion(colonia.get_id());
                 reporte.setUbicacion(mBtnUbicacion.getText().toString());
-        }
-        else
+            }
+        } else
             reporte.setUbicacion(mBtnUbicacion.getText().toString());
     }
 }

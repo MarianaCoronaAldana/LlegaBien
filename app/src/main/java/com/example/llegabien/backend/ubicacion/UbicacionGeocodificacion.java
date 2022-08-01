@@ -53,7 +53,7 @@ public class UbicacionGeocodificacion {
         return null;
     }
 
-    public static String establecerNombreUbicacion(Address addressGoogle, ubicacion colonia) {
+    public static String establecerNombreUbicacion(Address addressGoogle, ubicacion colonia, ubicacion municipio) {
         // Para establecer el nombre de la calle se establece con Thoroughfare o FeatureName.
         // En caso de que Thoroughfare o FeatureName sean nulos, quiere decir que la ubicacion no se encontró como calle o vía pública.
         String calleNombreGoogle = addressGoogle.getThoroughfare();
@@ -69,7 +69,7 @@ public class UbicacionGeocodificacion {
             }
 
             // Se retorna el nombre completo de la calle.
-            return (calleNombreGoogle + ", " + coloniaNombreGoogle + ", " + addressGoogle.getLocality() + ", " + addressGoogle.getAdminArea()
+            return (calleNombreGoogle + ", " + coloniaNombreGoogle + ", " + municipio.getNombre().split(",", 2)[0].trim() + ", " + addressGoogle.getAdminArea()
                     + ", " + addressGoogle.getCountryName()).toUpperCase(Locale.ROOT);
         }
         return null;

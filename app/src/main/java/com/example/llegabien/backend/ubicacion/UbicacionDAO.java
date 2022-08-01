@@ -37,6 +37,20 @@ public class UbicacionDAO {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
+    public List<ubicacion> obtenerCallesTlajomulco(ObjectId IdMunicipio) {
+        if (realm == null)
+            realm = conectarBD.conseguirUsuarioMongoDB();
+
+        if (realm != null)
+            return realm.copyFromRealm(realm.where(ubicacion.class).equalTo("tipo", "calle")
+                    .equalTo("IdMunicipio", IdMunicipio).findAll());
+        else
+            errorConexion();
+
+        return null;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public ubicacion obtenerUbicacionConIdDeLista(ObjectId IdUbicacion, List<ubicacion> ubicaciones) {
         return ubicaciones.stream().filter(ubicacion -> ubicacion.get_id().equals(IdUbicacion)).findAny().orElse(null);
     }
@@ -158,7 +172,8 @@ public class UbicacionDAO {
                     if (resultadosUbicaciones != null) {
                         UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(mContext);
                         ubicacion calle  = obtenerUbicacionConNombre(UbicacionGeocodificacion.establecerNombreUbicacion(ubicacionGeocodificacion
-                                .geocodificarUbiciacion(latitude,longitude), ubicacion));
+                                .geocodificarUbiciacion(latitude,longitude), ubicacion,
+                                obtenerUbicacionConNombre(ubicacion.getNombre().split(",", 2)[1].trim())));
                         if (calle != null) {
                             Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_UBICACION, calle);
                             return true;
