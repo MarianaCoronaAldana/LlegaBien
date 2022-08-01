@@ -193,7 +193,6 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
     // 2. se subieron mas de 10 reportes en una semana
     @RequiresApi(api = Build.VERSION_CODES.O)
     private boolean verificarHistorialReportes(ReporteDAO reporte_DAO) {
-        return true;/*
         RealmResults<reporte> reportes = reporte_DAO.obtenerReportesPorUsuario(Reporte);
         int reportesAnteriores = 0;
         Duration diff;
@@ -221,7 +220,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
             if (diffDias < 7)
                 reportesAnteriores++;
         }
-        return true;*/
+        return true;
     }
 
     private void setSpinner() {
