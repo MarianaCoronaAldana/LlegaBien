@@ -224,13 +224,13 @@ public class FragmentoIndicaciones extends Fragment implements View.OnClickListe
     public void onTaskDone(Object... values) {
         Log.v("QUICKSTART", "ESTOY EN FRAGMENTO");
         Ruta rutaMasSegura = (Ruta) values[0];
+
+        mBtnTiempoCaminando.setEnabled(true);
+        mBtnTiempoBici.setEnabled(true);
+        mBtnPuntoDestino.setEnabled(true);
+        mBtnPuntoPartida.setEnabled(true);
+
         if (rutaMasSegura != null) {
-
-            mBtnTiempoCaminando.setEnabled(true);
-            mBtnTiempoBici.setEnabled(true);
-            mBtnPuntoDestino.setEnabled(true);
-            mBtnPuntoPartida.setEnabled(true);
-
             mTxtViewTiempoDetalles.setText(rutaMasSegura.getTiempoTotalDirections()
                     .replace("hours", "horas")
                     .replace("mins", "min")

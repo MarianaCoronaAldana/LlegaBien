@@ -93,13 +93,13 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
 
         // Wiring up
         mSpinnerCualDelito = root.findViewById(R.id.spinner_cualDelito_subirReporteUsuario);
-        Button mBtnRegresar = (Button) root.findViewById(R.id.button_regresar_subirReporteUsuario);
-        Button mBtnSubirReporte = (Button) root.findViewById(R.id.button_enviarReporte_subirReporteUsuario);
-        mEditTxtNombre = (EditText) root.findViewById(R.id.editText_nombreUsuario_subirReporteUsuario);
+        Button mBtnRegresar = root.findViewById(R.id.button_regresar_subirReporteUsuario);
+        Button mBtnSubirReporte = root.findViewById(R.id.button_enviarReporte_subirReporteUsuario);
+        mEditTxtNombre = root.findViewById(R.id.editText_nombreUsuario_subirReporteUsuario);
         mBtnUbicacion = root.findViewById(R.id.button_ubicacionDelito_subirReporteUsuario);
-        mEditTxtFechaDelito = (EditText) root.findViewById(R.id.editText_fechaDelito_subirReporteUsuario);
-        mEditTxtHoraDelito = (EditText) root.findViewById(R.id.editText_horaDelito_subirReporteUsuario);
-        mEditTxtComentariosDelito = (EditText) root.findViewById(R.id.editText_comentariosAdicionales_subirReporteUsuario);
+        mEditTxtFechaDelito = root.findViewById(R.id.editText_fechaDelito_subirReporteUsuario);
+        mEditTxtHoraDelito = root.findViewById(R.id.editText_horaDelito_subirReporteUsuario);
+        mEditTxtComentariosDelito = root.findViewById(R.id.editText_comentariosAdicionales_subirReporteUsuario);
 
         // Listeners
         mBtnRegresar.setOnClickListener(this);
@@ -193,6 +193,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
     // 2. se subieron mas de 10 reportes en una semana
     @RequiresApi(api = Build.VERSION_CODES.O)
     private boolean verificarHistorialReportes(ReporteDAO reporte_DAO) {
+        return true;/*
         RealmResults<reporte> reportes = reporte_DAO.obtenerReportesPorUsuario(Reporte);
         int reportesAnteriores = 0;
         Duration diff;
@@ -220,7 +221,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
             if (diffDias < 7)
                 reportesAnteriores++;
         }
-        return true;
+        return true;*/
     }
 
     private void setSpinner() {
@@ -258,15 +259,21 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void establecerUbicacionReporte(reporte reporte, String ubicacion) {
+        ubicacion colonia;
         UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(requireActivity());
         Address addressUbicacion = ubicacionGeocodificacion.geocodificarUbiciacion(ubicacion);
 
         UbicacionDAO ubicacionDAO = new UbicacionDAO(this.requireActivity());
         List<ubicacion> colonias = ubicacionDAO.obtenerColonias();
 
-
-        ubicacion colonia = ubicacionDAO.obtenerColonia(addressUbicacion.getSubLocality().toUpperCase(Locale.ROOT), colonias,
-                new LatLng(addressUbicacion.getLatitude(), addressUbicacion.getLongitude()));
+        if(addressUbicacion.getSubLocality() != null) {
+            colonia = ubicacionDAO.obtenerColonia(addressUbicacion.getSubLocality().toUpperCase(Locale.ROOT), colonias,
+                    new LatLng(addressUbicacion.getLatitude(), addressUbicacion.getLongitude()));
+        }
+        else{
+            colonia = ubicacionDAO.obtenerColonia("", colonias,
+                    new LatLng(addressUbicacion.getLatitude(), addressUbicacion.getLongitude()));
+        }
 
         if (colonia != null) {
             String ubicacionNombreGoogle = UbicacionGeocodificacion.establecerNombreUbicacion(addressUbicacion, colonia,

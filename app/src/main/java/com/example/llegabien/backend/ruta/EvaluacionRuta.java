@@ -66,8 +66,11 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
             verificarExistenciaColoniasCalles();
             setNumeroDeRuta();
             if (!this.rutas.isEmpty()) {
-                if (this.rutas.size() == 1)
+                if (this.rutas.size() == 1) {
+                    calcularPorcentajes();
                     this.mRutaMasSegura = this.rutas.get(0);
+                    setDelitosZonasInseguras();
+                }
                 else {
                     if (!this.mIsCalleEnRutas)
                         // Si solo se tienen valores de colonias en las rutas.
@@ -80,8 +83,8 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
                     calcularPorcentajes();
                     compararPocentajes();
                     comparacionFinalRutas();
+                    setDelitosZonasInseguras();
                 }
-                setDelitosZonasInseguras();
             } else
                 Log.v("QUICKSTART", "¡No hay rutas disponibles porque no se encontró alguna colonia!");
         }else
@@ -96,8 +99,6 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
         UbicacionGeocodificacion ubicacionGeodicacion = new UbicacionGeocodificacion(mContext);
         UbicacionRutaDAO ubicacionRutaDAO = new UbicacionRutaDAO();
 
-        List<PolylineOptions> rutaDirectionsPolyline = new ArrayList<>();
-        List<List<PolylineOptions>> rutasDirectionsPolyline = new ArrayList<>();
         int longitudCalle;
 
         // Para obtener puntos medios y sus distancias.
@@ -139,12 +140,9 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
 
                     Log.v("QUICKSTART", "Calle: " + calle + " Distancia " + ubicacionRuta.getmDistancia());
                 }
-                rutaDirectionsPolyline = ruta.getPolyline();
-                rutaDirectionsPolyline.add(lineOptions);
-                ruta.setPolyline(rutaDirectionsPolyline);
+                ruta.getPolyline().add(lineOptions);
                 ruta.setNumeroCalles(ruta.getCallesRuta().size());
             }
-            rutasDirectionsPolyline.add(rutaDirectionsPolyline);
 
             ruta.setDistanciaTotalDirections(directionsObtenidas.getDistancia().get(i));
             ruta.setTiempoTotalDirections(directionsObtenidas.getDuracion().get(i));
@@ -153,10 +151,8 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
 
             Log.v("QUICKSTART", "DISTANCIA, TIEMPO: " + directionsObtenidas.getDistancia().get(i) + " , " + directionsObtenidas.getDuracion().get(i));
         }
-      //  directionsObtenidas.setRutasEnPolylines(rutasDirectionsPolyline);
 
         this.rutas.sort(Comparator.comparing(Ruta::getNumeroCalles).reversed());
-
     }
 
     private int obtenerNumeroRutas(int size) {
@@ -193,7 +189,7 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
                         // Para obtener la calle de la BD, una vez que se "fomatea" el nombre de la calle a como se tiene en la BD.
                         calle = obtenerUbicacionCalle(UbicacionGeocodificacion
                                 .establecerNombreUbicacion(rutas.get(y).getCallesRuta().get(i).getmAddressPuntoMedio(), colonia,
-                                ubicacionDAO.obtenerUbicacionConNombre(colonia.getNombre().split(",", 2)[1].trim())));
+                                        ubicacionDAO.obtenerUbicacionConNombre(colonia.getNombre().split(",", 2)[1].trim())));
 
                         // Se guarda la calle para después poder obtener su MH.
                         this.rutas.get(y).getCallesRuta().get(i).setmUbicacionCalle(calle);

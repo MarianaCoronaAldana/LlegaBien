@@ -1,5 +1,7 @@
 package com.example.llegabien.frontend.mapa.activity;
 
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
+
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -13,9 +15,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.llegabien.R;
 import com.example.llegabien.backend.app.Permisos;
+import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.notificacion.Notificacion;
 import com.example.llegabien.backend.poligonos.Poligono;
 import com.example.llegabien.backend.ubicacion.UbicacionDispositivo;
+import com.example.llegabien.backend.usuario.UsuarioDAO;
+import com.example.llegabien.backend.usuario.usuario;
 import com.example.llegabien.databinding.ActivityMapsBinding;
 import com.example.llegabien.frontend.mapa.Mapa;
 import com.example.llegabien.frontend.mapa.fragmento.FragmentoBuscarLugar;
@@ -123,7 +128,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
         mPermisos.getPermisoUbicacion(this, true);
 
         //Para actualizar los datos de usuario cuando se llegue a ésta actividad
-//        actualizarPreferencesUsuario();
+        actualizarPreferencesUsuario();
     }
 
     @Override
@@ -137,7 +142,7 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
             //Para activar My Location layer
             actualizarUbicacionUI();
         }
-//        actualizarPreferencesUsuario();
+        actualizarPreferencesUsuario();
 
     }
 
@@ -281,5 +286,15 @@ public class ActivityMap extends FragmentActivity implements OnMapReadyCallback,
     @Override
     public void onLocationChanged(Location location) {
 
+    }
+
+    // Para actualizar los datos de usuario cuando se llegue a ésta actividad
+    private void actualizarPreferencesUsuario() {
+        UsuarioDAO usuarioDAO = new UsuarioDAO(getApplicationContext());
+        usuario Usuario = Preferences.getSavedObjectFromPreference(getApplicationContext(), PREFERENCE_USUARIO, usuario.class);
+        if(Usuario!=null) {
+            Usuario = usuarioDAO.readUsuarioPorCorreo(Usuario.getCorreoElectronico());
+            Preferences.savePreferenceObjectRealm(getApplicationContext(), PREFERENCE_USUARIO, Usuario);
+        }
     }
 }

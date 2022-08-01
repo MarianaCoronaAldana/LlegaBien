@@ -1,9 +1,14 @@
 package com.example.llegabien.backend.usuario;
 
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ES_ADMIN;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
+import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -11,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
+import com.example.llegabien.frontend.reportes.VerificarReportesSemanales;
+
+import java.util.Calendar;
 
 import io.realm.Realm;
 
@@ -43,10 +51,31 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
 
     // Se verifica que los datos para iniciar sesion coincidan con un usuario ADMINISTRADOR
     public void validarAdmin(usuario usuario){
-        if (usuario.getStatus() != null)
+        if (usuario.getStatus() != null) {
             Preferences.savePreferenceBoolean(mContext, true, PREFERENCE_ES_ADMIN);
-        else
+            establecerIntentVerificarReportesSemanales();
+        }
+            else
             Preferences.savePreferenceBoolean(mContext, false, PREFERENCE_ES_ADMIN);
+    }
+
+    private void establecerIntentVerificarReportesSemanales() {
+         AlarmManager alarmMgr;
+         PendingIntent alarmIntent;
+        alarmMgr = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(mContext, VerificarReportesSemanales.class);
+        alarmIntent = PendingIntent.getBroadcast(mContext, 0, intent, FLAG_IMMUTABLE);
+
+        // Set the alarm to start at 8:30 a.m.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 11);
+        calendar.set(Calendar.MINUTE, 15);
+
+        // setRepeating() lets you specify a precise custom interval--in this case,
+        // 20 minutes.
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                1000 * 60 * 1, alarmIntent);
     }
 
 

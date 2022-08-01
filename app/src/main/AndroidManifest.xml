@@ -76,6 +76,12 @@
             android:exported="true"
             android:label="@string/title_activity_maps"
             android:windowSoftInputMode="adjustPan" />
+
+        <receiver
+            android:name=".frontend.reportes.VerificarReportesSemanales"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="TODO" />
     </application>
 
 </manifest>
