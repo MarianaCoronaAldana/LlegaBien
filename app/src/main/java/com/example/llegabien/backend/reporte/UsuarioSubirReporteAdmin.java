@@ -301,10 +301,9 @@ public class UsuarioSubirReporteAdmin {
 
         }
         // Si la calle que entrega Google Maps no es válida, se le asigna el Id de su colonia.
-        else{
-            ubicacion coloniaAux = colonia;
-            reportesConCalleRepetida.forEach((reporte) -> reporte.setIdUbicacion(coloniaAux.get_id()));
-        }
+        else
+            reportesConCalleRepetida.forEach((reporte) -> reporte.setIdUbicacion(colonia.get_id()));
+
 
         // Para añadir los reportes a la lista de los que SÍ se van a añadir.
         this.mReportesParaAnadir.addAll(reportesConCalleRepetida);
