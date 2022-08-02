@@ -190,7 +190,7 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
                         // Para obtener la calle de la BD, una vez que se "fomatea" el nombre de la calle a como se tiene en la BD.
                         calle = obtenerUbicacionCalle(UbicacionGeocodificacion
                                 .establecerNombreUbicacion(rutas.get(y).getCallesRuta().get(i).getmAddressPuntoMedio(), colonia,
-                                        ubicacionDAO.obtenerUbicacionConNombre(colonia.getNombre().split(",", 2)[1].trim())));
+                                        ubicacionDAO.obtenerUbicacionConId(colonia.getIdMunicipio())));
 
                         // Se guarda la calle para después poder obtener su MH.
                         this.rutas.get(y).getCallesRuta().get(i).setmUbicacionCalle(calle);
@@ -204,7 +204,7 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
                     // Para obtener la calle de la BD, una vez que se "fomatea" el nombre de la calle a como se tiene en la BD.
                     calle = obtenerUbicacionCalle(UbicacionGeocodificacion
                             .establecerNombreUbicacion(rutas.get(y).getCallesRuta().get(i).getmAddressPuntoMedio(), coloniasEncontradas.get(coloniaNombre),
-                                    ubicacionDAO.obtenerUbicacionConNombre(coloniasEncontradas.get(coloniaNombre).getNombre().split(",", 2)[1].trim())));
+                                    ubicacionDAO.obtenerUbicacionConId(coloniasEncontradas.get(coloniaNombre).getIdMunicipio())));
 
                     // Se guarda la calle para después poder obtener su MH.
                     this.rutas.get(y).getCallesRuta().get(i).setmUbicacionCalle(calle);

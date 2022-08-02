@@ -164,7 +164,7 @@ public class FragmentoRegistrarUsuario2 extends Fragment implements View.OnClick
                         fragmentTransaction.replace(R.id.fragment_pagina_principal, fragmentoRegistrarUsuario3).commit();
                         fragmentTransaction.addToBackStack(null);
                     }
-                }, mEditTxtCorreo.getText().toString(), mEditTxtContrasena.getText().toString());
+                }, mEditTxtCorreo.getText().toString(), Encriptar.EncriptarContrasena(mEditTxtContrasena.getText().toString()));
             }
         }, "+" + numTelefonico);
     }

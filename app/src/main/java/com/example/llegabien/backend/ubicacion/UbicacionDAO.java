@@ -72,6 +72,18 @@ public class UbicacionDAO {
         return null;
     }
 
+    public ubicacion obtenerUbicacionConId(ObjectId objectId) {
+        if (realm == null)
+            realm = conectarBD.conseguirUsuarioMongoDB();
+        if (realm != null) {
+            ubicacion ubicacion = realm.where(ubicacion.class).equalTo("_id", objectId).findFirst();
+            if (ubicacion != null)
+                return realm.copyFromRealm(ubicacion);
+        } else
+            errorConexion();
+        return null;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public ubicacion obtenerColonia(String nombreColonia, List<ubicacion> colonias) {
         ubicacion colonia = obtenerUbicacionConNombre(nombreColonia);
@@ -173,7 +185,7 @@ public class UbicacionDAO {
                         UbicacionGeocodificacion ubicacionGeocodificacion = new UbicacionGeocodificacion(mContext);
                         ubicacion calle  = obtenerUbicacionConNombre(UbicacionGeocodificacion.establecerNombreUbicacion(ubicacionGeocodificacion
                                 .geocodificarUbiciacion(latitude,longitude), ubicacion,
-                                obtenerUbicacionConNombre(ubicacion.getNombre().split(",", 2)[1].trim())));
+                                obtenerUbicacionConId(ubicacion.getIdMunicipio())));
                         if (calle != null) {
                             Preferences.savePreferenceObjectRealm(mContext, PREFERENCE_UBICACION, calle);
                             return true;

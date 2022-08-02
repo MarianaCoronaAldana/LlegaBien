@@ -53,30 +53,10 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
     public void validarAdmin(usuario usuario){
         if (usuario.getStatus() != null) {
             Preferences.savePreferenceBoolean(mContext, true, PREFERENCE_ES_ADMIN);
-            establecerIntentVerificarReportesSemanales();
+            //establecerIntentVerificarReportesSemanales();
         }
             else
             Preferences.savePreferenceBoolean(mContext, false, PREFERENCE_ES_ADMIN);
-    }
-
-    private void establecerIntentVerificarReportesSemanales() {
-        if(!Preferences.getSavedBooleanFromPreference(mContext, PREFERENCE_ALARMANAGER_CONFIGURADO)){
-            AlarmManager alarmMgr = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(mContext, VerificarReportesSemanales.class);
-            PendingIntent alarmIntent = PendingIntent.getBroadcast(mContext, 0, intent, FLAG_IMMUTABLE);
-
-            // Set the alarm to start
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
-            calendar.set(Calendar.HOUR_OF_DAY, 11);
-            calendar.set(Calendar.MINUTE, 15);
-
-            // setRepeating() lets you specify a precise custom interval
-            alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                    1000 * 60 * 5, alarmIntent);
-
-            Preferences.savePreferenceBoolean(mContext, true, PREFERENCE_ALARMANAGER_CONFIGURADO);
-        }
     }
 
 
@@ -107,6 +87,26 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
             errorConexion();
 
         return false;
+    }
+
+    private void establecerIntentVerificarReportesSemanales() {
+        if(!Preferences.getSavedBooleanFromPreference(mContext, PREFERENCE_ALARMANAGER_CONFIGURADO)){
+            AlarmManager alarmMgr = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(mContext, VerificarReportesSemanales.class);
+            PendingIntent alarmIntent = PendingIntent.getBroadcast(mContext, 0, intent, FLAG_IMMUTABLE);
+
+            // Set the alarm to start
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.set(Calendar.HOUR_OF_DAY, 11);
+            calendar.set(Calendar.MINUTE, 15);
+
+            // setRepeating() lets you specify a precise custom interval
+            alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                    1000 * 60 * 5, alarmIntent);
+
+            Preferences.savePreferenceBoolean(mContext, true, PREFERENCE_ALARMANAGER_CONFIGURADO);
+        }
     }
 
     private void errorConexion(){

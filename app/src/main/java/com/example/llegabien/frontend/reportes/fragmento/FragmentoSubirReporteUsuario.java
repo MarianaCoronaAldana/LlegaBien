@@ -276,7 +276,7 @@ public class FragmentoSubirReporteUsuario extends Fragment implements View.OnCli
 
         if (colonia != null) {
             String ubicacionNombreGoogle = UbicacionGeocodificacion.establecerNombreUbicacion(addressUbicacion, colonia,
-                    ubicacionDAO.obtenerUbicacionConNombre(colonia.getNombre().split(",", 2)[1].trim()));
+                    ubicacionDAO.obtenerUbicacionConId(colonia.getIdMunicipio()));
             if (ubicacionNombreGoogle != null) {
                 reporte.setUbicacion(ubicacionNombreGoogle);
                 ubicacion calle = ubicacionDAO.obtenerUbicacionConNombre(ubicacionNombreGoogle);

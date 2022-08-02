@@ -132,7 +132,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
         usuarioFirebaseVerificaciones.validarCorreoVerificado(isCorreoVerificado -> {
             if (isCorreoVerificado)
                 startActivity(new Intent(requireActivity(), ActivityMap.class));
-        }, mEditTxtCorreo.getText().toString(), mEditTxtContrasena.getText().toString());
+        }, mEditTxtCorreo.getText().toString(), Encriptar.EncriptarContrasena(mEditTxtContrasena.getText().toString()));
     }
 
 
