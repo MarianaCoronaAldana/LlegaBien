@@ -1,6 +1,7 @@
 package com.example.llegabien.backend.usuario;
 
 import static android.app.PendingIntent.FLAG_IMMUTABLE;
+import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ALARMANAGER_CONFIGURADO;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ES_ADMIN;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
@@ -59,22 +60,23 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
     }
 
     private void establecerIntentVerificarReportesSemanales() {
-         AlarmManager alarmMgr;
-         PendingIntent alarmIntent;
-        alarmMgr = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(mContext, VerificarReportesSemanales.class);
-        alarmIntent = PendingIntent.getBroadcast(mContext, 0, intent, FLAG_IMMUTABLE);
+        if(!Preferences.getSavedBooleanFromPreference(mContext, PREFERENCE_ALARMANAGER_CONFIGURADO)){
+            AlarmManager alarmMgr = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(mContext, VerificarReportesSemanales.class);
+            PendingIntent alarmIntent = PendingIntent.getBroadcast(mContext, 0, intent, FLAG_IMMUTABLE);
 
-        // Set the alarm to start at 8:30 a.m.
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 11);
-        calendar.set(Calendar.MINUTE, 15);
+            // Set the alarm to start
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.set(Calendar.HOUR_OF_DAY, 11);
+            calendar.set(Calendar.MINUTE, 15);
 
-        // setRepeating() lets you specify a precise custom interval--in this case,
-        // 20 minutes.
-        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                1000 * 60 * 5, alarmIntent);
+            // setRepeating() lets you specify a precise custom interval
+            alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                    1000 * 60 * 5, alarmIntent);
+
+            Preferences.savePreferenceBoolean(mContext, true, PREFERENCE_ALARMANAGER_CONFIGURADO);
+        }
     }
 
 
