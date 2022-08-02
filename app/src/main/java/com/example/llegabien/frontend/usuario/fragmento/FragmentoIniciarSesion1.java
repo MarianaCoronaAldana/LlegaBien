@@ -141,7 +141,7 @@ public class FragmentoIniciarSesion1 extends Fragment implements View.OnClickLis
             usuario usuario = Preferences.getSavedObjectFromPreference(this.requireContext(), PREFERENCE_USUARIO, com.example.llegabien.backend.usuario.usuario.class);
             if (usuario!= null) {
                 mValidar.validarAdmin(usuario);
-                startActivity(new Intent(requireActivity(), ActivityMap.class));
+                verificarCorreoVerificado();
             }
         }
     }

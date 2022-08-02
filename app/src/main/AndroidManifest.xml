@@ -78,7 +78,7 @@
             android:windowSoftInputMode="adjustPan" />
 
         <receiver
-            android:name=".frontend.reportes.VerificarReportesSemanales"
+            android:name=".backend.reporte.VerificarReportesSemanales"
             android:enabled="true"
             android:exported="true"
             android:permission="TODO" />

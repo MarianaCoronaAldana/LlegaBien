@@ -44,7 +44,7 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
 
     private ObjectAnimator mScaleDown = null;
     private ConstraintLayout mBtnSubirReporte, mBtnAdvertencia, mBtnCentrarMapa, mConsLytIndicaciones;
-    private TextView mTxtViewCalleActual, mTxtViewCalleSiguiente, mTxtViewUbicacionSeguridad, mTxtViewTiempoDistanciaRuta;
+    private TextView mTxtViewCalleActual, mTxtViewCalleSiguiente, mTxtViewUbicacionSeguridad;
     private View mIconSeguridad;
     private FragmentTransaction mFragmentTransaction;
     private UbicacionGeocodificacion mUbicacionGeocodificacion;
@@ -55,7 +55,6 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
     boolean mIsMapaDragged = false;
 
     public FragmentoNavegacion() {
-        // Required empty public constructor
     }
 
     @SuppressLint({"ClickableViewAccessibility"})
@@ -93,7 +92,7 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
         mTxtViewUbicacionSeguridad = root.findViewById(R.id.textView_seguridad_navegacion);
         mConsLytIndicaciones = root.findViewById(R.id.consLyt_indicaciones_navegacion);
         mIconSeguridad = root.findViewById(R.id.icon_seguridad_navegacion);
-        mTxtViewTiempoDistanciaRuta = root.findViewById(R.id.textview_tiempo_distancia_navegacion);
+        TextView mTxtViewTiempoDistanciaRuta = root.findViewById(R.id.textview_tiempo_distancia_navegacion);
 
         //listeners
         btnEmergencia.setOnTouchListener(this);
@@ -205,18 +204,23 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
 
                 mNumCalleActual++;
                 UbicacionRuta mCalleActual = mRutaSegura.getCallesRuta().get(mNumCalleActual);
-                mCalleSiguiente = mRutaSegura.getCallesRuta().get(mNumCalleActual + 1);
 
                 mTxtViewCalleActual.setText(mUbicacionGeocodificacion
                         .degeocodificarUbiciacion(mCalleActual.getLatPuntoInicio(), mCalleActual.getLngPuntoInicio())
                         .split("\\d+", 2)[0].trim());
-                mTxtViewCalleSiguiente.setText(mUbicacionGeocodificacion
-                        .degeocodificarUbiciacion(mCalleSiguiente.getLatPuntoInicio(), mCalleSiguiente.getLngPuntoInicio())
-                        .split("\\d+", 2)[0].trim());
 
                 mTxtViewUbicacionSeguridad.setText(mCalleActual.getmUbicacion().getSeguridad());
-                Utilidades.setColoIconSeguridad(mCalleActual.getmUbicacion().getSeguridad(),mIconSeguridad,requireContext());
+                Utilidades.setColoIconSeguridad(mCalleActual.getmUbicacion().getSeguridad(), mIconSeguridad, requireContext());
 
+
+                if (mNumCalleActual == mRutaSegura.getNumeroCalles() - 1)
+                    mTxtViewCalleSiguiente.setText("Punto de destino");
+                else {
+                    mCalleSiguiente = mRutaSegura.getCallesRuta().get(mNumCalleActual + 1);
+                    mTxtViewCalleSiguiente.setText(mUbicacionGeocodificacion
+                            .degeocodificarUbiciacion(mCalleSiguiente.getLatPuntoInicio(), mCalleSiguiente.getLngPuntoInicio())
+                            .split("\\d+", 2)[0].trim());
+                }
             }
         }
 

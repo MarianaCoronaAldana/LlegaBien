@@ -85,6 +85,7 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
                     comparacionFinalRutas();
                     setDelitosZonasInseguras();
                 }
+
             } else
                 Log.v("QUICKSTART", "¡No hay rutas disponibles porque no se encontró alguna colonia!");
         }else

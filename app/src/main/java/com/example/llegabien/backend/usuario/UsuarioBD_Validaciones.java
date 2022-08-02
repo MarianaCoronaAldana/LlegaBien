@@ -4,7 +4,6 @@ import static android.app.PendingIntent.FLAG_IMMUTABLE;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_ES_ADMIN;
 import static com.example.llegabien.backend.app.Preferences.PREFERENCE_USUARIO;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -16,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.llegabien.backend.app.Preferences;
 import com.example.llegabien.backend.mongoDB.ConectarBD;
-import com.example.llegabien.frontend.reportes.VerificarReportesSemanales;
+import com.example.llegabien.backend.reporte.VerificarReportesSemanales;
 
 import java.util.Calendar;
 
@@ -75,7 +74,7 @@ public class UsuarioBD_Validaciones extends AppCompatActivity {
         // setRepeating() lets you specify a precise custom interval--in this case,
         // 20 minutes.
         alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                1000 * 60 * 1, alarmIntent);
+                1000 * 60 * 5, alarmIntent);
     }
 
 
