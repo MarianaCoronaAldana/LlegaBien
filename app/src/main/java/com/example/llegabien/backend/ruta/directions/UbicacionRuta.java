@@ -8,6 +8,8 @@ public class UbicacionRuta {
     private int mDistancia;
     private float mLatPuntoInicio;
     private float mLngPuntoInicio;
+    private float mLatPuntoMedio;
+    private float mLngPuntoMedio;
     private Address mAddressPuntoMedio;
     private String mNombreCalle;
     private ubicacion mUbicacion;
@@ -82,6 +84,22 @@ public class UbicacionRuta {
 
     public void setLngPuntoInicio(float mLngPuntoInicio) {
         this.mLngPuntoInicio = mLngPuntoInicio;
+    }
+
+    public float getLatPuntoMedio() {
+        return mLatPuntoMedio;
+    }
+
+    public void setLatPuntoMedio(float mLatPuntoMedio) {
+        this.mLatPuntoMedio = mLatPuntoMedio;
+    }
+
+    public float getLngPuntoMedio() {
+        return mLngPuntoMedio;
+    }
+
+    public void setLngPuntoMedio(float mLngPuntoMedio) {
+        this.mLngPuntoMedio = mLngPuntoMedio;
     }
 
 }

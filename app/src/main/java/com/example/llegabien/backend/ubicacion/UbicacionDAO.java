@@ -259,7 +259,7 @@ public class UbicacionDAO {
                                     ubicacion.setSeguridad(nextLine[10]);
                                     ubicacion.setSuma_delitos(Integer.valueOf(nextLine[11]));
                                     ubicacion.setTipo(nextLine[12]);
-                                    realm.insert(ubicacion);
+                                    realm.insertOrUpdate(ubicacion);
                                 }
                             } catch (IOException | CsvException e) {
                                 Toast.makeText(mContext, "Error: " + e.toString(), Toast.LENGTH_LONG).show();

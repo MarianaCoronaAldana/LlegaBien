@@ -184,42 +184,40 @@ public class FragmentoNavegacion extends Fragment implements View.OnClickListene
     LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(@NonNull Location location) {
-            if (mNumCalleActual == mRutaSegura.getCallesRuta().size())
-                mNumCalleActual = -1;
-
             if (!mIsMapaDragged)
                 mMapa.actualizarCamaraByUbicacionDispositivo(location);
 
-            UbicacionRuta mCalleSiguiente = mRutaSegura.getCallesRuta().get(mNumCalleActual + 1);
+            if(mNumCalleActual != mRutaSegura.getNumeroCalles() - 1) {
 
-            Location puntoInicioCalleSiguiente = new Location(LocationManager.GPS_PROVIDER);
-            puntoInicioCalleSiguiente.setLatitude(mCalleSiguiente.getLatPuntoInicio());
-            puntoInicioCalleSiguiente.setLongitude(mCalleSiguiente.getLngPuntoInicio());
+                UbicacionRuta mCalleSiguiente = mRutaSegura.getCallesRuta().get(mNumCalleActual + 1);
 
-            if (location.distanceTo(puntoInicioCalleSiguiente) <= 10) {
-                Toast.makeText(requireActivity(), "MENOS DE 10 METROS", Toast.LENGTH_SHORT).show();
-                if (mNumCalleActual == -1 && mConsLytIndicaciones.getVisibility() == View.GONE)
-                    mConsLytIndicaciones.setVisibility(View.VISIBLE);
+                Location puntoInicioCalleSiguiente = new Location(LocationManager.GPS_PROVIDER);
+                puntoInicioCalleSiguiente.setLatitude(mCalleSiguiente.getLatPuntoInicio());
+                puntoInicioCalleSiguiente.setLongitude(mCalleSiguiente.getLngPuntoInicio());
 
+                if (location.distanceTo(puntoInicioCalleSiguiente) <= 10) {
+                    Toast.makeText(requireActivity(), "MENOS DE 10 METROS", Toast.LENGTH_SHORT).show();
+                    if (mNumCalleActual == -1 && mConsLytIndicaciones.getVisibility() == View.GONE)
+                        mConsLytIndicaciones.setVisibility(View.VISIBLE);
 
-                mNumCalleActual++;
-                UbicacionRuta mCalleActual = mRutaSegura.getCallesRuta().get(mNumCalleActual);
+                    mNumCalleActual++;
+                    UbicacionRuta mCalleActual = mRutaSegura.getCallesRuta().get(mNumCalleActual);
 
-                mTxtViewCalleActual.setText(mUbicacionGeocodificacion
-                        .degeocodificarUbiciacion(mCalleActual.getLatPuntoInicio(), mCalleActual.getLngPuntoInicio())
-                        .split("\\d+", 2)[0].trim());
+                    mTxtViewCalleActual.setText((mUbicacionGeocodificacion
+                            .degeocodificarUbiciacion(mCalleActual.getLatPuntoMedio(), mCalleActual.getLngPuntoMedio())
+                            .split("\\d+", 2)[0].trim()));
 
-                mTxtViewUbicacionSeguridad.setText(mCalleActual.getmUbicacion().getSeguridad());
-                Utilidades.setColoIconSeguridad(mCalleActual.getmUbicacion().getSeguridad(), mIconSeguridad, requireContext());
+                    mTxtViewUbicacionSeguridad.setText(mCalleActual.getmUbicacion().getSeguridad());
+                    Utilidades.setColoIconSeguridad(mCalleActual.getmUbicacion().getSeguridad(), mIconSeguridad, requireContext());
 
-
-                if (mNumCalleActual == mRutaSegura.getNumeroCalles() - 1)
-                    mTxtViewCalleSiguiente.setText("Punto de destino");
-                else {
-                    mCalleSiguiente = mRutaSegura.getCallesRuta().get(mNumCalleActual + 1);
-                    mTxtViewCalleSiguiente.setText(mUbicacionGeocodificacion
-                            .degeocodificarUbiciacion(mCalleSiguiente.getLatPuntoInicio(), mCalleSiguiente.getLngPuntoInicio())
-                            .split("\\d+", 2)[0].trim());
+                    if (mNumCalleActual == mRutaSegura.getNumeroCalles() - 1)
+                        mTxtViewCalleSiguiente.setText("Punto de destino");
+                    else {
+                        mCalleSiguiente = mRutaSegura.getCallesRuta().get(mNumCalleActual + 1);
+                        mTxtViewCalleSiguiente.setText((mUbicacionGeocodificacion
+                                .degeocodificarUbiciacion(mCalleSiguiente.getLatPuntoMedio(), mCalleActual.getLngPuntoMedio())
+                                .split("\\d+", 2)[0].trim()));
+                    }
                 }
             }
         }

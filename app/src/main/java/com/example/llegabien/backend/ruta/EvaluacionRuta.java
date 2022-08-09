@@ -130,6 +130,8 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
                     UbicacionRuta ubicacionRuta = ubicacionRutaDAO.obtenerUbicacionRutaConAdress(calle, ruta.getCallesRuta());
                     if (ubicacionRuta == null) {
                         ubicacionRuta = new UbicacionRuta(longitudCalle, adressPuntoMedio, calle);
+                        ubicacionRuta.setLatPuntoMedio((float) centro.latitude);
+                        ubicacionRuta.setLngPuntoMedio((float) centro.longitude);
                         ubicacionRuta.setLatPuntoInicio((float) points.get(o).latitude);
                         ubicacionRuta.setLngPuntoInicio((float) points.get(o).longitude);
                         ruta.getCallesRuta().add(ubicacionRuta);
@@ -318,6 +320,7 @@ public class EvaluacionRuta extends AsyncTask<String, Void, Ruta> {
 
                 // Se tendrá que calcular cuál ruta entre la 2 y la 3 tiene menor MH.
                 // Se sigue sumando la MH de la Ruta 2 y Ruta 3 hasta el número de calles de la Ruta 2.
+                this.rutas.sort(Comparator.comparing(Ruta::getNumeroCalles).reversed());
                 calcularMediaHistorica(2, this.rutas.stream().filter(r -> r.getNumeroDeRuta() == 2)
                         .findAny().orElse(null).getNumeroCalles(), true);
 
